@@ -1,0 +1,7 @@
+eqbeats.fcgi
+tracks/*
+CMakeFiles/*
+cmake_install.cmake
+CMakeCache.txt
+dox/html
+dox/latex

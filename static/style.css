@@ -1,0 +1,42 @@
+#header {
+    font-size: 2.5em;
+    margin: 10px 0;
+}
+#header a {
+    text-decoration: none;
+    color: #436;
+}
+
+#footer {
+    font-size: 0.7em;
+    color: #888;
+    margin: 10px 0;
+}
+
+tr {
+    background-color: #FCC;
+    margin: 10px;
+}
+td {
+    margin: 1px;
+    padding: 5px 10px;
+}
+
+div.error, div.message {
+    border: 1px solid;
+    padding: 10px;
+    margin: 10px;
+}
+div.error {
+    border-color: #F88;
+    background-color: #FCC;
+    color: #400;
+    font-weight: bold;
+}
+div.message {
+    border-color: #88F;
+    background-color: #CCF;
+    color: #004;
+}
+
+form { margin: 0; }
