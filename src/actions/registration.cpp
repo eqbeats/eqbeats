@@ -25,7 +25,7 @@ std::string registrationForm(const std::string &error=std::string()){
                     "<td><input type=\"password\" id=\"r_pwconf\" name=\"pwconf\" /></td>"
                 "</tr>"
             "</table>"
-            "<input type=\"submit\" />"
+            "<input type=\"submit\" value=\"Register\" />"
         "</form>"
         + Html::footer();
 }

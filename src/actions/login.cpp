@@ -17,9 +17,10 @@ std::string loginForm(const cgicc::Cgicc &cgi, const std::string &error=std::str
                     "<td><input id=\"r_pw\" name=\"pw\" type=\"password\" /></td>"
                 "</tr>"
             "</table>"
-            "<input type=\"submit\" />"
+            "<input type=\"submit\" value=\"Login\" />"
             "<input type=\"hidden\" name=\"redirect\" value=\""+cgi("redirect")+"\" />"
         "</form>"
+        "<a href=\"/register\">Register</a>"
         + Html::footer();
 }
 
@@ -44,8 +45,8 @@ std::string Action::login(cgicc::Cgicc &cgi){
         "Logged in, redirecting...";
 }
 
-std::string Action::logout(){
+std::string Action::logout(cgicc::Cgicc &cgi){
     Session::logout();
-    return "Set-Cookie: sid=\n" + Html::redirect("/") +
+    return "Set-Cookie: sid=\n" + Html::redirect(cgi("redirect").empty()?"/":cgi("redirect")) +
         "Logged out, redirecting...";
 }

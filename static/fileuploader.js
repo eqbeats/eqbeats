@@ -486,13 +486,13 @@ qq.FileUploader = function(o){
                 
         template: '<div class="qq-uploader">' + 
                 '<div class="qq-upload-drop-area"><span>Drop files here to upload</span></div>' +
-                '<div class="qq-upload-button">Upload a file</div>' +
+                '<div class="qq-upload-button">Upload a FLAC</div>' +
                 '<ul class="qq-upload-list"></ul>' + 
              '</div>',
 
         // template for one item in file list
         fileTemplate: '<li>' +
-                '<span class="qq-upload-file"></span>' +
+                '<a class="qq-upload-file"></a>' +
                 '<span class="qq-upload-spinner"></span>' +
                 '<span class="qq-upload-size"></span>' +
                 '<a class="qq-upload-cancel" href="#">Cancel</a>' +
@@ -614,6 +614,11 @@ qq.extend(qq.FileUploader.prototype, {
         var item = this._getItemByFileId(id);                
         qq.remove(this._find(item, 'cancel'));
         qq.remove(this._find(item, 'spinner'));
+
+        // Custom
+        var f = this._find(item, 'file');
+        f.href = '/track/' + result.track;
+        f.innerHTML = result.title;
         
         if (result.success){
             qq.addClass(item, this._classes.success);    

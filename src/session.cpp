@@ -1,9 +1,7 @@
-#include "db.h"
 #include "session.h"
 #include "utils.h"
 #include <cgicc/CgiEnvironment.h>
 #include <cgicc/HTTPCookie.h>
-#include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 
@@ -28,14 +26,8 @@ void Session::start(Cgicc &cgi){
         if(i->getName() == "sid")
             sid = i->getValue();
     }
-
-    const char* val[2] = { sid.c_str(), env.getRemoteAddr().c_str() };
-    PGresult* result = PQexecParams(db,
-        "SELECT user_id FROM sessions WHERE sid = $1 AND host = $2",
-        2, 0, val, 0, 0, 0);
-    if(PQntuples(result)!=0)
-        u = User(atoi(PQgetvalue(result, 0, 0)));
-    PQclear(result);
+    DB::Result r = DB::query("SELECT user_id FROM sessions WHERE sid = $1 AND host = $2", sid, env.getRemoteAddr());
+    if(!r.empty()) u = User(number(r[0][0]));
 }
 
 void Session::destroy(){
@@ -48,39 +40,19 @@ User Session::user(){
 }
 
 std::string Session::login(const std::string &email, const std::string &pw, const std::string &host){
-    const char* val[] = { email.c_str(), pw.c_str() };
-    PGresult* result = PQexecParams(db,
-        "SELECT id FROM users WHERE email = lower($1) AND password = crypt($2, password)"
-        , 2, 0, val, 0, 0, 0);
-
-    if(PQntuples(result) == 0) {
-        PQclear(result);
-        return std::string();
-    }
-    int id = atoi(PQgetvalue(result, 0, 0));
-    PQclear(result);
-
-    return login(id, host);
+    DB::Result r = DB::query("SELECT id FROM users WHERE email = lower($1) AND password = crypt($2, password)", email, pw);
+    return r.empty() ? std::string() : login(number(r[0][0]), host);
 }
 
 std::string Session::login(int id, const std::string &host){
     sid = randomSid();
-    const char* val[3] = { number(id).c_str(), sid.c_str(), host.c_str() };
-    PQclear(PQexecParams(db,
-        "INSERT INTO sessions (user_id, sid, host, date) "
-        "VALUES ($1, $2, $3, 'now')",
-        3, 0, val, 0, 0, 0));
-    PQclear(PQexecParams(db,
-        "UPDATE users SET last_login = 'now' WHERE id = $1",
-        1, 0, val, 0, 0, 0));
+    DB::query("INSERT INTO sessions (user_id, sid, host, date) VALUES ($1, $2, $3, 'now')", number(id), sid, host);
+    DB::query("UPDATE users SET last_login = 'now' WHERE id = " + number(id));
     return sid;
 }
 
 void Session::logout(){
     if(sid.empty()) return;
-    const char* val[1] = { sid.c_str() };
-    PQclear(PQexecParams(db,
-        "DELETE FROM sessions WHERE sid = $1",
-        1, 0, val, 0, 0, 0));
+    DB::query("DELETE FROM sessions WHERE sid = $1", sid);
     Session::destroy();
 }

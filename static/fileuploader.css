@@ -1,11 +1,13 @@
-.qq-uploader { position:relative; width: 100%;}
+.qq-uploader { position:relative; width: 90%; margin: 20px;}
 
 .qq-upload-button {
     display:block; /* or inline-block */
-    width: 105px; padding: 7px 0; text-align:center;    
-    background:#880088; border-bottom:1px solid #ddd;color:#fff;
+    width: 150px; padding: 7px 0; text-align:center;    
+    /*background:#880088; border-bottom:1px solid #ddd;color:#fff;*/
+    color: #406;
+    border: 1px solid #406;
 }
-.qq-upload-button-hover {background:#aa00aa;}
+.qq-upload-button-hover {background:#EDF;}
 .qq-upload-button-focus {outline:1px dotted black;}
 
 .qq-upload-drop-area {
@@ -24,8 +26,22 @@
 }
 
 .qq-upload-file {}
-.qq-upload-spinner {display:inline-block; background: url("loading.gif"); width:15px; height:15px; vertical-align:text-bottom;}
+.qq-upload-spinner {display:inline-block; /*background: url("loading.gif");*/ width:15px; height:15px; vertical-align:text-bottom;}
 .qq-upload-size,.qq-upload-cancel {font-size:11px;}
 
 .qq-upload-failed-text {display:none;}
 .qq-upload-fail .qq-upload-failed-text {display:inline;}
+
+a.qq-upload-file, a.qq-upload-file:hover {
+    text-decoration: none;
+    color: #000;
+}
+
+.qq-upload-success a.qq-upload-file {
+    color: #408;
+    text-decoration: none;
+}
+.qq-upload-success a.qq-upload-file:hover {
+    color: #80C;
+    text-decoration: underline;
+}

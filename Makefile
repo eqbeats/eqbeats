@@ -111,6 +111,19 @@ eqbeats.fcgi/fast:
 	$(MAKE) -f CMakeFiles/eqbeats.fcgi.dir/build.make CMakeFiles/eqbeats.fcgi.dir/build
 .PHONY : eqbeats.fcgi/fast
 
+#=============================================================================
+# Target rules for targets named mknews
+
+# Build rule for target.
+mknews: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 mknews
+.PHONY : mknews
+
+# fast build rule for target.
+mknews/fast:
+	$(MAKE) -f CMakeFiles/mknews.dir/build.make CMakeFiles/mknews.dir/build
+.PHONY : mknews/fast
+
 FCgiIO.o: FCgiIO.cpp.o
 .PHONY : FCgiIO.o
 
@@ -279,6 +292,57 @@ actions/upload.cpp.s:
 	$(MAKE) -f CMakeFiles/eqbeats.fcgi.dir/build.make CMakeFiles/eqbeats.fcgi.dir/actions/upload.cpp.s
 .PHONY : actions/upload.cpp.s
 
+comment.o: comment.cpp.o
+.PHONY : comment.o
+
+# target to build an object file
+comment.cpp.o:
+	$(MAKE) -f CMakeFiles/eqbeats.fcgi.dir/build.make CMakeFiles/eqbeats.fcgi.dir/comment.cpp.o
+.PHONY : comment.cpp.o
+
+comment.i: comment.cpp.i
+.PHONY : comment.i
+
+# target to preprocess a source file
+comment.cpp.i:
+	$(MAKE) -f CMakeFiles/eqbeats.fcgi.dir/build.make CMakeFiles/eqbeats.fcgi.dir/comment.cpp.i
+.PHONY : comment.cpp.i
+
+comment.s: comment.cpp.s
+.PHONY : comment.s
+
+# target to generate assembly for a file
+comment.cpp.s:
+	$(MAKE) -f CMakeFiles/eqbeats.fcgi.dir/build.make CMakeFiles/eqbeats.fcgi.dir/comment.cpp.s
+.PHONY : comment.cpp.s
+
+db.o: db.cpp.o
+.PHONY : db.o
+
+# target to build an object file
+db.cpp.o:
+	$(MAKE) -f CMakeFiles/eqbeats.fcgi.dir/build.make CMakeFiles/eqbeats.fcgi.dir/db.cpp.o
+	$(MAKE) -f CMakeFiles/mknews.dir/build.make CMakeFiles/mknews.dir/db.cpp.o
+.PHONY : db.cpp.o
+
+db.i: db.cpp.i
+.PHONY : db.i
+
+# target to preprocess a source file
+db.cpp.i:
+	$(MAKE) -f CMakeFiles/eqbeats.fcgi.dir/build.make CMakeFiles/eqbeats.fcgi.dir/db.cpp.i
+	$(MAKE) -f CMakeFiles/mknews.dir/build.make CMakeFiles/mknews.dir/db.cpp.i
+.PHONY : db.cpp.i
+
+db.s: db.cpp.s
+.PHONY : db.s
+
+# target to generate assembly for a file
+db.cpp.s:
+	$(MAKE) -f CMakeFiles/eqbeats.fcgi.dir/build.make CMakeFiles/eqbeats.fcgi.dir/db.cpp.s
+	$(MAKE) -f CMakeFiles/mknews.dir/build.make CMakeFiles/mknews.dir/db.cpp.s
+.PHONY : db.cpp.s
+
 ffmpeg.o: ffmpeg.cpp.o
 .PHONY : ffmpeg.o
 
@@ -302,6 +366,30 @@ ffmpeg.s: ffmpeg.cpp.s
 ffmpeg.cpp.s:
 	$(MAKE) -f CMakeFiles/eqbeats.fcgi.dir/build.make CMakeFiles/eqbeats.fcgi.dir/ffmpeg.cpp.s
 .PHONY : ffmpeg.cpp.s
+
+flac.o: flac.cpp.o
+.PHONY : flac.o
+
+# target to build an object file
+flac.cpp.o:
+	$(MAKE) -f CMakeFiles/eqbeats.fcgi.dir/build.make CMakeFiles/eqbeats.fcgi.dir/flac.cpp.o
+.PHONY : flac.cpp.o
+
+flac.i: flac.cpp.i
+.PHONY : flac.i
+
+# target to preprocess a source file
+flac.cpp.i:
+	$(MAKE) -f CMakeFiles/eqbeats.fcgi.dir/build.make CMakeFiles/eqbeats.fcgi.dir/flac.cpp.i
+.PHONY : flac.cpp.i
+
+flac.s: flac.cpp.s
+.PHONY : flac.s
+
+# target to generate assembly for a file
+flac.cpp.s:
+	$(MAKE) -f CMakeFiles/eqbeats.fcgi.dir/build.make CMakeFiles/eqbeats.fcgi.dir/flac.cpp.s
+.PHONY : flac.cpp.s
 
 html/escape.o: html/escape.cpp.o
 .PHONY : html/escape.o
@@ -327,29 +415,29 @@ html/escape.cpp.s:
 	$(MAKE) -f CMakeFiles/eqbeats.fcgi.dir/build.make CMakeFiles/eqbeats.fcgi.dir/html/escape.cpp.s
 .PHONY : html/escape.cpp.s
 
-html/home.o: html/home.cpp.o
-.PHONY : html/home.o
+html/news.o: html/news.cpp.o
+.PHONY : html/news.o
 
 # target to build an object file
-html/home.cpp.o:
-	$(MAKE) -f CMakeFiles/eqbeats.fcgi.dir/build.make CMakeFiles/eqbeats.fcgi.dir/html/home.cpp.o
-.PHONY : html/home.cpp.o
+html/news.cpp.o:
+	$(MAKE) -f CMakeFiles/eqbeats.fcgi.dir/build.make CMakeFiles/eqbeats.fcgi.dir/html/news.cpp.o
+.PHONY : html/news.cpp.o
 
-html/home.i: html/home.cpp.i
-.PHONY : html/home.i
+html/news.i: html/news.cpp.i
+.PHONY : html/news.i
 
 # target to preprocess a source file
-html/home.cpp.i:
-	$(MAKE) -f CMakeFiles/eqbeats.fcgi.dir/build.make CMakeFiles/eqbeats.fcgi.dir/html/home.cpp.i
-.PHONY : html/home.cpp.i
+html/news.cpp.i:
+	$(MAKE) -f CMakeFiles/eqbeats.fcgi.dir/build.make CMakeFiles/eqbeats.fcgi.dir/html/news.cpp.i
+.PHONY : html/news.cpp.i
 
-html/home.s: html/home.cpp.s
-.PHONY : html/home.s
+html/news.s: html/news.cpp.s
+.PHONY : html/news.s
 
 # target to generate assembly for a file
-html/home.cpp.s:
-	$(MAKE) -f CMakeFiles/eqbeats.fcgi.dir/build.make CMakeFiles/eqbeats.fcgi.dir/html/home.cpp.s
-.PHONY : html/home.cpp.s
+html/news.cpp.s:
+	$(MAKE) -f CMakeFiles/eqbeats.fcgi.dir/build.make CMakeFiles/eqbeats.fcgi.dir/html/news.cpp.s
+.PHONY : html/news.cpp.s
 
 html/page.o: html/page.cpp.o
 .PHONY : html/page.o
@@ -470,6 +558,54 @@ main.s: main.cpp.s
 main.cpp.s:
 	$(MAKE) -f CMakeFiles/eqbeats.fcgi.dir/build.make CMakeFiles/eqbeats.fcgi.dir/main.cpp.s
 .PHONY : main.cpp.s
+
+mknews.o: mknews.cpp.o
+.PHONY : mknews.o
+
+# target to build an object file
+mknews.cpp.o:
+	$(MAKE) -f CMakeFiles/mknews.dir/build.make CMakeFiles/mknews.dir/mknews.cpp.o
+.PHONY : mknews.cpp.o
+
+mknews.i: mknews.cpp.i
+.PHONY : mknews.i
+
+# target to preprocess a source file
+mknews.cpp.i:
+	$(MAKE) -f CMakeFiles/mknews.dir/build.make CMakeFiles/mknews.dir/mknews.cpp.i
+.PHONY : mknews.cpp.i
+
+mknews.s: mknews.cpp.s
+.PHONY : mknews.s
+
+# target to generate assembly for a file
+mknews.cpp.s:
+	$(MAKE) -f CMakeFiles/mknews.dir/build.make CMakeFiles/mknews.dir/mknews.cpp.s
+.PHONY : mknews.cpp.s
+
+news.o: news.cpp.o
+.PHONY : news.o
+
+# target to build an object file
+news.cpp.o:
+	$(MAKE) -f CMakeFiles/eqbeats.fcgi.dir/build.make CMakeFiles/eqbeats.fcgi.dir/news.cpp.o
+.PHONY : news.cpp.o
+
+news.i: news.cpp.i
+.PHONY : news.i
+
+# target to preprocess a source file
+news.cpp.i:
+	$(MAKE) -f CMakeFiles/eqbeats.fcgi.dir/build.make CMakeFiles/eqbeats.fcgi.dir/news.cpp.i
+.PHONY : news.cpp.i
+
+news.s: news.cpp.s
+.PHONY : news.s
+
+# target to generate assembly for a file
+news.cpp.s:
+	$(MAKE) -f CMakeFiles/eqbeats.fcgi.dir/build.make CMakeFiles/eqbeats.fcgi.dir/news.cpp.s
+.PHONY : news.cpp.s
 
 routing.o: routing.cpp.o
 .PHONY : routing.o
@@ -597,6 +733,7 @@ utils.o: utils.cpp.o
 # target to build an object file
 utils.cpp.o:
 	$(MAKE) -f CMakeFiles/eqbeats.fcgi.dir/build.make CMakeFiles/eqbeats.fcgi.dir/utils.cpp.o
+	$(MAKE) -f CMakeFiles/mknews.dir/build.make CMakeFiles/mknews.dir/utils.cpp.o
 .PHONY : utils.cpp.o
 
 utils.i: utils.cpp.i
@@ -605,6 +742,7 @@ utils.i: utils.cpp.i
 # target to preprocess a source file
 utils.cpp.i:
 	$(MAKE) -f CMakeFiles/eqbeats.fcgi.dir/build.make CMakeFiles/eqbeats.fcgi.dir/utils.cpp.i
+	$(MAKE) -f CMakeFiles/mknews.dir/build.make CMakeFiles/mknews.dir/utils.cpp.i
 .PHONY : utils.cpp.i
 
 utils.s: utils.cpp.s
@@ -613,6 +751,7 @@ utils.s: utils.cpp.s
 # target to generate assembly for a file
 utils.cpp.s:
 	$(MAKE) -f CMakeFiles/eqbeats.fcgi.dir/build.make CMakeFiles/eqbeats.fcgi.dir/utils.cpp.s
+	$(MAKE) -f CMakeFiles/mknews.dir/build.make CMakeFiles/mknews.dir/utils.cpp.s
 .PHONY : utils.cpp.s
 
 # Help Target
@@ -623,6 +762,7 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... eqbeats.fcgi"
+	@echo "... mknews"
 	@echo "... rebuild_cache"
 	@echo "... FCgiIO.o"
 	@echo "... FCgiIO.i"
@@ -645,15 +785,24 @@ help:
 	@echo "... actions/upload.o"
 	@echo "... actions/upload.i"
 	@echo "... actions/upload.s"
+	@echo "... comment.o"
+	@echo "... comment.i"
+	@echo "... comment.s"
+	@echo "... db.o"
+	@echo "... db.i"
+	@echo "... db.s"
 	@echo "... ffmpeg.o"
 	@echo "... ffmpeg.i"
 	@echo "... ffmpeg.s"
+	@echo "... flac.o"
+	@echo "... flac.i"
+	@echo "... flac.s"
 	@echo "... html/escape.o"
 	@echo "... html/escape.i"
 	@echo "... html/escape.s"
-	@echo "... html/home.o"
-	@echo "... html/home.i"
-	@echo "... html/home.s"
+	@echo "... html/news.o"
+	@echo "... html/news.i"
+	@echo "... html/news.s"
 	@echo "... html/page.o"
 	@echo "... html/page.i"
 	@echo "... html/page.s"
@@ -669,6 +818,12 @@ help:
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
+	@echo "... mknews.o"
+	@echo "... mknews.i"
+	@echo "... mknews.s"
+	@echo "... news.o"
+	@echo "... news.i"
+	@echo "... news.s"
 	@echo "... routing.o"
 	@echo "... routing.i"
 	@echo "... routing.s"

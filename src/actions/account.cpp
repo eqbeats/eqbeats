@@ -33,15 +33,19 @@ std::string accountForm(const Account &_account, const std::string &error=std::s
                     "<td><label for=\"r_newpwconf\">Confirm new password:</label></td>"
                     "<td><input type=\"password\" id=\"r_newpwconf\" name=\"newpwconf\" /></td>"
                 "</tr>"
+                "<tr>"
+                    "<td><label for=\"r_about\">Description:</label></td>"
+                    "<td><textarea id=\"r_about\" name=\"about\">" + escape(_account.about()) + "</textarea></td>"
+                "</tr>"
             "</table>"
-            "<input type=\"submit\" />"
+            "<input type=\"submit\" value=\"Update\" />"
         "</form>"
         + Html::footer();
 }
 
 std::string Action::account(cgicc::Cgicc &cgi){
     if(!Session::user()) return Html::redirect("/");
-    Account a(Session::user());
+    Account a(Session::user().id());
     if(cgi.getEnvironment().getRequestMethod() != "POST")
         return accountForm(a);
     if(!cgi("name").empty()){
@@ -61,6 +65,7 @@ std::string Action::account(cgicc::Cgicc &cgi){
             return accountForm(a, "Wrong password.");
         a.setPassword(cgi("newpw"));
     }
+    a.setAbout(cgi("about"));
     a.commit();
     return accountForm(a, std::string(), "Changes successful.");
 }

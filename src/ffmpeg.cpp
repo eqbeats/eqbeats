@@ -17,7 +17,8 @@ void waitZombies(){
     running = stillRunning;
 }
 
-void Track::createMp3(){
+void Track::convert(Format f){
+    if(f == FLAC) return;
     waitZombies();
     pid_t pid = fork();
     if(pid == 0){
@@ -26,9 +27,9 @@ void Track::createMp3(){
         freopen("/tmp/ffmpeg.log","a",stderr);
         string base = "/srv/eqbeats/tracks/" + number(id()) + ".";
         string flac = base + "flac";
-        string mp3 = base + "mp3";
-        execlp("ffmpeg", "ffmpeg", "-y", "-v", "warning", "-i", flac.c_str(), 
-               "-ab", "128k", mp3.c_str(), NULL);
+        string out = base + (f==Vorbis?"ogg":"mp3");
+        execlp("ffmpeg", "ffmpeg", "-y", /*"-v", "warning",*/ "-i", flac.c_str(), 
+               /*"-ab", "128k",*/"-acodec", (f==Vorbis?"libvorbis":"libmp3lame"), out.c_str(), NULL);
     }
     running.push_back(pid);
 }

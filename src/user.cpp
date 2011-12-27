@@ -1,56 +1,47 @@
-#include <stdlib.h>
-#include <arpa/inet.h>
 #include <sstream>
 #include "user.h"
-#include "db.h"
+#include "utils.h"
 
 User::User(int nId){
-    _id = -1;
-    if(nId<0) return;
+    _id = 0;
+    if(nId<=0) return;
 
-    unsigned int uid = htonl(nId);
-    const char* val[1] = { (char*) &uid };
-    int len[1] = { sizeof(nId) };
-    int bin[1] = { 1 };
-    PGresult* result = PQexecParams(db, 
-        "SELECT name FROM users WHERE id = $1",
-        1, 0, val, len, bin, 0);
-
-    if(PQntuples(result) != 0){
+    DB::Result r = DB::query("SELECT name FROM Users WHERE id=" + number(nId));
+    if(!r.empty()){
         _id = nId;
-        _name = PQgetvalue(result, 0, 0);
+        _name = r[0][0];
     }
-
-    PQclear(result);
 } 
 
-std::string User::pageUrl(int id){
+std::string User::url(int id){
     std::stringstream s;
     s << "/user/" << id;
     return s.str();
 }
 
-std::vector<User> User::listHelper(const char* format, unsigned int n, unsigned int begin){
-    char query[100];
-    sprintf(query, format, n, begin);
-    PGresult* result = PQexec(db, query);
+std::vector<User> User::listHelper(bool artists, unsigned int n, unsigned int begin){
+    return resultToVector(DB::query(
+        "SELECT id, name FROM users " +
+        (std::string) (artists? "WHERE EXISTS ( SELECT 1 FROM tracks WHERE user_id = users.id AND visible = 't' ) " : "") +
+        "ORDER BY lower(name) ASC LIMIT "+number(n)+" OFFSET "+number(begin)));
+}
 
-    int rows = PQntuples(result);
-    std::vector<User> users(rows);
-    for(int row=0; row<rows; row++)
-        users[row] = User(atoi(PQgetvalue(result, row, 0)), PQgetvalue(result, row, 1));
-
-    PQclear(result);
-    return users;
+std::vector<User> User::resultToVector(const DB::Result &r){
+    std::vector<User> users(r.size());
+    for(unsigned i=0; i<r.size(); i++)
+        users[i] = User(number(r[i][0]), r[i][1]);
+    return users; 
 }
 
 std::vector<User> User::list(unsigned int n, unsigned int begin){
-    return listHelper( 
-        "SELECT id, name FROM users "
-        "ORDER BY lower(name) ASC LIMIT %d OFFSET %d", n, begin);
+    return listHelper(false, n, begin);
 }
+
 std::vector<User> User::listArtists(unsigned int n, unsigned int begin){
-    return listHelper( 
-        "SELECT id, name FROM users WHERE EXISTS ( SELECT 1 FROM tracks WHERE user_id = users.id AND visible = 't' ) "
-        "ORDER BY lower(name) ASC LIMIT %d OFFSET %d", n, begin);
+    return listHelper(true, n, begin);
+}
+
+std::vector<User> User::search(const std::string &q){
+    return resultToVector(DB::query(
+        "SELECT id, name FROM users WHERE name ILIKE $1 ORDER BY registration DESC", "%"+q+"%"));
 }

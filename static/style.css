@@ -1,42 +1,229 @@
-#header {
-    font-size: 2.5em;
-    margin: 10px 0;
-}
-#header a {
-    text-decoration: none;
-    color: #436;
+@import url("fileuploader.css");
+
+html, body {
+    color: #000;
+    margin: 0;
+    padding: 0;
+    font-family: "Liberation Sans", Helvetica, sans-serif;
+    background-color: #F2F2F2;
 }
 
+/** Header ********************************************************************/
+
+#header {
+    margin: 0;
+    color: #203;
+    background-color: #FFF;
+    border-bottom: 1px solid #406;
+}
+
+#header h1 {
+    margin: 0;
+    padding: 20px;
+    font-size: 2.2em;
+    font-weight: 100;
+}
+#header h1 a {
+    text-decoration: none;
+}
+
+/** Navigation bar ************************************************************/
+
+ul#navbar {
+    padding: 0;
+    margin: 0;
+    color: #203;
+}
+#navbar img {
+    vertical-align: middle;
+    margin: 0 15px;
+}
+#navbar li {
+    display: inline-block;
+}
+#navbar a {
+    display: block;
+    padding: 10px;
+    margin: 0;
+}
+#navbar a:hover {
+    text-decoration: none;
+}
+
+#logstatus {
+    float: right;
+    padding: 10px 20px;
+}
+
+/******************************************************************************/
+
+#contents {
+    padding: 25px;
+    background-color: #FFF;
+}
 #footer {
     font-size: 0.7em;
-    color: #888;
-    margin: 10px 0;
+    color: #999;
+    margin-top: 0;
+    padding: 17px;
+    border-top: 1px solid #BBB;
+    text-align: center;
+    background: url("silhouette.png") no-repeat 98% center;
+    text-shadow: 0 1px white;
 }
 
-tr {
-    background-color: #FCC;
-    margin: 10px;
-}
-td {
-    margin: 1px;
-    padding: 5px 10px;
+/** Generic *******************************************************************/
+
+p {
+    margin: 15px;
+    text-indent: 15px;
 }
 
-div.error, div.message {
-    border: 1px solid;
-    padding: 10px;
-    margin: 10px;
+a {
+    color: #408;
+    text-decoration: none;
 }
-div.error {
-    border-color: #F88;
-    background-color: #FCC;
-    color: #400;
+a:hover {
+    color: #80C;
+    text-decoration: underline;
+}
+
+h2, h3, h4 {
+    font-weight: 100;
+}
+h2 {
+    font-size: 1.8em;
+    margin: 0;
+    color: #203;
+}
+h3 {
+    font-size: 1.4em;
+    margin: 25px 0 5px;
+}
+h4 {
+    font-size: 1.2em;
+    margin: 20px 0 0;
+}
+
+/** Track page ****************************************************************/
+
+.track audio {
+    margin: 30px auto;
+    display: block;
+    width: 80%;
+}
+
+.track a.download {
+    border-bottom: 0 solid #408;
+    padding: 2px 0;
+    margin: 0 5px;
+}
+
+.track a.download:hover {
+    border-bottom-width: 1px;
+    border-color: #80C;
+    text-decoration: none;
+}
+
+.notes {
+    line-height: 1.7em;
+    font-size: 0.9em;
+    margin: 25px 5px;
+    padding: 0 15px;
+    border-left: 1px solid #406;
+}
+
+a.danger {
+    color: #A00;
+    margin: 20px;
+}
+
+.comment {
+    margin: 0 20px;
+    padding: 15px;
+    border-top: 1px solid #CCC;
+}
+.comment:first-child {
+    border-top-width: 0px;
+}
+
+.by {
+    margin-top: 8px;
+    font-size: 0.8em;
+    color: #000;
+}
+
+/** User page *****************************************************************/
+
+.user {
+    margin: 20px 0;
+}
+
+/** News page *****************************************************************/
+
+.news {
+    font-size: 0.9em;
+    margin: 25px;
+}
+
+.oldnews {
+    margin-top: 50px;
+    padding-top: 10px;
+    border-top: 1px solid #edf;
+}
+
+/** Lists *********************************************************************/
+
+#contents li {
+    margin: 0;
+    list-style: square;
+    padding: 8px 0;
+    color: #406;
+}
+#contents ul {
+    margin: 0 20px;
+    padding: 0 20px;
+}
+
+#contents .tracklist .hidden, .tracklist .hidden * {
+    color: #777;
+}
+
+/** Forms *********************************************************************/
+
+form {
+    margin: 20px;
+}
+form input, textarea {
+    border: 1px solid #555;
+    padding: 5px;
+    margin: 2px;
+}
+form input {
+    vertical-align: middle;
+    width: 250px;
+    height: 2em;
+}
+form input[type="file"] {
+    border: none;
+}
+form input[type="submit"] {
+    width: auto;
+    background-color: #EEF;
+    padding: 3px 7px;
+}
+form input[type="submit"]:hover {
+    background-color: #F6F3FF;
+}
+textarea {
+    width: 400px;
+    height: 200px;
+}
+
+/******************************************************************************/
+
+.error {
+    margin: 15px;
+    color: #800;
     font-weight: bold;
 }
-div.message {
-    border-color: #88F;
-    background-color: #CCF;
-    color: #004;
-}
-
-form { margin: 0; }

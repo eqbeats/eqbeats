@@ -1,29 +1,8 @@
 #include "html.h"
+#include "../utils.h"
+#include <pcrecpp.h>
 
 using namespace std;
-
-#define REP(c,s) case (c):str.replace(i,++i,(s)); i=str.begin(); break;
-
-/*std::string Html::escape(std::string str) {
-    for(string::iterator i=str.begin(); i!=str.end(); i++){
-        switch(*i){
-            case '<' :
-                str.replace(i, i, "&lt;");
-                i=str.begin()
-                break;
-            case '>' :
-                str.replace(i, i, "&gt;");
-                break;
-            case '&' :
-                str.replace(i, i, "&amp;");
-                break;
-            REP('<', "&lt;")
-            REP('>', "&gt;")
-            //REP('&', "&amp;")
-        }
-    }
-    return str;
-}*/
 
 string Html::escape(const string &str){
     string buf;
@@ -35,4 +14,25 @@ string Html::escape(const string &str){
         else buf += *i;
     }
     return buf;
+}
+
+std::string Html::escapeEmail(const string &email){
+    std::string buf;
+    for(string::const_iterator i=email.begin(); i!=email.end(); i++)
+        buf += "&#" + number(*i) + ";";
+    return buf;
+}
+
+std::string Html::format(std::string txt){
+    txt = escape(txt);
+    std::string tmp;
+    for(std::string::const_iterator i=txt.begin(); i!=txt.end(); i++){
+        if(*i == '\n') tmp += "<br />";
+        else tmp += *i;
+    }
+    pcrecpp::RE("\\[b\\](.*?)\\[/b\\]").GlobalReplace("<b>\\1</b>", &tmp);
+    pcrecpp::RE("\\[i\\](.*?)\\[/i\\]").GlobalReplace("<i>\\1</i>", &tmp);
+    pcrecpp::RE("\\[u\\](.*?)\\[/u\\]").GlobalReplace("<u>\\1</u>", &tmp);
+    pcrecpp::RE("(http|ftp|https):\\/\\/[\\w\\-_]+(\\.[\\w\\-_]+)+([\\w\\-\\.,@?^=%&amp;:/~\\+#]*[\\w\\-\\@?^=%&amp;/~\\+#])?").GlobalReplace("<a href=\"\\0\">\\0</a>", &tmp);
+    return tmp;
 }

@@ -1,9 +1,4 @@
-#include <iostream>
-#include <cgicc/Cgicc.h>
 #include "FCgiIO.h"
-#include "db.h"
-#include "user.h"
-#include "track.h"
 #include "routing.h"
 #include "session.h"
 #include "timer.h"
@@ -15,13 +10,13 @@
 using namespace cgicc;
 using namespace Html;
 
-PGconn *db;
+std::string path;
 
 int main(int argc, char** argv){
-    db = PQconnectdb("");
+    DB::connect();
     srand(time(NULL));
 
-    freopen("/srv/eqbeats/eqbeats.log","a",stdout);
+    //freopen("/srv/eqbeats/eqbeats.log","a",stdout);
     freopen("/srv/eqbeats/eqbeats.log","a",stderr);
 
     FCGX_Request request;
@@ -35,41 +30,63 @@ int main(int argc, char** argv){
         Cgicc cgi(&io);
         Session::start(cgi);
 
+        //visit(cgi.getEnvironment().getRemoteAddr());
+
         // Routing
         int id;
-        std::string url = cgi.getEnvironment().getPathInfo();
-        if((id = routeUser(url)))
-            io << Html::userPage(User(id), cgi("msg"));
-        else if((id = routeTrackAction("delete", url)))
+        path = cgi.getEnvironment().getPathInfo();
+        if((id = routeUser(path)))
+            io << Html::userPage(id);
+        else if((id = routeTrackAction("delete", path)))
             io << Action::deleteTrack(id, cgi);
-        else if((id = routeTrackAction("rename", url)))
+        else if((id = routeTrackAction("rename", path)))
             io << Action::renameTrack(id, cgi);
-        else if((id = routeTrackAction("upload", url)))
+        else if((id = routeTrackAction("notes", path)))
+            io << Action::updateNotes(id, cgi);
+        else if((id = routeTrackAction("upload", path)))
             io << Action::uploadTrack(id, cgi);
-        else if((id = routeTrackAction("flac", url)))
-            io << Html::downloadFlac(id);
-        else if((id = routeTrackAction("mp3", url)))
-            io << Html::downloadMp3(id);
-        else if((id = routeTrackAction("visibility", url)))
+        else if((id = routeTrackAction("flac", path)))
+            io << Html::downloadTrack(id, Track::FLAC);
+        else if((id = routeTrackAction("vorbis", path)))
+            io << Html::downloadTrack(id, Track::Vorbis);
+        else if((id = routeTrackAction("mp3", path)))
+            io << Html::downloadTrack(id, Track::MP3);
+        else if((id = routeTrackAction("visibility", path)))
             io << Action::trackVisibility(id, cgi);
-        else if((id = routeTrack(url)))
-            io << Html::trackPage(Track(id), cgi("error"));
-        else if(url == "/track/new")
+        else if((id = routeTrackAction("comment", path)))
+            io << Action::postComment(id, cgi);
+        else if((id = routeTrack(path)))
+            io << Html::trackPage(id);
+        else if(path == "/track/new")
             io << Action::newTrack(cgi);
-        else if(url == "/users")
+        else if(path == "/tracks")
+            io << Html::tracksPage();
+        else if(path == "/tracks/search")
+            io << Html::trackSearch(cgi("q"));
+        else if(path == "/tracks/latest")
+            io << Html::latestTracks(50);
+        else if(path == "/tracks/random")
+            io << Html::randomTracks(50);
+        else if(path == "/tracks/popular")
+            io << Html::popularTracks(50);
+        else if((id = routeNews(path)))
+            io << Html::newsPage(id);
+        else if(path == "/users/search")
+            io << Html::userSearch(cgi("q"));
+        else if(path == "/users")
             io << Html::usersPage();
-        else if(url == "/artists")
+        else if(path == "/artists")
             io << Html::artistsPage();
-        else if(url == "/register")
+        else if(path == "/register")
             io << Action::registration(cgi);
-        else if(url == "/account")
+        else if(path == "/account")
             io << Action::account(cgi);
-        else if(url == "/login")
+        else if(path == "/login")
             io << Action::login(cgi);
-        else if(url == "/logout")
-            io << Action::logout();
-        else if(url == "/")
-            io << Html::home();
+        else if(path == "/logout")
+            io << Action::logout(cgi);
+        else if(path == "/")
+            io << Html::latestNews(20);
         else
             io << Html::notFound();
 
@@ -77,6 +94,6 @@ int main(int argc, char** argv){
         FCGX_Finish_r(&request);
     }
 
-    PQfinish(db);
+    DB::close();
     return 0;
 }
