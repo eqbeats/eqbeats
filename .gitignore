@@ -4,6 +4,7 @@ CMakeCache.txt
 
 dox/html
 dox/latex
+static/stats.html
 
 *.log
 *.swp

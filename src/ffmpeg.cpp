@@ -25,7 +25,7 @@ void Track::convert(Format f){
         freopen("/dev/null","r",stdin);
         freopen("/tmp/ffmpeg.log","a",stdout);
         freopen("/tmp/ffmpeg.log","a",stderr);
-        string base = "/srv/eqbeats/tracks/" + number(id()) + ".";
+        string base = EQBEATS_DIR"/tracks/" + number(id()) + ".";
         string flac = base + "flac";
         string out = base + (f==Vorbis?"ogg":"mp3");
         execlp("ffmpeg", "ffmpeg", "-y", /*"-v", "warning",*/ "-i", flac.c_str(), 

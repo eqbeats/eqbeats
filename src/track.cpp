@@ -64,10 +64,13 @@ Track Track::create(int nArtistId, const std::string &nTitle){
 
 void Track::remove(){
     DB::query("DELETE FROM tracks WHERE id = " + number(_id));
-    string flacPath = "/srv/eqbeats/tracks/" + number(_id) + ".flac";
-    string mp3Path = "/srv/eqbeats/tracks/" + number(_id) + ".mp3";
-    unlink(flacPath.c_str());
-    unlink(mp3Path.c_str());
+    string base = EQBEATS_DIR"/tracks/" + number(_id) + ".";
+    string path = base + "mp3";
+    unlink(path.c_str());
+    path = base + "ogg";
+    unlink(path.c_str());
+    path = base + "flac";
+    unlink(path.c_str());
     _id = 0;
 }
 

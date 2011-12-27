@@ -16,8 +16,8 @@ int main(int argc, char** argv){
     DB::connect();
     srand(time(NULL));
 
-    //freopen("/srv/eqbeats/eqbeats.log","a",stdout);
-    freopen("/srv/eqbeats/eqbeats.log","a",stderr);
+    //freopen(EQBEATS_DIR"/eqbeats.log","a",stdout);
+    freopen(EQBEATS_DIR"/eqbeats.log","a",stderr);
 
     FCGX_Request request;
     FCGX_Init();

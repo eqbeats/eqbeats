@@ -37,7 +37,7 @@ std::string Action::uploadTrack(int id, cgicc::Cgicc &cgi){
     else if(t.artistId() != u.id())
         return genericError;
 
-    std::string filename = "/srv/eqbeats/tracks/"+number(t.id())+".flac";
+    std::string filename = EQBEATS_DIR"/tracks/"+number(t.id())+".flac";
     std::ofstream f(filename.c_str(), std::ios_base::binary);
     f << data;
     f.close();

@@ -1,6 +1,8 @@
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required ( VERSION 2.8 )
 
-project(eqbeats)
+project ( eqbeats )
+
+set ( EQBEATS_DIR /srv/eqbeats )
 
 add_executable ( eqbeats.fcgi
     main.cpp routing.cpp timer.cpp utils.cpp db.cpp news.cpp comment.cpp
@@ -19,10 +21,10 @@ target_link_libraries ( eqbeats.fcgi
 ADD_CUSTOM_COMMAND (
     TARGET eqbeats.fcgi
     POST_BUILD
-    COMMAND /srv/eqbeats/launch.sh restart
+    COMMAND ${EQBEATS_DIR}/launch.sh restart
 )
 
 add_executable ( mknews mknews.cpp db.cpp utils.cpp )
 target_link_libraries ( mknews pq )
 
-add_definitions ( -Wall )
+add_definitions ( -Wall -D 'EQBEATS_DIR="${EQBEATS_DIR}"' )
