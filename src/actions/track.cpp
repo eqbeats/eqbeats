@@ -56,11 +56,3 @@ std::string Action::deleteTrack(int tid, cgicc::Cgicc &cgi){
     t.remove();
     return redirect(u.url());
 }
-
-std::string Action::postComment(int tid, cgicc::Cgicc &cgi){
-    Track t(tid);
-    if(!t) return redirect("/");
-    if(!cgi("msg").empty() && cgi.getEnvironment().getRequestMethod() == "POST")
-        t.addComment(cgi("msg"), cgi("name"), Session::user().id());
-    return redirect(t.url());
-}

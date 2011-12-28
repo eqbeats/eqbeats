@@ -2,6 +2,7 @@
 #define ACTIONS_H
 
 #include <cgicc/Cgicc.h>
+#include "../comment.h"
 
 //! Page generation with effects
 namespace Action{
@@ -64,11 +65,6 @@ std::string updateNotes(int tid, cgicc::Cgicc &cgi);
  */
 std::string trackVisibility(int tid, cgicc::Cgicc &cgi);
 
-/*! \brief /track/TID/comment
- * \ingroup pages
- */
-std::string postComment(int tid, cgicc::Cgicc &cgi);
-
 //@}
 
 // upload.cpp
@@ -87,6 +83,9 @@ std::string newTrack(cgicc::Cgicc &cgi);
 
 //@}
 
+// comment.cpp
+//! \ingroup pages
+std::string postComment(Comment::Type type, int ref, cgicc::Cgicc &cgi);
 
 }
 

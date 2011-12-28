@@ -1,14 +1,16 @@
 #include "html.h"
 #include "../news.h"
-#include <sstream>
 #include "../utils.h"
+#include "../comment.h"
+#include <sstream>
 
 std::string Html::newsPage(int nid){
     News n(nid);
-    if(!n)
-        return header("News not found", 404) + footer();
+    if(!n) return notFound("News");
     return header(n.title())
          + "<div class=\"news\">" + n.getContents() + "</div>"
+         + Html::comments(Comment::forNews(nid))
+         + Html::commentForm(News::url(nid)+"/comment")
          + footer();
 }
 
@@ -18,8 +20,9 @@ std::string Html::latestNews(int n){
     s << header();
     if(!news.empty()){
         s << "<h2>Latest news : <a href=\"" << news[0].url() << "\">" 
-          << news[0].title() << "</a></h2>"
-          << "<div class=\"news\">" << news[0].getContents() << "</div>";
+          << escape(news[0].title()) << "</a></h2>"
+          << "<div class=\"news\">" << news[0].getContents() << "</div>"
+             "<a class=\"more\" href=\"" << news[0].url() << "#comments\">Comments</a>";
         if(news.size()>1){
             s << "<div class=\"oldnews\">"
               << "<h3>Older news</h3>"

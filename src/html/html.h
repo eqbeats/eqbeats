@@ -4,6 +4,7 @@
 #include <iostream>
 #include "../track.h"
 #include "../user.h"
+#include "../comment.h"
 
 extern std::string path;
 
@@ -29,7 +30,7 @@ std::string footer();
 //! \name Errors
 //@{
 //! \ingroup pages
-std::string notFound();
+std::string notFound(const std::string &what="Page");
 //! \ingroup pages
 std::string errorPage(const std::string &err);
 //@}
@@ -127,6 +128,16 @@ std::string searchForm(const std::string &action, const std::string &q=std::stri
 std::string newsPage(int nid);
 
 std::string latestNews(int n);
+
+//@}
+
+//! \name Comments
+//@{
+// comment.cpp
+
+std::string comments(const std::vector<Comment> &cmts);
+
+std::string commentForm(const std::string &action);
 
 //@}
 

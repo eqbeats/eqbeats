@@ -1,28 +1,27 @@
 #!/bin/bash
 
-pwd="/srv/eqbeats"
 EXEC="eqbeats.fcgi"
 PROGNAME="eqbeats fastcgi server"
 
-cd $pwd
+cd $EQBEATS_DIR
 
 case "$1" in
   start)
-    if [[ -a $pwd/pid ]]; then
-      echo "$PROGNAME : Already running, or leftover pid file? ($pwd/pid)"
+    if [[ -a $EQBEATS_DIR/pid ]]; then
+      echo "$PROGNAME : Already running, or leftover pid file? ($EQBEATS_DIR/pid)"
     else
-      spawn-fcgi -F 1 -P $pwd/pid -d $pwd/ -f $pwd/$EXEC -a 127.0.0.1 -p 9003 > /dev/null
+      spawn-fcgi -F 1 -P $EQBEATS_DIR/pid -d $EQBEATS_DIR/ -f $EQBEATS_DIR/$EXEC -a 127.0.0.1 -p 9004 > /dev/null
       echo "$PROGNAME : Started."
     fi
     ;;
 
   stop)
-    if [[ ! -a $pwd/pid ]]; then
+    if [[ ! -a $EQBEATS_DIR/pid ]]; then
       echo "$PROGNAME : Not running."
     else
-      kill $(cat $pwd/pid)
+      kill $(cat $EQBEATS_DIR/pid)
       echo "$PROGNAME : Stopped."
-      rm $pwd/pid
+      rm $EQBEATS_DIR/pid
     fi
     ;;
 

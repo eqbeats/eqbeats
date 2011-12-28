@@ -5,6 +5,7 @@
 #include "html/html.h"
 #include "actions/actions.h"
 #include "account.h"
+#include "utils.h"
 #include <time.h>
 
 using namespace cgicc;
@@ -16,8 +17,14 @@ int main(int argc, char** argv){
     DB::connect();
     srand(time(NULL));
 
-    //freopen(EQBEATS_DIR"/eqbeats.log","a",stdout);
-    freopen(EQBEATS_DIR"/eqbeats.log","a",stderr);
+    if(!getenv("EQBEATS_DIR")){
+        std::cerr << "Environment variable EQBEATS_DIR isn't set." << std::endl;
+        return 1;
+    }
+
+    //freopen(eqbeatsDir() + "/eqbeats.log","a",stdout);
+    std::string log = eqbeatsDir()+"/eqbeats.log";
+    freopen(log.c_str(),"a",stderr);
 
     FCGX_Request request;
     FCGX_Init();
@@ -30,32 +37,32 @@ int main(int argc, char** argv){
         Cgicc cgi(&io);
         Session::start(cgi);
 
-        //visit(cgi.getEnvironment().getRemoteAddr());
-
         // Routing
         int id;
         path = cgi.getEnvironment().getPathInfo();
-        if((id = routeUser(path)))
+
+        if((id = routeId("user", path)))
             io << Html::userPage(id);
-        else if((id = routeTrackAction("delete", path)))
+
+        else if((id = routeAction("track", "delete", path)))
             io << Action::deleteTrack(id, cgi);
-        else if((id = routeTrackAction("rename", path)))
+        else if((id = routeAction("track", "rename", path)))
             io << Action::renameTrack(id, cgi);
-        else if((id = routeTrackAction("notes", path)))
+        else if((id = routeAction("track", "notes", path)))
             io << Action::updateNotes(id, cgi);
-        else if((id = routeTrackAction("upload", path)))
+        else if((id = routeAction("track", "upload", path)))
             io << Action::uploadTrack(id, cgi);
-        else if((id = routeTrackAction("flac", path)))
+        else if((id = routeAction("track", "flac", path)))
             io << Html::downloadTrack(id, Track::FLAC);
-        else if((id = routeTrackAction("vorbis", path)))
+        else if((id = routeAction("track", "vorbis", path)))
             io << Html::downloadTrack(id, Track::Vorbis);
-        else if((id = routeTrackAction("mp3", path)))
+        else if((id = routeAction("track", "mp3", path)))
             io << Html::downloadTrack(id, Track::MP3);
-        else if((id = routeTrackAction("visibility", path)))
+        else if((id = routeAction("track", "visibility", path)))
             io << Action::trackVisibility(id, cgi);
-        else if((id = routeTrackAction("comment", path)))
-            io << Action::postComment(id, cgi);
-        else if((id = routeTrack(path)))
+        else if((id = routeAction("track", "comment", path)))
+            io << Action::postComment(Comment::Track, id, cgi);
+        else if((id = routeId("track",path)))
             io << Html::trackPage(id);
         else if(path == "/track/new")
             io << Action::newTrack(cgi);
@@ -69,8 +76,12 @@ int main(int argc, char** argv){
             io << Html::randomTracks(50);
         else if(path == "/tracks/popular")
             io << Html::popularTracks(50);
-        else if((id = routeNews(path)))
+
+        else if(id = routeId("news", path))
             io << Html::newsPage(id);
+        else if(id = routeAction("news", "comment", path))
+            io << Action::postComment(Comment::News, id, cgi);
+
         else if(path == "/users/search")
             io << Html::userSearch(cgi("q"));
         else if(path == "/users")

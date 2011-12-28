@@ -1,33 +1,52 @@
 #include "user.h"
 #include "track.h"
+#include "comment.h"
 #include "utils.h"
 
-void Track::addComment(const std::string &msg, std::string name, int uid){
+Comment::Type stot(const std::string &in){
+    if(in == "news") return Comment::News;
+    else if(in == "track") return Comment::Track;
+    else return Comment::Undefined;
+}
+std::string ttos(Comment::Type in){
+    if(in == Comment::News) return "news";
+    else if(in == Comment::Track) return "track";
+    else return "";
+}
+
+void Comment::add(const std::string &msg, std::string name, int uid, int ref, Comment::Type type){
     if(uid > 0)
         name = User(uid).name();
-    DB::query("INSERT INTO comments (track_id, author_id, author_name, contents, date) VALUES (" + number(_id) + ", " + number(uid) + ", $1, $2, 'now')", name, msg);
+    DB::query("INSERT INTO comments (author_id, author_name, contents, ref, type, date) "
+    "VALUES (" + number(uid) + ", $1, $2, "+ number(ref) +", $3, 'now')", name, msg, ttos(type));
 }
 
-std::vector<Track::Comment> Track::Comment::forArtist(int uid){
+std::vector<Comment> Comment::forArtist(int uid){
     DB::Result r = DB::query(
-        "SELECT comments.author_id, comments.contents, comments.author_name, tracks.id, tracks.title FROM comments CROSS JOIN tracks WHERE tracks.user_id = " + number(uid) + " AND tracks.id = comments.track_id ORDER BY comments.date DESC");
+        "SELECT comments.author_id, comments.contents, comments.author_name, comments.type, tracks.id, tracks.title "
+        "FROM comments CROSS JOIN tracks "
+        "WHERE comments.type = 'track' AND tracks.user_id = " + number(uid) + " AND tracks.id = comments.ref "
+        "ORDER BY comments.date DESC");
     std::vector<Comment> cmts(r.size());
     for(unsigned i=0; i<r.size(); i++)
-        cmts[i] = Comment(number(r[i][0]), r[i][1], r[i][2], number(r[i][3]), r[i][4]);
+        cmts[i] = Comment(number(r[i][0]), r[i][1], r[i][2], stot(r[i][3]), number(r[i][4]), r[i][5]);
     return cmts;
 }
 
-std::vector<Track::Comment> Track::Comment::forTrack(int tid){
+std::vector<Comment> commentHelper(Comment::Type type, int ref){
     DB::Result r = DB::query(
-        "SELECT author_id, contents, author_name FROM comments WHERE track_id = " + number(tid)
-        + " ORDER BY date DESC");
+        "SELECT author_id, contents, author_name FROM comments WHERE type = $1 AND ref = " + number(ref)
+        + " ORDER BY date DESC", ttos(type));
     std::vector<Comment> cmts(r.size());
     for(unsigned i=0; i<r.size(); i++)
-        cmts[i] = Comment(number(r[i][0]), r[i][1], r[i][2]);
+        cmts[i] = Comment(number(r[i][0]), r[i][1], r[i][2], type);
     return cmts;
 }
 
-std::string Track::Comment::authorName() const{
-    return
-        _authorName.empty()? "Anonymous" : _authorName;
+std::vector<Comment> Comment::forTrack(int tid){
+    return commentHelper(Track, tid);
+}
+
+std::vector<Comment> Comment::forNews(int nid){
+    return commentHelper(News, nid);
 }

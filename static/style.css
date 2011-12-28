@@ -125,9 +125,11 @@ h4 {
     text-decoration: none;
 }
 
-.notes {
+.notes, .news {
     line-height: 1.7em;
     font-size: 0.9em;
+}
+.notes {
     margin: 25px 5px;
     padding: 0 15px;
     border-left: 1px solid #406;
@@ -156,20 +158,27 @@ a.danger {
 /** User page *****************************************************************/
 
 .user {
-    margin: 20px 0;
+    margin: 20px 20px;
 }
 
 /** News page *****************************************************************/
 
 .news {
-    font-size: 0.9em;
     margin: 25px;
 }
 
 .oldnews {
-    margin-top: 50px;
+    margin-top: 35px;
     padding-top: 10px;
     border-top: 1px solid #edf;
+}
+
+a.more {
+    display: inline-block;
+    margin: 0 20px;
+}
+a.more:before {
+    content: "» ";
 }
 
 /** Lists *********************************************************************/
@@ -222,8 +231,10 @@ textarea {
 
 /******************************************************************************/
 
-.error {
+.message, .error {
     margin: 15px;
-    color: #800;
     font-weight: bold;
+}
+.error {
+    color: #800;
 }

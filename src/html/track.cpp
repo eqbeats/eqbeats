@@ -55,31 +55,12 @@ string player(const Track &t){
         "</audio>";
 }
 
-string comments(const Track &t){
-    vector<Track::Comment> cmts = Track::Comment::forTrack(t.id());
-    stringstream s;
-    s << "<h3>Comments</h3><div>";
-    for(vector<Track::Comment>::const_iterator i=cmts.begin(); i!=cmts.end(); i++){
-        s << "<div class=\"comment\">" << Html::format(i->contents()) << "<br />"
-             "<div class=\"by\">by ";
-        if(i->authorId())
-            s << "<a href=\""<< User::url(i->authorId()) << "\">" << i->authorName() << "</a>";
-        else
-            s << i->authorName();
-        s << "</div></div>";
-    }
-    s << "</div><form action=\"" << t.url() << "/comment\" method=\"post\">" 
-         << (Session::user() ? "" : "Name : <input type=\"text\" name=\"name\" /><br />")
-         << "<textarea name=\"msg\"></textarea><br />"
-            "<input type=\"submit\" value=\"Post\" />"
-         "</form>";
-    return s.str();
-}
-
 string Html::trackPage(int tid){
     Track t(tid);
     if(!t)
-        return header("Track not found", 404) + footer();
+        return notFound("Track");
+    if(!t.visible() && t.artistId() != Session::user().id())
+        return header("Hidden track", 403) + footer();
     stringstream s;
     bool edition = Session::user().id() == t.artistId();
     if(!edition)
@@ -106,7 +87,8 @@ string Html::trackPage(int tid){
              "</form>"
           << uploadForm(t.url()+"/upload")
           << "<a class=\"danger\" href=\"" << t.url() << "/delete\">Delete</a>";
-    s << comments(t)
+    s << comments(Comment::forTrack(t.id()))
+      << commentForm(t.url() + "/comment")
       << "</div>"
       << footer();
     return s.str();
@@ -181,7 +163,9 @@ string escapeFilename(const string &str){
 
 string Html::downloadTrack(int tid, Track::Format f){
     Track t(tid);
-    if(!t) return Html::header("Track not found", 404) + "Track not found" + Html::footer();
+    if(!t) return Html::header("Track not found", 404) + Html::footer();
+    if(!t.visible() && t.artistId() != Session::user().id())
+        return header("Hidden track", 403) + footer();
     string ext = f == Track::Vorbis ? "ogg" : f == Track::MP3 ? "mp3" : "flac";
     string mime = f == Track::Vorbis ? "ogg" : f == Track::MP3 ? "mpeg" : "flac";
     return

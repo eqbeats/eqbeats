@@ -7,19 +7,19 @@
 using namespace std;
 
 string comments(int uid){
-    vector<Track::Comment> cmts = Track::Comment::forArtist(uid);
+    vector<Comment> cmts = Comment::forArtist(uid);
     if(cmts.empty()) return std::string();
     stringstream s;
     s << "<h3>Comments</h3><div>";
-    for(vector<Track::Comment>::const_iterator i=cmts.begin(); i!=cmts.end(); i++){
+    for(vector<Comment>::const_iterator i=cmts.begin(); i!=cmts.end(); i++){
         s << "<div class=\"comment\">"
-          << Html::format(i->contents()) << "<br />"
+          << Html::format(i->contents) << "<br />"
              "<div class=\"by\">by ";
-        if(i->authorId())
-            s << "<a href=\""<< User::url(i->authorId()) << "\">" << i->authorName() << "</a>";
+        if(i->authorId)
+            s << "<a href=\""<< User::url(i->authorId) << "\">" << i->authorName() << "</a>";
         else
             s << i->authorName();
-        s << " on <a href=\"" << Track::url(i->trackId()) << "\">" << i->trackTitle() << "</a></div></div>";
+        s << " on <a href=\"" << Track::url(i->trackId) << "\">" << i->trackTitle << "</a></div></div>";
     }
     s << "</div>";
     return s.str();
@@ -27,23 +27,22 @@ string comments(int uid){
 
 string Html::userPage(int uid){
     Account user(uid);
-    if(!user)
-        return header("User not found", 404) + footer();
+    if(!user) return notFound("User");
     stringstream s;
     s << header(escape(user.name()));
     s << "<div class=\"user\">"
              "Email: " << escapeEmail(user.email())
-             << "<div class=\"notes\">" << format(user.about()) << "</div>";
+             << "<div class=\"notes\">" << format(user.about()) << "</div>"
+         "</div>";
     bool edition = Session::user().id() == user.id();
     if(edition)
-        s << "<a href=\"/account\"><b>Edit</b></a>";
-    s << "</div>";
+        s << "<a class=\"more\" href=\"/account\">Edit</a>";
     vector<Track> tracks = Track::byArtist(user.id(), edition);
     if(!tracks.empty())
         s << "<h3>Tracks</h3>"
           << Html::trackList(tracks, edition ? Html::Edition : Html::Compact);
     if(edition)
-        s << uploadForm("/track/new") << comments(uid);
+        s << uploadForm("/track/new") << Html::comments(Comment::forArtist(uid));
     s << footer();
     return s.str();
 }

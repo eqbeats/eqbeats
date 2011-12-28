@@ -31,10 +31,12 @@ CREATE TABLE news (
     contents text not null,
     date timestamp not null
 );
+CREATE TYPE comment_type AS ENUM ('track', 'artist', 'news');
 CREATE TABLE comments (
-    /*id serial primary key,*/
-    track_id integer not null REFERENCES tracks(id),
+    ref integer not null,
+    type comment_type not null,
     author_id integer not null,
+    author_name text not null,
     contents text not null,
     date timestamp not null
 );

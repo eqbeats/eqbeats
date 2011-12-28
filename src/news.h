@@ -15,7 +15,8 @@ class News {
 
         std::string getContents();
 
-        std::string url() const;
+        std::string url() const { return url(_id); }
+        static std::string url(int nid);
 
         static std::vector<News> latest(int n);
 

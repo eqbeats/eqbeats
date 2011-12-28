@@ -42,8 +42,17 @@ void Account::setAbout(const std::string &nAbout){
     _about = nAbout;
 }
 
+std::string strToLower(std::string str){
+    for(std::string::iterator i=str.begin(); i!=str.end(); i++)
+        *i = std::tolower(*i);
+    return str;
+}
+
 bool Account::setEmail(const std::string &nEmail){
-    if(nEmail == _email) return true;
+    if(strToLower(nEmail) == strToLower(_email)){
+        _email = nEmail;
+        return true;
+    }
     //if(!validEmail(nEmail)) return false;
     if(exists(std::string(), nEmail)) return false;
     _email = nEmail;
@@ -51,13 +60,13 @@ bool Account::setEmail(const std::string &nEmail){
 }
 
 void Account::commit(){
-    DB::query("UPDATE users SET name = $2, email = lower($3), about = $4 WHERE id = $1",
+    DB::query("UPDATE users SET name = $2, email = $3, about = $4 WHERE id = $1",
               number(_id), _name, _email, _about);
     DB::query("UPDATE comments SET author_name = $1 WHERE author_id = " + number(_id), _name);
 }
 
 bool Account::exists(const std::string &sName, const std::string &sEmail){
-    return DB::query("SELECT EXISTS ( SELECT id FROM users WHERE name = $1 OR email = lower($2) )",
+    return DB::query("SELECT EXISTS ( SELECT id FROM users WHERE lower(name) = lower($1) OR lower(email) = lower($2) )",
                         sName, sEmail)[0][0] == "t";
 }
 
@@ -66,7 +75,7 @@ Account Account::create(const std::string &nName, const std::string &nPass, cons
         return Account();
     DB::Result r = DB::query(
         "INSERT INTO users (name, password, email, registration, last_login) "
-        "VALUES ($1, crypt($2, gen_salt('bf')), lower($3), 'now', 'now') "
+        "VALUES ($1, crypt($2, gen_salt('bf')), $3, 'now', 'now') "
         "RETURNING id", nName, nPass, nEmail);
     return r.empty() ? Account() : Account(number(r[0][0]), nName, nEmail);
 }

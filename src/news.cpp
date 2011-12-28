@@ -21,8 +21,8 @@ std::string News::getContents(){
     return _contents;
 }
 
-std::string News::url() const{
-    return "/news/" + number(_id);
+std::string News::url(int nid){
+    return "/news/" + number(nid);
 }
 
 std::vector<News> News::latest(int n){

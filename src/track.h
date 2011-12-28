@@ -58,31 +58,6 @@ class Track{
             Jazz
         };*/
 
-        void addComment(const std::string &msg, std::string userName, int uid=0);
-
-        class Comment {
-
-            public:
-                Comment(){}
-                std::string contents() const { return _msg; }
-                int authorId() const { return _authorId; }
-                std::string authorName() const;
-                int trackId() const { return _tid; }
-                std::string trackTitle() const { return _track; }
-                static std::vector<Comment> forArtist(int uid);
-                static std::vector<Comment> forTrack(int tid);
-
-            private:
-                Comment(int authorId, const std::string &msg, const std::string &nAuthorName, int tid=0, const std::string &ttitle=std::string())
-                    { _msg = msg; _authorId = authorId; _authorName = nAuthorName; _tid = tid; _track = ttitle; }
-                std::string _msg;
-                int _authorId;
-                std::string _authorName;
-                int _tid;
-                std::string _track;
-
-        };
-
     private:
         int _id;
         std::string _title;
