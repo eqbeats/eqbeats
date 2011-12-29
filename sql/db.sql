@@ -31,7 +31,7 @@ CREATE TABLE news (
     contents text not null,
     date timestamp not null
 );
-CREATE TYPE comment_type AS ENUM ('track', 'artist', 'news');
+CREATE TYPE comment_type AS ENUM ('track', 'user', 'news');
 CREATE TABLE comments (
     ref integer not null,
     type comment_type not null,

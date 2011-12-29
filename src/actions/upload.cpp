@@ -2,48 +2,69 @@
 #include "../html/html.h"
 #include "../session.h"
 #include "../utils.h"
-#include "../flac.h"
 #include <string.h>
 #include <fstream>
+#include <taglib/mpegfile.h>
+#include <taglib/tag.h>
+#include <sys/stat.h>
 
-const std::string xhrUpload(cgicc::Cgicc &cgi){
-    return cgi.getEnvironment().getPostData();
-}
-
-const std::string formUpload(cgicc::Cgicc &cgi){
-    cgicc::file_iterator file = cgi.getFile("file");
-    if (file != cgi.getFiles().end())
-        return file->getData();
-    return std::string();
+std::string getTitle(const char *filename){
+    TagLib::MPEG::File f(filename);
+    TagLib::Tag *t = f.tag();
+    if(!t) return "Untitled";
+    std::string title = t->title().to8Bit();
+    return title.empty() ? "Untitled" : title;
 }
 
 std::string Action::uploadTrack(int id, cgicc::Cgicc &cgi){
     User u = Session::user();
     Track t(id);
-    static const std::string json = "Content-Type: application/json\n\n";
-    bool isXhr = !cgi("qqfile").empty();
-    std::string flacError = isXhr? json+"{ success: false, error: 'Only FLAC files are accepted.' }" : Html::errorPage("Only FLAC files are accepted.");
-    std::string genericError = isXhr? json+"{ success: false }" : Html::redirect("/");
+
+    static const std::string header = "Content-Type: text/html\n\n";
+    cgicc::file_iterator file = cgi.getFile("file");
+    cgicc::file_iterator qqfile = cgi.getFile("qqfile");
+    bool isXhr = !cgi("qqfile").empty() || qqfile != cgi.getFiles().end();
+
+    std::string formatError = isXhr? header+"{ success: false, error: 'Only MP3 files are accepted.' }" : Html::errorPage("Only MP3 files are accepted.");
+    std::string genericError = isXhr? header+"{ success: false }" : Html::redirect(t?t.url():u?u.url():"/");
+
     if(!u) return genericError;
-    const std::string data = isXhr? xhrUpload(cgi) : formUpload(cgi);
-    if(memcmp(data.c_str(), "fLaC", 4)) return flacError;
-    FlacDecoder flac(data.c_str(), data.length());
-    if(!flac.ok()) return flacError;
-        
-    if(id == -1){
-        std::string title = flac.title().empty()? "Untitled" : flac.title();
-        t = Track::create(u.id(), title);
-    }
-    else if(t.artistId() != u.id())
+    if(t && t.artistId() != u.id())
         return genericError;
 
-    std::string filename = eqbeatsDir() + "/tracks/"+number(t.id())+".flac";
-    std::ofstream f(filename.c_str(), std::ios_base::binary);
-    f << data;
-    f.close();
-    t.convert(Track::Vorbis);
-    t.convert(Track::MP3);
-    return isXhr? json+"{ success: true, track: " + number(t.id()) + ", title: \"" + Html::escape(t.title()) + "\" }" : Html::redirect(t.url());
+    std::string dir = eqbeatsDir() + "/tmp";
+    char *tmpFile = tempnam(dir.c_str(), "eqb");
+    std::ofstream out(tmpFile, std::ios_base::binary);
+
+    std::cerr << "XHR: " << (isXhr ? "yes" : "no") << std::endl
+              << "File: " << tmpFile << std::endl;
+
+    if(qqfile != cgi.getFiles().end())
+        qqfile->writeToStream(out);
+    else if(isXhr)
+        out << cgi.getEnvironment().getPostData();
+    else if(file != cgi.getFiles().end())
+        file->writeToStream(out);
+    out.close();
+
+    // check filesize
+    struct stat info;
+    if(stat(tmpFile, &info) == 0){
+        if(info.st_size < 500)
+            return formatError;
+    }
+    else return genericError;
+
+    if(id == -1)
+        t = Track::create(u.id(), getTitle(tmpFile));
+
+    std::string filename = eqbeatsDir() + "/tracks/"+number(t.id())+".mp3";
+    rename(tmpFile, filename.c_str());
+    free(tmpFile);
+
+    t.convertToVorbis();
+
+    return isXhr? header+"{ success: true, track: " + number(t.id()) + ", title: \"" + Html::escape(t.title()) + "\" }" : Html::redirect(t.url());
 }
 
 std::string Action::newTrack(cgicc::Cgicc &cgi){

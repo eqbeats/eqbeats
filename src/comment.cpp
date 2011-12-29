@@ -6,17 +6,19 @@
 Comment::Type stot(const std::string &in){
     if(in == "news") return Comment::News;
     else if(in == "track") return Comment::Track;
+    else if(in == "user") return Comment::User;
     else return Comment::Undefined;
 }
 std::string ttos(Comment::Type in){
     if(in == Comment::News) return "news";
     else if(in == Comment::Track) return "track";
+    else if(in == Comment::User) return "user";
     else return "";
 }
 
 void Comment::add(const std::string &msg, std::string name, int uid, int ref, Comment::Type type){
     if(uid > 0)
-        name = User(uid).name();
+        name = ::User(uid).name();
     DB::query("INSERT INTO comments (author_id, author_name, contents, ref, type, date) "
     "VALUES (" + number(uid) + ", $1, $2, "+ number(ref) +", $3, 'now')", name, msg, ttos(type));
 }
@@ -36,11 +38,15 @@ std::vector<Comment> Comment::forArtist(int uid){
 std::vector<Comment> commentHelper(Comment::Type type, int ref){
     DB::Result r = DB::query(
         "SELECT author_id, contents, author_name FROM comments WHERE type = $1 AND ref = " + number(ref)
-        + " ORDER BY date DESC", ttos(type));
+        + " ORDER BY date ASC", ttos(type));
     std::vector<Comment> cmts(r.size());
     for(unsigned i=0; i<r.size(); i++)
         cmts[i] = Comment(number(r[i][0]), r[i][1], r[i][2], type);
     return cmts;
+}
+
+std::vector<Comment> Comment::forUser(int uid){
+    return commentHelper(User, uid);
 }
 
 std::vector<Comment> Comment::forTrack(int tid){

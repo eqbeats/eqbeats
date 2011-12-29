@@ -27,6 +27,12 @@ std::string redirect(const std::string &location);
 // page.cpp
 std::string header(const std::string &title=std::string(), int status=200);
 std::string footer();
+
+/*! \brief /quickstart
+ * \ingroup pages
+ */
+std::string quickStart();
+
 //! \name Errors
 //@{
 //! \ingroup pages
@@ -135,11 +141,16 @@ std::string latestNews(int n);
 //@{
 // comment.cpp
 
-std::string comments(const std::vector<Comment> &cmts);
+std::string comments(const std::vector<Comment> &cmts, const std::string title="Comments");
 
 std::string commentForm(const std::string &action);
 
 //@}
+
+/*! \brief /faq
+ * \ingroup pages
+ */
+std::string faq();
 
 }
 

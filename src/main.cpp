@@ -8,6 +8,8 @@
 #include "utils.h"
 #include <time.h>
 
+#include "track.h"
+
 using namespace cgicc;
 using namespace Html;
 
@@ -22,7 +24,6 @@ int main(int argc, char** argv){
         return 1;
     }
 
-    //freopen(eqbeatsDir() + "/eqbeats.log","a",stdout);
     std::string log = eqbeatsDir()+"/eqbeats.log";
     freopen(log.c_str(),"a",stderr);
 
@@ -43,6 +44,8 @@ int main(int argc, char** argv){
 
         if((id = routeId("user", path)))
             io << Html::userPage(id);
+        else if((id = routeAction("user", "comment", path)))
+            io << Action::postComment(Comment::User, id, cgi);
 
         else if((id = routeAction("track", "delete", path)))
             io << Action::deleteTrack(id, cgi);
@@ -52,8 +55,6 @@ int main(int argc, char** argv){
             io << Action::updateNotes(id, cgi);
         else if((id = routeAction("track", "upload", path)))
             io << Action::uploadTrack(id, cgi);
-        else if((id = routeAction("track", "flac", path)))
-            io << Html::downloadTrack(id, Track::FLAC);
         else if((id = routeAction("track", "vorbis", path)))
             io << Html::downloadTrack(id, Track::Vorbis);
         else if((id = routeAction("track", "mp3", path)))
@@ -77,9 +78,9 @@ int main(int argc, char** argv){
         else if(path == "/tracks/popular")
             io << Html::popularTracks(50);
 
-        else if(id = routeId("news", path))
+        else if((id = routeId("news", path)))
             io << Html::newsPage(id);
-        else if(id = routeAction("news", "comment", path))
+        else if((id = routeAction("news", "comment", path)))
             io << Action::postComment(Comment::News, id, cgi);
 
         else if(path == "/users/search")
@@ -90,12 +91,16 @@ int main(int argc, char** argv){
             io << Html::artistsPage();
         else if(path == "/register")
             io << Action::registration(cgi);
+        else if(path == "/quickstart")
+            io << Html::quickStart();
         else if(path == "/account")
             io << Action::account(cgi);
         else if(path == "/login")
             io << Action::login(cgi);
         else if(path == "/logout")
             io << Action::logout(cgi);
+        else if(path == "/faq")
+            io << Html::faq();
         else if(path == "/")
             io << Html::latestNews(20);
         else

@@ -48,7 +48,7 @@ void Track::setNotes(const std::string &nNotes){
 }
 
 std::string Track::url(Format f) const{
-    string format = f==FLAC? "flac" : f==Vorbis? "vorbis" : "mp3";
+    string format = f==Vorbis? "vorbis" : "mp3";
     return (std::string) "/track/" + number(_id) + "/" + format;
 }
 

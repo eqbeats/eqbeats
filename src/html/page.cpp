@@ -44,6 +44,7 @@ std::string Html::header(const std::string &title, int status){
                     "<li><a href=\"/tracks/random\">Random</a></li>"
                     "<li><img src=\"/static/cm-nav.png\" /></li>"
                     "<li><a href=\"/artists\">Artists</a></li>"
+                    "<li><a href=\"/faq\">FAQ</a></li>"
                 "</ul>"
                 "<div style=\"clear:both;\"></div>"
             "</div>"
@@ -68,5 +69,11 @@ std::string Html::notFound(const std::string &what){
 std::string Html::errorPage(const std::string &err){
     return header("Error")
         + "<div class=\"error\">" + err + "</div>"
+        + footer();
+}
+
+std::string Html::quickStart(){
+    return header("Thanks")
+        + "<div class=\"message\">Now that you've registered you can upload tracks: just click your name at the top right corner of the page.</div>"
         + footer();
 }

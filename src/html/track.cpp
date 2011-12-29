@@ -16,24 +16,25 @@ string renameForm(const Track &t){
 string Html::uploadForm(const std::string &action){
     stringstream s;
     s << "<div id=\"track-uploader\">"
-            "<noscript>"
-                "<form action=\"" << action << "\" method=\"post\" enctype=\"multipart/form-data\">"
-                    "<input type=\"file\" accept=\"audio/flac\" name=\"file\" />"
-                    "<input type=\"submit\" value=\"Upload a FLAC\" />"
-                "</form>"
-            "</noscript>"
+            "<form action=\"" << action << "\" method=\"post\" enctype=\"multipart/form-data\" id=\"track-uploader-form\">"
+                "<input type=\"file\" accept=\"audio/mpeg\" name=\"file\" />"
+                "<input type=\"submit\" value=\"Upload an MP3\" />"
+            "</form>"
         "</div>"
         "<script src=\"/static/fileuploader.js\" type=\"text/javascript\"></script>"
         "<script>"
             "function createUploader(){"
                 "var uploader = new qq.FileUploader({"
                     "element: document.getElementById('track-uploader'),"
-                    "allowedExtensions: ['flac'],"
+                    "allowedExtensions: ['mp3'],"
                     "action: '" << action << "'"
                 "});"
             "}"
             "window.onload = createUploader;"
         "</script>";
+        //"<script>"
+            //"
+        //"</script>";
     return s.str();
 }
 
@@ -41,7 +42,7 @@ string visibilityForm(const Track &t){
     return
         "<form action=\"" + t.url() + "/visibility\" method=\"post\">"
           "This track is " +
-          (t.visible()?"public." : "hidden.") +
+          (t.visible()?"public." : "<b>hidden</b>.") +
           " <input type=\"submit\" value=\"" + (t.visible()?"Hide":"Show") + "\"/>"
           "<input type=\"hidden\" name=\"visible\" value=\"" + (t.visible()?"f":"t") + "\"/>"
       "</form>";
@@ -72,8 +73,7 @@ string Html::trackPage(int tid){
       << player(t)
       << " Download : "
       << " <a class=\"download\" href=\"" << t.url(Track::Vorbis) << "\">OGG Vorbis</a>"
-         " <a class=\"download\" href=\"" << t.url(Track::MP3) << "\">MP3</a>"
-         " <a class=\"download\" href=\"" << t.url(Track::FLAC) << "\">FLAC</a>";
+         " <a class=\"download\" href=\"" << t.url(Track::MP3) << "\">MP3</a>";
     string notes = t.getNotes();
     if(!notes.empty())
         s << "<div class=\"notes\">" << format(notes) << "</div>";
@@ -163,11 +163,11 @@ string escapeFilename(const string &str){
 
 string Html::downloadTrack(int tid, Track::Format f){
     Track t(tid);
-    if(!t) return Html::header("Track not found", 404) + Html::footer();
+    if(!t) return notFound("Track");
     if(!t.visible() && t.artistId() != Session::user().id())
         return header("Hidden track", 403) + footer();
-    string ext = f == Track::Vorbis ? "ogg" : f == Track::MP3 ? "mp3" : "flac";
-    string mime = f == Track::Vorbis ? "ogg" : f == Track::MP3 ? "mpeg" : "flac";
+    string ext = f == Track::Vorbis ? "ogg" : "mp3";
+    string mime = f == Track::Vorbis ? "ogg" : "mpeg";
     return
         "X-Accel-Redirect: /downloads/tracks/" + number(tid) + "."+ext+"\n"
         "Content-Disposition: attachment; filename=\"" + escapeFilename(t.artist() + " - " + t.title()) + "."+ext+"\"\n"

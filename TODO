@@ -1,10 +1,10 @@
-favicon.ico
+cleanup FLAC-related stuff
+full format support
+
+password reset
 genre
 latest, random (m3u) playlist generators
 RSS feed
-password reset
 pagination
 search: index, sort by relevance
 album art
-
-gravatars in comments?

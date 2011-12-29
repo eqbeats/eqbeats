@@ -17,8 +17,7 @@ void waitZombies(){
     running = stillRunning;
 }
 
-void Track::convert(Format f){
-    if(f == FLAC) return;
+void Track::convertToVorbis(){
     waitZombies();
     pid_t pid = fork();
     if(pid == 0){
@@ -26,10 +25,9 @@ void Track::convert(Format f){
         freopen("/tmp/ffmpeg.log","a",stdout);
         freopen("/tmp/ffmpeg.log","a",stderr);
         string base = eqbeatsDir() + "/tracks/" + number(id()) + ".";
-        string flac = base + "flac";
-        string out = base + (f==Vorbis?"ogg":"mp3");
-        execlp("ffmpeg", "ffmpeg", "-y", /*"-v", "warning",*/ "-i", flac.c_str(), 
-               /*"-ab", "128k",*/"-acodec", (f==Vorbis?"libvorbis":"libmp3lame"), out.c_str(), NULL);
+        string mp3 = base + "mp3";
+        string vorbis = base + "ogg";
+        execlp("ffmpeg", "ffmpeg", "-y", "-i", mp3.c_str(), "-acodec", "libvorbis", vorbis.c_str(), NULL);
     }
     running.push_back(pid);
 }

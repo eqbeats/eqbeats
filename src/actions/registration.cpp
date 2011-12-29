@@ -50,6 +50,6 @@ std::string Action::registration(cgicc::Cgicc &cgi){
 
     return "Set-Cookie: sid="
         + Session::login(account.id(), cgi.getEnvironment().getRemoteAddr())
-        + ";Max-Age=2592000\n" + Html::redirect("/") // 30 days
+        + ";Max-Age=2592000\n" + Html::redirect("/quickstart") // 30 days
         + "Account created, redirecting...";
 }

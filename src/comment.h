@@ -6,7 +6,7 @@ class Comment {
     public:
 
         Comment(){ authorId = 0; type = Undefined; trackId = 0; }
-        enum Type { Undefined, Track, News };
+        enum Type { Undefined, Track, User, News };
 
         Type type;
         std::string contents;
@@ -20,6 +20,7 @@ class Comment {
         static void add(const std::string &msg, std::string name, int uid, int ref, Type type);
 
         static std::vector<Comment> forArtist(int uid);
+        static std::vector<Comment> forUser(int uid);
         static std::vector<Comment> forTrack(int tid);
         static std::vector<Comment> forNews(int nid);
 

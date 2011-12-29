@@ -23,10 +23,10 @@ class Track{
         std::string url() const { return Track::url(_id); }
         static std::string url(int id);
 
-        enum Format { FLAC, Vorbis, MP3 };
+        enum Format { Vorbis, MP3 };
         std::string url(Format f) const;
 
-        void convert(Format f);
+        void convertToVorbis();
 
         static Track create(int nArtistId, const std::string &nTitle);
         void remove();
