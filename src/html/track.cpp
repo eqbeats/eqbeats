@@ -32,9 +32,6 @@ string Html::uploadForm(const std::string &action){
             "}"
             "window.onload = createUploader;"
         "</script>";
-        //"<script>"
-            //"
-        //"</script>";
     return s.str();
 }
 
@@ -50,10 +47,31 @@ string visibilityForm(const Track &t){
 
 string player(const Track &t){
     return
-        "<audio controls>"
-            "<source type=\"audio/ogg; codecs=vorbis\" src=\"" + t.url(Track::Vorbis) + "\" />"
-            "<source type=\"audio/mpeg; codecs=mp3\" src=\"" + t.url(Track::MP3) + "\" />"
-        "</audio>";
+        "<noscript>"
+            "<audio controls>"
+                "<source type=\"audio/ogg\" src=\"" + t.url(Track::Vorbis) + "\" />"
+                "<source type=\"audio/mpeg\" src=\"" + t.url(Track::MP3) + "\" />"
+            "</audio>"
+        "</noscript>"
+        "<div id=\"player\"></div>"
+        "<script src=\"/static/sm2.js\"></script>"
+        "<script>"
+            "var mp3path = \"" + t.url(Track::MP3) +"\";"
+            "var oggpath = \"" + t.url(Track::Vorbis) +"\";"
+        "</script>"
+        "<script src=\"/static/player.js\"></script>";
+}
+
+#define URL "http://eqbeats.org"
+
+string embedCode(const Track &t){
+    return "<textarea id=\"embedcode\">"
+            "<iframe width=\"500px\" height=\"150px\" frameborder=\"0\" src=\""URL + t.url() + "/embed\">"
+            "<a href=\""URL + t.url() + "\" target=\"_blank\">" + Html::escape(t.title()) + "</a>"
+            " by <a href=\""URL + User::url(t.artistId()) + "\" target=\"_blank\">" + Html::escape(t.artist()) + "</a>"
+            "</iframe>"
+      "</textarea>"
+      "<script>document.getElementById('embedcode').style.display='none';</script>";
 }
 
 string Html::trackPage(int tid){
@@ -71,9 +89,11 @@ string Html::trackPage(int tid){
             "<h3 style=\"margin:10px;\">by <a href=\"" << User::url(t.artistId()) <<  "\">"
                     << escape(t.artist()) << "</a></h3>"
       << player(t)
-      << " Download : "
-      << " <a class=\"download\" href=\"" << t.url(Track::Vorbis) << "\">OGG Vorbis</a>"
-         " <a class=\"download\" href=\"" << t.url(Track::MP3) << "\">MP3</a>";
+      << "<div class=\"download\">Download : "
+      << " <a href=\"" << t.url(Track::Vorbis) << "\">OGG Vorbis</a>"
+         " <a href=\"" << t.url(Track::MP3) << "\">MP3</a>"
+         " &nbsp; Share : <a href=\"#embedcode\" onclick=\"document.getElementById('embedcode').style.display='block';return false;\">Embed</a></div>"
+      << embedCode(t);
     string notes = t.getNotes();
     if(!notes.empty())
         s << "<div class=\"notes\">" << format(notes) << "</div>";
@@ -91,6 +111,25 @@ string Html::trackPage(int tid){
       << commentForm(t.url() + "/comment")
       << "</div>"
       << footer();
+    return s.str();
+}
+
+string Html::embedTrack(int tid){
+    Track t(tid);
+    stringstream s;
+    s << "Content-Type: text/html\n";
+    if(!t) s << "Status: 404 Not Found\n";
+    s << "\n<!DOCTYPE html!>"
+        "<html><head>"
+            "<title>" << (t ? escape(t.title()) : "Track not found") << " - Equestrian Beats</title>"
+            "<link rel=\"stylesheet\" type=\"text/css\" href=\"/static/player.css\" />"
+        "</head><body><div id=\"player-embed\">";
+    if(t)
+        s << "<h3><a href=\"" + t.url() + "\" target=\"_blank\">" + escape(t.title()) + "</a></h3>"
+             "<h4>by <a href=\"" << User::url(t.artistId()) <<  "\" target=\"_blank\">" << escape(t.artist()) << "</a></h4>"
+          << player(t);
+    else s << "<h3 style=\"margin-bottom:10px;\">Track not found</h3>";
+    s << "</div></body></html>";
     return s.str();
 }
 

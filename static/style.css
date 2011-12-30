@@ -1,10 +1,7 @@
 @import url("fileuploader.css");
+@import url("player.css");
 
 html, body {
-    color: #000;
-    margin: 0;
-    padding: 0;
-    font-family: "Liberation Sans", Helvetica, sans-serif;
     background-color: #F2F2F2;
 }
 
@@ -79,47 +76,16 @@ p {
     text-indent: 15px;
 }
 
-a {
-    color: #408;
-    text-decoration: none;
-}
-a:hover {
-    color: #80C;
-    text-decoration: underline;
-}
-
-h2, h3, h4 {
-    font-weight: 100;
-}
-h2 {
-    font-size: 1.8em;
-    margin: 0;
-    color: #203;
-}
-h3 {
-    font-size: 1.4em;
-    margin: 25px 0 5px;
-}
-h4 {
-    font-size: 1.2em;
-    margin: 20px 0 0;
-}
 
 /** Track page ****************************************************************/
 
-.track audio {
-    margin: 30px auto;
-    display: block;
-    width: 80%;
-}
-
-.track a.download {
+.download a {
     border-bottom: 0 solid #408;
     padding: 2px 0;
     margin: 0 5px;
 }
 
-.track a.download:hover {
+.download a:hover {
     border-bottom-width: 1px;
     border-color: #80C;
     text-decoration: none;
@@ -228,8 +194,12 @@ textarea {
     width: 400px;
     height: 200px;
 }
+#embedcode {
+    height: 100px;
+    margin: 10px 20px;
+}
 
-/******************************************************************************/
+/** Messages ******************************************************************/
 
 .message, .error {
     margin: 15px;

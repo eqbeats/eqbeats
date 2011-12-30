@@ -47,6 +47,8 @@ int main(int argc, char** argv){
         else if((id = routeAction("user", "comment", path)))
             io << Action::postComment(Comment::User, id, cgi);
 
+        else if((id = routeAction("track", "embed", path)))
+            io << Html::embedTrack(id);
         else if((id = routeAction("track", "delete", path)))
             io << Action::deleteTrack(id, cgi);
         else if((id = routeAction("track", "rename", path)))

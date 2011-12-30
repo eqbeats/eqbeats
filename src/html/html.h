@@ -57,6 +57,11 @@ std::string uploadForm(const std::string &action);
  */
 std::string trackPage(int tid);
 
+/*! \brief /track/TID/embed
+ * \ingroup pages
+ */
+std::string embedTrack(int tid);
+
 std::string trackList(const std::vector<Track> &tracks, TrackList l=Standard);
 
 /*! \brief /tracks

@@ -1,0 +1,54 @@
+@import url("common.css");
+
+audio {
+    margin: 25px auto;
+    display: block;
+    width: 90%;
+}
+
+#player {
+    height: 22px;
+    margin: 20px;
+    padding: 4px 0 4px 36px;
+    position: relative;
+    display: none;
+}
+
+#playpause {
+    height: 22px;
+    width: 22px;
+    background-image: url("/static/pp.png");
+    cursor: pointer;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+.paused #playpause { background-position: top left; }
+.paused #playpause:hover { background-position: bottom left; }
+.playing #playpause { background-position: top right; }
+.playing #playpause:hover { background-position: bottom right; }
+
+#scrubberbar {
+    border: solid 1px #ddd;
+    height: 8px;
+    padding: 3px;
+}
+#scrubber {
+    background: #406;
+    height: 8px;
+    width: 0;
+}
+
+#player-embed {
+    background-color: #FFF;
+    padding: 10px 10px 5px;
+    border-radius: 10px;
+}
+#player-embed h3, #player-embed h4 {
+    margin: 5px;
+    height: 1.2em;
+    overflow: hidden;
+}
+#player-embed #player {
+    margin: 15px;
+}

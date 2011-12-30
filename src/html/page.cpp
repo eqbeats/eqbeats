@@ -30,7 +30,6 @@ std::string Html::header(const std::string &title, int status){
         "<html><head>"
             "<title>" + (title.empty()?"":title+" - ") + "Equestrian Beats</title>"
             "<link rel=\"stylesheet\" href=\"/static/style.css\" />"
-            "<link rel=\"shortcut icon\" href=\"/static/favicon.ico\" />"
         "</head><body>"
             "<div id=\"header\">"
                 "<h1><a href=\"/\">Equestrian Beats</a></h1>"

@@ -36,9 +36,6 @@ std::string Action::uploadTrack(int id, cgicc::Cgicc &cgi){
     char *tmpFile = tempnam(dir.c_str(), "eqb");
     std::ofstream out(tmpFile, std::ios_base::binary);
 
-    std::cerr << "XHR: " << (isXhr ? "yes" : "no") << std::endl
-              << "File: " << tmpFile << std::endl;
-
     if(qqfile != cgi.getFiles().end())
         qqfile->writeToStream(out);
     else if(isXhr)
