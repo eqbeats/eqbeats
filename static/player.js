@@ -62,7 +62,7 @@ soundManager.onready(function(){
         autoLoad: true,
         url: [
             {url:oggpath, type:'audio/ogg'}, 
-            {url:mp3path, type:'audio/mpeg'}
+            {url:mp3path, type:'audio/mp3'}
         ]
     });
     var pp = function(){
