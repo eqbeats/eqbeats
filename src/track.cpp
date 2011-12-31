@@ -75,6 +75,10 @@ void Track::remove(){
     _id = 0;
 }
 
+int Track::getHits() const{
+    DB::Result r = DB::query("SELECT hits FROM tracks WHERE id = " + number(_id));
+    return number(r[0][0]);
+}
 void Track::hit(){
     DB::query("UPDATE tracks SET hits = hits+1 WHERE id = " + number(_id));
 }

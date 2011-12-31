@@ -26,25 +26,21 @@ html, body {
 
 /** Navigation bar ************************************************************/
 
-ul#navbar {
+#navbar {
     padding: 0;
     margin: 0;
-    color: #203;
 }
-#navbar img {
-    vertical-align: middle;
-    margin: 0 15px;
-}
-#navbar li {
-    display: inline-block;
-}
-#navbar a {
+#navbar a, #navbar img {
+    float: left;
     display: block;
     padding: 10px;
     margin: 0;
 }
 #navbar a:hover {
     text-decoration: none;
+}
+#navbar img {
+    margin-top: 3px;
 }
 
 #logstatus {
@@ -79,6 +75,10 @@ p {
 
 /** Track page ****************************************************************/
 
+.hitcount {
+    float: right;
+    color: #777;
+}
 .download a {
     border-bottom: 0 solid #408;
     padding: 2px 0;

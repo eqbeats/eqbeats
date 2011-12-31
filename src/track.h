@@ -20,6 +20,7 @@ class Track{
         std::string getNotes() const;
         void setNotes(const std::string &nNotes);
 
+
         std::string url() const { return Track::url(_id); }
         static std::string url(int id);
 
@@ -31,6 +32,7 @@ class Track{
         static Track create(int nArtistId, const std::string &nTitle);
         void remove();
 
+        int getHits() const;
         void hit();
 
         static std::vector<Track> byArtist(int sArtistId, bool all=false);

@@ -59,7 +59,7 @@ soundManager.onready(function(){
     player.appendChild(scrubberbar);
     var snd = soundManager.createSound({
         id: 'snd',
-        autoLoad: true,
+        autoLoad: false,
         url: [
             {url:oggpath, type:'audio/ogg'}, 
             {url:mp3path, type:'audio/mp3'}

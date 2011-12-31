@@ -89,6 +89,7 @@ string Html::trackPage(int tid){
             "<h3 style=\"margin:10px;\">by <a href=\"" << User::url(t.artistId()) <<  "\">"
                     << escape(t.artist()) << "</a></h3>"
       << player(t)
+      << "<div class=\"hitcount\">" << t.getHits() << " hits</div>"
       << "<div class=\"download\">Download : "
       << " <a href=\"" << t.url(Track::Vorbis) << "\">OGG Vorbis</a>"
          " <a href=\"" << t.url(Track::MP3) << "\">MP3</a>"
