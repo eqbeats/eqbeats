@@ -615,13 +615,27 @@ qq.extend(qq.FileUploader.prototype, {
         qq.remove(this._find(item, 'cancel'));
         qq.remove(this._find(item, 'spinner'));
 
-        // Custom
-        var f = this._find(item, 'file');
-        f.href = '/track/' + result.track;
-        f.innerHTML = result.title;
         
         if (result.success){
             qq.addClass(item, this._classes.success);    
+            // Custom
+            var f = this._find(item, 'file');
+            f.href = '/track/' + result.track;
+            f.innerHTML = result.title;
+
+            var tracklists = document.getElementsByClassName("tracklist");
+            if(tracklists.length != 0){
+                var tracklist = tracklists[0];
+                var track = document.createElement("li");
+                track.className = "hidden";
+                track.appendChild(f.cloneNode(true));
+                track.firstChild.className="";
+                if(tracklist.firstChild){
+                    tracklist.insertBefore(track, tracklist.firstChild);
+                } else {
+                    tracklist.appendChild(track);
+                }
+            }
         } else {
             qq.addClass(item, this._classes.fail);
         }         

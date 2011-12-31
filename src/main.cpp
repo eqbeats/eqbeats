@@ -61,6 +61,10 @@ int main(int argc, char** argv){
             io << Html::downloadTrack(id, Track::Vorbis);
         else if((id = routeAction("track", "mp3", path)))
             io << Html::downloadTrack(id, Track::MP3);
+        else if((id = routeAction("track", "art", path)))
+            io << Html::trackArt(id);
+        else if((id = routeAction("track", "art/upload", path)))
+            io << Action::uploadArt(id, cgi);
         else if((id = routeAction("track", "visibility", path)))
             io << Action::trackVisibility(id, cgi);
         else if((id = routeAction("track", "comment", path)))

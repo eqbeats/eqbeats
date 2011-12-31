@@ -40,7 +40,7 @@ html, body {
     text-decoration: none;
 }
 #navbar img {
-    margin-top: 3px;
+    padding-top: 13px;
 }
 
 #logstatus {
@@ -75,10 +75,6 @@ p {
 
 /** Track page ****************************************************************/
 
-.hitcount {
-    float: right;
-    color: #777;
-}
 .download a {
     border-bottom: 0 solid #408;
     padding: 2px 0;
@@ -119,6 +115,12 @@ a.danger {
     margin-top: 8px;
     font-size: 0.8em;
     color: #000;
+}
+
+.track img {
+    display: block;
+    float: right;
+    height: 64px;
 }
 
 /** User page *****************************************************************/
@@ -162,6 +164,11 @@ a.more:before {
 
 #contents .tracklist .hidden, .tracklist .hidden * {
     color: #777;
+}
+.tracklist .hidden:after {
+    content: "(hidden)";
+    font-size: 0.6em;
+    margin-left: 5px;
 }
 
 /** Forms *********************************************************************/

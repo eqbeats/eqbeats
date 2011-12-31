@@ -34,6 +34,13 @@ std::string Track::url(int id){
     return s.str();
 }
 
+std::string Track::artUrl() const{
+    string path = eqbeatsDir() + "/art/" + number(_id);
+    if(access(path.c_str(), R_OK))
+        return std::string();
+    return (std::string) "/track/" + number(_id) + "/art";
+}
+
 void Track::setVisible(bool v){
     DB::query("UPDATE tracks SET visible = '" + (std::string)(v?"t":"f") + "' WHERE id = " + number(_id));
     _visible = v;

@@ -8,7 +8,7 @@ add_executable ( eqbeats.fcgi
     html/redirect.cpp html/page.cpp html/escape.cpp html/faq.cpp
     html/track.cpp html/user.cpp html/news.cpp html/comment.cpp
     actions/registration.cpp actions/login.cpp actions/account.cpp
-    actions/upload.cpp actions/track.cpp actions/comment.cpp
+    actions/upload.cpp actions/track.cpp actions/comment.cpp actions/art.cpp
     FCgiIO.cpp
 )
 

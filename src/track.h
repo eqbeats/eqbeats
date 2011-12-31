@@ -24,6 +24,9 @@ class Track{
         std::string url() const { return Track::url(_id); }
         static std::string url(int id);
 
+        // Returns an empty string if no art exists.
+        std::string artUrl() const;
+
         enum Format { Vorbis, MP3 };
         std::string url(Format f) const;
 

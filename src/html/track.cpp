@@ -35,6 +35,14 @@ string Html::uploadForm(const std::string &action){
     return s.str();
 }
 
+string artUploadForm(const Track &t){
+    return
+        "<form action=\"" + t.url() + "/art/upload\" method=\"post\" enctype=\"multipart/form-data\">"
+            "<input type=\"file\" name=\"file\" />"
+            "<input type=\"submit\" value=\"Upload a picture\" />"
+        "</form>";
+}
+
 string visibilityForm(const Track &t){
     return
         "<form action=\"" + t.url() + "/visibility\" method=\"post\">"
@@ -74,27 +82,31 @@ string embedCode(const Track &t){
       "<script>document.getElementById('embedcode').style.display='none';</script>";
 }
 
+string art(const Track &t){
+    std::string img = t.artUrl();
+    if(img.empty()) return "";
+    return "<img class=\"art\" src=\"" + img + "\" />";
+}
+
 string Html::trackPage(int tid){
     Track t(tid);
-    if(!t)
-        return notFound("Track");
-    if(!t.visible() && t.artistId() != Session::user().id())
-        return header("Hidden track", 403) + footer();
+    if(!t) return notFound("Track");
     stringstream s;
     bool edition = Session::user().id() == t.artistId();
     if(!edition)
         t.hit();
     s << header(escape(t.title()))
-      << "<div class=\"track\">"
+      << "<div class=\"track\">" // << art(t) <<
             "<h3 style=\"margin:10px;\">by <a href=\"" << User::url(t.artistId()) <<  "\">"
                     << escape(t.artist()) << "</a></h3>"
       << player(t)
-      << "<div class=\"hitcount\">" << t.getHits() << " hits</div>"
       << "<div class=\"download\">Download : "
       << " <a href=\"" << t.url(Track::Vorbis) << "\">OGG Vorbis</a>"
          " <a href=\"" << t.url(Track::MP3) << "\">MP3</a>"
-         " &nbsp; Share : <a href=\"#embedcode\" onclick=\"document.getElementById('embedcode').style.display='block';return false;\">Embed</a></div>"
-      << embedCode(t);
+         " &nbsp; Share : <a href=\"#embedcode\" onclick=\"document.getElementById('embedcode').style.display='block';return false;\">Embed</a>";
+    if(edition)
+        s << " &nbsp; Hits : " << t.getHits();
+    s << "</div>" << embedCode(t);
     string notes = t.getNotes();
     if(!notes.empty())
         s << "<div class=\"notes\">" << format(notes) << "</div>";
@@ -107,6 +119,7 @@ string Html::trackPage(int tid){
                  "<input type=\"submit\" value=\"Update description\" />"
              "</form>"
           << uploadForm(t.url()+"/upload")
+          //<< artUploadForm(t)
           << "<a class=\"danger\" href=\"" << t.url() << "/delete\">Delete</a>";
     s << comments(Comment::forTrack(t.id()))
       << commentForm(t.url() + "/comment")
@@ -204,12 +217,17 @@ string escapeFilename(const string &str){
 string Html::downloadTrack(int tid, Track::Format f){
     Track t(tid);
     if(!t) return notFound("Track");
-    if(!t.visible() && t.artistId() != Session::user().id())
-        return header("Hidden track", 403) + footer();
     string ext = f == Track::Vorbis ? "ogg" : "mp3";
     string mime = f == Track::Vorbis ? "ogg" : "mpeg";
     return
         "X-Accel-Redirect: /downloads/tracks/" + number(tid) + "."+ext+"\n"
         "Content-Disposition: attachment; filename=\"" + escapeFilename(t.artist() + " - " + t.title()) + "."+ext+"\"\n"
         "Content-Type: audio/"+mime+"\n\n";
+}
+
+string Html::trackArt(int tid){
+    Track t(tid);
+    if(!t) return notFound("Track");
+    return
+        "X-Accel-Redirect: /downloads/art/" + number(tid) + "\n\n";
 }
