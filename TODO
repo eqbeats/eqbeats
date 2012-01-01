@@ -1,7 +1,13 @@
+filter access.log
+DB backup
+tags
+Opera support ?
+    (ça marche très bien dans opera pour moi)
 album art
+
 full format support
 password reset
-genre
+genre?
 latest, random (m3u) playlist generators
 RSS feed
 pagination

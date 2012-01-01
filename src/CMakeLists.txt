@@ -25,4 +25,7 @@ ADD_CUSTOM_COMMAND (
 add_executable ( mknews mknews.cpp db.cpp utils.cpp )
 target_link_libraries ( mknews pq )
 
+add_executable ( stats stats.cpp db.cpp )
+target_link_libraries ( stats pq )
+
 add_definitions ( -Wall )

@@ -6,12 +6,13 @@ Makefile
 dox/html
 dox/latex
 static/stats.html
-tmp/
 
 *.log
 *.swp
 pid
-
+tmp/
 tracks/
+
 eqbeats.fcgi
 mknews
+stats
