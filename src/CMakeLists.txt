@@ -4,7 +4,7 @@ project ( eqbeats )
 
 add_executable ( eqbeats.fcgi
     main.cpp routing.cpp timer.cpp utils.cpp db.cpp news.cpp comment.cpp
-    track.cpp ffmpeg.cpp user.cpp account.cpp session.cpp
+    track.cpp ffmpeg.cpp user.cpp account.cpp session.cpp art.cpp
     html/redirect.cpp html/page.cpp html/escape.cpp html/faq.cpp
     html/track.cpp html/user.cpp html/news.cpp html/comment.cpp
     actions/registration.cpp actions/login.cpp actions/account.cpp

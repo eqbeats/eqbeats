@@ -3,6 +3,7 @@
 #include "track.h"
 #include "user.h"
 #include "utils.h"
+#include "art.h"
 
 using namespace std;
 
@@ -79,6 +80,8 @@ void Track::remove(){
     unlink(path.c_str());
     path = base + "flac";
     unlink(path.c_str());
+    Art art(_id);
+    if(art) unlink(art.filepath().c_str());
     _id = 0;
 }
 

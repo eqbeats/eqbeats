@@ -1,6 +1,7 @@
 #include "html.h"
 #include "../session.h"
 #include "../utils.h"
+#include "../art.h"
 #include <sstream>
 
 using namespace std;
@@ -82,28 +83,25 @@ string embedCode(const Track &t){
       "<script>document.getElementById('embedcode').style.display='none';</script>";
 }
 
-string art(const Track &t){
-    std::string img = t.artUrl();
-    if(img.empty()) return "";
-    return "<img class=\"art\" src=\"" + img + "\" />";
-}
-
 string Html::trackPage(int tid){
     Track t(tid);
     if(!t) return notFound("Track");
     stringstream s;
     bool edition = Session::user().id() == t.artistId();
+    Art art(tid);
     if(!edition)
         t.hit();
     s << header(escape(t.title()))
-      << "<div class=\"track\">" // << art(t) <<
+      << "<div class=\"track\">"
             "<h3 style=\"margin:10px;\">by <a href=\"" << User::url(t.artistId()) <<  "\">"
                     << escape(t.artist()) << "</a></h3>"
+      << (art?"<img class=\"art\" src=\"" + art.url() + "\" />":"")
       << player(t)
       << "<div class=\"download\">Download : "
       << " <a href=\"" << t.url(Track::Vorbis) << "\">OGG Vorbis</a>"
          " <a href=\"" << t.url(Track::MP3) << "\">MP3</a>"
-         " &nbsp; Share : <a href=\"#embedcode\" onclick=\"document.getElementById('embedcode').style.display='block';return false;\">Embed</a>";
+      << (art?" <a href=\"" + art.url() + "\" target=\"_blank\">Art</a>":"")
+      << " &nbsp; Share : <a href=\"#embedcode\" onclick=\"document.getElementById('embedcode').style.display='block';return false;\">Embed</a>";
     if(edition)
         s << " &nbsp; Hits : " << t.getHits();
     s << "</div>" << embedCode(t);
@@ -119,7 +117,7 @@ string Html::trackPage(int tid){
                  "<input type=\"submit\" value=\"Update description\" />"
              "</form>"
           << uploadForm(t.url()+"/upload")
-          //<< artUploadForm(t)
+          << artUploadForm(t)
           << "<a class=\"danger\" href=\"" << t.url() << "/delete\">Delete</a>";
     s << comments(Comment::forTrack(t.id()))
       << commentForm(t.url() + "/comment")
@@ -205,7 +203,8 @@ string Html::popularTracks(int n){
          + footer();
 }
 
-string escapeFilename(const string &str){
+string httpFilename(const Track &t){
+    string str = t.artist() + " - " + t.title();
     string buf;
     for(string::const_iterator i=str.begin(); i!=str.end(); i++){
         if     (*i == '"') buf += "\\\"";
@@ -221,13 +220,20 @@ string Html::downloadTrack(int tid, Track::Format f){
     string mime = f == Track::Vorbis ? "ogg" : "mpeg";
     return
         "X-Accel-Redirect: /downloads/tracks/" + number(tid) + "."+ext+"\n"
-        "Content-Disposition: attachment; filename=\"" + escapeFilename(t.artist() + " - " + t.title()) + "."+ext+"\"\n"
+        "Content-Disposition: attachment; filename=\"" + httpFilename(t) + "."+ext+"\"\n"
         "Content-Type: audio/"+mime+"\n\n";
 }
 
 string Html::trackArt(int tid){
     Track t(tid);
     if(!t) return notFound("Track");
+    Art art(tid);
+    if(!art) return notFound("Art");
+    Art::Format f = art.getFormat();
+    string ext = f == Art::PNG ? ".png" : f == Art::JPEG ? ".jpg" : "";
+    string mime = f == Art::PNG ? "image/png" : f == Art::JPEG ? "image/jpeg" : "";
     return
-        "X-Accel-Redirect: /downloads/art/" + number(tid) + "\n\n";
+        "X-Accel-Redirect: /downloads/art/" + number(tid) + "\n"
+        "Content-Disposition: inline; filename=\"" + httpFilename(t) + ext + "\"\n"
+        + (mime.empty()?"":"Content-Type: " + mime + "\n") + "\n";
 }

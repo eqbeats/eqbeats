@@ -117,10 +117,13 @@ a.danger {
     color: #000;
 }
 
-.track img {
+.track .art {
     display: block;
-    float: right;
-    height: 64px;
+    max-width: 90%;
+    max-height: 360px;
+    margin: 25px auto;
+    padding: 5px;
+    border: 1px solid #ddd;
 }
 
 /** User page *****************************************************************/
