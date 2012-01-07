@@ -1,5 +1,6 @@
 #include <string.h>
 #include <sstream>
+#include <algorithm>
 #include "track.h"
 #include "user.h"
 #include "utils.h"
@@ -108,9 +109,23 @@ std::vector<Track> Track::byArtist(int sArtistId, bool all){
         + (all? "" : " AND tracks.visible = 't'") + " ORDER BY date DESC "));
 }
 
+std::vector<Track> Track::byCategory(int cat){
+    return resultToVector(DB::query(SEL + number(cat) + " = ANY(tracks.cats)"
+        "ORDER BY date DESC"));
+}
+
 std::vector<Track> Track::search(const std::string &q){
-    return resultToVector(DB::query(SEL + "visible = 't' "
-        "AND to_tsvector('english', tracks.title) @@ plainto_tsquery('english', $1) " + " ORDER BY date DESC ", q));
+    std::vector<std::string> p;
+    std::istringstream in(q);
+    std::string buf;
+    std::string sql;
+    while(in){
+        in >> buf;
+        p.push_back("%"+buf+"%");
+        sql += " AND (tracks.title ILIKE $" + number(p.size()) + " OR users.name ILIKE $" + number(p.size()) + ")";
+    }
+    return resultToVector(DB::query(SEL + "visible = 't'" + sql, p));
+        //"AND to_tsvector('english', tracks.title) @@ plainto_tsquery('english', $1) " + " ORDER BY date DESC ", q));
 }
 
 std::vector<Track> Track::latest(int n){
@@ -123,4 +138,54 @@ std::vector<Track> Track::random(int n){
 
 std::vector<Track> Track::popular(int n){
     return resultToVector(DB::query(SEL + "visible = 't' ORDER BY hits DESC LIMIT " + number(n)));
+}
+
+void Track::addCategory(int cid){
+    DB::query("UPDATE tracks SET cats = " + number(cid) + " || cats WHERE id = " + number(_id));
+}
+
+void Track::removeCategories(const std::vector<int> &cats){
+    if(cats.empty()) return;
+    DB::Result r = DB::query("SELECT array_to_string(cats, ' ') FROM tracks WHERE id = " + number(_id));
+    if(r.empty()) return;
+    std::istringstream i(r[0][0]);
+    std::stringstream a;
+    int n;
+    while(i){
+        i >> n;
+        if(std::find(cats.begin(),cats.end(),n) == cats.end())
+            a << "," << n;
+    }
+    string sql = a.str();
+    DB::query("UPDATE tracks SET cats = ARRAY[" + (sql.empty()?"":sql.substr(1)) + "]::integer[] WHERE id = " + number(_id));
+}
+
+std::vector<Category> getCats(const std::string &q){
+    DB::Result r = DB::query(q);
+    std::vector<Category> cats(r.size());
+    for(unsigned i=0; i<r.size(); i++)
+        cats[i] = Category(number(r[i][0]), r[i][1]);
+    return cats;
+}
+
+std::vector<Category> Track::getCategories() const{
+    return getCats("SELECT categories.id, categories.name FROM categories, tracks "
+        "WHERE tracks.id="+number(_id)+" AND categories.id=ANY(tracks.cats)");
+}
+
+Category::Category(int cid){
+    DB::Result r = DB::query("SELECT name FROM categories WHERE id = "+number(cid));
+    _id = 0;
+    if(r.empty())
+        return;
+    _id = cid;
+    _name = r[0][0];
+}
+
+std::string Category::url() const{
+    return "/cat/" + number(_id);
+}
+
+std::vector<Category> Category::list(){
+    return getCats("SELECT id, name FROM categories ORDER BY name ASC");
 }

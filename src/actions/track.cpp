@@ -56,3 +56,23 @@ std::string Action::deleteTrack(int tid, cgicc::Cgicc &cgi){
     t.remove();
     return redirect(u.url());
 }
+
+std::string Action::updateCategories(int tid, cgicc::Cgicc &cgi){
+    User u = Session::user();
+    Track t(tid);
+    if(u.id()!=t.artistId() || !u || cgi.getEnvironment().getRequestMethod()!="POST")
+        return redirect(t.url());
+    
+    if(!cgi("rmcats").empty()){
+        vector<Category> cats = t.getCategories();
+        vector<int> ids;
+        for(vector<Category>::iterator i = cats.begin(); i != cats.end(); i++)
+            if(!cgi(number(i->id())).empty())
+                ids.push_back(i->id());
+        if(!ids.empty())
+            t.removeCategories(ids);
+    }
+    else if(!cgi("cat").empty())
+        t.addCategory(number(cgi("cat")));
+    return redirect(t.url());
+}

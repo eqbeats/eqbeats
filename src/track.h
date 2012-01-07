@@ -2,6 +2,27 @@
 #define TRACK_H
 
 #include "db.h"
+#include <string>
+
+class Category{
+
+    public:
+        Category() { _id = 0; }
+        Category(int cid);
+        Category(int cid, std::string nName)
+            { _id = cid; _name = nName; }
+        int id() const { return _id; }
+        std::string name() const { return _name; }
+        std::string url() const;
+        static std::vector<Category> list();
+        bool operator==(const Category &c) { return c._id == _id; }
+        operator bool() const { return _id > 0; }
+
+    private:
+        int _id;
+        std::string _name;
+
+};
 
 class Track{
 
@@ -38,7 +59,12 @@ class Track{
         int getHits() const;
         void hit();
 
+        std::vector<Category> getCategories() const;
+        void removeCategories(const std::vector<int> &cats);
+        void addCategory(int cid);
+
         static std::vector<Track> byArtist(int sArtistId, bool all=false);
+        static std::vector<Track> byCategory(int cat);
         static std::vector<Track> search(const std::string &q);
         static std::vector<Track> latest(int n);
         static std::vector<Track> random(int n);

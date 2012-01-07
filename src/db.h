@@ -13,6 +13,7 @@ typedef std::vector<std::string> Row;
 typedef std::vector<Row> Result;
 
 Result query(const std::string &q);
+Result query(const std::string &q, const std::vector<std::string> &params);
 Result query(const std::string &q, const std::string &p1);
 Result query(const std::string &q, const std::string &p1, const std::string &p2);
 Result query(const std::string &q, const std::string &p1, const std::string &p2, const std::string &p3);

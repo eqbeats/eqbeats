@@ -20,6 +20,7 @@ std::string deleteTrack(int tid, cgicc::Cgicc &cgi);
 std::string renameTrack(int tid, cgicc::Cgicc &cgi);
 std::string updateNotes(int tid, cgicc::Cgicc &cgi);
 std::string trackVisibility(int tid, cgicc::Cgicc &cgi);
+std::string updateCategories(int tid, cgicc::Cgicc &cgi);
 
 // upload.cpp
 std::string uploadTrack(int tid, cgicc::Cgicc &cgi);

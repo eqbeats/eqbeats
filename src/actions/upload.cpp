@@ -11,9 +11,7 @@
 std::string getTitle(const char *filename){
     TagLib::MPEG::File f(filename);
     TagLib::Tag *t = f.tag();
-    if(!t) return "Untitled";
-    std::string title = t->title().to8Bit();
-    return title.empty() ? "Untitled" : title;
+    return t? t->title().to8Bit(): "";
 }
 
 std::string Action::uploadTrack(int id, cgicc::Cgicc &cgi){
@@ -35,13 +33,18 @@ std::string Action::uploadTrack(int id, cgicc::Cgicc &cgi){
     std::string dir = eqbeatsDir() + "/tmp";
     char *tmpFile = tempnam(dir.c_str(), "eqb");
     std::ofstream out(tmpFile, std::ios_base::binary);
+    std::string upfilename;
 
-    if(qqfile != cgi.getFiles().end())
+    if(qqfile != cgi.getFiles().end()) {
         qqfile->writeToStream(out);
-    else if(isXhr)
+        upfilename = qqfile->getName();
+    } else if(isXhr) {
         out << cgi.getEnvironment().getPostData();
-    else if(file != cgi.getFiles().end())
+        upfilename = cgi("qqfile");
+    } else if(file != cgi.getFiles().end()) {
         file->writeToStream(out);
+        upfilename = file->getName();
+    }
     out.close();
 
     // check filesize
@@ -52,8 +55,12 @@ std::string Action::uploadTrack(int id, cgicc::Cgicc &cgi){
     }
     else return genericError;
 
-    if(id == -1)
-        t = Track::create(u.id(), getTitle(tmpFile));
+    if(id == -1){
+        std::string title = getTitle(tmpFile);
+        if(title.empty())
+            title = upfilename.substr(0, upfilename.rfind('.'));
+        t = Track::create(u.id(), title.empty()? "Untitled":title);
+    }
 
     std::string filename = eqbeatsDir() + "/tracks/"+number(t.id())+".mp3";
     rename(tmpFile, filename.c_str());

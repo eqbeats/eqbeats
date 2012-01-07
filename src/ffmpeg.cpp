@@ -22,12 +22,15 @@ void Track::convertToVorbis(){
     pid_t pid = fork();
     if(pid == 0){
         freopen("/dev/null","r",stdin);
-        freopen("/tmp/ffmpeg.log","a",stdout);
-        freopen("/tmp/ffmpeg.log","a",stderr);
+        std::string logfile = eqbeatsDir() + "/ffmpeg.log";
+        freopen(logfile.c_str(),"a",stdout);
+        freopen(logfile.c_str(),"a",stderr);
+        //freopen("/dev/null","a",stdout);
+        //freopen("/dev/null","a",stderr);
         string base = eqbeatsDir() + "/tracks/" + number(id()) + ".";
         string mp3 = base + "mp3";
         string vorbis = base + "ogg";
-        execlp("ffmpeg", "ffmpeg", "-y", "-i", mp3.c_str(), "-acodec", "libvorbis", vorbis.c_str(), NULL);
+        execlp("ffmpeg", "ffmpeg", "-loglevel", "quiet", "-y", "-i", mp3.c_str(), "-acodec", "libvorbis", vorbis.c_str(), NULL);
     }
     running.push_back(pid);
 }

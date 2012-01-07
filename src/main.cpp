@@ -69,6 +69,8 @@ int main(int argc, char** argv){
             io << Action::trackVisibility(id, cgi);
         else if((id = routeAction("track", "comment", path)))
             io << Action::postComment(Comment::Track, id, cgi);
+        else if((id = routeAction("track", "cat", path)))
+            io << Action::updateCategories(id, cgi);
         else if((id = routeId("track",path)))
             io << Html::trackPage(id);
         else if(path == "/track/new")
@@ -83,6 +85,8 @@ int main(int argc, char** argv){
             io << Html::randomTracks(50);
         else if(path == "/tracks/popular")
             io << Html::popularTracks(50);
+        else if((id = routeId("cat", path)))
+            io << Html::category(id);
 
         else if((id = routeId("news", path)))
             io << Html::newsPage(id);
@@ -107,7 +111,7 @@ int main(int argc, char** argv){
             io << Action::logout(cgi);
         else if(path == "/faq")
             io << Html::faq();
-        else if(path == "/")
+        else if(path == "/news" || path == "/")
             io << Html::latestNews(20);
         else
             io << Html::notFound();

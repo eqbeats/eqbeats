@@ -3,6 +3,7 @@
 #include "../utils.h"
 #include "../art.h"
 #include <sstream>
+#include <algorithm>
 
 using namespace std;
 
@@ -83,6 +84,35 @@ string embedCode(const Track &t){
       "<script>document.getElementById('embedcode').style.display='none';</script>";
 }
 
+string cats(const Track &t, bool edition){
+    vector<Category> cs = t.getCategories();
+    if(cs.empty() && !edition) return string();
+    stringstream s;
+    s << "<div class=\"cats\">Categories:";
+    if(edition)
+        s << "<form action=\"" << t.url() << "/cat\" method=\"post\">";
+    for(vector<Category>::const_iterator i=cs.begin(); i!=cs.end(); i++){
+        if(edition)
+            s << " <input type=\"checkbox\" name=\"" << i->id() << "\" />";
+        s << " <a href=\"" << i->url() << "\">" << i->name() << "</a>";
+    }
+    if(edition){
+        if(!cs.empty())
+            s << " <input type=\"submit\" name=\"rmcats\" value=\"Remove selected\" />";
+        s << " <select name=\"cat\">";
+        vector<Category> all = Category::list();
+        for(vector<Category>::const_iterator i=all.begin(); i!=all.end(); i++){
+            if(find(cs.begin(),cs.end(),*i) == cs.end())
+                s << "<option value=\"" << i->id() << "\">" << i->name() << "</option>";
+        }
+        s << "</select>"
+             "<input type=\"submit\" name=\"addcat\" value=\"Add\" />"
+             "</form>";
+    }
+    s << "</div>";
+    return s.str();
+}
+
 string Html::trackPage(int tid){
     Track t(tid);
     if(!t) return notFound("Track");
@@ -108,6 +138,7 @@ string Html::trackPage(int tid){
     string notes = t.getNotes();
     if(!notes.empty())
         s << "<div class=\"notes\">" << format(notes) << "</div>";
+    s << cats(t, edition);
     if(edition)
         s << "<h4>Edit</h4>"
           << renameForm(t)
@@ -162,9 +193,26 @@ string Html::trackList(const vector<Track> &tracks, Html::TrackList l){
 }
 
 string Html::tracksPage(){
-    return header("Tracks")
-         + searchForm("/tracks/search")
-         + footer();
+    stringstream s;
+    s << header("Tracks")
+      << "<h3>Search</h3>"
+      << searchForm("/tracks/search")
+      << "<h3><a href=\"/tracks/latest\">Latest</a></h3>"
+      << trackList(Track::latest(10))
+      << "<a class=\"more\" href=\"/tracks/latest\">More</a>"
+      << "<h3><a href=\"/track/popular\">Popular</a></h3>"
+      << trackList(Track::popular(10))
+      << "<a class=\"more\" href=\"/tracks/popular\">More</a>"
+      << "<h3><a href=\"/tracks/random\">Random</a></h3>"
+      << trackList(Track::random(10))
+      << "<a class=\"more\" href=\"/tracks/random\">More</a>"
+      << "<h3>Categories</h3>"
+      << "<ul>";
+    vector<Category> cs = Category::list();
+    for(vector<Category>::const_iterator i=cs.begin(); i!=cs.end(); i++)
+        s << "<li><a href=\"" << i->url() << "\">" << i->name() << "</a></li>";
+    s << "</ul>" << footer();
+    return s.str();
 }
 
 string Html::trackSearch(const std::string &q){
@@ -184,22 +232,27 @@ string Html::trackSearch(const std::string &q){
 
 string Html::latestTracks(int n){
     return header("Latest Tracks")
-         + searchForm("/tracks/search")
          + trackList(Track::latest(n))
          + footer();
 }
 
 string Html::randomTracks(int n){
     return header("Random Tracks")
-         + searchForm("/tracks/search")
          + trackList(Track::random(n))
          + footer();
 }
 
 string Html::popularTracks(int n){
     return header("Popular Tracks")
-         + searchForm("/tracks/search")
          + trackList(Track::popular(n))
+         + footer();
+}
+
+string Html::category(int cid){
+    Category c(cid);
+    if(!c) return notFound("Category");
+    return header(c.name())
+         + trackList(Track::byCategory(cid))
          + footer();
 }
 

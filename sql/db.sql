@@ -15,8 +15,8 @@ CREATE TABLE tracks (
     license text not null,
     hits integer not null default 0,
     visible boolean not null default 'f',
-    notes text not null default ''
-    /*genre bit(X) not null default 0*/
+    notes text not null default '',
+    cats integer[] not null default ARRAY[]::Integer[]
 );
 CREATE TABLE sessions (
     sid text not null,
@@ -39,4 +39,8 @@ CREATE TABLE comments (
     author_name text not null,
     contents text not null,
     date timestamp not null
+);
+CREATE TABLE categories (
+    id serial primary key,
+    name text not null
 );

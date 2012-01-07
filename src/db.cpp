@@ -25,13 +25,20 @@ Result toResult(PGresult *res){
 }
 
 Result queryH(const std::string &q, int n, ...){
-    const char *val[n];
+    const char* val[n];
     va_list vl;
     va_start(vl, n);
     for(int i=0; i<n; i++)
         val[i] = va_arg(vl, const char*);
     va_end(vl);
     return toResult(PQexecParams(db, q.c_str(), n, 0, val, 0, 0, 0));
+}
+
+Result DB::query(const std::string &q, const std::vector<std::string> &params){
+    const char* val[params.size()];
+    for(unsigned i=0; i<params.size(); i++)
+        val[i] = params[i].c_str();
+    return toResult(PQexecParams(db, q.c_str(), params.size(), 0, val, 0, 0, 0));
 }
 
 Result DB::query(const std::string &q){

@@ -75,16 +75,13 @@ p {
 
 /** Track page ****************************************************************/
 
-.download a {
-    border-bottom: 0 solid #408;
-    padding: 2px 0;
-    margin: 0 5px;
+.download, .cats {
+    margin: 10px;
 }
 
-.download a:hover {
-    border-bottom-width: 1px;
-    border-color: #80C;
-    text-decoration: none;
+.download a {
+    padding: 2px 0;
+    margin: 0 5px;
 }
 
 .notes, .news {
@@ -119,11 +116,21 @@ a.danger {
 
 .track .art {
     display: block;
-    max-width: 90%;
-    max-height: 360px;
+    max-width: 80%;
+    max-height: 480px;
     margin: 25px auto;
     padding: 5px;
     border: 1px solid #ddd;
+}
+
+.cats form {
+    display: inline;
+    margin: 0;
+}
+.cats input {
+    margin: 0 5px;
+    padding: 0;
+    width: auto;
 }
 
 /** User page *****************************************************************/
@@ -161,7 +168,7 @@ a.more:before {
     color: #406;
 }
 #contents ul {
-    margin: 0 20px;
+    margin: 10px 20px;
     padding: 0 20px;
 }
 

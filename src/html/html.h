@@ -43,6 +43,7 @@ std::string trackSearch(const std::string &q);
 std::string latestTracks(int n);
 std::string randomTracks(int n);
 std::string popularTracks(int n);
+std::string category(int cid);
 std::string downloadTrack(int tid, Track::Format f);
 std::string trackArt(int tid);
 
