@@ -14,6 +14,7 @@ namespace Html{
 // escape.cpp
 std::string escape(const std::string &);
 std::string escapeEmail(const std::string &);
+std::string jsonString(const std::string &);
 std::string format(std::string);
 
 // redirect.cpp
@@ -22,6 +23,7 @@ std::string redirect(const std::string &location);
 // page.cpp
 std::string header(const std::string &title=std::string(), int status=200);
 std::string headerFeed(const std::string &title, const std::string &feedurl, bool feedicon=false, int status=200);
+std::string headerOEmbed(const std::string &title, const std::string &path);
 std::string footer();
 std::string quickStart();
 std::string notFound(const std::string &what="Page");
@@ -38,6 +40,7 @@ enum TrackList {
 std::string uploadForm(const std::string &action);
 std::string trackPage(int tid);
 std::string embedTrack(int tid);
+std::string embedTrackCode(const Track &t, int w=0);
 std::string trackList(const std::vector<Track> &tracks, TrackList l=Standard);
 std::string tracksPage();
 std::string tracksPage(const std::string &title, const std::string &feedurl, const std::vector<Track> &tracks);
@@ -70,6 +73,9 @@ std::string commentForm(const std::string &action);
 
 // fac.cpp
 std::string faq();
+
+// oembed.cpp
+std::string oEmbed(const std::string &url, int w=0);
 
 }
 

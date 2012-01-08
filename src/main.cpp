@@ -41,7 +41,7 @@ int main(int argc, char** argv){
 
         // Routing
         int id;
-        path = cgi.getEnvironment().getPathInfo();
+        path = stripSlash(cgi.getEnvironment().getPathInfo());
 
         // User
         if((id = routeId("user", path)))
@@ -97,12 +97,15 @@ int main(int argc, char** argv){
             io << Html::categoryFeed(id);
         else if((id = routeId("cat", path)))
             io << Html::category(id);
+        // oEmbed
+        else if(path == "/oembed" && cgi("format") != "xml")
+            io << Html::oEmbed(cgi("url"), number(cgi("maxwidth")));
         // News
         else if((id = routeId("news", path)))
             io << Html::newsPage(id);
         else if((id = routeAction("news", "comment", path)))
             io << Action::postComment(Comment::News, id, cgi);
-        else if(path == "/news" || path == "/")
+        else if(path == "/news" || path == "")
             io << Html::latestNews(20);
         // Users
         else if(path == "/users/search")

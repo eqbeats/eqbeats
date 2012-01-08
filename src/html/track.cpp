@@ -72,13 +72,17 @@ string player(const Track &t){
         "<script src=\"/static/player.js\"></script>";
 }
 
-string embedCode(const Track &t){
-    return "<textarea id=\"embedcode\">"
-            "<iframe width=\"500px\" height=\"150px\" frameborder=\"0\" src=\"" + eqbeatsUrl() + t.url() + "/embed\">"
-            "<a href=\"" + eqbeatsUrl() + t.url() + "\" target=\"_blank\">" + Html::escape(t.title()) + "</a>"
+string Html::embedTrackCode(const Track &t, int w){
+    if(!w) w = 500;
+    return
+        "<iframe width=\""+number(w)+"px\" height=\"150px\" frameborder=\"0\" src=\"" + eqbeatsUrl() + t.url() + "/embed\">"
+            "<a href=\"" + eqbeatsUrl() + t.url() + "\" target=\"_blank\">" + Html::escape(Html::escape(t.title())) + "</a>"
             " by <a href=\"" + eqbeatsUrl() + User::url(t.artistId()) + "\" target=\"_blank\">" + Html::escape(t.artist()) + "</a>"
-            "</iframe>"
-      "</textarea>"
+        "</iframe>";
+}
+
+string embedCode(const Track &t){
+    return "<textarea id=\"embedcode\">" + Html::embedTrackCode(t) + "</textarea>"
       "<script>document.getElementById('embedcode').style.display='none';</script>";
 }
 
@@ -119,7 +123,7 @@ string Html::trackPage(int tid){
     Art art(tid);
     if(!edition)
         t.hit();
-    s << header(escape(t.title()))
+    s << headerOEmbed(escape(t.title()), t.url())
       << "<div class=\"track\">"
             "<h3 style=\"margin:10px;\">by <a href=\"" << User::url(t.artistId()) <<  "\">"
                     << escape(t.artist()) << "</a></h3>"
@@ -180,10 +184,10 @@ string Html::trackList(const vector<Track> &tracks, Html::TrackList l){
     for(vector<Track>::const_iterator i=tracks.begin(); i!=tracks.end(); i++){
         s << "<li";
         if(!i->visible()) s << " class=\"hidden\"";
-        s << "><a href=\"" << i->url() << "\">" << i->title() << "</a>";
+        s << "><a href=\"" << i->url() << "\">" << escape(i->title()) << "</a>";
         if(l == Standard)
             s << " <span class=\"by\">by <a href=\"" << User::url(i->artistId()) << "\">"
-              << i->artist() << "</a></span>";
+              << escape(i->artist()) << "</a></span>";
         s << "</li>";
     }
     s << "</ul>";

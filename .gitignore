@@ -9,6 +9,7 @@ static/stats.html
 
 *.log
 *.swp
+*.swo
 pid
 tmp/
 tracks/

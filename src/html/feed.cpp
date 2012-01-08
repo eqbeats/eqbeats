@@ -11,7 +11,7 @@ std::string notFound(const string what){
     "<feed xmlns=\"http://www.w3.org/2005/Atom\">"
         "<title>" + what + " Not Found</title>"
         "<link rel=\"alternate\" href=\"" + eqbeatsUrl() + "\" />"
-        "<id>http://eqbeats.org/404</id>"
+        "<id>" + eqbeatsUrl() + "/404</id>"
         "<updated>1970-01-01 01:00:00+01:00</updated>"
     "</feed>";
 }
@@ -23,23 +23,23 @@ std::string feed(const string &title, const string &link, const vector<Track> &t
     "<feed xmlns=\"http://www.w3.org/2005/Atom\">"
         "<title>" + title + " on EqBeats</title>"
         "<link rel=\"alternate\" href=\"" + eqbeatsUrl() + link + "\" />"
-        "<id>http://eqbeats.org" + link + "</id>"
+        "<id>" + eqbeatsUrl() + link + "</id>"
         "<updated>" + (tracks.empty()? "1970-01-01 01:00:00+01:00": tracks[0].date()) + "</updated>";
     for(std::vector<Track>::const_iterator i = tracks.begin(); i != tracks.end(); i++) {
         User u(i->artistId());
         atom +=
             "<entry>"
-                "<title>" + u.name() + " - " + i->title() + "</title>"
+                "<title>" + Html::escape(u.name()) + " - " + Html::escape(i->title()) + "</title>"
                 "<updated>" + i->date() + "</updated>"
-                "<id>http://eqbeats.org" + i->url() + "</id>"
+                "<id>" + eqbeatsUrl() + i->url() + "</id>"
                 "<author>"
-                    "<name>" + u.name() + "</name>"
+                    "<name>" + Html::escape(u.name()) + "</name>"
                     "<uri>" + eqbeatsUrl() + u.url() + "</uri>"
                 "</author>"
                 "<link rel=\"alternate\" href=\"" + eqbeatsUrl() + i->url() + "\" />" +
                 (i->getNotes().empty()?"":"<content type=\"html\">" + Html::escape(Html::format(i->getNotes())) + "</content>") +
-                "<link rel=\"enclosure\" type=\"audio/ogg\" url=\"" + eqbeatsUrl() +i->url(Track::Vorbis)+"\" />"
-                "<link rel=\"enclosure\" type=\"audio/mp3\" url=\"" + eqbeatsUrl() +i->url(Track::MP3)+"\" />"
+                "<link rel=\"enclosure\" type=\"audio/ogg\"  href=\"" + eqbeatsUrl() +i->url(Track::Vorbis)+"\" />"
+                "<link rel=\"enclosure\" type=\"audio/mpeg\" href=\"" + eqbeatsUrl() +i->url(Track::MP3)+"\" />"
             "</entry>";
     }
     atom +="</feed>";

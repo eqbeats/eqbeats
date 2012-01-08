@@ -68,7 +68,7 @@ std::string Action::uploadTrack(int id, cgicc::Cgicc &cgi){
 
     t.convertToVorbis();
 
-    return isXhr? header+"{ success: true, track: " + number(t.id()) + ", title: \"" + Html::escape(t.title()) + "\" }" : Html::redirect(t.url());
+    return isXhr? header+"{ success: true, track: " + number(t.id()) + ", title: " + Html::jsonString(t.title()) + " }" : Html::redirect(t.url());
 }
 
 std::string Action::newTrack(cgicc::Cgicc &cgi){

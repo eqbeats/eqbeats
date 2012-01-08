@@ -4,6 +4,7 @@
 #include <string>
 
 // Returns 0 on error.
+std::string stripSlash(const std::string &path);
 int routeId(const std::string &t, const std::string &path);
 int routeAction(const std::string &t, const std::string &act, const std::string &path);
 

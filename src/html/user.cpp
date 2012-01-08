@@ -18,10 +18,8 @@ string Html::userPage(int uid){
     bool edition = Session::user().id() == user.id();
     if(edition)
         s << "<a class=\"more\" href=\"/account\">Edit</a>";
-    vector<Track> tracks = Track::byArtist(user.id(), edition);
-    if(!tracks.empty())
-        s << "<h3>Tracks " + feedIcon(user.url() + "/atom") + "</h3>"
-          << Html::trackList(tracks, edition ? Html::Edition : Html::Compact);
+    s << "<h3>Tracks " + feedIcon(user.url() + "/atom") + "</h3>"
+      << Html::trackList(Track::byArtist(user.id(), edition), edition ? Html::Edition : Html::Compact);
     if(edition)
         s << uploadForm("/track/new") << Html::comments(Comment::forArtist(uid), "Comments on your tracks");
     s << Html::comments(Comment::forUser(uid)) << Html::commentForm(user.url()+"/comment");

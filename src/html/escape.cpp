@@ -10,7 +10,7 @@ string Html::escape(const string &str){
         if(*i == '<') buf += "&lt;";
         else if(*i == '>') buf += "&gt;";
         else if(*i == '&') buf += "&amp;";
-        else if(*i == '"') buf += "&quot;";
+        //else if(*i == '"') buf += "&quot;";
         else buf += *i;
     }
     return buf;
@@ -21,6 +21,16 @@ std::string Html::escapeEmail(const string &email){
     for(string::const_iterator i=email.begin(); i!=email.end(); i++)
         buf += "&#" + number(*i) + ";";
     return buf;
+}
+
+std::string Html::jsonString(const string &str){
+    string buf;
+    for(string::const_iterator i=str.begin(); i!=str.end(); i++){
+        if(*i == '"') buf += "\\\"";
+        else if(*i == '\n') buf += "\\n";
+        else buf += *i;
+    }
+    return "\"" + buf + "\"";
 }
 
 std::string Html::format(std::string txt){

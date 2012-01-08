@@ -26,7 +26,7 @@ std::string Html::header(const std::string &title, int status){
     return headerFeed(title, std::string(), false, status);
 }
 
-std::string Html::headerFeed(const std::string &title, const std::string &feedurl, bool feedicon, int status){
+std::string headerH(const std::string &title, const std::string &head, int status){
     return
         "Status: " + statusMsg(status) + "\n"
         "Content-Type: text/html; charset=UTF-8\n\n"
@@ -34,7 +34,7 @@ std::string Html::headerFeed(const std::string &title, const std::string &feedur
         "<html><head>"
             "<title>" + (title.empty()?"":title+" - ") + "Equestrian Beats</title>"
             "<link rel=\"stylesheet\" href=\"/static/style.css\" />"
-            + (feedurl.empty() ? "" : "<link href=\"" + feedurl + "\" type=\"application/atom+xml\" rel=\"alternate\" title=\"" + title + "\" />") +
+            + head +
         "</head><body>"
             "<div id=\"header\">"
                 "<h1><a href=\"/\">Equestrian Beats</a></h1>"
@@ -50,8 +50,16 @@ std::string Html::headerFeed(const std::string &title, const std::string &feedur
                 "</div>"
                 "<div style=\"clear:both;\"></div>"
             "</div>"
-            "<div id=\"contents\">" +
+            "<div id=\"contents\">";
+}
+
+std::string Html::headerFeed(const std::string &title, const std::string &feedurl, bool feedicon, int status){
+    return headerH(title, (feedurl.empty() ? "" : "<link href=\"" + feedurl + "\" type=\"application/atom+xml\" rel=\"alternate\" />"), status) +
                 (title.empty()?"":"<h2>" + title + (feedicon ? " " + feedIcon(feedurl) : "") + "</h2>");
+}
+
+std::string Html::headerOEmbed(const std::string &title, const std::string &path){
+    return headerH(title, "<link rel=\"alternate\" type=\"application/json+oembed\" href=\"" + eqbeatsUrl() + "/oembed?url=http%3A//eqbeats.org" + path + "\" />", 200) + "<h2>" + title + "</h2>";
 }
 
 std::string Html::footer(){

@@ -621,7 +621,8 @@ qq.extend(qq.FileUploader.prototype, {
             // Custom
             var f = this._find(item, 'file');
             f.href = '/track/' + result.track;
-            f.innerHTML = result.title;
+            var t = document.createTextNode(result.title);
+            f.replaceChild(t, f.firstChild);
 
             var tracklists = document.getElementsByClassName("tracklist");
             if(tracklists.length != 0){
