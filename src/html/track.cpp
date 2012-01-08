@@ -72,13 +72,11 @@ string player(const Track &t){
         "<script src=\"/static/player.js\"></script>";
 }
 
-#define URL "http://eqbeats.org"
-
 string embedCode(const Track &t){
     return "<textarea id=\"embedcode\">"
-            "<iframe width=\"500px\" height=\"150px\" frameborder=\"0\" src=\""URL + t.url() + "/embed\">"
-            "<a href=\""URL + t.url() + "\" target=\"_blank\">" + Html::escape(t.title()) + "</a>"
-            " by <a href=\""URL + User::url(t.artistId()) + "\" target=\"_blank\">" + Html::escape(t.artist()) + "</a>"
+            "<iframe width=\"500px\" height=\"150px\" frameborder=\"0\" src=\"" + eqbeatsUrl() + t.url() + "/embed\">"
+            "<a href=\"" + eqbeatsUrl() + t.url() + "\" target=\"_blank\">" + Html::escape(t.title()) + "</a>"
+            " by <a href=\"" + eqbeatsUrl() + User::url(t.artistId()) + "\" target=\"_blank\">" + Html::escape(t.artist()) + "</a>"
             "</iframe>"
       "</textarea>"
       "<script>document.getElementById('embedcode').style.display='none';</script>";
@@ -194,10 +192,10 @@ string Html::trackList(const vector<Track> &tracks, Html::TrackList l){
 
 string Html::tracksPage(){
     stringstream s;
-    s << header("Tracks")
+    s << headerFeed("Tracks", "/tracks/latest/atom")
       << "<h3>Search</h3>"
       << searchForm("/tracks/search")
-      << "<h3><a href=\"/tracks/latest\">Latest</a></h3>"
+      << "<h3><a href=\"/tracks/latest\">Latest</a> " + feedIcon("/tracks/latest/atom") + "</h3>"
       << trackList(Track::latest(10))
       << "<a class=\"more\" href=\"/tracks/latest\">More</a>"
       << "<h3><a href=\"/track/popular\">Popular</a></h3>"
@@ -215,6 +213,12 @@ string Html::tracksPage(){
     return s.str();
 }
 
+string Html::tracksPage(const string &title, const string &feedurl, const vector<Track> &tracks){
+    return headerFeed(title, feedurl, !feedurl.empty())
+         + trackList(tracks)
+         + footer();
+}
+
 string Html::trackSearch(const std::string &q){
     stringstream s;
     s << header("Track search")
@@ -230,30 +234,10 @@ string Html::trackSearch(const std::string &q){
     return s.str();
 }
 
-string Html::latestTracks(int n){
-    return header("Latest Tracks")
-         + trackList(Track::latest(n))
-         + footer();
-}
-
-string Html::randomTracks(int n){
-    return header("Random Tracks")
-         + trackList(Track::random(n))
-         + footer();
-}
-
-string Html::popularTracks(int n){
-    return header("Popular Tracks")
-         + trackList(Track::popular(n))
-         + footer();
-}
-
 string Html::category(int cid){
     Category c(cid);
     if(!c) return notFound("Category");
-    return header(c.name())
-         + trackList(Track::byCategory(cid))
-         + footer();
+    return c ? tracksPage(c.name(), c.url() + "/atom", Track::byCategory(cid)) : notFound("Category");
 }
 
 string httpFilename(const Track &t){

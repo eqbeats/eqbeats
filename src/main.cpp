@@ -36,17 +36,19 @@ int main(int argc, char** argv){
         resetTimer();
         FCgiIO io(request);
         Cgicc cgi(&io);
+        serverName = cgi.getEnvironment().getServerName();
         Session::start(cgi);
 
         // Routing
         int id;
         path = cgi.getEnvironment().getPathInfo();
 
+        // User
         if((id = routeId("user", path)))
             io << Html::userPage(id);
         else if((id = routeAction("user", "comment", path)))
             io << Action::postComment(Comment::User, id, cgi);
-
+        // Track
         else if((id = routeAction("track", "embed", path)))
             io << Html::embedTrack(id);
         else if((id = routeAction("track", "delete", path)))
@@ -75,44 +77,54 @@ int main(int argc, char** argv){
             io << Html::trackPage(id);
         else if(path == "/track/new")
             io << Action::newTrack(cgi);
+        // Tracks
         else if(path == "/tracks")
             io << Html::tracksPage();
         else if(path == "/tracks/search")
             io << Html::trackSearch(cgi("q"));
         else if(path == "/tracks/latest")
-            io << Html::latestTracks(50);
+            io << Html::tracksPage("Latest Tracks", "/tracks/latest/atom", Track::latest(50));
         else if(path == "/tracks/random")
-            io << Html::randomTracks(50);
+            io << Html::tracksPage("Random Tracks", "", Track::random(50));
         else if(path == "/tracks/popular")
-            io << Html::popularTracks(50);
+            io << Html::tracksPage("Popular Tracks", "", Track::popular(50));
+        // Feeds
+        else if(path == "/tracks/latest/atom")
+            io << Html::tracksFeed(200);
+        else if((id = routeAction("user", "atom", path)))
+            io << Html::userFeed(id);
+        else if((id = routeAction("cat", "atom", path)))
+            io << Html::categoryFeed(id);
         else if((id = routeId("cat", path)))
             io << Html::category(id);
-
+        // News
         else if((id = routeId("news", path)))
             io << Html::newsPage(id);
         else if((id = routeAction("news", "comment", path)))
             io << Action::postComment(Comment::News, id, cgi);
-
+        else if(path == "/news" || path == "/")
+            io << Html::latestNews(20);
+        // Users
         else if(path == "/users/search")
             io << Html::userSearch(cgi("q"));
         else if(path == "/users")
             io << Html::usersPage();
         else if(path == "/artists")
             io << Html::artistsPage();
+        // Actions
         else if(path == "/register")
             io << Action::registration(cgi);
-        else if(path == "/quickstart")
-            io << Html::quickStart();
         else if(path == "/account")
             io << Action::account(cgi);
         else if(path == "/login")
             io << Action::login(cgi);
         else if(path == "/logout")
             io << Action::logout(cgi);
+        // Static
+        else if(path == "/quickstart")
+            io << Html::quickStart();
         else if(path == "/faq")
             io << Html::faq();
-        else if(path == "/news" || path == "/")
-            io << Html::latestNews(20);
         else
             io << Html::notFound();
 

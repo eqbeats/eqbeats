@@ -41,6 +41,8 @@ class Track{
         std::string getNotes() const;
         void setNotes(const std::string &nNotes);
 
+        //time_t getTime() const;
+        std::string date() const { return _date; }
 
         std::string url() const { return Track::url(_id); }
         static std::string url(int id);
@@ -72,32 +74,16 @@ class Track{
 
         operator bool() const { return _id > 0; }
 
-        /*enum Genre {
-            Rock,
-            Metal,
-            Instrumental,
-            Classical,
-            Electronic,
-            Techno,
-            DrumNBass,
-            Funk,
-            Disco,
-            Pop,
-            Rap,
-            HipHop,
-            Country,
-            Jazz
-        };*/
-
     private:
         int _id;
         std::string _title;
         int _artistId;
         std::string _artist;
+        std::string _date;
         bool _visible;
-        Track(int nId, const std::string &nTitle, int nArtistId, const std::string &nArtist, bool nVisible)
+        Track(int nId, const std::string &nTitle, int nArtistId, const std::string &nArtist, bool nVisible, const std::string &nDate)
             { _id = nId; _title = nTitle; _visible = nVisible;
-              _artistId = nArtistId; _artist = nArtist; }
+              _artistId = nArtistId; _artist = nArtist; _date = nDate; }
         static std::vector<Track> resultToVector(const DB::Result &r);
 };
 

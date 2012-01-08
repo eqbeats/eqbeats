@@ -21,6 +21,12 @@ int number(const std::string &str){
     return isNumber(str) ? atoi(str.c_str()) : 0;
 }
 
+string serverName;
+
 string eqbeatsDir(){
     return (std::string) getenv("EQBEATS_DIR");
+}
+
+string eqbeatsUrl(){
+    return "http://" + serverName;
 }

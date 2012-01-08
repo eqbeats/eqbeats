@@ -24,6 +24,17 @@ html, body {
     text-decoration: none;
 }
 
+.feed {
+    display: inline-block;
+    height: 12px;
+    width: 12px;
+    background: url("/static/feed.png") center left;
+}
+.feed span { display: none; }
+.feed:hover { background-position: center right; }
+
+.feed:hover { }
+
 /** Navigation bar ************************************************************/
 
 #navbar {

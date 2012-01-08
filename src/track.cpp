@@ -14,7 +14,7 @@ Track::Track(int id){
     if(id<=0) return;
 
     DB::Result r = DB::query(
-        "SELECT tracks.title, tracks.user_id, users.name, tracks.visible FROM tracks CROSS JOIN users "
+        "SELECT tracks.title, tracks.user_id, users.name, tracks.visible, tracks.date FROM tracks CROSS JOIN users "
         "WHERE tracks.id = " + number(id) + " AND tracks.user_id = users.id");
     if(!r.empty()){
         _id = id;
@@ -22,6 +22,7 @@ Track::Track(int id){
         _artistId = number(r[0][1]);
         _artist = r[0][2];
         _visible = r[0][3] == "t";
+        _date = r[0][4];
     }
 }
 
@@ -66,9 +67,9 @@ Track Track::create(int nArtistId, const std::string &nTitle){
     DB::Result r = DB::query(
         "INSERT INTO tracks (user_id, title, date, license) VALUES "
         "("+number(nArtistId)+", $1, 'now', 'None specified') "
-        "RETURNING id", nTitle);
+        "RETURNING id, date", nTitle);
     if(r.empty()) return t;
-    return Track(number(r[0][0]), nTitle, nArtistId, User(nArtistId).name(), false);
+    return Track(number(r[0][0]), nTitle, nArtistId, User(nArtistId).name(), false, r[0][1]);
 }
 
 void Track::remove(){
@@ -97,11 +98,11 @@ void Track::hit(){
 std::vector<Track> Track::resultToVector(const DB::Result &r){
     std::vector<Track> tracks(r.size());
     for(unsigned i=0; i<r.size(); i++)
-        tracks[i] = Track(number(r[i][0]), r[i][1], number(r[i][2]), r[i][3], r[i][4]=="t");
+        tracks[i] = Track(number(r[i][0]), r[i][1], number(r[i][2]), r[i][3], r[i][4]=="t", r[i][5]);
     return tracks;
 }
 
-#define SEL (std::string) "SELECT tracks.id, tracks.title, tracks.user_id, users.name, tracks.visible FROM tracks CROSS JOIN users " \
+#define SEL (std::string) "SELECT tracks.id, tracks.title, tracks.user_id, users.name, tracks.visible, tracks.date FROM tracks CROSS JOIN users " \
                "WHERE tracks.user_id = users.id AND "
 
 std::vector<Track> Track::byArtist(int sArtistId, bool all){

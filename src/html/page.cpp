@@ -23,6 +23,10 @@ std::string logStatus(){
 }
 
 std::string Html::header(const std::string &title, int status){
+    return headerFeed(title, std::string(), false, status);
+}
+
+std::string Html::headerFeed(const std::string &title, const std::string &feedurl, bool feedicon, int status){
     return
         "Status: " + statusMsg(status) + "\n"
         "Content-Type: text/html; charset=UTF-8\n\n"
@@ -30,6 +34,7 @@ std::string Html::header(const std::string &title, int status){
         "<html><head>"
             "<title>" + (title.empty()?"":title+" - ") + "Equestrian Beats</title>"
             "<link rel=\"stylesheet\" href=\"/static/style.css\" />"
+            + (feedurl.empty() ? "" : "<link href=\"" + feedurl + "\" type=\"application/atom+xml\" rel=\"alternate\" title=\"" + title + "\" />") +
         "</head><body>"
             "<div id=\"header\">"
                 "<h1><a href=\"/\">Equestrian Beats</a></h1>"
@@ -37,16 +42,16 @@ std::string Html::header(const std::string &title, int status){
                     + logStatus() +
                 "</div>"
                 "<div id=\"navbar\">"
-                    "<a href=\"/tracks\">Tracks</a>"
-                    "<a href=\"/artists\">Artists</a>"
-                    "<img src=\"/static/cm-nav.png\" />"
-                    "<a href=\"/news\">News</a>"
+                    "<a href=\"/tracks\">Tracks</a> "
+                    "<a href=\"/artists\">Artists</a> "
+                    "<img src=\"/static/cm-nav.png\" /> "
+                    "<a href=\"/news\">News</a> "
                     "<a href=\"/faq\">FAQ</a>"
                 "</div>"
                 "<div style=\"clear:both;\"></div>"
             "</div>"
             "<div id=\"contents\">" +
-                (title.empty()?"":"<h2>" + title + "</h2>");
+                (title.empty()?"":"<h2>" + title + (feedicon ? " " + feedIcon(feedurl) : "") + "</h2>");
 }
 
 std::string Html::footer(){

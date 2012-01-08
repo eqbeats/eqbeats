@@ -10,7 +10,7 @@ string Html::userPage(int uid){
     Account user(uid);
     if(!user) return notFound("User");
     stringstream s;
-    s << header(escape(user.name()));
+    s << headerFeed(escape(user.name()), user.url() + "/atom");
     s << "<div class=\"user\">"
              "Email: " << escapeEmail(user.email())
              << "<div class=\"notes\">" << format(user.about()) << "</div>"
@@ -20,7 +20,7 @@ string Html::userPage(int uid){
         s << "<a class=\"more\" href=\"/account\">Edit</a>";
     vector<Track> tracks = Track::byArtist(user.id(), edition);
     if(!tracks.empty())
-        s << "<h3>Tracks</h3>"
+        s << "<h3>Tracks " + feedIcon(user.url() + "/atom") + "</h3>"
           << Html::trackList(tracks, edition ? Html::Edition : Html::Compact);
     if(edition)
         s << uploadForm("/track/new") << Html::comments(Comment::forArtist(uid), "Comments on your tracks");
