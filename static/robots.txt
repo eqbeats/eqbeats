@@ -1,2 +1,2 @@
 User-agent: *
-Disallow: /track/new 
+Disallow: /embed

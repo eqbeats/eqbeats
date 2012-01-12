@@ -17,16 +17,17 @@ std::string statusMsg(int stat){
 
 std::string logStatus(){
     User u = Session::user();
+    std::string redir = path=="/"||path.empty() ? "" : "?redirect=" + path;
     return u ?
-        "Hi <b><a href=\"" + u.url() + "\">" + u.name() + "</a></b>. <a href=\"/logout?redirect="+ path +"\">Logout</a>" :
-        "<a href=\"/login?redirect=" + path + "\">Login</a>";
+        "Hi <b><a href=\"" + u.url() + "\">" + u.name() + "</a></b>. <a href=\"/logout" + redir +"\">Logout</a>" :
+        "<a href=\"/login" + redir + "\">Login</a>";
 }
 
-std::string Html::header(const std::string &title, int status){
-    return headerFeed(title, std::string(), false, status);
+std::string Html::atomFeed(const std::string &url){
+    return "<link href=\"" + url + "\" type=\"application/atom+xml\" rel=\"alternate\" />";
 }
 
-std::string headerH(const std::string &title, const std::string &head, int status){
+std::string Html::header(const std::string &title, const std::string &head, int status){
     return
         "Status: " + statusMsg(status) + "\n"
         "Content-Type: text/html; charset=UTF-8\n\n"
@@ -36,44 +37,39 @@ std::string headerH(const std::string &title, const std::string &head, int statu
             "<link rel=\"stylesheet\" href=\"/static/style.css\" />"
             + head +
         "</head><body>"
-            "<div id=\"header\">"
-                "<h1><a href=\"/\">Equestrian Beats</a></h1>"
-                "<div id=\"logstatus\">"
-                    + logStatus() +
+            "<div id=\"main\">"
+                "<div id=\"header\">"
+                    "<h1><a href=\"/\">Equestrian Beats</a></h1>"
+                    "<div id=\"logstatus\">"
+                        + logStatus() +
+                    "</div>"
+                    "<div id=\"navbar\">"
+                        "<a href=\"/\">Home</a> "
+                        "<a href=\"/artists\">Artists</a> "
+                        "<img src=\"/static/cm-nav.png\" /> "
+                        "<a href=\"/news\">News</a> "
+                        "<a href=\"/faq\">FAQ</a>"
+                    "</div>"
+                    "<div style=\"clear:both;\"></div>"
                 "</div>"
-                "<div id=\"navbar\">"
-                    "<a href=\"/tracks\">Tracks</a> "
-                    "<a href=\"/artists\">Artists</a> "
-                    "<img src=\"/static/cm-nav.png\" /> "
-                    "<a href=\"/news\">News</a> "
-                    "<a href=\"/faq\">FAQ</a>"
-                "</div>"
-                "<div style=\"clear:both;\"></div>"
-            "</div>"
-            "<div id=\"contents\">";
-}
-
-std::string Html::headerFeed(const std::string &title, const std::string &feedurl, bool feedicon, int status){
-    return headerH(title, (feedurl.empty() ? "" : "<link href=\"" + feedurl + "\" type=\"application/atom+xml\" rel=\"alternate\" />"), status) +
-                (title.empty()?"":"<h2>" + title + (feedicon ? " " + feedIcon(feedurl) : "") + "</h2>");
-}
-
-std::string Html::headerOEmbed(const std::string &title, const std::string &path){
-    return headerH(title, "<link rel=\"alternate\" type=\"application/json+oembed\" href=\"" + eqbeatsUrl() + "/oembed?url=http%3A//eqbeats.org" + path + "\" />", 200) + "<h2>" + title + "</h2>";
+                "<div id=\"contents\">";
 }
 
 std::string Html::footer(){
     return
-        "</div>"
-        "<div id=\"footer\">"
-            "Contact: " + escapeEmail("contact@eqbeats.org") +
-            //"Generated in " + number(usecs()) + " &mu;S."
+            "</div>"
+            "<div id=\"footer\">"
+                "Contact: " + escapeEmail("contact@eqbeats.org") +
+                //"Generated in " + number(usecs()) + " &mu;S."
+            "</div>"
         "</div>"
       "</body></html>";
 }
 
 std::string Html::notFound(const std::string &what){
-    return header(what + " not found", 404) + footer();
+    return header(what + " not found", "", 404)
+         + "<h2>" + what + " not found"
+         + footer();
 }
 
 std::string Html::errorPage(const std::string &err){

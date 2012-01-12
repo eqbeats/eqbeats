@@ -8,6 +8,7 @@ std::string Html::newsPage(int nid){
     News n(nid);
     if(!n) return notFound("News");
     return header(n.title())
+         + "<h2>" + n.title() + "</h2>"
          + "<div class=\"news\">" + n.getContents() + "</div>"
          + Html::comments(Comment::forNews(nid))
          + Html::commentForm(News::url(nid)+"/comment")
@@ -17,7 +18,7 @@ std::string Html::newsPage(int nid){
 std::string Html::latestNews(int n){
     std::vector<News> news = News::latest(20);
     std::stringstream s;
-    s << header();
+    s << header("News");
     if(!news.empty()){
         s << "<h2>Latest news : <a href=\"" << news[0].url() << "\">" 
           << escape(news[0].title()) << "</a></h2>"

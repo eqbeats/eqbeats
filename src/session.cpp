@@ -48,6 +48,7 @@ std::string Session::login(int id, const std::string &host){
     sid = randomSid();
     DB::query("INSERT INTO sessions (user_id, sid, host, date) VALUES ($1, $2, $3, 'now')", number(id), sid, host);
     DB::query("UPDATE users SET last_login = 'now' WHERE id = " + number(id));
+    u = User(id);
     return sid;
 }
 

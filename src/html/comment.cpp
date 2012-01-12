@@ -24,9 +24,10 @@ string Html::comments(const vector<Comment> &cmts, const std::string title){
 
 string Html::commentForm(const string &action){
     return
-        "<form action=\"" + action + "\" method=\"post\">" 
+        "<form class=\"postcomment\" action=\"" + action + "\" method=\"post\">" 
+         "<h3>Post a comment</h3>"
          + (Session::user() ? "" : "Name : <input type=\"text\" name=\"name\" /><br />")
          + "<textarea name=\"msg\"></textarea><br />"
-            "<input type=\"submit\" value=\"Post\" />"
+            "<input type=\"submit\" value=\"Post a comment\" onclick=\"this.attributes.setNamedItem(document.createAttribute('disabled'))\" />"
          "</form>";
 }

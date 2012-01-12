@@ -4,7 +4,7 @@
 #include "../session.h"
 
 std::string registrationForm(const std::string &error=std::string()){
-    return Html::header("Register") +
+    return Html::header("Register") + "<h2>Register</h2>" +
         (error.empty() ? "" : "<div class=\"error\">" + error + "</div>") +
         "<form action=\"/register\" method=\"post\">"
             "<table>"

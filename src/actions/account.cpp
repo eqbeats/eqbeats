@@ -7,7 +7,7 @@ using namespace Html;
 
 std::string accountForm(const Account &_account, const std::string &error=std::string(),
                                 const std::string &message=std::string()){
-    return Html::header("Your account") +
+    return Html::header("Your account") + "<h2>Your account</h2>" +
         (message.empty() ? "" : "<div class=\"message\">" + message + "</div>") +
         (error.empty() ? "" : "<div class=\"error\">" + error + "</div>") +
         "<form action=\"/account\" method=\"post\">"

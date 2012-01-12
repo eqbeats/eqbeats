@@ -3,7 +3,7 @@
 #include "../html/html.h"
 
 std::string loginForm(const cgicc::Cgicc &cgi, const std::string &error=std::string()){
-    return Html::header("Login") +
+    return Html::header("Login") + "<h2>Login</h2>" +
         (error.empty() ? "" : "<div class=\"error\">" + error + "</div>") +
         "<form action=\"/login\" method=\"post\">"
             "<table>"
@@ -25,7 +25,7 @@ std::string loginForm(const cgicc::Cgicc &cgi, const std::string &error=std::str
 }
 
 std::string Action::login(cgicc::Cgicc &cgi){
-    if(Session::user()) return Html::redirect("/");
+    if(Session::user()) return Html::redirect(cgi("redirect").empty()? Session::user().url() : cgi("redirect"));
 
     if(cgi.getEnvironment().getRequestMethod() != "POST")
         return loginForm(cgi);
@@ -41,7 +41,7 @@ std::string Action::login(cgicc::Cgicc &cgi){
         return loginForm(cgi, "Sorry, wrong credentials.");
 
     return "Set-Cookie: sid=" + sid + ";Max-Age=2592000\n" // 30 days
-    + Html::redirect(cgi("redirect").empty()? "/" : cgi("redirect")) +
+    + Html::redirect(cgi("redirect").empty()? Session::user().url() : cgi("redirect")) +
         "Logged in, redirecting...";
 }
 

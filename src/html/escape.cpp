@@ -38,7 +38,6 @@ std::string Html::format(std::string txt){
     std::string tmp;
     for(std::string::const_iterator i=txt.begin(); i!=txt.end(); i++){
         if(*i == '\n') tmp += "<br />";
-        else if(*i < ' ');
         else tmp += *i;
     }
     pcrecpp::RE("\\[b\\](.*?)\\[/b\\]").GlobalReplace("<b>\\1</b>", &tmp);

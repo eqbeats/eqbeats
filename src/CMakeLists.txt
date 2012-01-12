@@ -6,7 +6,7 @@ add_executable ( eqbeats.fcgi
     main.cpp routing.cpp timer.cpp utils.cpp db.cpp news.cpp comment.cpp
     track.cpp ffmpeg.cpp user.cpp account.cpp session.cpp art.cpp
     html/redirect.cpp html/page.cpp html/escape.cpp html/faq.cpp html/oembed.cpp
-    html/track.cpp html/user.cpp html/news.cpp html/comment.cpp html/feed.cpp
+    html/track.cpp html/user.cpp html/news.cpp html/comment.cpp html/feed.cpp html/home.cpp
     actions/registration.cpp actions/login.cpp actions/account.cpp
     actions/upload.cpp actions/track.cpp actions/comment.cpp actions/art.cpp
     FCgiIO.cpp

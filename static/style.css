@@ -1,4 +1,3 @@
-@import url("fileuploader.css");
 @import url("player.css");
 
 html, body {
@@ -7,16 +6,19 @@ html, body {
 
 /** Header ********************************************************************/
 
+#main {
+    max-width: 1000px;
+    margin: auto;
+}
+
 #header {
-    margin: 0;
+    margin: 0 auto;
     color: #203;
-    background-color: #FFF;
-    border-bottom: 1px solid #406;
 }
 
 #header h1 {
     margin: 0;
-    padding: 20px;
+    padding: 25px 20px 15px;
     font-size: 2.2em;
     font-weight: 100;
 }
@@ -62,15 +64,18 @@ html, body {
 /******************************************************************************/
 
 #contents {
-    padding: 25px;
+    padding: 25px 4% 20px;
     background-color: #FFF;
+    margin: 0 auto;
+    box-shadow: 0 0 1px #888;
+    word-wrap: break-word;
 }
+
 #footer {
     font-size: 0.7em;
     color: #999;
     margin-top: 0;
     padding: 17px;
-    border-top: 1px solid #BBB;
     text-align: center;
     background: url("silhouette.png") no-repeat 98% center;
     text-shadow: 0 1px white;
@@ -86,11 +91,14 @@ p {
 
 /** Track page ****************************************************************/
 
-.download, .cats {
-    margin: 10px;
+.download {
+    margin: 30px 0 0;
+}
+.cats {
+    margin: 20px 0 0;
 }
 
-.download a {
+.cats a, .download a {
     padding: 2px 0;
     margin: 0 5px;
 }
@@ -99,6 +107,7 @@ p {
     line-height: 1.7em;
     font-size: 0.9em;
 }
+
 .notes {
     margin: 25px 5px;
     padding: 0 15px;
@@ -107,16 +116,21 @@ p {
 
 a.danger {
     color: #A00;
-    margin: 20px;
+    margin: 20px 0;
 }
 
 .comment {
-    margin: 0 20px;
-    padding: 15px;
-    border-top: 1px solid #CCC;
+    margin: 10px;
+    padding: 15px 20px;
+    border-radius: 3px;
+    border: solid #eee;
+    border-width: 0px 0 1px 1px;
 }
-.comment:first-child {
-    border-top-width: 0px;
+.postcomment {
+    text-align: center;
+}
+.postcomment h3 {
+    margin: 15px;
 }
 
 .by {
@@ -150,10 +164,20 @@ a.danger {
     margin: 20px 20px;
 }
 
+/** FAQ page ******************************************************************/
+
+.faq div {
+    margin: 30px 10px 35px;
+}
+
+.faq div:last-child {
+    margin-bottom: 0;
+}
+
 /** News page *****************************************************************/
 
 .news {
-    margin: 25px;
+    margin: 20px 10px 25px;
 }
 
 .oldnews {
@@ -172,13 +196,13 @@ a.more:before {
 
 /** Lists *********************************************************************/
 
-#contents li {
+li {
     margin: 0;
     list-style: square;
     padding: 8px 0;
     color: #406;
 }
-#contents ul {
+ul {
     margin: 10px 20px;
     padding: 0 20px;
 }
@@ -197,12 +221,14 @@ a.more:before {
 form {
     margin: 20px;
 }
-form input, textarea {
+form input, textarea, select, .qq-upload-button {
     border: 1px solid #555;
+    border-radius: 2px;
+    /*box-shadow: 0 0 1px #888;*/
     padding: 5px;
     margin: 2px;
 }
-form input {
+form input, select {
     vertical-align: middle;
     width: 250px;
     height: 2em;
@@ -210,13 +236,17 @@ form input {
 form input[type="file"] {
     border: none;
 }
-form input[type="submit"] {
+form input[type="submit"], .qq-upload-button {
     width: auto;
-    background-color: #EEF;
+    background-color: #F8F8FF;
     padding: 3px 7px;
 }
-form input[type="submit"]:hover {
+form input[type="submit"]:hover, .qq-upload-button-hover {
     background-color: #F6F3FF;
+}
+select {
+    background-color: #FFF;
+    width: auto;
 }
 textarea {
     width: 400px;
@@ -227,6 +257,45 @@ textarea {
     margin: 10px 20px;
 }
 
+fieldset {
+    margin: 30px 0 0;
+    padding: 0 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 2px;
+}
+fieldset legend {
+    font-size: 1.4em;
+    padding: 0 10px;
+    font-weight: 100;
+}
+fieldset .column {
+    padding: 0 2%;
+    float: left;
+}
+fieldset textarea {
+    width: 350px;
+    height: 300px;
+}
+fieldset .danger {
+    display: block;
+    margin: 0 5px;
+    clear: both;
+    float: left;
+}
+
+/** Track grid ****************************************************************/
+
+.leftcol, .rightcol {
+    width: 48%;
+}
+.leftcol {
+    float: left;
+    clear: both;
+}
+.rightcol {
+    float: right;
+}
+
 /** Messages ******************************************************************/
 
 .message, .error {
@@ -235,4 +304,75 @@ textarea {
 }
 .error {
     color: #800;
+}
+
+/** Blurb *********************************************************************/
+
+.newsticker, .blurb {
+    margin: 8px 0 35px;
+    padding: 10px;
+    padding-left: 12px;
+    background: #fbffff;
+    box-shadow: 0 0 1px #8aa;
+}
+
+.newsticker img {
+    display: block;
+    float: left;
+    margin: 1px 8px 0 0;
+}
+
+.blurb li {
+    color: #000;
+    margin-left: 25px;
+}
+
+/** File uploader *************************************************************/
+
+.qq-uploader {
+    position: relative;
+    width: 90%;
+    margin: 20px;
+}
+
+.qq-upload-button {
+    display:block;
+    width: 150px; 
+    padding: 5px;
+    text-align:center;
+}
+
+.qq-upload-drop-area {
+    position:absolute; top:0; left:0; width:100%; height:100%; min-height: 70px; z-index:2;
+    background:#FF9797; text-align:center; 
+}
+.qq-upload-drop-area span {
+    display:block; position:absolute; top: 50%; width:100%; margin-top:-8px; font-size:16px;
+}
+.qq-upload-drop-area-active {background:#FF7171;}
+
+.qq-upload-list {margin:15px 35px; padding:0; list-style:disc;}
+.qq-upload-list li { margin:0; padding:0; line-height:15px; font-size:12px;}
+.qq-upload-file, .qq-upload-spinner, .qq-upload-size, .qq-upload-cancel, .qq-upload-failed-text {
+    margin-right: 7px;
+}
+
+.qq-upload-file {}
+.qq-upload-spinner {display:inline-block; /*background: url("loading.gif");*/ width:15px; height:15px; vertical-align:text-bottom;}
+.qq-upload-size,.qq-upload-cancel {font-size:11px;}
+
+.qq-upload-failed-text {display:none;}
+.qq-upload-fail .qq-upload-failed-text {display:inline;}
+
+a.qq-upload-file, a.qq-upload-file:hover {
+    text-decoration: none;
+    color: #000;
+}
+.qq-upload-success a.qq-upload-file {
+    color: #408;
+    text-decoration: none;
+}
+.qq-upload-success a.qq-upload-file:hover {
+    color: #80C;
+    text-decoration: underline;
 }

@@ -10,8 +10,9 @@ string Html::userPage(int uid){
     Account user(uid);
     if(!user) return notFound("User");
     stringstream s;
-    s << headerFeed(escape(user.name()), user.url() + "/atom");
-    s << "<div class=\"user\">"
+    s << header(escape(user.name()), atomFeed(user.url() + "/atom"))
+      << "<h2>" + escape(user.name()) + "</h2>"
+      << "<div class=\"user\">"
              "Email: " << escapeEmail(user.email())
              << "<div class=\"notes\">" << format(user.about()) << "</div>"
          "</div>";
@@ -38,6 +39,7 @@ string Html::userList(const vector<User> &users){
 
 string Html::usersPage(){
     return header("Users")
+         + "<h2>Users</h2>"
          + searchForm("/users/search")
          + userList(User::list(50))
          + footer();
@@ -45,6 +47,7 @@ string Html::usersPage(){
 
 string Html::artistsPage(){
     return header("Artists")
+         + "<h2>Artists</h2>"
          + searchForm("/users/search")
          + userList(User::listArtists(50))
          + footer();
@@ -62,6 +65,7 @@ string Html::userSearch(const std::string &q){
     vector<User> res = User::search(q);
     stringstream s;
     s << header("User search")
+      << "<h2>User search</h2>"
       << searchForm("/users/search", q);
     if(res.empty())
         s << "No result.";

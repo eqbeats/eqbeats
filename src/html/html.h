@@ -21,9 +21,8 @@ std::string format(std::string);
 std::string redirect(const std::string &location);
 
 // page.cpp
-std::string header(const std::string &title=std::string(), int status=200);
-std::string headerFeed(const std::string &title, const std::string &feedurl, bool feedicon=false, int status=200);
-std::string headerOEmbed(const std::string &title, const std::string &path);
+std::string header(const std::string &title=std::string(), const std::string &head=std::string(), int status=200);
+std::string atomFeed(const std::string &url);
 std::string footer();
 std::string quickStart();
 std::string notFound(const std::string &what="Page");
@@ -42,8 +41,8 @@ std::string trackPage(int tid);
 std::string embedTrack(int tid);
 std::string embedTrackCode(const Track &t, int w=0);
 std::string trackList(const std::vector<Track> &tracks, TrackList l=Standard);
-std::string tracksPage();
-std::string tracksPage(const std::string &title, const std::string &feedurl, const std::vector<Track> &tracks);
+std::string latestTracks(int n);
+std::string tracksPage(const std::string &title, const std::vector<Track> &tracks);
 std::string trackSearch(const std::string &q);
 std::string category(int cid);
 std::string downloadTrack(int tid, Track::Format f);
@@ -74,8 +73,11 @@ std::string commentForm(const std::string &action);
 // fac.cpp
 std::string faq();
 
+// home.cpp
+std::string home();
+
 // oembed.cpp
-std::string oEmbed(const std::string &url, int w=0);
+std::string oEmbed(const std::string &url, bool xml, int w=0);
 
 }
 

@@ -79,15 +79,15 @@ int main(int argc, char** argv){
             io << Action::newTrack(cgi);
         // Tracks
         else if(path == "/tracks")
-            io << Html::tracksPage();
+            io << Html::redirect("/");
         else if(path == "/tracks/search")
             io << Html::trackSearch(cgi("q"));
         else if(path == "/tracks/latest")
-            io << Html::tracksPage("Latest Tracks", "/tracks/latest/atom", Track::latest(50));
+            io << Html::latestTracks(50);
         else if(path == "/tracks/random")
-            io << Html::tracksPage("Random Tracks", "", Track::random(50));
+            io << Html::tracksPage("Random tracks", Track::random(50));
         else if(path == "/tracks/popular")
-            io << Html::tracksPage("Popular Tracks", "", Track::popular(50));
+            io << Html::tracksPage("Popular tracks", Track::popular(50));
         // Feeds
         else if(path == "/tracks/latest/atom")
             io << Html::tracksFeed(200);
@@ -98,14 +98,14 @@ int main(int argc, char** argv){
         else if((id = routeId("cat", path)))
             io << Html::category(id);
         // oEmbed
-        else if(path == "/oembed" && cgi("format") != "xml")
-            io << Html::oEmbed(cgi("url"), number(cgi("maxwidth")));
+        else if(path == "/oembed")
+            io << Html::oEmbed(cgi("url"), cgi("format")=="xml", number(cgi("maxwidth")));
         // News
         else if((id = routeId("news", path)))
             io << Html::newsPage(id);
         else if((id = routeAction("news", "comment", path)))
             io << Action::postComment(Comment::News, id, cgi);
-        else if(path == "/news" || path == "")
+        else if(path == "/news")
             io << Html::latestNews(20);
         // Users
         else if(path == "/users/search")
@@ -128,6 +128,8 @@ int main(int argc, char** argv){
             io << Html::quickStart();
         else if(path == "/faq")
             io << Html::faq();
+        else if(path == "")
+            io << Html::home();
         else
             io << Html::notFound();
 

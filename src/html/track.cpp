@@ -40,7 +40,7 @@ string Html::uploadForm(const std::string &action){
 string artUploadForm(const Track &t){
     return
         "<form action=\"" + t.url() + "/art/upload\" method=\"post\" enctype=\"multipart/form-data\">"
-            "<input type=\"file\" name=\"file\" />"
+            "<input type=\"file\" name=\"file\" /><br />"
             "<input type=\"submit\" value=\"Upload a picture\" />"
         "</form>";
 }
@@ -123,8 +123,11 @@ string Html::trackPage(int tid){
     Art art(tid);
     if(!edition)
         t.hit();
-    s << headerOEmbed(escape(t.title()), t.url())
+    s << header(escape(t.title()),
+            "<link rel=\"alternate\" type=\"application/json+oembed\" href=\"" + eqbeatsUrl() + "/oembed?url=http%3A//eqbeats.org" + path + "&format=json\">"
+            "<link rel=\"alternate\" type=\"text/xml+oembed\" href=\"" + eqbeatsUrl() + "/oembed?url=http%3A//eqbeats.org" + path + "&format=xml\">")
       << "<div class=\"track\">"
+            "<h2>" + escape(t.title()) + "</h2>"
             "<h3 style=\"margin:10px;\">by <a href=\"" << User::url(t.artistId()) <<  "\">"
                     << escape(t.artist()) << "</a></h3>"
       << (art?"<img class=\"art\" src=\"" + art.url() + "\" />":"")
@@ -142,16 +145,21 @@ string Html::trackPage(int tid){
         s << "<div class=\"notes\">" << format(notes) << "</div>";
     s << cats(t, edition);
     if(edition)
-        s << "<h4>Edit</h4>"
-          << renameForm(t)
-          << visibilityForm(t)
-          << "<form action=\"" << t.url() << "/notes\" method=\"post\">"
+        s << "<fieldset>"
+          << "<legend>Edit</legend>"
+          << "<div class=\"column\"><h4>Rename</h4>" << renameForm(t)
+          << "<h4>Visibility</h4>" << visibilityForm(t)
+          << "<h4>Re-upload</h4>" << uploadForm(t.url()+"/upload")
+          << "<h4>Art</h4>" << artUploadForm(t)
+          << "</div>"
+          << "<div class=\"column\"><h4>Notes</h4>"
+             "<form action=\"" << t.url() << "/notes\" method=\"post\">"
                  "<textarea name=\"notes\">" << escape(notes) << "</textarea><br />"
                  "<input type=\"submit\" value=\"Update description\" />"
              "</form>"
-          << uploadForm(t.url()+"/upload")
-          << artUploadForm(t)
-          << "<a class=\"danger\" href=\"" << t.url() << "/delete\">Delete</a>";
+             "</div>"
+             "<a class=\"danger\" href=\"" << t.url() << "/delete\">Delete track</a>"
+             "</fieldset>";
     s << comments(Comment::forTrack(t.id()))
       << commentForm(t.url() + "/comment")
       << "</div>"
@@ -194,38 +202,24 @@ string Html::trackList(const vector<Track> &tracks, Html::TrackList l){
     return s.str();
 }
 
-string Html::tracksPage(){
-    stringstream s;
-    s << headerFeed("Tracks", "/tracks/latest/atom")
-      << "<h3>Search</h3>"
-      << searchForm("/tracks/search")
-      << "<h3><a href=\"/tracks/latest\">Latest</a> " + feedIcon("/tracks/latest/atom") + "</h3>"
-      << trackList(Track::latest(10))
-      << "<a class=\"more\" href=\"/tracks/latest\">More</a>"
-      << "<h3><a href=\"/track/popular\">Popular</a></h3>"
-      << trackList(Track::popular(10))
-      << "<a class=\"more\" href=\"/tracks/popular\">More</a>"
-      << "<h3><a href=\"/tracks/random\">Random</a></h3>"
-      << trackList(Track::random(10))
-      << "<a class=\"more\" href=\"/tracks/random\">More</a>"
-      << "<h3>Categories</h3>"
-      << "<ul>";
-    vector<Category> cs = Category::list();
-    for(vector<Category>::const_iterator i=cs.begin(); i!=cs.end(); i++)
-        s << "<li><a href=\"" << i->url() << "\">" << i->name() << "</a></li>";
-    s << "</ul>" << footer();
-    return s.str();
+string Html::tracksPage(const string &title, const vector<Track> &tracks){
+    return header(title)
+         + "<h2>" + title + "</h2>"
+         + trackList(tracks)
+         + footer();
 }
 
-string Html::tracksPage(const string &title, const string &feedurl, const vector<Track> &tracks){
-    return headerFeed(title, feedurl, !feedurl.empty())
-         + trackList(tracks)
+string Html::latestTracks(int n){
+    return header("Latest tracks", atomFeed("/tracks/latest/atom"))
+         + "<h2>Latest tracks " + feedIcon("/tracks/latest/atom") + "</h2>"
+         + trackList(Track::latest(n))
          + footer();
 }
 
 string Html::trackSearch(const std::string &q){
     stringstream s;
     s << header("Track search")
+      << "<h2>Track search</h2>"
       << searchForm("/tracks/search", q);
     if(!q.empty()){
         vector<Track> res = Track::search(q);
@@ -241,7 +235,10 @@ string Html::trackSearch(const std::string &q){
 string Html::category(int cid){
     Category c(cid);
     if(!c) return notFound("Category");
-    return c ? tracksPage(c.name(), c.url() + "/atom", Track::byCategory(cid)) : notFound("Category");
+    return header(c.name(), atomFeed(c.url()+"/atom"))
+         + "<h2>" + c.name() + "</h2>"
+         + trackList(Track::byCategory(cid))
+         + footer();
 }
 
 string httpFilename(const Track &t){
