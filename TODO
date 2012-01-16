@@ -1,14 +1,25 @@
-Added: XML oEmbed
-
-pagination
-better comments
-W3C validation
-news feed
-social links / Like
+- Favs
 follow artist
-duration / volume
-m3u playlist generators
-iTunes feed
+favorites: tracks
+popularity
+
+- Features
+pagination
+sorting
+Player: duration / volume
+
+- Design
+better comments
+blurb
+lists
+
+- Tech
+W3C validation
 password reset
 DB <-> tags ?
 full format support?
+
+- Lists
+news feed
+m3u playlist generators
+iTunes feed
