@@ -19,7 +19,7 @@ std::string logStatus(){
     User u = Session::user();
     std::string redir = path=="/"||path.empty() ? "" : "?redirect=" + path;
     return u ?
-        "Hi <b><a href=\"" + u.url() + "\">" + u.name() + "</a></b>. <a href=\"/logout" + redir +"\">Logout</a>" :
+        "Hi <b><a href=\"" + u.url() + "\">" + Html::escape(u.name()) + "</a></b>. <a href=\"/logout" + redir +"\">Logout</a>" :
         "<a href=\"/login" + redir + "\">Login</a>";
 }
 

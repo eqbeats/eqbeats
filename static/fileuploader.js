@@ -619,6 +619,8 @@ qq.extend(qq.FileUploader.prototype, {
         if (result.success){
             qq.addClass(item, this._classes.success);    
             // Custom
+            if(this._listElement.childNodes.length == 1)
+                document.location = "/track/" + result.track;
             var f = this._find(item, 'file');
             f.href = '/track/' + result.track;
             var t = document.createTextNode(result.title);

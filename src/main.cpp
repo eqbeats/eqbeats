@@ -48,6 +48,12 @@ int main(int argc, char** argv){
             io << Html::userPage(id);
         else if((id = routeAction("user", "comment", path)))
             io << Action::postComment(Comment::User, id, cgi);
+        else if((id = routeAction("user", "follow", path)))
+            io << Action::follow(id, true, cgi);
+        else if((id = routeAction("user", "unfollow", path)))
+            io << Action::follow(id, false, cgi);
+        else if((id = routeAction("user", "favorites", path)))
+            io << Html::favorites(id);
         // Track
         else if((id = routeAction("track", "embed", path)))
             io << Html::embedTrack(id);
@@ -67,12 +73,16 @@ int main(int argc, char** argv){
             io << Html::trackArt(id);
         else if((id = routeAction("track", "art/upload", path)))
             io << Action::uploadArt(id, cgi);
-        else if((id = routeAction("track", "visibility", path)))
-            io << Action::trackVisibility(id, cgi);
+        else if((id = routeAction("track", "publish", path)))
+            io << Action::publishTrack(id, cgi);
         else if((id = routeAction("track", "comment", path)))
             io << Action::postComment(Comment::Track, id, cgi);
         else if((id = routeAction("track", "cat", path)))
             io << Action::updateCategories(id, cgi);
+        else if((id = routeAction("track", "favorite", path)))
+            io << Action::favorite(id, true, cgi);
+        else if((id = routeAction("track", "unfavorite", path)))
+            io << Action::favorite(id, false, cgi);
         else if((id = routeId("track",path)))
             io << Html::trackPage(id);
         else if(path == "/track/new")

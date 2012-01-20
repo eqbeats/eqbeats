@@ -1,19 +1,10 @@
-- Favs
-follow artist
-favorites: tracks
-popularity
-
 - Features
 pagination
 sorting
 Player: duration / volume
 
-- Design
-better comments
-blurb
-lists
-
 - Tech
+OO Render
 W3C validation
 password reset
 DB <-> tags ?
@@ -22,4 +13,3 @@ full format support?
 - Lists
 news feed
 m3u playlist generators
-iTunes feed

@@ -61,6 +61,7 @@ std::string userSearch(const std::string &q);
 std::string usersPage();
 std::string artistsPage();
 std::string searchForm(const std::string &action, const std::string &q=std::string());
+std::string favorites(int uid);
 
 // news.cpp
 std::string newsPage(int nid);

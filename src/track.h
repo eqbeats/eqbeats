@@ -43,6 +43,7 @@ class Track{
 
         //time_t getTime() const;
         std::string date() const { return _date; }
+        void bump();
 
         std::string url() const { return Track::url(_id); }
         static std::string url(int id);
@@ -65,12 +66,15 @@ class Track{
         void removeCategories(const std::vector<int> &cats);
         void addCategory(int cid);
 
+        int favoritesCount() const;
+
         static std::vector<Track> byArtist(int sArtistId, bool all=false);
         static std::vector<Track> byCategory(int cat);
         static std::vector<Track> search(const std::string &q);
         static std::vector<Track> latest(int n);
         static std::vector<Track> random(int n);
         static std::vector<Track> popular(int n);
+        static std::vector<Track> favorites(int uid);
 
         operator bool() const { return _id > 0; }
 

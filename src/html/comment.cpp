@@ -11,11 +11,11 @@ string Html::comments(const vector<Comment> &cmts, const std::string title){
         s << "<div class=\"comment\">" << Html::format(i->contents) << "<br />"
              "<div class=\"by\">by ";
         if(i->authorId)
-            s << "<a href=\""<< User::url(i->authorId) << "\">" << i->authorName() << "</a>";
+            s << "<a href=\""<< User::url(i->authorId) << "\">" << Html::escape(i->authorName()) << "</a>";
         else
-            s << i->authorName();
+            s << Html::escape(i->authorName());
         if(i->trackId)
-            s << " on <a href=\"" << Track::url(i->trackId) << "\">" << i->trackTitle << "</a>";
+            s << " on <a href=\"" << Track::url(i->trackId) << "\">" << Html::escape(i->trackTitle) << "</a>";
         s << "</div></div>";
     }
     s << "</div>";

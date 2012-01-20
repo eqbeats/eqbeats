@@ -141,6 +141,28 @@ std::vector<Track> Track::popular(int n){
     return resultToVector(DB::query(SEL + "visible = 't' ORDER BY hits DESC LIMIT " + number(n)));
 }
 
+std::vector<Track> Track::favorites(int uid){
+    return resultToVector(DB::query(
+        "SELECT tracks.id, tracks.title, tracks.user_id, users.name, tracks.visible, tracks.date FROM tracks, users, favorites "
+        "WHERE tracks.user_id = users.id "
+        "AND favorites.type = 'track' "
+        "AND favorites.user_id = " + number(uid) + " "
+        "AND favorites.ref = tracks.id "
+        "AND tracks.visible = 't' "
+        "ORDER BY tracks.title DESC"));
+}
+
+int Track::favoritesCount() const{
+    DB::Result r = DB::query("SELECT COUNT(*) FROM favorites "
+        "WHERE type = 'track' AND ref = " + number(_id));
+    return r.empty() ? -1 : number(r[0][0]);
+}
+
+void Track::bump(){
+    if(_id<=0) return;
+    DB::query("UPDATE tracks SET date = 'now' WHERE id = " + number(_id));
+}
+
 void Track::addCategory(int cid){
     DB::query("UPDATE tracks SET cats = " + number(cid) + " || cats WHERE id = " + number(_id));
 }

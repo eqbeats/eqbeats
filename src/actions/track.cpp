@@ -3,18 +3,42 @@
 #include "../html/html.h"
 #include "../session.h"
 #include "../utils.h"
+#include "../mail.h"
 
 using namespace std;
 using namespace Html;
 
-std::string Action::trackVisibility(int tid, cgicc::Cgicc &cgi){
+std::string filter(const std::string &str){
+    std::string buf;
+    for(std::string::const_iterator i = str.begin(); i!=str.end(); i++){
+        if(*i != '\n' && *i != '\r') buf += *i;
+    }
+    return buf;
+}
+
+std::string Action::publishTrack(int tid, cgicc::Cgicc &cgi){
+    if(tid != number(cgi("tid")))
+        return redirect(Track::url(tid));
     User u = Session::user();
     Track t(tid);
-    if(u.id() != t.artistId() || !u || 
-       ( cgi("visible") != "t" && cgi("visible") != "f" ) ||
-       cgi.getEnvironment().getRequestMethod() != "POST")
-        return redirect("/");
-    t.setVisible(cgi("visible")=="t");
+    if(u.id() == t.artistId() && t && !t.visible() && u &&
+        cgi.getEnvironment().getRequestMethod() == "POST"){
+        t.setVisible(true);
+        t.bump();
+        // Mail
+        std::vector<std::string> emails = u.followers();
+        std::string maildata =
+            "From: EqBeats notification <notify@eqbeats.org>\n"
+            "Message-ID: notify-t" + number(t.id()) + "\n"
+            "Subject: " + filter("EqBeats notification: " + u.name() + " - " + t.title()) + "\n"
+            "Precedence: bulk\n\n" +
+            u.name() + " just published a new track : " + t.title() + "\n"
+            "Listen to it here : " + eqbeatsUrl() + t.url() + "\n\n"
+            "You're receiving this email because you're following " + u.name() + " on EqBeats.\n"
+            "If you don't want to receive these notifications anymore, go to " + eqbeatsUrl() + u.url() + " and click \"Stop following\".";
+        for(std::vector<std::string>::const_iterator i = emails.begin(); i!=emails.end(); i++)
+            sendMail(i->c_str(), maildata.c_str());
+    }
     return redirect(t.url());
 }
 

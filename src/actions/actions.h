@@ -19,7 +19,7 @@ std::string account(cgicc::Cgicc &cgi);
 std::string deleteTrack(int tid, cgicc::Cgicc &cgi);
 std::string renameTrack(int tid, cgicc::Cgicc &cgi);
 std::string updateNotes(int tid, cgicc::Cgicc &cgi);
-std::string trackVisibility(int tid, cgicc::Cgicc &cgi);
+std::string publishTrack(int tid, cgicc::Cgicc &cgi);
 std::string updateCategories(int tid, cgicc::Cgicc &cgi);
 
 // upload.cpp
@@ -31,6 +31,10 @@ std::string postComment(Comment::Type type, int ref, cgicc::Cgicc &cgi);
 
 // art.cpp
 std::string uploadArt(int tid, cgicc::Cgicc &cgi);
+
+// favorite.cpp
+std::string follow(int uid, bool add, cgicc::Cgicc &cgi);
+std::string favorite(int tid, bool add, cgicc::Cgicc &cgi);
 
 }
 

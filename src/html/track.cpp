@@ -45,13 +45,12 @@ string artUploadForm(const Track &t){
         "</form>";
 }
 
-string visibilityForm(const Track &t){
+string publishForm(const Track &t){
     return
-        "<form action=\"" + t.url() + "/visibility\" method=\"post\">"
-          "This track is " +
-          (t.visible()?"public." : "<b>hidden</b>.") +
-          " <input type=\"submit\" value=\"" + (t.visible()?"Hide":"Show") + "\"/>"
-          "<input type=\"hidden\" name=\"visible\" value=\"" + (t.visible()?"f":"t") + "\"/>"
+        "<form class=\"publish\" action=\"" + t.url() + "/publish\" method=\"post\">"
+          "This track is not yet published. "
+          " <input type=\"submit\" value=\"Publish\"/>"
+          "<input type=\"hidden\" name=\"tid\" value=\"" + number(t.id()) + "\"/>"
       "</form>";
 }
 
@@ -115,6 +114,13 @@ string cats(const Track &t, bool edition){
     return s.str();
 }
 
+string favButton(const Track &t, int uid){
+    if(uid == 0) return "";
+    bool isFav = User(uid).isFavorite(t.id());
+    return (string)"<a class=\""+(isFav?"unfavorite":"favorite")+"\" href=\"" + t.url() + "/" + 
+                (isFav?"un":"") + "favorite\">"+(isFav?"Remove from favorites":"Add to favorites")+"</a>";
+}
+
 string Html::trackPage(int tid){
     Track t(tid);
     if(!t) return notFound("Track");
@@ -127,8 +133,9 @@ string Html::trackPage(int tid){
             "<link rel=\"alternate\" type=\"application/json+oembed\" href=\"" + eqbeatsUrl() + "/oembed?url=http%3A//eqbeats.org" + path + "&format=json\">"
             "<link rel=\"alternate\" type=\"text/xml+oembed\" href=\"" + eqbeatsUrl() + "/oembed?url=http%3A//eqbeats.org" + path + "&format=xml\">")
       << "<div class=\"track\">"
-            "<h2>" + escape(t.title()) + "</h2>"
-            "<h3 style=\"margin:10px;\">by <a href=\"" << User::url(t.artistId()) <<  "\">"
+         << favButton(t, Session::user().id())
+         << "<h2>" + escape(t.title()) + "</h2>"
+         << "<h4 style=\"margin:10px;\">by <a href=\"" << User::url(t.artistId()) <<  "\">"
                     << escape(t.artist()) << "</a></h3>"
       << (art?"<img class=\"art\" src=\"" + art.url() + "\" />":"")
       << player(t)
@@ -138,28 +145,31 @@ string Html::trackPage(int tid){
       << (art?" <a href=\"" + art.url() + "\" target=\"_blank\">Art</a>":"")
       << " &nbsp; Share : <a href=\"#embedcode\" onclick=\"document.getElementById('embedcode').style.display='block';return false;\">Embed</a>";
     if(edition)
-        s << " &nbsp; Hits : " << t.getHits();
+        s << " &nbsp; Hits : " << t.getHits() << " &nbsp; Favourites : " << t.favoritesCount();
     s << "</div>" << embedCode(t);
     string notes = t.getNotes();
     if(!notes.empty())
         s << "<div class=\"notes\">" << format(notes) << "</div>";
     s << cats(t, edition);
     if(edition)
-        s << "<fieldset>"
-          << "<legend>Edit</legend>"
-          << "<div class=\"column\"><h4>Rename</h4>" << renameForm(t)
-          << "<h4>Visibility</h4>" << visibilityForm(t)
+        s << "<h3>Edit</h3>"
+             "<div class=\"edit\">"
+          << (t.visible()?"":publishForm(t))
+          << "<div class=\"column\">"
+          << "<h4>Rename</h4>" << renameForm(t)
           << "<h4>Re-upload</h4>" << uploadForm(t.url()+"/upload")
           << "<h4>Art</h4>" << artUploadForm(t)
           << "</div>"
-          << "<div class=\"column\"><h4>Notes</h4>"
+          << "<div class=\"column\">"
+             "<h4>Notes</h4>"
              "<form action=\"" << t.url() << "/notes\" method=\"post\">"
                  "<textarea name=\"notes\">" << escape(notes) << "</textarea><br />"
                  "<input type=\"submit\" value=\"Update description\" />"
              "</form>"
              "</div>"
-             "<a class=\"danger\" href=\"" << t.url() << "/delete\">Delete track</a>"
-             "</fieldset>";
+             "<a class=\"delete\" href=\"" << t.url() << "/delete\">Delete track</a>"
+             "<div style=\"clear:both;\"></div>"
+             "</div>";
     s << comments(Comment::forTrack(t.id()))
       << commentForm(t.url() + "/comment")
       << "</div>"

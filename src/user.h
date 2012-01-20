@@ -3,6 +3,7 @@
 
 #include <stdlib.h>
 #include "db.h"
+#include "track.h"
 
 class User{
 
@@ -21,6 +22,17 @@ class User{
         static std::vector<User> list(unsigned int n, unsigned int begin=0);
         static std::vector<User> listArtists(unsigned int n, unsigned int begin=0);
         static std::vector<User> search(const std::string &q);
+
+        std::vector<std::string> followers() const; // email addresses
+        std::vector<User> following() const;
+        void follow(int uid);
+        void unfollow(int uid);
+        bool isFollowing(int uid) const;
+        int followersCount() const;
+
+        bool isFavorite(int tid) const;
+        void addToFavorites(int tid);
+        void removeFromFavorites(int tid);
 
     protected:
         User(int nId, const std::string &nName) { _id = nId; _name = nName; }

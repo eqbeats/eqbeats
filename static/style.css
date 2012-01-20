@@ -64,7 +64,7 @@ html, body {
 /******************************************************************************/
 
 #contents {
-    padding: 25px 4% 20px;
+    padding: 25px 40px 20px;
     background-color: #FFF;
     margin: 0 auto;
     box-shadow: 0 0 1px #888;
@@ -88,6 +88,12 @@ p {
     text-indent: 15px;
 }
 
+#contents h3 {
+    border-radius: 5px;
+    padding: 10px 20px;
+    border: 1px solid #eee;
+    background: url("/static/title-grad.png") repeat-x bottom #fbfbfb;
+}
 
 /** Track page ****************************************************************/
 
@@ -181,9 +187,7 @@ a.danger {
 }
 
 .oldnews {
-    margin-top: 35px;
-    padding-top: 10px;
-    border-top: 1px solid #edf;
+    margin-top: 40px;
 }
 
 a.more {
@@ -257,30 +261,82 @@ textarea {
     margin: 10px 20px;
 }
 
-fieldset {
-    margin: 30px 0 0;
-    padding: 0 10px 15px;
-    border: 1px solid #ddd;
-    border-radius: 2px;
-}
-fieldset legend {
-    font-size: 1.4em;
-    padding: 0 10px;
-    font-weight: 100;
-}
-fieldset .column {
+.edit .column {
     padding: 0 2%;
     float: left;
 }
-fieldset textarea {
+.edit textarea {
     width: 350px;
     height: 300px;
 }
-fieldset .danger {
+.edit form {
+    margin-top: 10px;
+    margin-bottom: 25px;
+}
+
+form.publish {
+    font-weight: bold;
+    color: #548;
+    text-align: center;
+}
+
+form.publish input {
+    color: #FFF;
+    background: #307;
+    border: none;
+}
+form.publish input:hover {
+    background-color: #509;
+}
+
+.search form {
+    display: inline;
+    margin: 0;
+}
+.search {
+    text-align: center;
+    font-size: 1.2em;
+    font-weight: 100;
+    margin: 35px 0 5px;
+}
+
+/** Follow / Favorite / Delete buttons ****************************************/
+
+.follow, .unfollow, .favorite, .unfavorite {
+    float: right;
     display: block;
-    margin: 0 5px;
+    margin-top: 7px;
+    padding: 7px 9px 7px 33px;
+    border-radius: 2px;
+}
+
+.follow:hover, .unfollow:hover, .favorite:hover, .unfavorite:hover, .delete:hover {
+    text-decoration: none;
+}
+
+.follow { background: url("/static/follow.png") no-repeat 7px center #57f; } 
+.favorite { background: url("/static/fav.png") no-repeat 7px center #57f; }
+.follow:hover, .favorite:hover { background-color: #59f; } 
+.unfollow { background: url("/static/unfollow.png") no-repeat 12px center #e8e8e8; }
+.unfavorite { background: url("/static/unfav.png") no-repeat 9px center #e8e8e8; }
+.unfollow:hover, .unfavorite:hover { background-color: #f0f0f0; } 
+
+.follow, .follow:hover, .favorite, .favorite:hover { color: white; }
+.unfollow, .unfollow:hover, .unfavorite, .unfavorite:hover { color: #408; }
+
+.delete {
+    float: right;
+    margin-right: 20px;
+    background: url("/static/delete.png") no-repeat 7px center;
+    padding-left: 37px;
+    color: #b00;
+    border-radius: 2px;
+    padding: 7px 9px 7px 33px;
     clear: both;
-    float: left;
+}
+.delete:hover {
+    background-color: #f00;
+    color: #fff;
 }
 
 /** Track grid ****************************************************************/
@@ -308,8 +364,8 @@ fieldset .danger {
 
 /** Blurb *********************************************************************/
 
-.newsticker, .blurb {
-    margin: 8px 0 35px;
+.newsticker {
+    margin: 8px 0;
     padding: 10px;
     padding-left: 12px;
     background: #fbffff;
