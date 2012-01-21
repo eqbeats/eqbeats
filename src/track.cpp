@@ -75,6 +75,7 @@ Track Track::create(int nArtistId, const std::string &nTitle){
 void Track::remove(){
     DB::query("DELETE FROM tracks WHERE id = " + number(_id));
     DB::query("DELETE FROM comments WHERE type = 'track' AND ref = " + number(_id));
+    DB::query("DELETE FROM favorites WHERE type = 'track' AND ref = " + number(_id));
     string base = eqbeatsDir() + "/tracks/" + number(_id) + ".";
     string path = base + "mp3";
     unlink(path.c_str());

@@ -626,18 +626,19 @@ qq.extend(qq.FileUploader.prototype, {
             var t = document.createTextNode(result.title);
             f.replaceChild(t, f.firstChild);
 
-            var tracklists = document.getElementsByClassName("tracklist");
-            if(tracklists.length != 0){
-                var tracklist = tracklists[0];
+            var tracklist = document.getElementsByClassName("tracklist")[0];
+            if(tracklist != undefined){
+                if(tracklist.tagName.toLowerCase() == "div"){
+                    var ul = document.createElement("ul");
+                    ul.className = "tracklist";
+                    tracklist.parentNode.replaceChild(ul, tracklist)
+                    tracklist = ul;
+                }
                 var track = document.createElement("li");
                 track.className = "hidden";
                 track.appendChild(f.cloneNode(true));
                 track.firstChild.className="";
-                if(tracklist.firstChild){
-                    tracklist.insertBefore(track, tracklist.firstChild);
-                } else {
-                    tracklist.appendChild(track);
-                }
+                tracklist.insertBefore(track, tracklist.firstChild);
             }
         } else {
             qq.addClass(item, this._classes.fail);

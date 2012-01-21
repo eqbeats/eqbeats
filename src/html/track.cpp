@@ -199,6 +199,7 @@ string Html::embedTrack(int tid){
 }
 
 string Html::trackList(const vector<Track> &tracks, Html::TrackList l){
+    if(tracks.empty()) return "<div class=\"empty tracklist\">Nothing here yet.</div>";
     stringstream s;
     s << "<ul class=\"tracklist\">";
     for(vector<Track>::const_iterator i=tracks.begin(); i!=tracks.end(); i++){

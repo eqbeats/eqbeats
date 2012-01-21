@@ -145,6 +145,12 @@ a.danger {
     margin: 20px 0;
 }
 
+.empty {
+    margin: 20px;
+    text-align: center;
+    color: #444;
+}
+
 .comment {
     margin: 10px;
     padding: 15px 20px;

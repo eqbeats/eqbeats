@@ -45,6 +45,7 @@ string Html::favorites(int uid){
 }
 
 string Html::userList(const vector<User> &users){
+    if(users.empty()) return "<div class=\"empty\">Nobody here yet.</div>";
     stringstream s(stringstream::out);
     s << "<ul>";
     for(vector<User>::const_iterator i=users.begin(); i!=users.end(); i++)
