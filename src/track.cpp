@@ -149,7 +149,7 @@ std::vector<Track> Track::favorites(int uid){
         "AND favorites.user_id = " + number(uid) + " "
         "AND favorites.ref = tracks.id "
         "AND tracks.visible = 't' "
-        "ORDER BY tracks.title DESC"));
+        "ORDER BY users.name ASC"));
 }
 
 int Track::favoritesCount() const{

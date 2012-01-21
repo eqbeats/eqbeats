@@ -26,7 +26,7 @@ std::string Html::latestNews(int n){
              "<a class=\"more\" href=\"" << news[0].url() << "#comments\">Comments</a>";
         if(news.size()>1){
             s << "<div class=\"oldnews\">"
-              << "<h3>Older news</h3>"
+              << "<h3><img src=\"/static/newspaper-24.png\" alt=\"\" />Older news</h3>"
               << "<ul>";
             for(std::vector<News>::const_iterator i=news.begin()+1; i!=news.end(); i++)
                 s << "<li><a href=\"" << i->url() << "\">" << i->title() << "</a></li>";

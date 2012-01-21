@@ -31,7 +31,6 @@ std::string Html::header(const std::string &title, const std::string &head, int 
     return
         "Status: " + statusMsg(status) + "\n"
         "Content-Type: text/html; charset=UTF-8\n\n"
-        "<!doctype html !>"
         "<html><head>"
             "<title>" + (title.empty()?"":title+" - ") + "Equestrian Beats</title>"
             "<link rel=\"stylesheet\" href=\"/static/style.css\" />"
@@ -60,6 +59,7 @@ std::string Html::footer(){
             "</div>"
             "<div id=\"footer\">"
                 "Contact: " + escapeEmail("contact@eqbeats.org") +
+                "<br /><a href=\"/credits\">Credits</a>"
                 //"Generated in " + number(usecs()) + " &mu;S."
             "</div>"
         "</div>"

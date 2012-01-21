@@ -138,6 +138,8 @@ int main(int argc, char** argv){
             io << Html::quickStart();
         else if(path == "/faq")
             io << Html::faq();
+        else if(path == "/credits")
+            io << Html::credits();
         else if(path == "")
             io << Html::home();
         else

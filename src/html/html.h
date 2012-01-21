@@ -74,6 +74,9 @@ std::string commentForm(const std::string &action);
 // fac.cpp
 std::string faq();
 
+// credits.cpp
+std::string credits();
+
 // home.cpp
 std::string home();
 

@@ -28,10 +28,10 @@ string Html::userPage(int uid){
     if(edition)
         s << "<a class=\"more\" href=\"/account\">Edit</a><br /><br />";
     s << "<a class=\"more\" href=\"" << user.url() << "/favorites\">Favorite tracks</a>"
-      << "<h3>Tracks " + feedIcon(user.url() + "/atom") + "</h3>"
+      << "<h3><img src=\"/static/disc.png\" /> Tracks " + feedIcon(user.url() + "/atom") + "</h3>"
       << Html::trackList(Track::byArtist(user.id(), edition), edition ? Html::Edition : Html::Compact);
     if(edition)
-        s << uploadForm("/track/new") << "<h3>Artists you follow</h3>" << Html::userList(user.following())
+        s << uploadForm("/track/new") << "<h3><img src=\"/static/plus-circle.png\" /> Artists you follow</h3>" << Html::userList(user.following())
           << Html::comments(Comment::forArtist(uid), "Comments on your tracks");
     s << Html::comments(Comment::forUser(uid)) << Html::commentForm(user.url()+"/comment");
     s << footer();

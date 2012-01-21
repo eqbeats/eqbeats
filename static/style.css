@@ -18,12 +18,15 @@ html, body {
 
 #header h1 {
     margin: 0;
-    padding: 25px 20px 15px;
+    padding: 25px 20px 0;
     font-size: 2.2em;
     font-weight: 100;
 }
 #header h1 a {
+    display: block;
     text-decoration: none;
+    padding: 20px 0 20px 160px;
+    background: url("/static/logo.png") no-repeat left center;
 }
 
 .feed {
@@ -34,8 +37,6 @@ html, body {
 }
 .feed span { display: none; }
 .feed:hover { background-position: center right; }
-
-.feed:hover { }
 
 /** Navigation bar ************************************************************/
 
@@ -81,6 +82,9 @@ html, body {
     text-shadow: 0 1px white;
 }
 
+#footer a { color: #777; }
+#footer a:hover { color: #444; }
+
 /** Generic *******************************************************************/
 
 p {
@@ -90,23 +94,39 @@ p {
 
 #contents h3 {
     border-radius: 5px;
-    padding: 10px 20px;
+    padding: 10px 12px;
     border: 1px solid #eee;
     background: url("/static/title-grad.png") repeat-x bottom #fbfbfb;
 }
 
+#contents h3 img {
+    float: left;
+    display: block;
+    margin-right: 7px;
+}
+
 /** Track page ****************************************************************/
 
-.download {
-    margin: 30px 0 0;
-}
-.cats {
+.toolbar {
     margin: 20px 0 0;
 }
 
-.cats a, .download a {
+.toolbar img {
+    margin: 0 5px 0 30px;
+    vertical-align: top;
+}
+
+.toolbar span {
+    white-space: nowrap;
+}
+
+.cats a, .toolbar a {
     padding: 2px 0;
     margin: 0 5px;
+}
+
+.cats img {
+    vertical-align: middle;
 }
 
 .notes, .news {
@@ -218,6 +238,12 @@ ul {
     content: "(hidden)";
     font-size: 0.6em;
     margin-left: 5px;
+}
+
+/** Credits page **************************************************************/
+
+.credits li {
+    color: #000;
 }
 
 /** Forms *********************************************************************/
@@ -335,7 +361,7 @@ form.publish input:hover {
     clear: both;
 }
 .delete:hover {
-    background-color: #f00;
+    background-color: #d00;
     color: #fff;
 }
 

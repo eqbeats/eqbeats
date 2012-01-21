@@ -6,7 +6,7 @@ using namespace std;
 
 string Html::comments(const vector<Comment> &cmts, const std::string title){
     stringstream s;
-    s << "<h3 id=\"comments\">" << title << "</h3><div>";
+    s << "<h3 class=\"comments\"><img src=\"/static/balloon.png\" /> " << title << "</h3><div>";
     for(vector<Comment>::const_iterator i=cmts.begin(); i!=cmts.end(); i++){
         s << "<div class=\"comment\">" << Html::format(i->contents) << "<br />"
              "<div class=\"by\">by ";

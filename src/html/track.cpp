@@ -89,7 +89,7 @@ string cats(const Track &t, bool edition){
     vector<Category> cs = t.getCategories();
     if(cs.empty() && !edition) return string();
     stringstream s;
-    s << "<div class=\"cats\">Categories:";
+    s << "<div class=\"toolbar cats\"><img src=\"/static/tag.png\" /> Categories:";
     if(edition)
         s << "<form action=\"" << t.url() << "/cat\" method=\"post\">";
     for(vector<Category>::const_iterator i=cs.begin(); i!=cs.end(); i++){
@@ -135,24 +135,26 @@ string Html::trackPage(int tid){
       << "<div class=\"track\">"
          << favButton(t, Session::user().id())
          << "<h2>" + escape(t.title()) + "</h2>"
-         << "<h4 style=\"margin:10px;\">by <a href=\"" << User::url(t.artistId()) <<  "\">"
+            "<h4 style=\"margin:10px;\">by <a href=\"" << User::url(t.artistId()) <<  "\">"
                     << escape(t.artist()) << "</a></h3>"
       << (art?"<img class=\"art\" src=\"" + art.url() + "\" />":"")
       << player(t)
-      << "<div class=\"download\">Download : "
-      << " <a href=\"" << t.url(Track::Vorbis) << "\">OGG Vorbis</a>"
+      << "<div class=\"toolbar\">"
+         "<span><img src=\"/static/drive-download.png\" /> Download : "
+         " <a href=\"" << t.url(Track::Vorbis) << "\">OGG Vorbis</a>"
          " <a href=\"" << t.url(Track::MP3) << "\">MP3</a>"
       << (art?" <a href=\"" + art.url() + "\" target=\"_blank\">Art</a>":"")
-      << " &nbsp; Share : <a href=\"#embedcode\" onclick=\"document.getElementById('embedcode').style.display='block';return false;\">Embed</a>";
+      << "</span> <span><img src=\"/static/balloon-white-left.png\" alt=\"Share\" /> Share : <a href=\"#embedcode\" onclick=\"document.getElementById('embedcode').style.display='block';return false;\">Embed</a></span>";
     if(edition)
-        s << " &nbsp; Hits : " << t.getHits() << " &nbsp; Favourites : " << t.favoritesCount();
+        s << " <span><img src=\"/static/edit-number.png\" /> Hits : " << t.getHits()
+          << "</span> <span><img src=\"/static/star.png\" /> Favourites : " << t.favoritesCount() << "</span>";
     s << "</div>" << embedCode(t);
     string notes = t.getNotes();
     if(!notes.empty())
         s << "<div class=\"notes\">" << format(notes) << "</div>";
     s << cats(t, edition);
     if(edition)
-        s << "<h3>Edit</h3>"
+        s << "<h3><img src=\"/static/pencil.png\" /> Edit</h3>"
              "<div class=\"edit\">"
           << (t.visible()?"":publishForm(t))
           << "<div class=\"column\">"
