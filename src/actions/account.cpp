@@ -44,7 +44,7 @@ std::string accountForm(const Account &_account, const std::string &error=std::s
 }
 
 std::string Action::account(cgicc::Cgicc &cgi){
-    if(!Session::user()) return Html::redirect("/");
+    if(!Session::user()) return Html::redirect("/login?redirect=/account");
     Account a(Session::user().id());
     if(cgi.getEnvironment().getRequestMethod() != "POST")
         return accountForm(a);
