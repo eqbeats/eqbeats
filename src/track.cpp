@@ -65,8 +65,8 @@ std::string Track::url(Format f) const{
 Track Track::create(int nArtistId, const std::string &nTitle){
     Track t;
     DB::Result r = DB::query(
-        "INSERT INTO tracks (user_id, title, date, license) VALUES "
-        "("+number(nArtistId)+", $1, 'now', 'None specified') "
+        "INSERT INTO tracks (user_id, title, date) VALUES "
+        "("+number(nArtistId)+", $1, 'now') "
         "RETURNING id, date", nTitle);
     if(r.empty()) return t;
     return Track(number(r[0][0]), nTitle, nArtistId, User(nArtistId).name(), false, r[0][1]);
@@ -80,8 +80,6 @@ void Track::remove(){
     string path = base + "mp3";
     unlink(path.c_str());
     path = base + "ogg";
-    unlink(path.c_str());
-    path = base + "flac";
     unlink(path.c_str());
     Art art(_id);
     if(art) unlink(art.filepath().c_str());
@@ -117,6 +115,7 @@ std::vector<Track> Track::byCategory(int cat){
 }
 
 std::vector<Track> Track::search(const std::string &q){
+    if(q.empty()) return std::vector<Track>();
     std::vector<std::string> p;
     std::istringstream in(q);
     std::string buf;

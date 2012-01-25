@@ -2,7 +2,11 @@
 #include "routing.h"
 #include "session.h"
 #include "timer.h"
-#include "html/html.h"
+#include "render/html.h"
+#include "render/json.h"
+#include "render/oembed.h"
+#include "render/feed.h"
+#include "render/http.h"
 #include "actions/actions.h"
 #include "account.h"
 #include "utils.h"
@@ -54,6 +58,8 @@ int main(int argc, char** argv){
             io << Action::follow(id, false, cgi);
         else if((id = routeAction("user", "favorites", path)))
             io << Html::favorites(id);
+        else if((id = routeAction("user", "json", path)))
+            io << Json::artist(id);
         // Track
         else if((id = routeAction("track", "embed", path)))
             io << Html::embedTrack(id);
@@ -83,13 +89,15 @@ int main(int argc, char** argv){
             io << Action::favorite(id, true, cgi);
         else if((id = routeAction("track", "unfavorite", path)))
             io << Action::favorite(id, false, cgi);
+        else if((id = routeAction("track", "json", path)))
+            io << Json::track(id);
         else if((id = routeId("track",path)))
             io << Html::trackPage(id);
         else if(path == "/track/new")
             io << Action::newTrack(cgi);
         // Tracks
         else if(path == "/tracks")
-            io << Html::redirect("/");
+            io << Http::redirect("/");
         else if(path == "/tracks/search")
             io << Html::trackSearch(cgi("q"));
         else if(path == "/tracks/latest")
@@ -98,18 +106,29 @@ int main(int argc, char** argv){
             io << Html::tracksPage("Random tracks", Track::random(50));
         else if(path == "/tracks/popular")
             io << Html::tracksPage("Popular tracks", Track::popular(50));
+        else if(path == "/tracks/search/json")
+            io << Json::tracks(Track::search(cgi("q")));
+        else if(path == "/tracks/latest/json")
+            io << Json::tracks(Track::latest(50));
+        else if(path == "/tracks/random/json")
+            io << Json::tracks(Track::random(50));
+        else if(path == "/tracks/popular/json")
+            io << Json::tracks(Track::popular(50));
         // Feeds
         else if(path == "/tracks/latest/atom")
-            io << Html::tracksFeed(200);
+            io << Feed::latest(200);
         else if((id = routeAction("user", "atom", path)))
-            io << Html::userFeed(id);
+            io << Feed::user(id);
+        // Categories
         else if((id = routeAction("cat", "atom", path)))
-            io << Html::categoryFeed(id);
+            io << Feed::category(id);
+        else if((id = routeAction("cat", "json", path)))
+            io << Json::category(id);
         else if((id = routeId("cat", path)))
             io << Html::category(id);
         // oEmbed
         else if(path == "/oembed")
-            io << Html::oEmbed(cgi("url"), cgi("format")=="xml", number(cgi("maxwidth")));
+            io << oEmbed(cgi("url"), cgi("format")=="xml", number(cgi("maxwidth")));
         // News
         else if((id = routeId("news", path)))
             io << Html::newsPage(id);
@@ -120,10 +139,14 @@ int main(int argc, char** argv){
         // Users
         else if(path == "/users/search")
             io << Html::userSearch(cgi("q"));
+        else if(path == "/users/search/json")
+            io << Json::users(User::search(cgi("q")));
         else if(path == "/users")
             io << Html::usersPage();
         else if(path == "/artists")
             io << Html::artistsPage();
+        else if(path == "/artists/json")
+            io << Json::users(User::listArtists(200));
         // Actions
         else if(path == "/register")
             io << Action::registration(cgi);

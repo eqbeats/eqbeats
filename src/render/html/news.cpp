@@ -1,7 +1,7 @@
-#include "html.h"
-#include "../news.h"
-#include "../utils.h"
-#include "../comment.h"
+#include "../html.h"
+#include "../../news.h"
+#include "../../utils.h"
+#include "../../comment.h"
 #include <sstream>
 
 std::string Html::newsPage(int nid){
@@ -23,7 +23,8 @@ std::string Html::latestNews(int n){
         s << "<h2>Latest news : <a href=\"" << news[0].url() << "\">" 
           << escape(news[0].title()) << "</a></h2>"
           << "<div class=\"news\">" << news[0].getContents() << "</div>"
-             "<a class=\"more\" href=\"" << news[0].url() << "#comments\">Comments</a>";
+             "<a class=\"more\" href=\"" << news[0].url() << "#comments\">"
+             "Comments (" << number(Comment::countForNews(news[0].id())) << ")</a>";
         if(news.size()>1){
             s << "<div class=\"oldnews\">"
               << "<h3><img src=\"/static/newspaper-24.png\" alt=\"\" />Older news</h3>"

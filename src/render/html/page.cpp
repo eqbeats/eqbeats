@@ -1,19 +1,10 @@
-#include "html.h"
-#include "../timer.h"
-#include "../session.h"
-#include "../utils.h"
+#include "../html.h"
+#include "../http.h"
+#include "../../timer.h"
+#include "../../session.h"
+#include "../../utils.h"
 #include <stdio.h>
 #include <sstream>
-
-std::string statusMsg(int stat){
-    switch(stat){
-        case 200: return "200 OK";
-        case 403: return "403 Forbidden";
-        case 404: return "404 Not Found";
-        case 500: return "500 Server Error";
-    }
-    return "";
-}
 
 std::string logStatus(){
     User u = Session::user();
@@ -29,8 +20,7 @@ std::string Html::atomFeed(const std::string &url){
 
 std::string Html::header(const std::string &title, const std::string &head, int status){
     return
-        "Status: " + statusMsg(status) + "\n"
-        "Content-Type: text/html; charset=UTF-8\n\n"
+        Http::header("text/html", status) +
         "<html><head>"
             "<title>" + (title.empty()?"":title+" - ") + "Equestrian Beats</title>"
             "<link rel=\"stylesheet\" href=\"/static/style.css\" />"
@@ -60,7 +50,7 @@ std::string Html::footer(){
             "<div id=\"footer\">"
                 "Contact: " + escapeEmail("contact@eqbeats.org") +
                 "<br /><a href=\"/credits\">Credits</a>"
-                //"Generated in " + number(usecs()) + " &mu;S."
+                "<!--Generated in " + number(usecs()) + " μS.-->"
             "</div>"
         "</div>"
       "</body></html>";

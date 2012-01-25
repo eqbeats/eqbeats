@@ -42,6 +42,7 @@ std::vector<User> User::listArtists(unsigned int n, unsigned int begin){
 }
 
 std::vector<User> User::search(const std::string &q){
+    if(q.empty()) return std::vector<User>();
     return resultToVector(DB::query(
         "SELECT id, name FROM users WHERE name ILIKE $1 ORDER BY registration DESC", "%"+q+"%"));
 }

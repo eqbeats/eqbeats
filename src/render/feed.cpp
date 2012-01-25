@@ -1,12 +1,14 @@
 #include "html.h"
+#include "feed.h"
+#include "http.h"
 #include "../track.h"
 #include "../user.h"
 #include "../utils.h"
 
 using namespace std;
+
 std::string notFound(const string what){
-    return "Status: 404 Not Found\n"
-    "Content-Type: application/atom+xml; charset=UTF-8\n\n"
+    return Http::header("application/atom+xml", 404) +
     "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>"
     "<feed xmlns=\"http://www.w3.org/2005/Atom\">"
         "<title>" + what + " Not Found</title>"
@@ -15,10 +17,9 @@ std::string notFound(const string what){
         "<updated>1970-01-01 01:00:00+01:00</updated>"
     "</feed>";
 }
+
 std::string feed(const string &title, const string &link, const vector<Track> &tracks){
-    std::string atom =
-    "Status: 200 OK\n"
-    "Content-Type: application/atom+xml; charset=UTF-8\n\n"
+    std::string atom = Http::header("application/atom+xml") +
     "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>"
     "<feed xmlns=\"http://www.w3.org/2005/Atom\">"
         "<title>" + title + " on EqBeats</title>"
@@ -46,16 +47,16 @@ std::string feed(const string &title, const string &link, const vector<Track> &t
     return atom;
 }
 
-std::string Html::tracksFeed(int n){
+std::string Feed::latest(int n){
     return feed("Latest tracks", "/tracks/latest", Track::latest(n));
 }
-std::string Html::userFeed(int uid){
+std::string Feed::user(int uid){
     User u(uid);
     if (!u) return ::notFound("User");
     return feed(u.name(), u.url(), Track::byArtist(uid));
 }
 
-std::string Html::categoryFeed(int cid){
+std::string Feed::category(int cid){
     Category c(cid);
     if (!c) return ::notFound("Category");
     return feed(c.name(), c.url(), Track::byCategory(cid));

@@ -1,6 +1,6 @@
 #include <sstream>
-#include "html.h"
-#include "../news.h"
+#include "../html.h"
+#include "../../news.h"
 
 
 std::string newsTicker(){

@@ -1,6 +1,7 @@
 #include "actions.h"
 #include "../session.h"
-#include "../html/html.h"
+#include "../render/html.h"
+#include "../render/http.h"
 
 std::string loginForm(const cgicc::Cgicc &cgi, const std::string &error=std::string()){
     return Html::header("Login") + "<h2>Login</h2>" +
@@ -25,7 +26,7 @@ std::string loginForm(const cgicc::Cgicc &cgi, const std::string &error=std::str
 }
 
 std::string Action::login(cgicc::Cgicc &cgi){
-    if(Session::user()) return Html::redirect(cgi("redirect").empty()? Session::user().url() : cgi("redirect"));
+    if(Session::user()) return Http::redirect(cgi("redirect").empty()? Session::user().url() : cgi("redirect"));
 
     if(cgi.getEnvironment().getRequestMethod() != "POST")
         return loginForm(cgi);
@@ -41,12 +42,12 @@ std::string Action::login(cgicc::Cgicc &cgi){
         return loginForm(cgi, "Sorry, wrong credentials.");
 
     return "Set-Cookie: sid=" + sid + ";Max-Age=2592000\n" // 30 days
-    + Html::redirect(cgi("redirect").empty()? Session::user().url() : cgi("redirect")) +
+    + Http::redirect(cgi("redirect").empty()? Session::user().url() : cgi("redirect")) +
         "Logged in, redirecting...";
 }
 
 std::string Action::logout(cgicc::Cgicc &cgi){
     Session::logout();
-    return "Set-Cookie: sid=\n" + Html::redirect(cgi("redirect").empty()?"/":cgi("redirect")) +
+    return "Set-Cookie: sid=\n" + Http::redirect(cgi("redirect").empty()?"/":cgi("redirect")) +
         "Logged out, redirecting...";
 }

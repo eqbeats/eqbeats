@@ -1,5 +1,6 @@
 #include "actions.h"
-#include "../html/html.h"
+#include "../render/html.h"
+#include "../render/http.h"
 #include "../news.h"
 #include "../session.h"
 
@@ -10,7 +11,7 @@ std::string Action::postComment(Comment::Type type, int ref, cgicc::Cgicc &cgi){
 
     if(!cgi("msg").empty() && cgi.getEnvironment().getRequestMethod() == "POST")
         Comment::add(cgi("msg"), cgi("name"), Session::user().id(), ref, type);
-    return Html::redirect(
+    return Http::redirect(
         type == Comment::Track ? Track::url(ref) + "#comments" :
         type == Comment::User ? User::url(ref) + "#comments" :
         type == Comment::News ? News::url(ref) + "#comments" : "/"

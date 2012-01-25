@@ -3,7 +3,7 @@
 #include "../user.h"
 #include "../utils.h"
 #include "actions.h"
-#include "../html/html.h"
+#include "../render/http.h"
 
 std::string Action::uploadArt(int tid, cgicc::Cgicc &cgi){
     cgicc::file_iterator file = cgi.getFile("file");
@@ -13,5 +13,5 @@ std::string Action::uploadArt(int tid, cgicc::Cgicc &cgi){
         file->writeToStream(out);
         out.close();
     }
-    return Html::redirect(Track::url(tid));
+    return Http::redirect(Track::url(tid));
 }

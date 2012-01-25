@@ -14,11 +14,7 @@ namespace Html{
 // escape.cpp
 std::string escape(const std::string &);
 std::string escapeEmail(const std::string &);
-std::string jsonString(const std::string &);
 std::string format(std::string);
-
-// redirect.cpp
-std::string redirect(const std::string &location);
 
 // page.cpp
 std::string header(const std::string &title=std::string(), const std::string &head=std::string(), int status=200);
@@ -49,9 +45,6 @@ std::string downloadTrack(int tid, Track::Format f);
 std::string trackArt(int tid);
 
 // feed.cpp
-std::string tracksFeed(int n);
-std::string userFeed(int uid);
-std::string categoryFeed(int cid);
 std::string feedIcon(const std::string &url);
 
 // user.cpp
@@ -79,9 +72,6 @@ std::string credits();
 
 // home.cpp
 std::string home();
-
-// oembed.cpp
-std::string oEmbed(const std::string &url, bool xml, int w=0);
 
 }
 

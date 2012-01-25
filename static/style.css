@@ -108,12 +108,14 @@ p {
 /** Track page ****************************************************************/
 
 .toolbar {
-    margin: 20px 0 0;
+    margin: 10px 0 0;
+    line-height: 2em;
 }
 
 .toolbar img {
-    margin: 0 5px 0 30px;
-    vertical-align: top;
+    margin: 0 5px 0 20px;
+    vertical-align: middle;
+    padding-bottom: 3px;
 }
 
 .toolbar span {
@@ -135,9 +137,15 @@ p {
 }
 
 .notes {
-    margin: 25px 5px;
+    /*margin: 25px 5px;
     padding: 0 15px;
-    border-left: 1px solid #406;
+    border-left: 1px solid #406;*/
+    border-radius: 3px;
+    background-color: #f0f0f0;
+    padding: 15px 20px;
+}
+.track .notes {
+    margin: 15px 20px 0;
 }
 
 a.danger {
@@ -157,6 +165,8 @@ a.danger {
     border-radius: 3px;
     border: solid #eee;
     border-width: 0px 0 1px 1px;
+    line-height: 1.6em;
+    font-size: 0.9em;
 }
 .postcomment {
     text-align: center;
@@ -165,8 +175,13 @@ a.danger {
     margin: 15px;
 }
 
-.by {
+.comment .by {
     margin-top: 8px;
+    font-size: 0.9em;
+    color: #000;
+}
+
+.tracklist .by {
     font-size: 0.8em;
     color: #000;
 }
@@ -193,7 +208,24 @@ a.danger {
 /** User page *****************************************************************/
 
 .user {
-    margin: 20px 20px;
+    margin: 20px 0;
+}
+
+.user .email {
+    margin: 2px 20px;
+}
+.user .email img {
+    vertical-align: middle;
+    padding-bottom: 3px;
+    margin-right: 4px;
+}
+
+.user .notes {
+    margin: 15px 0;
+}
+
+.user .more {
+    margin: inherit 20px;
 }
 
 /** FAQ page ******************************************************************/

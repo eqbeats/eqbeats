@@ -1,4 +1,4 @@
-#include "html.h"
+#include "../html.h"
 
 std::string Html::faq(){
     return header("FAQ") + "<h2>Frequently Asked Questions</h2><div class=\"faq\">"

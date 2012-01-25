@@ -1,10 +1,12 @@
 - Features
+Popular -> Featured
 inline play button (lists)
 pagination
 sorting
 Player: duration / volume
 
 - Tech
+Json (session, favorites)
 OO Render
 W3C validation
 password reset

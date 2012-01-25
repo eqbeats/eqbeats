@@ -1,7 +1,7 @@
-#include "html.h"
-#include "../session.h"
-#include "../utils.h"
-#include "../account.h"
+#include "../html.h"
+#include "../../session.h"
+#include "../../utils.h"
+#include "../../account.h"
 #include <sstream>
 
 using namespace std;
@@ -21,14 +21,14 @@ string Html::userPage(int uid){
       << followButton(user, Session::user().id())
       << "<h2>" + escape(user.name()) + "</h2>"
       << "<div class=\"user\">"
-             "Email: " << escapeEmail(user.email())
-             << "<div class=\"notes\">" << format(user.about()) << "</div>"
-         "</div>";
+             "<div class=\"email\"><img src=\"/static/mail.png\" /> Email: " << escapeEmail(user.email()) << "</div>"
+             << "<div class=\"notes\">" << format(user.about()) << "</div>";
     bool edition = Session::user().id() == user.id();
     if(edition)
         s << "<a class=\"more\" href=\"/account\">Edit</a><br /><br />";
     s << "<a class=\"more\" href=\"" << user.url() << "/favorites\">Favorite tracks</a>"
-      << "<h3><img src=\"/static/disc.png\" /> Tracks " + feedIcon(user.url() + "/atom") + "</h3>"
+         "</div>"
+         "<h3><img src=\"/static/disc.png\" /> Tracks " + feedIcon(user.url() + "/atom") + "</h3>"
       << Html::trackList(Track::byArtist(user.id(), edition), edition ? Html::Edition : Html::Compact);
     if(edition)
         s << uploadForm("/track/new") << "<h3><img src=\"/static/plus-circle.png\" /> Artists you follow</h3>" << Html::userList(user.following())
@@ -66,7 +66,7 @@ string Html::artistsPage(){
     return header("Artists")
          + "<h2>Artists</h2>"
          + searchForm("/users/search")
-         + userList(User::listArtists(50))
+         + userList(User::listArtists(200))
          + footer();
 }
 

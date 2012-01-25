@@ -1,12 +1,12 @@
 #include "html.h"
+#include "json.h"
+#include "http.h"
 #include "../routing.h"
 #include "../utils.h"
 #include "../art.h"
 #include <sstream>
 
 using namespace std;
-
-const char* notFound = "Status: 404 Not Found\n\n";
 
 bool drop(const string &s, string &str){
     if(s.length() > str.length())
@@ -27,19 +27,18 @@ string extractPath(string url){
 string field(const string &name, const string &val, bool xml){
     if(xml)
         return "<" + name + ">" + val + "</" + name + ">";
-    return "\"" + name + "\":" + val + ",";
+    return Json::field(name, val);
 }
 
-string stringField(const string &name, const string &val, bool xml){
+string stringField(const string &name, const string &val, bool xml, bool last=false){
     if(xml)
         return "<" + name + ">" + Html::escape(val) + "</" + name + ">";
-    return "\"" + name + "\":" + Html::jsonString(val) + ",";
-    
+    return Json::field(name, Json::jstring(val), last);
 }
 
 string header(bool xml){
     stringstream s;
-    s << "Content-Type: " << (xml ? "text/xml" : "application/json") << "\n\n";
+    s << Http::header(xml ? "text/xml" : "application/json");
     if(xml)
       s << "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>"
            "<oembed>";
@@ -58,12 +57,12 @@ string footer(bool xml){
 string embedH(const Track &t, bool xml){
     return stringField("title", t.title(), xml)
          + stringField("author_name", t.artist(), xml)
-         + stringField("author_url", eqbeatsUrl() + User::url(t.artistId()), xml);
+         + stringField("author_url", eqbeatsUrl() + User::url(t.artistId()), xml, true);
 }
 
 string oEmbedTrack(int tid, bool xml, int w){
     Track t(tid);
-    if(!t) return notFound;
+    if(!t) return Http::notFound();
     if(!w) w = 500;
     return header(xml)
         + stringField("type", "video", xml)
@@ -78,7 +77,7 @@ string oEmbedTrack(int tid, bool xml, int w){
 string oEmbedArt(int tid, bool xml){
     Track t(tid);
     Art art(tid);
-    if(!t || !art) return notFound;
+    if(!t || !art) return Http::notFound();
     return header(xml)
         + stringField("type", "photo", xml)
         + stringField("url", eqbeatsUrl() + art.url(), xml)
@@ -86,13 +85,13 @@ string oEmbedArt(int tid, bool xml){
         + footer(xml);
 }
 
-string Html::oEmbed(const string &url, bool xml, int w){
+string oEmbed(const string &url, bool xml, int w){
     string path = stripSlash(extractPath(url));
-    if(path.empty()) return ::notFound;
+    if(path.empty()) return Http::notFound();
     int id;
     if((id = routeId("track", path)))
         return oEmbedTrack(id, xml, w);
     else if((id = routeAction("track", "art", path)))
         return oEmbedArt(id, xml);
-    return ::notFound;
+    return Http::notFound();
 }

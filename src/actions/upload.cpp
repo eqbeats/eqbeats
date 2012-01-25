@@ -1,5 +1,7 @@
 #include "actions.h"
-#include "../html/html.h"
+#include "../render/html.h"
+#include "../render/http.h"
+#include "../render/json.h"
 #include "../session.h"
 #include "../utils.h"
 #include <string.h>
@@ -7,6 +9,8 @@
 #include <taglib/mpegfile.h>
 #include <taglib/tag.h>
 #include <sys/stat.h>
+
+using namespace Json;
 
 std::string getTitle(const char *filename){
     TagLib::MPEG::File f(filename);
@@ -18,13 +22,17 @@ std::string Action::uploadTrack(int id, cgicc::Cgicc &cgi){
     User u = Session::user();
     Track t(id);
 
-    static const std::string header = "Content-Type: text/html\n\n";
+    static const std::string header = Http::header("application/json");
     cgicc::file_iterator file = cgi.getFile("file");
     cgicc::file_iterator qqfile = cgi.getFile("qqfile");
     bool isXhr = !cgi("qqfile").empty() || qqfile != cgi.getFiles().end();
 
-    std::string formatError = isXhr? header+"{ success: false, error: 'Only MP3 files are accepted.' }" : Html::errorPage("Only MP3 files are accepted.");
-    std::string genericError = isXhr? header+"{ success: false }" : Html::redirect(t?t.url():u?u.url():"/");
+    std::string formatError = isXhr?
+        header+"{"+field("success","false")+field("error",jstring("Only MP3 files are accepted."))+"}":
+        Html::errorPage("Only MP3 files are accepted.");
+    std::string genericError = isXhr?
+        header+"{"+field("success","false")+"}":
+        Http::redirect(t?t.url():u?u.url():"/");
 
     if(!u) return genericError;
     if(t && t.artistId() != u.id())
@@ -68,7 +76,9 @@ std::string Action::uploadTrack(int id, cgicc::Cgicc &cgi){
 
     t.convertToVorbis();
 
-    return isXhr? header+"{ success: true, track: " + number(t.id()) + ", title: " + Html::jsonString(t.title()) + " }" : Html::redirect(t.url());
+    return isXhr?
+        header+"{"+field("success","true")+field("track",number(t.id()))+field("title",jstring(t.title()))+"}":
+        Http::redirect(t.url());
 }
 
 std::string Action::newTrack(cgicc::Cgicc &cgi){

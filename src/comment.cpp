@@ -58,3 +58,8 @@ std::vector<Comment> Comment::forTrack(int tid){
 std::vector<Comment> Comment::forNews(int nid){
     return commentHelper(News, nid);
 }
+
+int Comment::countForNews(int nid){
+    DB::Result r = DB::query("SELECT count(*) FROM comments WHERE type = 'news' AND ref = " + number(nid));
+    return r.empty() ? 0 : number(r[0][0]);
+}
