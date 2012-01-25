@@ -21,8 +21,10 @@ string Html::userPage(int uid){
       << followButton(user, Session::user().id())
       << "<h2>" + escape(user.name()) + "</h2>"
       << "<div class=\"user\">"
-             "<div class=\"email\"><img src=\"/static/mail.png\" /> Email: " << escapeEmail(user.email()) << "</div>"
-             << "<div class=\"notes\">" << format(user.about()) << "</div>";
+             "<div class=\"email\"><img src=\"/static/mail.png\" /> Email: " << escapeEmail(user.email()) << "</div>";
+    string about = user.about();
+    if(!about.empty())
+        s << "<div class=\"notes\">" << format(about) << "</div>";
     bool edition = Session::user().id() == user.id();
     if(edition)
         s << "<a class=\"more\" href=\"/account\">Edit</a><br /><br />";

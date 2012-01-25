@@ -276,10 +276,10 @@ string Html::downloadTrack(int tid, Track::Format f){
 }
 
 string Html::trackArt(int tid){
-    Track t(tid);
-    if(!t) return notFound("Track");
     Art art(tid);
     if(!art) return notFound("Art");
+    Track t(tid);
+    if(!t) return notFound("Track");
     Art::Format f = art.getFormat();
     string ext = f == Art::PNG ? ".png" : f == Art::JPEG ? ".jpg" : "";
     string mime = f == Art::PNG ? "image/png" : f == Art::JPEG ? "image/jpeg" : "";

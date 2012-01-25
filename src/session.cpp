@@ -21,11 +21,11 @@ std::string sid;
 
 void Session::start(Cgicc &cgi){
     CgiEnvironment env = cgi.getEnvironment();
-
     for(std::vector<HTTPCookie>::const_iterator i=env.getCookieList().begin(); i!= env.getCookieList().end(); i++){
         if(i->getName() == "sid")
             sid = i->getValue();
     }
+    if(sid.empty()) return;
     DB::Result r = DB::query("SELECT user_id FROM sessions WHERE sid = $1 AND host = $2", sid, env.getRemoteAddr());
     if(!r.empty()) u = User(number(r[0][0]));
 }
