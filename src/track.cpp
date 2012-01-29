@@ -111,7 +111,7 @@ std::vector<Track> Track::byArtist(int sArtistId, bool all){
 
 std::vector<Track> Track::byCategory(int cat){
     return resultToVector(DB::query(SEL + number(cat) + " = ANY(tracks.cats)"
-        "ORDER BY date DESC"));
+        "AND visible='t' ORDER BY date DESC"));
 }
 
 std::vector<Track> Track::search(const std::string &q){
