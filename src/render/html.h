@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include "../track.h"
+#include "../art.h"
 #include "../user.h"
 #include "../comment.h"
 
@@ -42,7 +43,7 @@ std::string tracksPage(const std::string &title, const std::vector<Track> &track
 std::string trackSearch(const std::string &q);
 std::string category(int cid);
 std::string downloadTrack(int tid, Track::Format f);
-std::string trackArt(int tid);
+std::string trackArt(int tid, Art::Size sz=Art::Full);
 
 // feed.cpp
 std::string feedIcon(const std::string &url);

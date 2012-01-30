@@ -1,7 +1,6 @@
 #include "../html.h"
 #include "../../session.h"
 #include "../../utils.h"
-#include "../../art.h"
 #include <sstream>
 #include <algorithm>
 
@@ -137,7 +136,7 @@ string Html::trackPage(int tid){
          << "<h2>" + escape(t.title()) + "</h2>"
             "<h4 style=\"margin:10px;\">by <a href=\"" << User::url(t.artistId()) <<  "\">"
                     << escape(t.artist()) << "</a></h3>"
-      << (art?"<img class=\"art\" src=\"" + art.url() + "\" />":"")
+      << (art?"<img class=\"art\" src=\"" + art.url(Art::Medium) + "\" />":"")
       << player(t)
       << "<div class=\"toolbar\">"
          "<span><img src=\"/static/drive-download.png\" /> Download : "
@@ -275,16 +274,16 @@ string Html::downloadTrack(int tid, Track::Format f){
         "Content-Type: audio/"+mime+"\n\n";
 }
 
-string Html::trackArt(int tid){
+string Html::trackArt(int tid, Art::Size sz){
     Art art(tid);
     if(!art) return notFound("Art");
     Track t(tid);
     if(!t) return notFound("Track");
     Art::Format f = art.getFormat();
-    string ext = f == Art::PNG ? ".png" : f == Art::JPEG ? ".jpg" : "";
-    string mime = f == Art::PNG ? "image/png" : f == Art::JPEG ? "image/jpeg" : "";
-    return
-        "X-Accel-Redirect: /downloads/art/" + number(tid) + "\n"
+    string ext = f == Art::PNG ? ".png" : f == Art::JPEG ? ".jpg" : f == Art::GIF ? ".gif" : "";
+    string mime = f == Art::PNG ? "image/png" : f == Art::JPEG ? "image/jpeg" : f == Art::GIF ? "image/gif" : "";
+    return (string)
+        "X-Accel-Redirect: /downloads/art/" + (sz == Art::Medium ? "medium/" : "") + number(tid) + "\n"
         "Content-Disposition: inline; filename=\"" + httpFilename(t) + ext + "\"\n"
         + (mime.empty()?"":"Content-Type: " + mime + "\n") + "\n";
 }

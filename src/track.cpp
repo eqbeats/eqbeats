@@ -82,7 +82,7 @@ void Track::remove(){
     path = base + "ogg";
     unlink(path.c_str());
     Art art(_id);
-    if(art) unlink(art.filepath().c_str());
+    if(art) art.remove();
     _id = 0;
 }
 

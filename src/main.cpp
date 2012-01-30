@@ -53,6 +53,8 @@ int main(int argc, char** argv){
             io << Html::downloadTrack(id, Track::MP3);
         else if((id = routeAction("track", "art", path)))
             io << Html::trackArt(id);
+        else if((id = routeAction("track", "art/medium", path)))
+            io << Html::trackArt(id, Art::Medium);
         // Json
         else if((id = routeAction("track", "json", path)))
             io << Json::track(id);

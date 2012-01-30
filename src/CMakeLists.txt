@@ -13,11 +13,13 @@ add_executable ( eqbeats.fcgi
     FCgiIO.cpp
 )
 
+include_directories ( /usr/include/ImageMagick )
+
 target_link_libraries ( eqbeats.fcgi
-    cgicc fcgi fcgi++ pq pcrecpp tag
+    cgicc fcgi fcgi++ pq pcrecpp tag Magick++ MagickCore
 )
 
-ADD_CUSTOM_COMMAND (
+add_custom_command (
     TARGET eqbeats.fcgi
     POST_BUILD
     COMMAND "$ENV{EQBEATS_DIR}/launch.sh" restart

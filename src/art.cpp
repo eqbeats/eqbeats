@@ -1,6 +1,8 @@
 #include "art.h"
 #include "utils.h"
+#include <Magick++.h>
 #include <stdio.h>
+#include <unistd.h>
 
 Art::Art(int tid){
     _tid = tid;
@@ -8,23 +10,52 @@ Art::Art(int tid){
         _tid = 0;
 }
 
-std::string Art::filepath() const{
-    return eqbeatsDir() + "/art/" + number(_tid);
+std::string Art::filepath(Art::Size sz) const{
+    return eqbeatsDir() + "/art/" + (sz==Medium?"medium/":"") + number(_tid);
 }
 
-std::string Art::url() const{
-    return "/track/" + number(_tid) + "/art";
+std::string Art::url(Art::Size sz) const{
+    return "/track/" + number(_tid) + "/art" + (sz==Medium?"/medium":"");
 }
 
 Art::Format Art::getFormat(){
     FILE *f = fopen(filepath().c_str(), "rb");
     Format format = Unknown;
-    unsigned char magic[2];
-    fread(&magic, 1, 2, f);
+    unsigned char magic[4];
+    fread(&magic, 1, 4, f);
     // JPEG: 0xffd8
     // PNG:  0x89504e470d0a1a0a
+    // GIF:  0x47494638
     if(magic[0] == 0xff && magic[1] == 0xd8) format = JPEG;
-    if(magic[0] == 0x89 && magic[1] == 0x50) format = PNG;
+    if(magic[0] == 0x89 && magic[1] == 'P' &&
+       magic[2] == 'N'  && magic[3] == 'G') format = PNG;
+    if(magic[0] == 'G'  && magic[1] == 'I' &&
+       magic[2] == 'F'  && magic[3] == '8') format = GIF;
     fclose(f);
     return format;
+}
+
+void Art::makeThumbs(){
+    if(_tid<=0) return;
+    Magick::Image i;
+    unlink(filepath(Medium).c_str());
+    try {
+        i.read(filepath());
+        if(i.size().height() <= 480){
+            symlink(("../" + number(_tid)).c_str(), filepath(Medium).c_str());
+            return;
+        }
+        i.scale("x480");
+        if(getFormat() == JPEG && i.quality() > 90)
+            i.quality(90);
+        i.write(filepath(Medium));
+    } catch ( Magick::Exception &err ) {
+        return;
+    }
+}
+
+void Art::remove(){
+    if(_tid <= 0) return;
+    unlink(filepath(Full).c_str());
+    unlink(filepath(Medium).c_str());
 }

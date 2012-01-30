@@ -9,13 +9,19 @@ class Art{
         // Sets _tid = 0 on error
         Art(int tid);
 
-        std::string filepath() const;
-        std::string url() const;
+        enum Size { Full, Medium };
 
-        enum Format { Unknown, PNG, JPEG };
+        std::string filepath(Size sz=Full) const;
+        std::string url(Size sz=Full) const;
+
+        void makeThumbs();
+
+        enum Format { Unknown, PNG, JPEG, GIF };
         Format getFormat();
 
-        operator bool(){ return _tid; }
+        void remove();
+
+        operator bool(){ return _tid>0; }
 
     private:
         int _tid;

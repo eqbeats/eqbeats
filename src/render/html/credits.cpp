@@ -15,6 +15,7 @@ std::string Html::credits(){
         "<h4>Design</h4>"
         "<ul>"
             "<li><a href=\"http://www.slt.fr\">SLT</a> - Logo</li>"
+            "<li><a href=\"http://blackm3sh.deviantart.com/art/Rarity-Filly-203377463\">BlackM3sh</a> - Filly Rarity</li>"
             "<li><a href=\"http://p.yusukekamiyamane.com/\">Yusuke Kamiyamane</a> - Fugue icon set</li>"
         "</ul></div>"
         + footer();

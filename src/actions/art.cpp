@@ -1,3 +1,4 @@
+#include "../art.h"
 #include "../session.h"
 #include "../track.h"
 #include "../user.h"
@@ -12,6 +13,8 @@ std::string Action::uploadArt(int tid, cgicc::Cgicc &cgi){
         std::ofstream out(filename.c_str(), std::ios_base::binary);
         file->writeToStream(out);
         out.close();
+        Art art(tid);
+        art.makeThumbs();
     }
     return Http::redirect(Track::url(tid));
 }
