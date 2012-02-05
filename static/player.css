@@ -42,13 +42,47 @@ audio {
 #player-embed {
     background-color: #FFF;
     padding: 10px 10px 5px;
-    border-radius: 10px;
+    border-radius: 7px;
 }
+
+#player-embed a.pic {
+    display: block;
+    float: right;
+    margin-right: 15px;
+}
+#player-embed img.cover {
+    border: 1px solid #ddd;
+    padding: 1px;
+    margin-top: 2px;
+}
+#player-embed img.logo {
+    opacity: 0.2;
+    -webkit-transition: opacity 0.4s linear;
+    -moz-transition: opacity 0.4s linear;
+}
+#player-embed img.logo:hover {
+    opacity: 0.5;
+}
+
 #player-embed h3, #player-embed h4 {
     margin: 5px;
     height: 1.2em;
     overflow: hidden;
 }
+
+#player-embed audio {
+    width: 95%;
+    padding-top: 10px;
+    margin-bottom: 10px;
+}
+
 #player-embed #player {
     margin: 15px;
+}
+
+#playtime {
+    margin: 6px;
+    text-align: right;
+    font-size: .8em;
+    color: #555;
 }

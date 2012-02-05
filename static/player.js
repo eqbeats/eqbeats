@@ -20,7 +20,7 @@ function addListener(obj,type,fn) {
         }
         obj[type+fn](e);
     };
-    
+
     if (obj.addEventListener) {
         obj.addEventListener(type,obj[type+fn+2],false);
     } else if (obj.attachEvent) {
@@ -41,6 +41,13 @@ function removeListener(obj,type,fn) {
     obj[type+fn+2] = null;
 }
 
+function prettyTime(ms){
+    if(isNaN(ms)) return "0:00";
+    time = [Math.floor(ms / 60000), Math.floor(ms / 1000) % 60];
+    if(time[1] < 10) time[1] = "0" + time[1];
+    return time[0] + ":" + time[1]
+}
+
 
 soundManager.url = '/static/';
 soundManager.preferFlash = false;
@@ -54,14 +61,20 @@ soundManager.onready(function(){
     scrubberbar.id = "scrubberbar";
     var scrubber = document.createElement("div");
     scrubber.id = "scrubber";
+    var playtime = document.createElement("div");
+    playtime.id = "playtime";
     player.appendChild(playpause);
     scrubberbar.appendChild(scrubber);
     player.appendChild(scrubberbar);
+    player.appendChild(playtime);
     var snd = soundManager.createSound({
         id: 'snd',
         autoLoad: false,
+        whileloading: function(){
+                    playtime.innerHTML = prettyTime(snd.position) + "/" + prettyTime(snd.durationEstimate);
+        },
         url: [
-            {url:oggpath, type:'audio/ogg'}, 
+            {url:oggpath, type:'audio/ogg'},
             {url:mp3path, type:'audio/mp3'}
         ]
     });
@@ -71,7 +84,10 @@ soundManager.onready(function(){
             player.className = "paused";
         } else {
             snd.play({
-                whileplaying: function(){ scrubber.style.width = (100 * snd.position / snd.durationEstimate) + "%"; },
+                whileplaying: function(){
+                    scrubber.style.width = (100 * snd.position / snd.durationEstimate) + "%";
+                    playtime.innerHTML = prettyTime(snd.position) + "/" + prettyTime(snd.durationEstimate);
+                },
                 onfinish: function(){ player.className = "paused"; }
             });
             player.className = "playing";

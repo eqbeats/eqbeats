@@ -9,7 +9,7 @@ class Art{
         // Sets _tid = 0 on error
         Art(int tid);
 
-        enum Size { Full, Medium };
+        enum Size { Full, Medium, Thumbnail };
 
         std::string filepath(Size sz=Full) const;
         std::string url(Size sz=Full) const;

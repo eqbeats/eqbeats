@@ -3,16 +3,16 @@ Popular -> Featured
 inline play button (lists)
 pagination
 sorting
-Player: duration / volume
+Player: volume
 
 - Tech
-Art: different sizes
 Json (session, favorites)
 OO Render
 W3C validation
 password reset
 DB <-> tags ?
 full format support?
+document json API
 
 - Lists
 news feed

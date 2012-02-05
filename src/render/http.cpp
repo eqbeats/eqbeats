@@ -29,3 +29,19 @@ std::string Http::notFound(){
 std::string Http::redirect(const std::string &location){
     return "Location: " + location + "\n" + header(303);
 }
+
+std::string httpFilename(const std::string &str){
+    std::string buf;
+    for(std::string::const_iterator i=str.begin(); i!=str.end(); i++){
+        if     (*i == '"') buf += "\\\"";
+        else if(*i >= ' ') buf += *i;
+    }
+    return buf;
+}
+
+std::string Http::download(const std::string &path, const std::string &filename, const std::string &mime, bool attachment){
+    return
+        "X-Accel-Redirect: " + path + "\n"
+        "Content-Disposition: " + (attachment?"attachment":"inline") + "; filename=\"" + httpFilename(filename) +"\"\n"
+        "Content-Type: "+mime+"\n\n";
+}

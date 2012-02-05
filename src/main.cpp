@@ -55,6 +55,8 @@ int main(int argc, char** argv){
             io << Html::trackArt(id);
         else if((id = routeAction("track", "art/medium", path)))
             io << Html::trackArt(id, Art::Medium);
+        else if((id = routeAction("track", "art/thumb", path)))
+            io << Html::trackArt(id, Art::Thumbnail);
         // Json
         else if((id = routeAction("track", "json", path)))
             io << Json::track(id);

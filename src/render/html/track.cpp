@@ -1,4 +1,5 @@
 #include "../html.h"
+#include "../http.h"
 #include "../../session.h"
 #include "../../utils.h"
 #include <sstream>
@@ -55,19 +56,19 @@ string publishForm(const Track &t){
 
 string player(const Track &t){
     return
-        "<noscript>"
-            "<audio controls>"
-                "<source type=\"audio/ogg\" src=\"" + t.url(Track::Vorbis) + "\" />"
-                "<source type=\"audio/mpeg\" src=\"" + t.url(Track::MP3) + "\" />"
-            "</audio>"
-        "</noscript>"
         "<div id=\"player\"></div>"
         "<script src=\"/static/sm2.js\"></script>"
         "<script>"
             "var mp3path = \"" + t.url(Track::MP3) +"\";"
             "var oggpath = \"" + t.url(Track::Vorbis) +"\";"
         "</script>"
-        "<script src=\"/static/player.js\"></script>";
+        "<script src=\"/static/player.js\"></script>"
+        "<noscript>"
+            "<audio controls>"
+                "<source type=\"audio/ogg\" src=\"" + t.url(Track::Vorbis) + "\" />"
+                "<source type=\"audio/mpeg\" src=\"" + t.url(Track::MP3) + "\" />"
+            "</audio>"
+        "</noscript>";
 }
 
 string Html::embedTrackCode(const Track &t, int w){
@@ -180,14 +181,18 @@ string Html::trackPage(int tid){
 
 string Html::embedTrack(int tid){
     Track t(tid);
+    Art art(tid);
     stringstream s;
-    s << "Content-Type: text/html\n";
-    if(!t) s << "Status: 404 Not Found\n";
-    s << "\n<!DOCTYPE html!>"
-        "<html><head>"
+    s << Http::header("text/html", t?200:404)
+      << "<html><head>"
             "<title>" << (t ? escape(t.title()) : "Track not found") << " - Equestrian Beats</title>"
             "<link rel=\"stylesheet\" type=\"text/css\" href=\"/static/player.css\" />"
-        "</head><body><div id=\"player-embed\">";
+        "</head><body><div id=\"player-embed\">"
+        "<a href=\"" + t.url() + "\" target=\"_blank\" class=\"pic\">"
+        + (art?
+            "<img src=\"" + art.url(Art::Thumbnail) + "\" class=\"cover\" alt=\"Cover\"  />":
+            "<img src=\"/static/logo.png\" class=\"logo\" alt=\"Equestrian Beats\" />"
+        ) + "</a>";
     if(t)
         s << "<h3><a href=\"" + t.url() + "\" target=\"_blank\">" + escape(t.title()) + "</a></h3>"
              "<h4>by <a href=\"" << User::url(t.artistId()) <<  "\" target=\"_blank\">" << escape(t.artist()) << "</a></h4>"
@@ -252,26 +257,12 @@ string Html::category(int cid){
          + trackList(Track::byCategory(cid))
          + footer();
 }
-
-string httpFilename(const Track &t){
-    string str = t.artist() + " - " + t.title();
-    string buf;
-    for(string::const_iterator i=str.begin(); i!=str.end(); i++){
-        if     (*i == '"') buf += "\\\"";
-        else if(*i >= ' ') buf += *i;
-    }
-    return buf;
-}
-
 string Html::downloadTrack(int tid, Track::Format f){
     Track t(tid);
     if(!t) return notFound("Track");
-    string ext = f == Track::Vorbis ? "ogg" : "mp3";
+    string ext = f == Track::Vorbis ? ".ogg" : ".mp3";
     string mime = f == Track::Vorbis ? "ogg" : "mpeg";
-    return
-        "X-Accel-Redirect: /downloads/tracks/" + number(tid) + "."+ext+"\n"
-        "Content-Disposition: attachment; filename=\"" + httpFilename(t) + "."+ext+"\"\n"
-        "Content-Type: audio/"+mime+"\n\n";
+    return Http::download("/downloads/tracks/"+number(tid)+ext, t.artist()+" - "+t.title()+ext, "audio/"+mime, true);
 }
 
 string Html::trackArt(int tid, Art::Size sz){
@@ -281,9 +272,6 @@ string Html::trackArt(int tid, Art::Size sz){
     if(!t) return notFound("Track");
     Art::Format f = art.getFormat();
     string ext = f == Art::PNG ? ".png" : f == Art::JPEG ? ".jpg" : f == Art::GIF ? ".gif" : "";
-    string mime = f == Art::PNG ? "image/png" : f == Art::JPEG ? "image/jpeg" : f == Art::GIF ? "image/gif" : "";
-    return (string)
-        "X-Accel-Redirect: /downloads/art/" + (sz == Art::Medium ? "medium/" : "") + number(tid) + "\n"
-        "Content-Disposition: inline; filename=\"" + httpFilename(t) + ext + "\"\n"
-        + (mime.empty()?"":"Content-Type: " + mime + "\n") + "\n";
+    string mime = f == Art::PNG ? "image/png" : f == Art::JPEG ? "image/jpeg" : f == Art::GIF ? "image/gif" : "application/octet-stream";
+    return Http::download((string)"/downloads/art/"+(sz==Art::Medium?"medium/":sz==Art::Thumbnail?"thumb/":"")+number(tid), t.artist()+" - "+t.title()+ext, mime);
 }
