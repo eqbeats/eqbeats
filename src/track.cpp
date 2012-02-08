@@ -76,6 +76,8 @@ void Track::remove(){
     DB::query("DELETE FROM tracks WHERE id = " + number(_id));
     DB::query("DELETE FROM comments WHERE type = 'track' AND ref = " + number(_id));
     DB::query("DELETE FROM favorites WHERE type = 'track' AND ref = " + number(_id));
+    DB::query("DELETE FROM contest_submissions WHERE track_id = " + number(_id));
+    DB::query("DELETE FROM votes WHERE track_id = " + number(_id));
     string base = eqbeatsDir() + "/tracks/" + number(_id) + ".";
     string path = base + "mp3";
     unlink(path.c_str());
@@ -112,6 +114,15 @@ std::vector<Track> Track::byArtist(int sArtistId, bool all){
 std::vector<Track> Track::byCategory(int cat){
     return resultToVector(DB::query(SEL + number(cat) + " = ANY(tracks.cats)"
         "AND visible='t' ORDER BY date DESC"));
+}
+
+std::vector<Track> Track::forContest(int cont){
+    return resultToVector(DB::query(
+        "SELECT tracks.id, tracks.title, tracks.user_id, users.name, tracks.visible, tracks.date FROM tracks, users, contest_submissions "
+        "WHERE tracks.user_id = users.id"
+        " AND tracks.id = contest_submissions.track_id"
+        " AND contest_submissions.contest_id = " + number(cont) + " "
+        "ORDER BY tracks.title ASC"));
 }
 
 std::vector<Track> Track::search(const std::string &q){

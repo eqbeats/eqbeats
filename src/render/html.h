@@ -29,7 +29,6 @@ enum TrackList {
     Standard,
     //! Artist not displayed.
     Compact,
-    Edition
 };
 
 // track.cpp
@@ -64,6 +63,9 @@ std::string latestNews(int n);
 // comment.cpp
 std::string comments(const std::vector<Comment> &cmts, const std::string title="Comments");
 std::string commentForm(const std::string &action);
+
+// contest.cpp
+std::string contest(int cid, const std::string &host);
 
 // fac.cpp
 std::string faq();

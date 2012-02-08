@@ -256,6 +256,22 @@ a.more:before {
     content: "» ";
 }
 
+/** Contests ******************************************************************/
+
+.contest {
+    margin-top: 15px;
+}
+
+.contest button {
+    background: none;
+    border: none;
+    padding: 0;
+}
+.contest button img {
+    vertical-align: middle;
+    margin-bottom: 7px;
+}
+
 /** Lists *********************************************************************/
 
 li {

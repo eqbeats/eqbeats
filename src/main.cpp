@@ -148,6 +148,13 @@ int main(int argc, char** argv){
             io << Action::postComment(Comment::News, id, cgi);
         else if(path == "/news")
             io << Html::latestNews(20);
+        // Contests
+        else if((id = routeId("contest", path)))
+            io << Html::contest(id, cgi.getEnvironment().getRemoteAddr());
+        else if((id = routeAction("contest", "submit", path)))
+            io << Action::contestSubmission(id, cgi);
+        else if((id = routeAction("contest", "vote", path)))
+            io << Action::vote(id, cgi);
         // Users
         else if(path == "/users/search")
             io << Html::userSearch(cgi("q"));

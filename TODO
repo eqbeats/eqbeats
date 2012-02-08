@@ -5,7 +5,12 @@ pagination
 sorting
 Player: volume
 
+- Design
+Player: borders, bouncy title
+
 - Tech
+Default io stream for Render ? (no more stringstream or buffered string)
+(Cat, Track) table?
 Json (session, favorites)
 OO Render
 W3C validation

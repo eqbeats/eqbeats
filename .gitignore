@@ -11,6 +11,7 @@ static/awstats
 *.log
 *.swp
 *.swo
+*.swn
 pid
 tmp/
 tracks/
@@ -20,3 +21,4 @@ eqbeats.fcgi
 mknews
 stats
 mkthumbs
+mkcontest

@@ -129,7 +129,7 @@ string Html::trackPage(int tid){
     Art art(tid);
     if(!edition)
         t.hit();
-    s << header(escape(t.title()),
+    s << header(t.title(),
             "<link rel=\"alternate\" type=\"application/json+oembed\" href=\"" + eqbeatsUrl() + "/oembed?url=http%3A//eqbeats.org" + path + "&format=json\">"
             "<link rel=\"alternate\" type=\"text/xml+oembed\" href=\"" + eqbeatsUrl() + "/oembed?url=http%3A//eqbeats.org" + path + "&format=xml\">")
       << "<div class=\"track\">"
@@ -210,7 +210,7 @@ string Html::trackList(const vector<Track> &tracks, Html::TrackList l){
         s << "<li";
         if(!i->visible()) s << " class=\"hidden\"";
         s << "><a href=\"" << i->url() << "\">" << escape(i->title()) << "</a>";
-        if(l == Standard)
+        if(l != Compact)
             s << " <span class=\"by\">by <a href=\"" << User::url(i->artistId()) << "\">"
               << escape(i->artist()) << "</a></span>";
         s << "</li>";

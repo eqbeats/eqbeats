@@ -17,7 +17,7 @@ string Html::userPage(int uid){
     Account user(uid);
     if(!user) return notFound("User");
     stringstream s;
-    s << header(escape(user.name()), atomFeed(user.url() + "/atom"))
+    s << header(user.name(), atomFeed(user.url() + "/atom"))
       << followButton(user, Session::user().id())
       << "<h2>" + escape(user.name()) + "</h2>"
       << "<div class=\"user\">"
@@ -30,11 +30,14 @@ string Html::userPage(int uid){
         s << "<a class=\"more\" href=\"/account\">Edit</a><br /><br />";
     s << "<a class=\"more\" href=\"" << user.url() << "/favorites\">Favorite tracks</a>"
          "</div>"
-         "<h3><img src=\"/static/disc.png\" /> Tracks " + feedIcon(user.url() + "/atom") + "</h3>"
-      << Html::trackList(Track::byArtist(user.id(), edition), edition ? Html::Edition : Html::Compact);
-    if(edition)
-        s << uploadForm("/track/new") << "<h3><img src=\"/static/plus-circle.png\" /> Artists you follow</h3>" << Html::userList(user.following())
-          << Html::comments(Comment::forArtist(uid), "Comments on your tracks");
+         "<h3><img src=\"/static/disc.png\" /> Tracks " + feedIcon(user.url() + "/atom") + "</h3>";
+    vector<Track> tracks = Track::byArtist(user.id(), edition);
+    s << Html::trackList(tracks, Html::Compact);
+    if(edition){
+        s << uploadForm("/track/new") << "<h3><img src=\"/static/plus-circle.png\" /> Artists you follow</h3>" << Html::userList(user.following());
+        if(!tracks.empty())
+            s << Html::comments(Comment::forArtist(uid), "Comments on your tracks");
+    }
     s << Html::comments(Comment::forUser(uid)) << Html::commentForm(user.url()+"/comment");
     s << footer();
     return s.str();

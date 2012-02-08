@@ -70,6 +70,7 @@ class Track{
 
         static std::vector<Track> byArtist(int sArtistId, bool all=false);
         static std::vector<Track> byCategory(int cat);
+        static std::vector<Track> forContest(int cont);
         static std::vector<Track> search(const std::string &q);
         static std::vector<Track> latest(int n);
         static std::vector<Track> random(int n);
@@ -77,6 +78,7 @@ class Track{
         static std::vector<Track> favorites(int uid);
 
         operator bool() const { return _id > 0; }
+        bool operator==(const Track &c) { return c._id == _id; }
 
     private:
         int _id;

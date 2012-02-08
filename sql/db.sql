@@ -50,3 +50,21 @@ CREATE TABLE favorites (
     ref integer not null,
     type favorite_type not null
 );
+CREATE TYPE contest_state AS ENUM ('submissions', 'voting', 'closed');
+CREATE TABLE contests (
+    id serial primary key,
+    name text not null,
+    description text,
+    state contest_state not null default 'submissions'
+);
+CREATE TABLE contest_submissions (
+    contest_id int not null REFERENCES contests(id),
+    track_id int not null REFERENCES tracks(id),
+    votes int not null default 0,
+    UNIQUE (contest_id, track_id)
+);
+CREATE TABLE votes (
+    host inet not null,
+    track_id integer not null REFERENCES tracks(id),
+    contest_id integer not null REFERENCES contests(id)
+);

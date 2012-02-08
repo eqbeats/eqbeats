@@ -35,6 +35,10 @@ std::string uploadArt(int tid, cgicc::Cgicc &cgi);
 // favorite.cpp
 std::string follow(int uid, bool add, cgicc::Cgicc &cgi);
 std::string favorite(int tid, bool add, cgicc::Cgicc &cgi);
+std::string vote(int cid, cgicc::Cgicc &cgi);
+
+// contest.cpp
+std::string contestSubmission(int cid, cgicc::Cgicc &cgi);
 
 }
 

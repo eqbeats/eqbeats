@@ -22,7 +22,7 @@ std::string Html::header(const std::string &title, const std::string &head, int 
     return
         Http::header("text/html", status) +
         "<html><head>"
-            "<title>" + (title.empty()?"":title+" - ") + "Equestrian Beats</title>"
+            "<title>" + (title.empty()?"":escape(title)+" - ") + "Equestrian Beats</title>"
             "<link rel=\"stylesheet\" href=\"/static/style.css\" />"
             + head +
         "</head><body>"
