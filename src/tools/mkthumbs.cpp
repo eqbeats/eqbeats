@@ -1,5 +1,5 @@
-#include "utils.h"
-#include "art.h"
+#include "../utils.h"
+#include "../art.h"
 #include <iostream>
 
 int main(int argc, char **argv){

@@ -22,16 +22,6 @@ add_custom_command (
     COMMAND "$ENV{EQBEATS_DIR}/launch.sh" restart
 )
 
-add_executable ( mknews mknews.cpp db.cpp utils.cpp )
-target_link_libraries ( mknews pq )
-
-add_executable ( mkcontest mkcontest.cpp db.cpp utils.cpp )
-target_link_libraries ( mkcontest pq )
-
-add_executable ( mkthumbs mkthumbs.cpp utils.cpp art.cpp )
-target_link_libraries ( mkthumbs Magick++ MagickCore )
-
-add_executable ( stats stats.cpp db.cpp )
-target_link_libraries ( stats pq )
-
 add_definitions ( -Wall )
+
+add_subdirectory( tools )

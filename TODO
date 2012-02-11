@@ -4,18 +4,20 @@ inline play button (lists)
 pagination
 sorting
 Player: volume
+Referrers?
 
 - Design
 Player: borders, bouncy title
 
 - Tech
+Optimize hits / async query
+(Cat, Track) table, category.cpp
 Default io stream for Render ? (no more stringstream or buffered string)
-(Cat, Track) table?
 Json (session, favorites)
-OO Render
+OO Render?
 W3C validation
 password reset
-DB <-> tags ?
+DB <-> tags?
 full format support?
 document json API
 

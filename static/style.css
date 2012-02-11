@@ -137,15 +137,28 @@ p {
 }
 
 .notes {
-    /*margin: 25px 5px;
-    padding: 0 15px;
-    border-left: 1px solid #406;*/
     border-radius: 3px;
     background-color: #f0f0f0;
     padding: 15px 20px;
 }
 .track .notes {
     margin: 15px 20px 0;
+}
+
+.description {
+    margin: 0 10px;
+}
+.description ul li {
+    color: #000;
+}
+.description p {
+    margin: 5px;
+}
+.description div {
+    margin: 25px 0px;
+}
+.description ul {
+    margin: 5px 10px;
 }
 
 a.danger {
@@ -211,21 +224,17 @@ a.danger {
     margin: 20px 0;
 }
 
-.user .email {
-    margin: 2px 20px 20px;
+.user .item {
+    margin: 2px 15px 15px;
 }
-.user .email img {
+.user .item img {
     vertical-align: middle;
-    padding-bottom: 3px;
+    padding-bottom: 4px;
     margin-right: 4px;
 }
 
 .user .notes {
     margin: 0 0 15px;
-}
-
-.user .more {
-    margin: inherit 20px;
 }
 
 /** FAQ page ******************************************************************/

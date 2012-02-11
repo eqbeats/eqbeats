@@ -21,20 +21,22 @@ string Html::userPage(int uid){
       << followButton(user, Session::user().id())
       << "<h2>" + escape(user.name()) + "</h2>"
       << "<div class=\"user\">"
-             "<div class=\"email\"><img src=\"/static/mail.png\" /> Email: " << escapeEmail(user.email()) << "</div>";
+             "<div class=\"item\"><img src=\"/static/mail.png\" /> Email: " << escapeEmail(user.email()) << "</div>";
     string about = user.about();
     if(!about.empty())
         s << "<div class=\"notes\">" << format(about) << "</div>";
     bool edition = Session::user().id() == user.id();
     if(edition)
-        s << "<a class=\"more\" href=\"/account\">Edit</a><br /><br />";
-    s << "<a class=\"more\" href=\"" << user.url() << "/favorites\">Favorite tracks</a>"
-         "</div>"
-         "<h3><img src=\"/static/disc.png\" /> Tracks " + feedIcon(user.url() + "/atom") + "</h3>";
+        s << "<div class=\"item\"><img src=\"/static/card-pencil.png\" /> <a href=\"/account\">Edit</a></div>";
+    s << "<div class=\"item\"><img src=\"/static/star.png\" /> <a href=\"" << user.url() << "/favorites\">Favorite tracks</a></div>"
+         "</div>";
     vector<Track> tracks = Track::byArtist(user.id(), edition);
-    s << Html::trackList(tracks, Html::Compact);
+    if(edition || !tracks.empty())
+        s << "<h3><img src=\"/static/disc.png\" /> Tracks " << feedIcon(user.url() + "/atom") << "</h3>"
+          << Html::trackList(tracks, Html::Compact);
     if(edition){
-        s << uploadForm("/track/new") << "<h3><img src=\"/static/plus-circle.png\" /> Artists you follow</h3>" << Html::userList(user.following());
+        s << uploadForm("/track/new")
+          << "<h3><img src=\"/static/plus-circle.png\" /> Artists you follow</h3>" << Html::userList(user.following());
         if(!tracks.empty())
             s << Html::comments(Comment::forArtist(uid), "Comments on your tracks");
     }

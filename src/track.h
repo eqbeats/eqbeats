@@ -71,7 +71,10 @@ class Track{
         static std::vector<Track> byArtist(int sArtistId, bool all=false);
         static std::vector<Track> byCategory(int cat);
         static std::vector<Track> forContest(int cont);
+
         static std::vector<Track> search(const std::string &q);
+        static std::vector<Track> exactSearch(const std::string &qartist, const std::string &qtitle);
+
         static std::vector<Track> latest(int n);
         static std::vector<Track> random(int n);
         static std::vector<Track> popular(int n);

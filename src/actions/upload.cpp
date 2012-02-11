@@ -25,7 +25,7 @@ std::string Action::uploadTrack(int id, cgicc::Cgicc &cgi){
     static const std::string header = Http::header("application/json");
     cgicc::file_iterator file = cgi.getFile("file");
     cgicc::file_iterator qqfile = cgi.getFile("qqfile");
-    bool isXhr = !cgi("qqfile").empty() || qqfile != cgi.getFiles().end();
+    bool isXhr = !cgi("qqfile").empty();
 
     std::string formatError = isXhr?
         header+"{"+field("success","false")+field("error",jstring("Only MP3 files are accepted."))+"}":

@@ -1,18 +1,18 @@
-#include "db.h"
-#include "utils.h"
+#include "../db.h"
+#include "../utils.h"
 #include <iostream>
 
 using namespace std;
 
 int main(int argc, char **argv){
-    DB::connect();
-
     if(argc != 2){
-        cerr << "Usage: mkcontest (TITLE|ID) < ..." << endl;
+        cerr << "Usage: mknews (TITLE|ID) < ..." << endl;
         return 1;
     }
     std::string arg = argv[1];
     if(arg.empty()) return 1;
+
+    DB::connect();
 
     std::string contents;
     cin.seekg(0, std::ios::end);
@@ -22,15 +22,15 @@ int main(int argc, char **argv){
                     std::istreambuf_iterator<char>());
 
     if(isNumber(arg))
-        DB::query("UPDATE contests SET description = $1 WHERE id = $2", contents, arg);
+        DB::query("UPDATE news SET contents = $1 WHERE id = $2", contents, arg);
 
     else{
-        DB::Result r = DB::query("INSERT INTO contests (name, description) VALUES ($1, $2) RETURNING id", arg, contents);
-        if(r.empty()){
+        DB::Result r = DB::query("INSERT INTO news (title, contents, date) VALUES ($1, $2, 'now') RETURNING id", arg, contents);
+        if(r.empty()){ // possible ?
             cerr << "Fail." << endl;
             return 1;
         }
-        cout << "Contest id: " << r[0][0] << endl;
+        cout << "News id: " << r[0][0] << endl;
     }
 
     DB::close();

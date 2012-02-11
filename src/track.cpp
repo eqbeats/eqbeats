@@ -137,7 +137,11 @@ std::vector<Track> Track::search(const std::string &q){
         sql += " AND (tracks.title ILIKE $" + number(p.size()) + " OR users.name ILIKE $" + number(p.size()) + ")";
     }
     return resultToVector(DB::query(SEL + "visible = 't'" + sql, p));
-        //"AND to_tsvector('english', tracks.title) @@ plainto_tsquery('english', $1) " + " ORDER BY date DESC ", q));
+}
+
+std::vector<Track> Track::exactSearch(const std::string &qartist, const std::string &qtitle){
+    if(qtitle.empty()||qartist.empty()) return std::vector<Track>();
+    return resultToVector(DB::query(SEL + "visible = 't' AND users.name = $1 AND tracks.title = $2", qartist, qtitle));
 }
 
 std::vector<Track> Track::latest(int n){

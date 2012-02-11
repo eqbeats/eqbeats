@@ -64,6 +64,8 @@ int main(int argc, char** argv){
             io << Json::artist(id);
         else if(path == "/tracks/search/json")
             io << Json::tracks(Track::search(cgi("q")));
+        else if(path == "/tracks/search/exact/json")
+            io << Json::tracks(Track::exactSearch(cgi("artist"),cgi("track")));
         else if(path == "/tracks/latest/json")
             io << Json::tracks(Track::latest(50));
         else if(path == "/tracks/random/json")
