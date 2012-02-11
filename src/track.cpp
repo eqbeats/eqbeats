@@ -5,6 +5,12 @@
 #include "user.h"
 #include "utils.h"
 #include "art.h"
+#include <taglib/taglib.h>
+#include <taglib/mpegfile.h>
+#include <taglib/vorbisfile.h>
+#include <taglib/id3v1tag.h>
+#include <taglib/id3v2tag.h>
+#include <taglib/xiphcomment.h>
 
 using namespace std;
 
@@ -26,9 +32,38 @@ Track::Track(int id){
     }
 }
 
+std::string Track::filePath(Format f) const{
+    string format = f==Vorbis? "ogg" : "mp3";
+    return eqbeatsDir() + "/tracks/" + number(_id) + "." + format;
+}
+
 void Track::setTitle(const std::string &nTitle){
+    if(_title == nTitle) return;
     DB::query("UPDATE tracks SET title = $1 WHERE id = " + number(_id), nTitle);
     _title = nTitle;
+    updateTags();
+}
+
+void Track::updateTags(Track::Format format){
+    if(format == MP3){
+        std::string path = filePath(Track::MP3);
+        TagLib::MPEG::File mp3(path.c_str());
+        TagLib::ID3v1::Tag *t1 = mp3.ID3v1Tag(true);
+        t1->setTitle(_title);
+        t1->setArtist(_artist);
+        TagLib::ID3v2::Tag *t2 = mp3.ID3v2Tag(true);
+        t2->setTitle(_title);
+        t2->setArtist(_artist);
+        mp3.save();
+    } else if(format == Vorbis) {
+        std::string path = filePath(Track::Vorbis);
+        TagLib::Ogg::Vorbis::File vorbis(path.c_str());
+        TagLib::Ogg::XiphComment *t = vorbis.tag();
+        if(!t) return;
+        t->setTitle(_title);
+        t->setArtist(_artist);
+        vorbis.save();
+    }
 }
 
 std::string Track::url(int id){

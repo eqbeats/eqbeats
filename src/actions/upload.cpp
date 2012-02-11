@@ -74,6 +74,7 @@ std::string Action::uploadTrack(int id, cgicc::Cgicc &cgi){
     rename(tmpFile, filename.c_str());
     free(tmpFile);
 
+    t.updateTags(Track::MP3);
     t.convertToVorbis();
 
     return isXhr?

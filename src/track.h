@@ -53,8 +53,11 @@ class Track{
 
         enum Format { Vorbis, MP3 };
         std::string url(Format f) const;
+        std::string filePath(Format f) const;
 
         void convertToVorbis();
+        void updateTags() { updateTags(MP3); updateTags(Vorbis); }
+        void updateTags(Format format);
 
         static Track create(int nArtistId, const std::string &nTitle);
         void remove();

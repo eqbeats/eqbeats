@@ -12,12 +12,12 @@ Player: borders, bouncy title
 - Tech
 Optimize hits / async query
 (Cat, Track) table, category.cpp
+audio files: embed cover arts
 Default io stream for Render ? (no more stringstream or buffered string)
 Json (session, favorites)
 OO Render?
 W3C validation
 password reset
-DB <-> tags?
 full format support?
 document json API
 

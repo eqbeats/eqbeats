@@ -12,3 +12,6 @@ target_link_libraries ( stats pq )
 
 add_executable ( dumptracks dumptracks.cpp ../db.cpp )
 target_link_libraries ( dumptracks pq )
+
+add_executable ( updatetags updatetags.cpp ../db.cpp )
+target_link_libraries ( updatetags pq tag )

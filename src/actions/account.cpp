@@ -47,9 +47,11 @@ std::string accountForm(const Account &_account, const std::string &error=std::s
 std::string Action::account(cgicc::Cgicc &cgi){
     if(!Session::user()) return Http::redirect("/login?redirect=/account");
     Account a(Session::user().id());
+    bool newName = false;
     if(cgi.getEnvironment().getRequestMethod() != "POST")
         return accountForm(a);
     if(!cgi("name").empty()){
+        newName = a.name() != cgi("name");
         if(!a.setName(cgi("name")))
             return accountForm(a, "Name already in use.");
     }
@@ -68,5 +70,12 @@ std::string Action::account(cgicc::Cgicc &cgi){
     }
     a.setAbout(cgi("about"));
     a.commit();
+    if(newName){
+        Session::destroy();
+        Session::start(cgi);
+        std::vector<Track> tracks = Track::byArtist(a.id(), true);
+        for(std::vector<Track>::iterator i=tracks.begin(); i!=tracks.end(); i++)
+            i->updateTags();
+    }
     return accountForm(a, std::string(), "Changes successful.");
 }

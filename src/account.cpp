@@ -53,7 +53,6 @@ bool Account::setEmail(const std::string &nEmail){
         _email = nEmail;
         return true;
     }
-    //if(!validEmail(nEmail)) return false;
     if(exists(std::string(), nEmail)) return false;
     _email = nEmail;
     return true;
