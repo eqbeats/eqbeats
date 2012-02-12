@@ -114,11 +114,12 @@ string cats(const Track &t, bool edition){
     return s.str();
 }
 
-string favButton(const Track &t, int uid){
-    if(uid == 0) return "";
-    bool isFav = User(uid).isFavorite(t.id());
-    return (string)"<a class=\""+(isFav?"unfavorite":"favorite")+"\" href=\"" + t.url() + "/" + 
-                (isFav?"un":"") + "favorite\">"+(isFav?"Remove from favorites":"Add to favorites")+"</a>";
+string favStar(const Track &t){
+    bool isFav = Session::user().isFavorite(t.id());
+    return (string)
+        "<a href=\"" + (Session::user() ? "" : "/login?redirect=") + t.url() + "/" + (isFav?"un":"") + "favorite\""
+          " title=\"" + (isFav?"Remove from favorites":"Add to favorites") + "\">"
+        "<img src=\"/static/star" + (isFav?"":"-empty") + ".png\" /></a>";
 }
 
 string Html::trackPage(int tid){
@@ -133,8 +134,7 @@ string Html::trackPage(int tid){
             "<link rel=\"alternate\" type=\"application/json+oembed\" href=\"" + eqbeatsUrl() + "/oembed?url=http%3A//eqbeats.org" + path + "&format=json\">"
             "<link rel=\"alternate\" type=\"text/xml+oembed\" href=\"" + eqbeatsUrl() + "/oembed?url=http%3A//eqbeats.org" + path + "&format=xml\">")
       << "<div class=\"track\">"
-         << favButton(t, Session::user().id())
-         << "<h2>" + escape(t.title()) + "</h2>"
+         << "<h2>" << escape(t.title()) << " " << favStar(t) << "</h2>"
             "<h4 style=\"margin:10px;\">by <a href=\"" << User::url(t.artistId()) <<  "\">"
                     << escape(t.artist()) << "</a></h3>"
       << (art?"<img class=\"art\" src=\"" + art.url(Art::Medium) + "\" />":"")

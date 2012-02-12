@@ -10,8 +10,7 @@ static/awstats
 
 *.log
 *.swp
-*.swo
-*.swn
+.sw*
 pid
 tmp/
 tracks/

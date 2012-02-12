@@ -12,14 +12,9 @@ std::string newsTicker(){
 std::string Html::home(){
     std::stringstream s;
     s << header("", atomFeed("/tracks/latest/atom"))
-      /*<< "<ul class=\"blurb\">"
-            "<li>Host your songs without limits nor ads, along with their cover arts</li>"
-            "<li>Share music across the web with an embeddable player</li>"
-            "<li>Browse through a growing collection of tracks</li>"
-         "</ul>"*/
       << newsTicker()
       << "<div class=\"search\">"
-      << "Search for tracks : "
+      << "<img src=\"/static/magnifier.png\" /> Search for tracks : "
       << searchForm("/tracks/search")
       << "</div>"
       << "<div class=\"leftcol\">"

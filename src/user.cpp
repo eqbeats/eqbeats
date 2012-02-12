@@ -59,6 +59,7 @@ bool favHelper(const std::string &t, int ref, int id){
 }
 
 bool User::isFavorite(int tid) const{
+    if(_id<=0) return false;
     return favHelper("track", tid, _id);
 }
 
@@ -93,6 +94,7 @@ std::vector<std::string> User::followers() const{
 }
 
 bool User::isFollowing(int uid) const{
+    if(_id<=0) return false;
     return favHelper("artist", uid, _id);
 }
 

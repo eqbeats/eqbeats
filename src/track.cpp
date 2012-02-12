@@ -8,9 +8,6 @@
 #include <taglib/taglib.h>
 #include <taglib/mpegfile.h>
 #include <taglib/vorbisfile.h>
-#include <taglib/id3v1tag.h>
-#include <taglib/id3v2tag.h>
-#include <taglib/xiphcomment.h>
 
 using namespace std;
 
@@ -46,19 +43,15 @@ void Track::setTitle(const std::string &nTitle){
 
 void Track::updateTags(Track::Format format){
     if(format == MP3){
-        std::string path = filePath(Track::MP3);
-        TagLib::MPEG::File mp3(path.c_str());
-        TagLib::ID3v1::Tag *t1 = mp3.ID3v1Tag(true);
-        t1->setTitle(_title);
-        t1->setArtist(_artist);
-        TagLib::ID3v2::Tag *t2 = mp3.ID3v2Tag(true);
-        t2->setTitle(_title);
-        t2->setArtist(_artist);
-        mp3.save();
+        TagLib::MPEG::File mp3(filePath(Track::MP3).c_str());
+        TagLib::Tag *t = mp3.tag();
+        if(!t) return;
+        t->setTitle(_title);
+        t->setArtist(_artist);
+        mp3.save(TagLib::MPEG::File::ID3v1 | TagLib::MPEG::File::ID3v2);
     } else if(format == Vorbis) {
-        std::string path = filePath(Track::Vorbis);
-        TagLib::Ogg::Vorbis::File vorbis(path.c_str());
-        TagLib::Ogg::XiphComment *t = vorbis.tag();
+        TagLib::Ogg::Vorbis::File vorbis(filePath(Track::Vorbis).c_str());
+        TagLib::Tag *t = vorbis.tag();
         if(!t) return;
         t->setTitle(_title);
         t->setArtist(_artist);

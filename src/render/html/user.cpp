@@ -13,13 +13,19 @@ string followButton(const User &u, int uid){
                 (isFollowed?"un":"") + "follow\">"+(isFollowed?"Stop following":"Follow")+"</a>";
 }
 
+string followPlus(const User &u){
+    if(Session::user() == u) return "";
+    bool isFollowed = Session::user().isFollowing(u.id());
+    return (string)
+        "<a class=\"follow" + (isFollowed?"":" disabled") + "\" href=\"" + (Session::user() ? "" : "/login?redirect=") + u.url() + "/" + (isFollowed?"un":"") + "follow\">" + (isFollowed?"Stop following":"Follow") + "</a>";
+}
+
 string Html::userPage(int uid){
     Account user(uid);
     if(!user) return notFound("User");
     stringstream s;
     s << header(user.name(), atomFeed(user.url() + "/atom"))
-      << followButton(user, Session::user().id())
-      << "<h2>" + escape(user.name()) + "</h2>"
+      << "<h2>" << escape(user.name()) << " " << followPlus(user) << "</h2>"
       << "<div class=\"user\">"
              "<div class=\"item\"><img src=\"/static/mail.png\" /> Email: " << escapeEmail(user.email()) << "</div>";
     string about = user.about();

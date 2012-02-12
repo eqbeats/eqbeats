@@ -1,9 +1,13 @@
 - Features
+password reset
 Popular -> Featured
+Json (session, favorites)
 inline play button (lists)
 pagination
 sorting
 Player: volume
+news feed
+m3u playlist generators
 Referrers?
 
 - Design
@@ -12,15 +16,8 @@ Player: borders, bouncy title
 - Tech
 Optimize hits / async query
 (Cat, Track) table, category.cpp
-audio files: embed cover arts
 Default io stream for Render ? (no more stringstream or buffered string)
-Json (session, favorites)
-OO Render?
-W3C validation
-password reset
+audio files: embed cover arts
 full format support?
+W3C validation
 document json API
-
-- Lists
-news feed
-m3u playlist generators
