@@ -1,12 +1,22 @@
 #include <sstream>
 #include "../html.h"
 #include "../../news.h"
-
+#include "../../utils.h"
+#include "../json.h"
 
 std::string newsTicker(){
-    std::vector<News> news = News::latest(1);
+    std::vector<News> news = News::recent(7);
     if(news.empty()) return std::string();
-    return "<div class=\"newsticker\"><img src=\"/static/newspaper.png\" alt=\"news\" /> <b>Latest news</b>: <a href=\"" + news[0].url() + "\">" + news[0].title() + "</a></div>";
+    std::string s = "<div class=\"newsticker\"><img src=\"/static/newspaper.png\" alt=\"news\" /> <b>Latest news</b>: <a href=\"" + news[0].url() + "\">" + news[0].title() + "</a></div>";
+    if(news.size() > 1){
+        s += "<script>var news_entries = [";
+        for(std::vector<News>::iterator i = news.begin(); i != news.end(); i++){
+            if(i != news.begin()) s += ',';
+            s += "{id: " + number(i->id()) + ", title: " + Json::jstring(i->title()) + "}";
+        }
+        s += "];</script><script src=\"/static/ticker.js\"></script>";
+    }
+    return s;
 }
 
 std::string Html::home(){

@@ -12,6 +12,8 @@ Referrers?
 
 - Design
 Player: borders, bouncy title
+News: date
+News ticker
 
 - Tech
 Optimize hits / async query
