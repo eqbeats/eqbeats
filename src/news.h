@@ -12,6 +12,7 @@ class News {
 
         int id() const { return _id; }
         std::string title() const { return _title; }
+        std::string date() const { return _date; }
 
         std::string getContents();
 
@@ -23,13 +24,14 @@ class News {
 
         operator bool() const { return _id > 0; }
 
-        News(int nId, const std::string &nTitle)
-            { _id = nId; _title = nTitle; }
+        News(int nId, const std::string &nTitle, const std::string &nDate)
+            { _id = nId; _title = nTitle; _date = nDate; }
 
     private:
         int _id;
         std::string _title;
         std::string _contents;
+        std::string _date;
 
 };
 

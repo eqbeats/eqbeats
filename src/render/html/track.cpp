@@ -135,7 +135,7 @@ string Html::trackPage(int tid){
             "<link rel=\"alternate\" type=\"text/xml+oembed\" href=\"" + eqbeatsUrl() + "/oembed?url=http%3A//eqbeats.org" + path + "&format=xml\">")
       << "<div class=\"track\">"
          << "<h2>" << escape(t.title()) << " " << favStar(t) << "</h2>"
-            "<h4 style=\"margin:10px;\">by <a href=\"" << User::url(t.artistId()) <<  "\">"
+            "<h4>by <a href=\"" << User::url(t.artistId()) <<  "\">"
                     << escape(t.artist()) << "</a></h3>"
       << (art?"<img class=\"art\" src=\"" + art.url(Art::Medium) + "\" />":"")
       << player(t)

@@ -4,11 +4,12 @@
 
 News::News(int nId){
     _id = 0;
-    DB::Result r = DB::query("SELECT title, contents FROM news WHERE id = " + number(nId));
+    DB::Result r = DB::query("SELECT title, contents, to_char(date, 'FMMonth FMDDth YYYY') FROM news WHERE id = " + number(nId));
     if(!r.empty()){
         _id = nId;
         _title = r[0][0];
         _contents = r[0][1];
+        _date = r[0][2];
     }
 }
 
@@ -26,10 +27,10 @@ std::string News::url(int nid){
 }
 
 std::vector<News> newsHelper(std::string query){
-    DB::Result r = DB::query("SELECT id, title FROM news " + query);
+    DB::Result r = DB::query("SELECT id, title, to_char(date, 'FMMonth FMDDth YYYY') FROM news " + query);
     std::vector<News> news(r.size());
     for(unsigned i=0; i<r.size(); i++){
-        news[i] = News(number(r[i][0]), r[i][1]);
+        news[i] = News(number(r[i][0]), r[i][1], r[i][2]);
     }
     return news;
 }

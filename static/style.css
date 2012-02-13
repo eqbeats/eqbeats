@@ -218,6 +218,10 @@ a.danger {
     width: auto;
 }
 
+.track h4 {
+    margin: 10px;
+}
+
 /** User page *****************************************************************/
 
 .user {
@@ -249,12 +253,17 @@ a.danger {
 
 /** News page *****************************************************************/
 
-.news {
+.news h4 {
+    margin: 10px 12px;
+    color: #444;
+}
+
+.news-contents {
     margin: 20px 10px 25px;
 }
 
 .oldnews {
-    margin-top: 40px;
+    margin-top: 30px;
 }
 
 a.more {

@@ -8,8 +8,11 @@ std::string Html::newsPage(int nid){
     News n(nid);
     if(!n) return notFound("News");
     return header(n.title())
+         + "<div class=\"news\">"
          + "<h2>" + n.title() + "</h2>"
-         + "<div class=\"news\">" + n.getContents() + "</div>"
+         + "<h4>on " + n.date() + "</h4>"
+         + "<div class=\"news-contents\">" + n.getContents() + "</div>"
+         + "</div>"
          + Html::comments(Comment::forNews(nid))
          + Html::commentForm(News::url(nid)+"/comment")
          + footer();
@@ -20,9 +23,12 @@ std::string Html::latestNews(int n){
     std::stringstream s;
     s << header("News");
     if(!news.empty()){
-        s << "<h2>Latest news : <a href=\"" << news[0].url() << "\">" 
+        s << "<div class=\"news\">"
+          << "<h2>Latest news : <a href=\"" << news[0].url() << "\">" 
           << escape(news[0].title()) << "</a></h2>"
-          << "<div class=\"news\">" << news[0].getContents() << "</div>"
+          << "<h4>on " + news[0].date() + "</h4>"
+          << "<div class=\"news-contents\">" << news[0].getContents() << "</div>"
+             "</div>"
              "<a class=\"more\" href=\"" << news[0].url() << "#comments\">"
              "Comments (" << number(Comment::countForNews(news[0].id())) << ")</a>";
         if(news.size()>1){
