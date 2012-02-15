@@ -1,0 +1,15 @@
+#!/bin/bash
+
+SERVCOUNT=$(ls /proc | egrep -c "^($(cat ${EQBEATS_DIR}/pid | tr "\n" "|"))$")
+
+if [[ $SERVCOUNT == "" ]]; then #something went wrong with the pidfile
+    SERVCOUNT=0
+fi
+
+if [[ $SERVCOUNT -lt 3 ]]; then
+    pkill eqbeats.fcgi 2> /dev/null
+    ${EQBEATS_DIR}/launch.sh restart > /dev/null
+    exit $[3 - $SERVCOUNT]
+else
+    exit 0
+fi

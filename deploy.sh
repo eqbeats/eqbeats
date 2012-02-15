@@ -2,7 +2,7 @@
 
 cd /home/eqbeats/eqbeats
 make || return 1
-install -m775 eqbeats.fcgi /srv/eqbeats/
+install -m775 eqbeats.fcgi failsafe /srv/eqbeats/
 
 cd static
 for f in *.js *.css *.txt *.swf *.png
