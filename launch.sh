@@ -1,33 +1,40 @@
 #!/bin/bash
 
-EXEC="eqbeats.fcgi"
-PROGNAME="eqbeats fastcgi server"
+PWD="/home/eqbeats/eqbeats"
+PROGNAME="eqbeats dev server"
+BINARY="$PWD/eqbeats.fcgi"
+SERVCOUNT=1
+PORT=9004
+LOG="$PWD/eqbeats.log"
 
-cd $EQBEATS_DIR
+
+cd $PWD
 
 case "$1" in
   start)
-    if [[ -a $EQBEATS_DIR/pid ]]; then
-      echo "$PROGNAME : Already running, or leftover pid file? ($EQBEATS_DIR/pid)"
+    SERVRUNNING=$(ls /proc | egrep -c "^($(cat pid 2> /dev/null | tr "\n" "|"))$")
+    if [[ $SERVRUNNING -ge $SERVCOUNT ]]; then
+      echo "$PROGNAME : Already running"
     else
-      spawn-fcgi -F 1 -P $EQBEATS_DIR/pid -d $EQBEATS_DIR/ -f $EQBEATS_DIR/$EXEC -a 127.0.0.1 -p 9004 > /dev/null
+      $0 stop > /dev/null
+      spawn-fcgi -F $SERVCOUNT -P $PWD/pid -d $PWD/ -f $BINARY -a 127.0.0.1 -p $PORT >> $LOG
       echo "$PROGNAME : Started."
     fi
     ;;
 
   stop)
-    if [[ ! -a $EQBEATS_DIR/pid ]]; then
+    if [[ ! -a $PWD/pid ]]; then
       echo "$PROGNAME : Not running."
     else
-      kill $(cat $EQBEATS_DIR/pid)
+      kill $(cat $PWD/pid) > /dev/null 2>&1
+      rm $PWD/pid
       echo "$PROGNAME : Stopped."
-      rm $EQBEATS_DIR/pid
     fi
     ;;
 
   restart)
     $0 stop
-    sleep 1
+    sleep 0.5 # wait for the socket to close properly
     $0 start
     ;;
 
