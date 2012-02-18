@@ -1,6 +1,5 @@
 #include <string.h>
 #include <sstream>
-#include <algorithm>
 #include "track.h"
 #include "user.h"
 #include "utils.h"
@@ -101,11 +100,12 @@ Track Track::create(int nArtistId, const std::string &nTitle){
 }
 
 void Track::remove(){
-    DB::query("DELETE FROM tracks WHERE id = " + number(_id));
-    DB::query("DELETE FROM comments WHERE type = 'track' AND ref = " + number(_id));
-    DB::query("DELETE FROM favorites WHERE type = 'track' AND ref = " + number(_id));
+    DB::query("DELETE FROM track_categories WHERE track_id = "+ number(_id));
     DB::query("DELETE FROM contest_submissions WHERE track_id = " + number(_id));
     DB::query("DELETE FROM votes WHERE track_id = " + number(_id));
+    DB::query("DELETE FROM comments WHERE type = 'track' AND ref = " + number(_id));
+    DB::query("DELETE FROM favorites WHERE type = 'track' AND ref = " + number(_id));
+    DB::query("DELETE FROM tracks WHERE id = " + number(_id));
     string base = eqbeatsDir() + "/tracks/" + number(_id) + ".";
     string path = base + "mp3";
     unlink(path.c_str());
@@ -140,8 +140,13 @@ std::vector<Track> Track::byArtist(int sArtistId, bool all){
 }
 
 std::vector<Track> Track::byCategory(int cat){
-    return resultToVector(DB::query(SEL + number(cat) + " = ANY(tracks.cats)"
-        "AND visible='t' ORDER BY date DESC"));
+    return resultToVector(DB::query(
+        "SELECT tracks.id, tracks.title, tracks.user_id, users.name, tracks.visible, tracks.date "
+        "FROM tracks, users, track_categories "
+        "WHERE tracks.user_id = users.id"
+        " AND track_categories.cat_id = " + number(cat) +
+        " AND track_categories.track_id = tracks.id"
+        " AND visible='t' ORDER BY date DESC"));
 }
 
 std::vector<Track> Track::forContest(int cont){
@@ -204,54 +209,4 @@ int Track::favoritesCount() const{
 void Track::bump(){
     if(_id<=0) return;
     DB::query("UPDATE tracks SET date = 'now' WHERE id = " + number(_id));
-}
-
-void Track::addCategory(int cid){
-    DB::query("UPDATE tracks SET cats = " + number(cid) + " || cats WHERE id = " + number(_id));
-}
-
-void Track::removeCategories(const std::vector<int> &cats){
-    if(cats.empty()) return;
-    DB::Result r = DB::query("SELECT array_to_string(cats, ' ') FROM tracks WHERE id = " + number(_id));
-    if(r.empty()) return;
-    std::istringstream i(r[0][0]);
-    std::stringstream a;
-    int n;
-    while(i){
-        i >> n;
-        if(std::find(cats.begin(),cats.end(),n) == cats.end())
-            a << "," << n;
-    }
-    string sql = a.str();
-    DB::query("UPDATE tracks SET cats = ARRAY[" + (sql.empty()?"":sql.substr(1)) + "]::integer[] WHERE id = " + number(_id));
-}
-
-std::vector<Category> getCats(const std::string &q){
-    DB::Result r = DB::query(q);
-    std::vector<Category> cats(r.size());
-    for(unsigned i=0; i<r.size(); i++)
-        cats[i] = Category(number(r[i][0]), r[i][1]);
-    return cats;
-}
-
-std::vector<Category> Track::getCategories() const{
-    return getCats("SELECT categories.id, categories.name FROM categories, tracks "
-        "WHERE tracks.id="+number(_id)+" AND categories.id=ANY(tracks.cats)");
-}
-
-Category::Category(int cid){
-    DB::Result r = DB::query("SELECT name FROM categories WHERE id = "+number(cid));
-    _id = 0;
-    if(r.empty())
-        return;
-    _id = cid;
-    _name = r[0][0];
-}
-
-std::string Category::url() const{
-    return "/cat/" + number(_id);
-}
-
-std::vector<Category> Category::list(){
-    return getCats("SELECT id, name FROM categories ORDER BY name ASC");
 }

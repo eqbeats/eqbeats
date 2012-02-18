@@ -1,5 +1,6 @@
 #include "../html.h"
 #include "../http.h"
+#include "../../category.h"
 #include "../../session.h"
 #include "../../utils.h"
 #include <sstream>
@@ -86,7 +87,7 @@ string embedCode(const Track &t){
 }
 
 string cats(const Track &t, bool edition){
-    vector<Category> cs = t.getCategories();
+    vector<Category> cs = Category::forTrack(t.id());
     if(cs.empty() && !edition) return string();
     stringstream s;
     s << "<div class=\"toolbar cats\"><img src=\"/static/tag.png\" /> Categories:";
@@ -100,15 +101,21 @@ string cats(const Track &t, bool edition){
     if(edition){
         if(!cs.empty())
             s << " <input type=\"submit\" name=\"rmcats\" value=\"Remove selected\" />";
-        s << " <select name=\"cat\">";
+        bool rendered = false;
         vector<Category> all = Category::list();
         for(vector<Category>::const_iterator i=all.begin(); i!=all.end(); i++){
-            if(find(cs.begin(),cs.end(),*i) == cs.end())
+            if(find(cs.begin(),cs.end(),*i) == cs.end()){
+                if(!rendered){
+                    s << " <select name=\"cat\">";
+                    rendered = true;
+                }
                 s << "<option value=\"" << i->id() << "\">" << i->name() << "</option>";
+            }
         }
-        s << "</select>"
-             "<input type=\"submit\" name=\"addcat\" value=\"Add\" />"
-             "</form>";
+        if(rendered)
+            s << "</select>"
+                 "<input type=\"submit\" name=\"addcat\" value=\"Add\" />";
+        s << "</form>";
     }
     s << "</div>";
     return s.str();

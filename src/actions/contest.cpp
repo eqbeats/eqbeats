@@ -12,5 +12,5 @@ std::string Action::contestSubmission(int cid, cgicc::Cgicc &cgi){
     if(!t) return Html::notFound("Track");
     if(Session::user().id() == t.artistId())
         c.addTrack(t.id());
-    return Http::redirect(c.url());
+    return Http::redirect(c.url()+"#submissions");
 }

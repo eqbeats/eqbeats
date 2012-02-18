@@ -15,6 +15,3 @@ target_link_libraries ( dumptracks pq )
 
 add_executable ( updatetags updatetags.cpp ../db.cpp )
 target_link_libraries ( updatetags pq tag )
-
-add_executable ( syncpublic syncpublic.cpp ../db.cpp )
-target_link_libraries ( syncpublic pq )

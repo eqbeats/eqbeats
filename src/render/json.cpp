@@ -1,5 +1,6 @@
 #include "json.h"
 #include "http.h"
+#include "../category.h"
 #include "../utils.h"
 #include "../user.h"
 #include <sstream>

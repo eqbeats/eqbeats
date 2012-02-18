@@ -37,6 +37,7 @@ void Contest::addTrack(int tid){
 
 void Contest::vote(int tid, std::string host){
     if(state() != Voting) return;
+    // Check if the user didn't already vote
     DB::Result r = DB::query(
         "SELECT 1 FROM votes "
         "WHERE contest_id = " + number(_id) +
@@ -44,11 +45,13 @@ void Contest::vote(int tid, std::string host){
         " AND host = $1"
         , host);
     if(!r.empty()) return;
+    // Check if the track is linked to the contest
     r = DB::query(
         "SELECT 1 FROM contest_submissions WHERE contest_id = " + number(_id) +
-        " AND track_id == " + number(tid)
+        " AND track_id = " + number(tid)
     );
-    if(!r.empty()) return;
+    if(r.empty()) return;
+    // Update
     DB::query(
         "INSERT INTO votes (host, track_id, contest_id) "
         "VALUES ($1, "+number(tid)+", "+number(_id)+")"

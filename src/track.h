@@ -2,27 +2,8 @@
 #define TRACK_H
 
 #include "db.h"
+#include "category.h"
 #include <string>
-
-class Category{
-
-    public:
-        Category() { _id = 0; }
-        Category(int cid);
-        Category(int cid, std::string nName)
-            { _id = cid; _name = nName; }
-        int id() const { return _id; }
-        std::string name() const { return _name; }
-        std::string url() const;
-        static std::vector<Category> list();
-        bool operator==(const Category &c) { return c._id == _id; }
-        operator bool() const { return _id > 0; }
-
-    private:
-        int _id;
-        std::string _name;
-
-};
 
 class Track{
 

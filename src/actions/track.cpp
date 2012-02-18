@@ -88,15 +88,15 @@ std::string Action::updateCategories(int tid, cgicc::Cgicc &cgi){
         return Http::redirect(t.url());
     
     if(!cgi("rmcats").empty()){
-        vector<Category> cats = t.getCategories();
-        vector<int> ids;
-        for(vector<Category>::iterator i = cats.begin(); i != cats.end(); i++)
+        vector<Category> cats = Category::forTrack(tid);
+        for(vector<Category>::iterator i = cats.begin(); i != cats.end(); i++){
             if(!cgi(number(i->id())).empty())
-                ids.push_back(i->id());
-        if(!ids.empty())
-            t.removeCategories(ids);
+                i->removeTrack(tid);
+        }
     }
-    else if(!cgi("cat").empty())
-        t.addCategory(number(cgi("cat")));
+    else if(!cgi("cat").empty()){
+        Category c(number(cgi("cat")));
+        if(c) c.addTrack(t.id());
+    }
     return Http::redirect(t.url());
 }

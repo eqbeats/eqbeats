@@ -15,7 +15,7 @@ std::string Html::contest(int cid, const std::string &host){
     std::string descr = c.getDescription();
     if(!descr.empty())
         s << "<div class=\"description\">" << descr << "</div>";
-    s << "<h3><img src=\"/static/disc.png\" /> Submissions</h3>";
+    s << "<h3 id=\"submissions\"><img src=\"/static/disc.png\" /> Submissions</h3>";
     std::vector<Track> tracks = Track::forContest(c.id());
     if(tracks.empty())
         s << "<div class=\"empty tracklist\">No submissions yet.</div>";

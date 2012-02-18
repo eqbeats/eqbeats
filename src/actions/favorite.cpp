@@ -49,5 +49,5 @@ std::string Action::vote(int cid, cgicc::Cgicc &cgi){
             c.unvote(tid, host);
         else c.vote(tid, host);
     }
-    return Http::redirect(c.url());
+    return Http::redirect(c.url()+"#submissions");
 }

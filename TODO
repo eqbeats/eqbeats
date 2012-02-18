@@ -16,9 +16,8 @@ News: date
 News ticker
 
 - Tech
-Optimize hits / async query
-(Cat, Track) table, category.cpp
 Default io stream for Render ? (no more stringstream or buffered string)
+Optimize hits / async query
 audio files: embed cover arts
 full format support?
 W3C validation

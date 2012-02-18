@@ -44,6 +44,11 @@ CREATE TABLE categories (
     id serial primary key,
     name text not null
 );
+CREATE TABLE track_categories (
+    track_id integer not null REFERENCES tracks(id),
+    cat_id integer not null REFERENCES categories(id),
+    UNIQUE (track_id, cat_id)
+);
 CREATE TYPE favorite_type AS ENUM ('track', 'artist');
 CREATE TABLE favorites (
     user_id integer not null,
