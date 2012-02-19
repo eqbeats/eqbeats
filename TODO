@@ -1,3 +1,11 @@
+- Now
+Action::cgi
+Renderer
+TrackList
+Tracks namespace
+{Category,User..}::tracks
+clean #includes
+
 - Features
 password reset
 Popular -> Featured
@@ -16,7 +24,7 @@ News: date
 News ticker
 
 - Tech
-Default io stream for Render ? (no more stringstream or buffered string)
+logging
 Optimize hits / async query
 audio files: embed cover arts
 full format support?

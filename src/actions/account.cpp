@@ -44,35 +44,35 @@ std::string accountForm(const Account &_account, const std::string &error=std::s
         + Html::footer();
 }
 
-std::string Action::account(cgicc::Cgicc &cgi){
+std::string Action::account(){
     if(!Session::user()) return Http::redirect("/login?redirect=/account");
     Account a(Session::user().id());
     bool newName = false;
-    if(cgi.getEnvironment().getRequestMethod() != "POST")
+    if(cgi->getEnvironment().getRequestMethod() != "POST")
         return accountForm(a);
-    if(!cgi("name").empty()){
-        newName = a.name() != cgi("name");
-        if(!a.setName(cgi("name")))
+    if(!(*cgi)("name").empty()){
+        newName = a.name() != (*cgi)("name");
+        if(!a.setName((*cgi)("name")))
             return accountForm(a, "Name already in use.");
     }
-    if(!cgi("email").empty()){
-        if(!Account::validEmail(cgi("email")))
+    if(!(*cgi)("email").empty()){
+        if(!Account::validEmail((*cgi)("email")))
             return accountForm(a, "Invalid email address.");
-        if(!a.setEmail(cgi("email")))
+        if(!a.setEmail((*cgi)("email")))
             return accountForm(a, "Email already in use.");
     }
-    if(!cgi("oldpw").empty() && !cgi("newpw").empty()){
-        if(cgi("newpw") != cgi("newpwconf"))
+    if(!(*cgi)("oldpw").empty() && !(*cgi)("newpw").empty()){
+        if((*cgi)("newpw") != (*cgi)("newpwconf"))
             return accountForm(a, "Passwords mismatch.");
-        if(!a.checkPassword(cgi("oldpw")))
+        if(!a.checkPassword((*cgi)("oldpw")))
             return accountForm(a, "Wrong password.");
-        a.setPassword(cgi("newpw"));
+        a.setPassword((*cgi)("newpw"));
     }
-    a.setAbout(cgi("about"));
+    a.setAbout((*cgi)("about"));
     a.commit();
     if(newName){
         Session::destroy();
-        Session::start(cgi);
+        Session::start();
         std::vector<Track> tracks = Track::byArtist(a.id(), true);
         for(std::vector<Track>::iterator i=tracks.begin(); i!=tracks.end(); i++)
             i->updateTags();

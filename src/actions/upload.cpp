@@ -18,14 +18,14 @@ std::string getTitle(const char *filename){
     return t? t->title().to8Bit(): "";
 }
 
-std::string Action::uploadTrack(int id, cgicc::Cgicc &cgi){
+std::string Action::uploadTrack(int id){
     User u = Session::user();
     Track t(id);
 
     static const std::string header = Http::header("application/json");
-    cgicc::file_iterator file = cgi.getFile("file");
-    cgicc::file_iterator qqfile = cgi.getFile("qqfile");
-    bool isXhr = !cgi("qqfile").empty();
+    cgicc::file_iterator file = cgi->getFile("file");
+    cgicc::file_iterator qqfile = cgi->getFile("qqfile");
+    bool isXhr = !(*cgi)("qqfile").empty();
 
     std::string formatError = isXhr?
         header+"{"+field("success","false")+field("error",jstring("Only MP3 files are accepted."))+"}":
@@ -43,13 +43,13 @@ std::string Action::uploadTrack(int id, cgicc::Cgicc &cgi){
     std::ofstream out(tmpFile, std::ios_base::binary);
     std::string upfilename;
 
-    if(qqfile != cgi.getFiles().end()) {
+    if(qqfile != cgi->getFiles().end()) {
         qqfile->writeToStream(out);
         upfilename = qqfile->getName();
     } else if(isXhr) {
-        out << cgi.getEnvironment().getPostData();
-        upfilename = cgi("qqfile");
-    } else if(file != cgi.getFiles().end()) {
+        out << cgi->getEnvironment().getPostData();
+        upfilename = (*cgi)("qqfile");
+    } else if(file != cgi->getFiles().end()) {
         file->writeToStream(out);
         upfilename = file->getName();
     }
@@ -82,6 +82,6 @@ std::string Action::uploadTrack(int id, cgicc::Cgicc &cgi){
         Http::redirect(t.url());
 }
 
-std::string Action::newTrack(cgicc::Cgicc &cgi){
-    return uploadTrack(-1, cgi);
+std::string Action::newTrack(){
+    return uploadTrack(-1);
 }

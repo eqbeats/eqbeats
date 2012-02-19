@@ -1,5 +1,6 @@
 #include "session.h"
 #include "utils.h"
+#include "actions/actions.h"
 #include <cgicc/CgiEnvironment.h>
 #include <cgicc/HTTPCookie.h>
 #include <stdio.h>
@@ -19,8 +20,8 @@ std::string randomSid(){
 User u;
 std::string sid;
 
-void Session::start(Cgicc &cgi){
-    CgiEnvironment env = cgi.getEnvironment();
+void Session::start(){
+    CgiEnvironment env = Action::cgi->getEnvironment();
     for(std::vector<HTTPCookie>::const_iterator i=env.getCookieList().begin(); i!= env.getCookieList().end(); i++){
         if(i->getName() == "sid")
             sid = i->getValue();

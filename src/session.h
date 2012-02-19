@@ -1,7 +1,6 @@
 #ifndef SESSION_H
 #define SESSION_H
 
-#include <cgicc/Cgicc.h>
 #include "user.h"
 
 namespace Session{
@@ -13,7 +12,7 @@ namespace Session{
  *
  * Reads the \c sid cookie and checks the \c sessions table.
  */
-void start(cgicc::Cgicc &cgi);
+void start();
 
 //! Reset the cached user.
 void destroy();

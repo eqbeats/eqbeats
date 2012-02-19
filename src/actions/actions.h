@@ -1,44 +1,46 @@
 #ifndef ACTIONS_H
 #define ACTIONS_H
 
-#include <cgicc/Cgicc.h>
 #include "../comment.h"
+#include <cgicc/Cgicc.h>
 
 //! Page generation with effects
 namespace Action{
 
+extern cgicc::Cgicc *cgi;
+
 // login.cpp
-std::string login(cgicc::Cgicc &cgi);
-std::string logout(cgicc::Cgicc &cgi);
+std::string login();
+std::string logout();
 
 // registration.cpp
-std::string registration(cgicc::Cgicc &cgi);
-std::string account(cgicc::Cgicc &cgi);
+std::string registration();
+std::string account();
 
 // track.cpp
-std::string deleteTrack(int tid, cgicc::Cgicc &cgi);
-std::string renameTrack(int tid, cgicc::Cgicc &cgi);
-std::string updateNotes(int tid, cgicc::Cgicc &cgi);
-std::string publishTrack(int tid, cgicc::Cgicc &cgi);
-std::string updateCategories(int tid, cgicc::Cgicc &cgi);
+std::string deleteTrack(int tid);
+std::string renameTrack(int tid);
+std::string updateNotes(int tid);
+std::string publishTrack(int tid);
+std::string updateCategories(int tid);
 
 // upload.cpp
-std::string uploadTrack(int tid, cgicc::Cgicc &cgi);
-std::string newTrack(cgicc::Cgicc &cgi);
+std::string uploadTrack(int tid);
+std::string newTrack();
 
 // comment.cpp
-std::string postComment(Comment::Type type, int ref, cgicc::Cgicc &cgi);
+std::string postComment(Comment::Type type, int ref);
 
 // art.cpp
-std::string uploadArt(int tid, cgicc::Cgicc &cgi);
+std::string uploadArt(int tid);
 
 // favorite.cpp
-std::string follow(int uid, bool add, cgicc::Cgicc &cgi);
-std::string favorite(int tid, bool add, cgicc::Cgicc &cgi);
-std::string vote(int cid, cgicc::Cgicc &cgi);
+std::string follow(int uid, bool add);
+std::string favorite(int tid, bool add);
+std::string vote(int cid);
 
 // contest.cpp
-std::string contestSubmission(int cid, cgicc::Cgicc &cgi);
+std::string contestSubmission(int cid);
 
 }
 
