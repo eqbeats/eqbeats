@@ -3,10 +3,12 @@
 #include "../render/html.h"
 #include "../render/http.h"
 #include "../session.h"
-#include "../utils.h"
+#include "../number.h"
+#include "../path.h"
 #include "../mail.h"
 
 using namespace std;
+using namespace Render;
 
 std::string filter(const std::string &str){
     std::string buf;
@@ -16,7 +18,7 @@ std::string filter(const std::string &str){
     return buf;
 }
 
-std::string Action::publishTrack(int tid){
+void Action::publishTrack(int tid){
     if(tid != number((*cgi)("tid")))
         return Http::redirect(Track::url(tid));
     User u = Session::user();
@@ -42,7 +44,7 @@ std::string Action::publishTrack(int tid){
     return Http::redirect(t.url());
 }
 
-std::string Action::updateNotes(int tid){
+void Action::updateNotes(int tid){
     User u = Session::user();
     Track t(tid);
     if(u.id()==t.artistId() && u &&
@@ -51,7 +53,7 @@ std::string Action::updateNotes(int tid){
     return Http::redirect(t.url());
 }
 
-std::string Action::renameTrack(int tid){
+void Action::renameTrack(int tid){
     User u = Session::user();
     Track t(tid);
     if(u.id()==t.artistId() && u && !(*cgi)("title").empty() &&
@@ -60,28 +62,30 @@ std::string Action::renameTrack(int tid){
     return Http::redirect(t.url());
 }
 
-std::string deletionForm(const Track &t){
-    return Html::header("Track deletion") +
-        "<form method=\"post\">"
-            "Do you really want to delete <b>" + Html::escape(t.title()) + "</b> ? "
+void deletionForm(const Track &t){
+    Html::header("Track deletion");
+    o << "<form method=\"post\">"
+            "Do you really want to delete <b>" << Html::escape(t.title()) << "</b> ? "
             "<input type=\"submit\" value=\"Delete\" name=\"confirm\" />"
         "</form>"
-        "<a class=\"danger\" href=\"" + t.url() + "\">Cancel</a>"
-        + Html::footer();
+        "<a class=\"danger\" href=\"" << t.url() << "\">Cancel</a>";
+    Html::footer();
 }
 
-std::string Action::deleteTrack(int tid){
+void Action::deleteTrack(int tid){
     User u = Session::user();
     Track t(tid);
     if(u.id()!=t.artistId() || !u)
-        return Http::redirect(t.url());
-    if(cgi->getEnvironment().getRequestMethod()!="POST" || (*cgi)("confirm")!="Delete")
-        return deletionForm(t);
-    t.remove();
-    return Http::redirect(u.url());
+        Http::redirect(t.url());
+    else if(cgi->getEnvironment().getRequestMethod()!="POST" || (*cgi)("confirm")!="Delete")
+        deletionForm(t);
+    else{
+        t.remove();
+        Http::redirect(u.url());
+    }
 }
 
-std::string Action::updateCategories(int tid){
+void Action::updateCategories(int tid){
     User u = Session::user();
     Track t(tid);
     if(u.id()!=t.artistId() || !u || cgi->getEnvironment().getRequestMethod()!="POST")

@@ -3,13 +3,15 @@
 #include "../render/http.h"
 #include "../render/json.h"
 #include "../session.h"
-#include "../utils.h"
+#include "../number.h"
+#include "../path.h"
 #include <string.h>
 #include <fstream>
 #include <taglib/mpegfile.h>
 #include <taglib/tag.h>
 #include <sys/stat.h>
 
+using namespace Render;
 using namespace Json;
 
 std::string getTitle(const char *filename){
@@ -18,25 +20,21 @@ std::string getTitle(const char *filename){
     return t? t->title().to8Bit(): "";
 }
 
-std::string Action::uploadTrack(int id){
+void Action::uploadTrack(int id){
     User u = Session::user();
     Track t(id);
 
-    static const std::string header = Http::header("application/json");
     cgicc::file_iterator file = cgi->getFile("file");
     cgicc::file_iterator qqfile = cgi->getFile("qqfile");
     bool isXhr = !(*cgi)("qqfile").empty();
 
-    std::string formatError = isXhr?
-        header+"{"+field("success","false")+field("error",jstring("Only MP3 files are accepted."))+"}":
-        Html::errorPage("Only MP3 files are accepted.");
-    std::string genericError = isXhr?
-        header+"{"+field("success","false")+"}":
-        Http::redirect(t?t.url():u?u.url():"/");
+    isXhr ? Http::header("application/json") : Http::redirect(t?t.url():u?u.url():"/");
 
-    if(!u) return genericError;
-    if(t && t.artistId() != u.id())
-        return genericError;
+    if(!u || !t || t.artistId() != u.id()){
+        if(isXhr)
+            o << "{" << field("success","false",true) << "}";
+        return;
+    }
 
     std::string dir = eqbeatsDir() + "/tmp";
     char *tmpFile = tempnam(dir.c_str(), "eqb");
@@ -55,14 +53,6 @@ std::string Action::uploadTrack(int id){
     }
     out.close();
 
-    // check filesize
-    struct stat info;
-    if(stat(tmpFile, &info) == 0){
-        if(info.st_size < 500)
-            return formatError;
-    }
-    else return genericError;
-
     if(id == -1){
         std::string title = getTitle(tmpFile);
         if(title.empty())
@@ -77,11 +67,10 @@ std::string Action::uploadTrack(int id){
     t.updateTags(Track::MP3);
     t.convertToVorbis();
 
-    return isXhr?
-        header+"{"+field("success","true")+field("track",number(t.id()))+field("title",jstring(t.title()))+"}":
-        Http::redirect(t.url());
+    if(isXhr)
+        o << "{"+field("success","true")+field("track",number(t.id()))+field("title",jstring(t.title()),true)+"}";
 }
 
-std::string Action::newTrack(){
-    return uploadTrack(-1);
+void Action::newTrack(){
+    uploadTrack(-1);
 }

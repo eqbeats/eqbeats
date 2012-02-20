@@ -4,10 +4,13 @@
 #include "../account.h"
 #include "../session.h"
 
-std::string registrationForm(const std::string &error=std::string()){
-    return Html::header("Register") + "<h2>Register</h2>" +
-        (error.empty() ? "" : "<div class=\"error\">" + error + "</div>") +
-        "<form action=\"/register\" method=\"post\">"
+using namespace Render;
+
+void registrationForm(const std::string &error=std::string()){
+    Html::header("Register");
+    o << "<h2>Register</h2>"
+      << (error.empty() ? "" : "<div class=\"error\">" + error + "</div>")
+      << "<form action=\"/register\" method=\"post\">"
             "<table>"
                 "<tr>"
                     "<td><label for=\"r_name\">Display name:</label></td>"
@@ -27,30 +30,31 @@ std::string registrationForm(const std::string &error=std::string()){
                 "</tr>"
             "</table>"
             "<input type=\"submit\" value=\"Register\" />"
-        "</form>"
-        + Html::footer();
+        "</form>";
+    Html::footer();
 }
 
-std::string Action::registration(){
-    if(Session::user()) return Http::redirect("/");
+void Action::registration(){
+    if(Session::user()){ Http::redirect("/"); return; }
     if(cgi->getEnvironment().getRequestMethod() != "POST")
-        return registrationForm();
+        registrationForm();
     if((*cgi)("name").empty())
-        return registrationForm("Please specify a display name.");
+        registrationForm("Please specify a display name.");
     if((*cgi)("email").empty())
-        return registrationForm("Please specify an email address.");
+        registrationForm("Please specify an email address.");
     if(!Account::validEmail((*cgi)("email")))
-        return registrationForm("Invalid email address.");
+        registrationForm("Invalid email address.");
     if((*cgi)("pw").empty())
-        return registrationForm("Please specify a password.");
+        registrationForm("Please specify a password.");
     if((*cgi)("pw")!=(*cgi)("pwconf"))
-        return registrationForm("Passwords mismatch.");
+        registrationForm("Passwords mismatch.");
     Account account = Account::create((*cgi)("name"), (*cgi)("pw"), (*cgi)("email"));
     if(!account)
-        return registrationForm("Sorry, name or email already in use.");
+        registrationForm("Sorry, name or email already in use.");
 
-    return "Set-Cookie: sid="
-        + Session::login(account.id(), cgi->getEnvironment().getRemoteAddr())
-        + ";Max-Age=2592000\n" + Http::redirect("/quickstart") // 30 days
-        + "Account created, redirecting...";
+    o << "Set-Cookie: sid="
+      << Session::login(account.id(), cgi->getEnvironment().getRemoteAddr())
+      << ";Max-Age=2592000\n"; // 30 days
+    Http::redirect("/quickstart");
+    o << "Account created, redirecting...";
 }

@@ -1,5 +1,3 @@
-#include "FCgiIO.h"
-#include "routing.h"
 #include "session.h"
 #include "timer.h"
 #include "render/html.h"
@@ -9,16 +7,16 @@
 #include "render/http.h"
 #include "actions/actions.h"
 #include "account.h"
-#include "utils.h"
+#include "path.h"
+#include "track.h"
+#include "number.h"
+#include "render/render.h"
 #include <time.h>
 #include <stdio.h>
 
-#include "track.h"
-
 using namespace cgicc;
-using namespace Html;
+using namespace Render;
 
-std::string path;
 cgicc::Cgicc *Action::cgi;
 
 int main(int argc, char** argv){
@@ -37,158 +35,155 @@ int main(int argc, char** argv){
     FCGX_Init();
     FCGX_InitRequest(&request, 0, 0);
 
+    std::string path;
+    int id;
     while(FCGX_Accept_r(&request) == 0){
 
         resetTimer();
-        FCgiIO io(request);
-        Cgicc cgi(&io);
-
-        // Env
+        o.attach(&request);
+        Cgicc cgi(&o);
         Action::cgi = &cgi;
-        serverName = cgi.getEnvironment().getServerName();
 
-        // Routing
-        int id;
-        path = stripSlash(cgi.getEnvironment().getPathInfo());
+        path = getPath();
 
         // Static
-        if((id = routeAction("track", "vorbis", path)))
-            io << Html::downloadTrack(id, Track::Vorbis);
-        else if((id = routeAction("track", "mp3", path)))
-            io << Html::downloadTrack(id, Track::MP3);
-        else if((id = routeAction("track", "art", path)))
-            io << Html::trackArt(id);
-        else if((id = routeAction("track", "art/medium", path)))
-            io << Html::trackArt(id, Art::Medium);
-        else if((id = routeAction("track", "art/thumb", path)))
-            io << Html::trackArt(id, Art::Thumbnail);
+        if((id = route("track", "vorbis", path)))
+            Html::downloadTrack(id, Track::Vorbis);
+        else if((id = route("track", "mp3", path)))
+            Html::downloadTrack(id, Track::MP3);
+        else if((id = route("track", "art", path)))
+            Html::trackArt(id);
+        else if((id = route("track", "art/medium", path)))
+            Html::trackArt(id, Art::Medium);
+        else if((id = route("track", "art/thumb", path)))
+            Html::trackArt(id, Art::Thumbnail);
         // Json
-        else if((id = routeAction("track", "json", path)))
-            io << Json::track(id);
-        else if((id = routeAction("user", "json", path)))
-            io << Json::artist(id);
+        else if((id = route("track", "json", path)))
+            Json::track(id);
+        else if((id = route("user", "json", path)))
+            Json::artist(id);
         else if(path == "/tracks/search/json")
-            io << Json::tracks(Track::search(cgi("q")));
+            Json::tracks(Track::search(cgi("q")));
         else if(path == "/tracks/search/exact/json")
-            io << Json::tracks(Track::exactSearch(cgi("artist"),cgi("track")));
+            Json::tracks(Track::exactSearch(cgi("artist"),cgi("track")));
         else if(path == "/tracks/latest/json")
-            io << Json::tracks(Track::latest(50));
+            Json::tracks(Track::latest(50));
         else if(path == "/tracks/random/json")
-            io << Json::tracks(Track::random(50));
+            Json::tracks(Track::random(50));
         else if(path == "/tracks/popular/json")
-            io << Json::tracks(Track::popular(50));
+            Json::tracks(Track::popular(50));
         else if(path == "/artists/json")
-            io << Json::users(User::listArtists(200));
+            Json::users(User::listArtists(200));
         else if(path == "/users/search/json")
-            io << Json::users(User::search(cgi("q")));
-        else if((id = routeAction("cat", "json", path)))
-            io << Json::category(id);
+            Json::users(User::search(cgi("q")));
+        else if((id = route("cat", "json", path)))
+            Json::category(id);
         // Feeds
-        else if((id = routeAction("cat", "atom", path)))
-            io << Feed::category(id);
+        else if((id = route("cat", "atom", path)))
+            Feed::category(id);
         else if(path == "/tracks/latest/atom")
-            io << Feed::latest(200);
-        else if((id = routeAction("user", "atom", path)))
-            io << Feed::user(id);
+            Feed::latest(200);
+        else if((id = route("user", "atom", path)))
+            Feed::user(id);
         // oEmbed
         else if(path == "/oembed")
-            io << oEmbed(cgi("url"), cgi("format")=="xml", number(cgi("maxwidth")));
+            oEmbed(cgi("url"), cgi("format")=="xml", number(cgi("maxwidth")));
 
         else{
         Session::start();
         // User
-        if((id = routeId("user", path)))
-            io << Html::userPage(id);
-        else if((id = routeAction("user", "comment", path)))
-            io << Action::postComment(Comment::User, id);
-        else if((id = routeAction("user", "follow", path)))
-            io << Action::follow(id, true);
-        else if((id = routeAction("user", "unfollow", path)))
-            io << Action::follow(id, false);
-        else if((id = routeAction("user", "favorites", path)))
-            io << Html::favorites(id);
+        if((id = route("user", path)))
+            Html::userPage(id);
+        else if((id = route("user", "comment", path)))
+            Action::postComment(Comment::User, id);
+        else if((id = route("user", "follow", path)))
+            Action::follow(id, true);
+        else if((id = route("user", "unfollow", path)))
+            Action::follow(id, false);
+        else if((id = route("user", "favorites", path)))
+            Html::favorites(id);
         // Track
-        else if((id = routeAction("track", "embed", path)))
-            io << Html::embedTrack(id);
-        else if((id = routeAction("track", "delete", path)))
-            io << Action::deleteTrack(id);
-        else if((id = routeAction("track", "rename", path)))
-            io << Action::renameTrack(id);
-        else if((id = routeAction("track", "notes", path)))
-            io << Action::updateNotes(id);
-        else if((id = routeAction("track", "upload", path)))
-            io << Action::uploadTrack(id);
-        else if((id = routeAction("track", "art/upload", path)))
-            io << Action::uploadArt(id);
-        else if((id = routeAction("track", "publish", path)))
-            io << Action::publishTrack(id);
-        else if((id = routeAction("track", "comment", path)))
-            io << Action::postComment(Comment::Track, id);
-        else if((id = routeAction("track", "cat", path)))
-            io << Action::updateCategories(id);
-        else if((id = routeAction("track", "favorite", path)))
-            io << Action::favorite(id, true);
-        else if((id = routeAction("track", "unfavorite", path)))
-            io << Action::favorite(id, false);
-        else if((id = routeId("track",path)))
-            io << Html::trackPage(id);
+        else if((id = route("track", "embed", path)))
+            Html::embedTrack(id);
+        else if((id = route("track", "delete", path)))
+            Action::deleteTrack(id);
+        else if((id = route("track", "rename", path)))
+            Action::renameTrack(id);
+        else if((id = route("track", "notes", path)))
+            Action::updateNotes(id);
+        else if((id = route("track", "upload", path)))
+            Action::uploadTrack(id);
+        else if((id = route("track", "art/upload", path)))
+            Action::uploadArt(id);
+        else if((id = route("track", "publish", path)))
+            Action::publishTrack(id);
+        else if((id = route("track", "comment", path)))
+            Action::postComment(Comment::Track, id);
+        else if((id = route("track", "cat", path)))
+            Action::updateCategories(id);
+        else if((id = route("track", "favorite", path)))
+            Action::favorite(id, true);
+        else if((id = route("track", "unfavorite", path)))
+            Action::favorite(id, false);
+        else if((id = route("track",path)))
+            Html::trackPage(id);
         else if(path == "/track/new")
-            io << Action::newTrack();
+            Action::newTrack();
         // Tracks
         else if(path == "/tracks")
-            io << Http::redirect("/");
+            Http::redirect("/");
         else if(path == "/tracks/search")
-            io << Html::trackSearch(cgi("q"));
+            Html::trackSearch(cgi("q"));
         else if(path == "/tracks/latest")
-            io << Html::latestTracks(50);
+            Html::latestTracks(50);
         else if(path == "/tracks/random")
-            io << Html::tracksPage("Random tracks", Track::random(50));
+            Html::tracksPage("Random tracks", Track::random(50));
         else if(path == "/tracks/popular")
-            io << Html::tracksPage("Popular tracks", Track::popular(50));
+            Html::tracksPage("Popular tracks", Track::popular(50));
         // Categories
-        else if((id = routeId("cat", path)))
-            io << Html::category(id);
+        else if((id = route("cat", path)))
+            Html::category(id);
         // News
-        else if((id = routeId("news", path)))
-            io << Html::newsPage(id);
-        else if((id = routeAction("news", "comment", path)))
-            io << Action::postComment(Comment::News, id);
+        else if((id = route("news", path)))
+            Html::newsPage(id);
+        else if((id = route("news", "comment", path)))
+            Action::postComment(Comment::News, id);
         else if(path == "/news")
-            io << Html::latestNews(20);
+            Html::latestNews(20);
         // Contests
-        else if((id = routeId("contest", path)))
-            io << Html::contest(id, cgi.getEnvironment().getRemoteAddr());
-        else if((id = routeAction("contest", "submit", path)))
-            io << Action::contestSubmission(id);
-        else if((id = routeAction("contest", "vote", path)))
-            io << Action::vote(id);
+        else if((id = route("contest", path)))
+            Html::contest(id, cgi.getEnvironment().getRemoteAddr());
+        else if((id = route("contest", "submit", path)))
+            Action::contestSubmission(id);
+        else if((id = route("contest", "vote", path)))
+            Action::vote(id);
         // Users
         else if(path == "/users/search")
-            io << Html::userSearch(cgi("q"));
+            Html::userSearch(cgi("q"));
         else if(path == "/users")
-            io << Html::usersPage();
+            Html::usersPage();
         else if(path == "/artists")
-            io << Html::artistsPage();
+            Html::artistsPage();
         // Actions
         else if(path == "/register")
-            io << Action::registration();
+            Action::registration();
         else if(path == "/account")
-            io << Action::account();
+            Action::account();
         else if(path == "/login")
-            io << Action::login();
+            Action::login();
         else if(path == "/logout")
-            io << Action::logout();
+            Action::logout();
         // Static
         else if(path == "/quickstart")
-            io << Html::quickStart();
+            Html::quickStart();
         else if(path == "/faq")
-            io << Html::faq();
+            Html::faq();
         else if(path == "/credits")
-            io << Html::credits();
+            Html::credits();
         else if(path == "")
-            io << Html::home();
+            Html::home();
         else
-            io << Html::notFound();
+            Html::notFound();
         Session::destroy();
         }
 

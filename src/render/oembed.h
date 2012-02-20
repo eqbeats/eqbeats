@@ -3,6 +3,6 @@
 
 #include <string>
 
-std::string oEmbed(const std::string &url, bool xml, int w=0);
+void oEmbed(const std::string &url, bool xml, int w=0);
 
 #endif // OEMBED_H

@@ -1,7 +1,10 @@
 #include "../html.h"
 
-std::string Html::faq(){
-    return header("FAQ") + "<h2>Frequently Asked Questions</h2><div class=\"faq\">"
+using namespace Render;
+
+void Render::Html::faq(){
+    header("FAQ");
+    o << "<h2>Frequently Asked Questions</h2><div class=\"faq\">"
 
         "<div><h4>What is this?</h4>"
         "<p>A place for artists to publish their MLP-related music, and get in touch with their audience.</p></div>"
@@ -18,5 +21,6 @@ std::string Html::faq(){
         "<div><h4>I've got a question/problem/idea!</h4>"
         "<p>What are you waiting for? Drop us a line at contact@eqbeats.org.</p></div>"
 
-        "</div>" + footer();
+        "</div>";
+    footer();
 }

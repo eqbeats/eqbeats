@@ -4,23 +4,24 @@
 #include "../account.h"
 #include "../session.h"
 
-using namespace Html;
+using namespace Render::Html;
 
-std::string accountForm(const Account &_account, const std::string &error=std::string(),
+void accountForm(const Account &_account, const std::string &error=std::string(),
                                 const std::string &message=std::string()){
-    return Html::header("Your account") + "<h2>Your account</h2>" +
-        (message.empty() ? "" : "<div class=\"message\">" + message + "</div>") +
-        (error.empty() ? "" : "<div class=\"error\">" + error + "</div>") +
+    header("Your account");
+    Render::o << "<h2>Your account</h2>" <<
+        (message.empty() ? "" : "<div class=\"message\">" + message + "</div>") <<
+        (error.empty() ? "" : "<div class=\"error\">" + error + "</div>") <<
         "<form action=\"/account\" method=\"post\">"
             "<table>"
                 "<tr>"
                     "<td><label for=\"r_name\">Display name:</label></td>"
-                    "<td><input id=\"r_name\" name=\"name\" value=\""+escape(_account.name())+"\""
+                    "<td><input id=\"r_name\" name=\"name\" value=\"" << escape(_account.name()) << "\""
                     " maxlength=\"200\" /></td>"
                 "</tr>"
                 "<tr>"
                     "<td><label for=\"r_email\">Email:</label></td>"
-                    "<td><input id=\"r_email\" name=\"email\" value=\""+escape(_account.email())+"\" /></td>"
+                    "<td><input id=\"r_email\" name=\"email\" value=\"" << escape(_account.email()) << "\" /></td>"
                 "</tr>"
                 "<tr>"
                     "<td><label for=\"r_oldpw\">Old password:</label></td>"
@@ -36,15 +37,15 @@ std::string accountForm(const Account &_account, const std::string &error=std::s
                 "</tr>"
                 "<tr>"
                     "<td><label for=\"r_about\">Description:</label></td>"
-                    "<td><textarea id=\"r_about\" name=\"about\">" + escape(_account.about()) + "</textarea></td>"
+                    "<td><textarea id=\"r_about\" name=\"about\">" << escape(_account.about()) << "</textarea></td>"
                 "</tr>"
             "</table>"
             "<input type=\"submit\" value=\"Update\" />"
-        "</form>"
-        + Html::footer();
+        "</form>";
+    footer();
 }
 
-std::string Action::account(){
+void Action::account(){
     if(!Session::user()) return Http::redirect("/login?redirect=/account");
     Account a(Session::user().id());
     bool newName = false;
@@ -77,5 +78,5 @@ std::string Action::account(){
         for(std::vector<Track>::iterator i=tracks.begin(); i!=tracks.end(); i++)
             i->updateTags();
     }
-    return accountForm(a, std::string(), "Changes successful.");
+    accountForm(a, std::string(), "Changes successful.");
 }

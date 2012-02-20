@@ -2,7 +2,8 @@
 #include <sstream>
 #include "track.h"
 #include "user.h"
-#include "utils.h"
+#include "number.h"
+#include "path.h"
 #include "art.h"
 #include <taglib/taglib.h>
 #include <taglib/mpegfile.h>

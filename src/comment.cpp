@@ -1,7 +1,7 @@
 #include "user.h"
 #include "track.h"
 #include "comment.h"
-#include "utils.h"
+#include "number.h"
 
 Comment::Type stot(const std::string &in){
     if(in == "news") return Comment::News;

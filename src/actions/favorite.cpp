@@ -3,8 +3,11 @@
 #include "../track.h"
 #include "../render/html.h"
 #include "../render/http.h"
-#include "../utils.h"
+#include "../number.h"
+#include "../path.h"
 #include "../contest.h"
+
+using namespace Render;
 
 bool fromEqBeats(){
     std::string ref = Action::cgi->getEnvironment().getReferrer();
@@ -12,31 +15,37 @@ bool fromEqBeats(){
     return ref.substr(0, eqbeatsUrl().length()) == eqbeatsUrl();
 }
 
-std::string Action::follow(int uid, bool add){
+void Action::follow(int uid, bool add){
     if(!fromEqBeats()) return Http::redirect(User::url(uid));
     User u(uid);
-    if(!u) return Html::notFound("User");
-    if(!Session::user())
-        return Http::redirect("/login?redirect=" + u.url() + "/" + (add?"":"un") + "follow");
-    if(Session::user() == u)
-        return Http::redirect(u.url());
-    add ? Session::user().follow(uid)
-        : Session::user().unfollow(uid);
-    return Http::redirect(u.url());
+    if(!u)
+        Html::notFound("User");
+    else if(!Session::user())
+        Http::redirect("/login?redirect=" + u.url() + "/" + (add?"":"un") + "follow");
+    else if(Session::user() == u)
+        Http::redirect(u.url());
+    else{
+        add ? Session::user().follow(uid)
+            : Session::user().unfollow(uid);
+        Http::redirect(u.url());
+    }
 }
 
-std::string Action::favorite(int tid, bool add){
+void Action::favorite(int tid, bool add){
     if(!fromEqBeats()) return Http::redirect(Track::url(tid));
     Track t(tid);
-    if(!t) return Html::notFound("Track");
-    if(!Session::user())
-        return Http::redirect("/login?redirect=" + t.url() + "/" + (add?"":"un") + "favorite");
-    add ? Session::user().addToFavorites(tid)
-        : Session::user().removeFromFavorites(tid);
-    return Http::redirect(t.url());
+    if(!t)
+        Html::notFound("Track");
+    else if(!Session::user())
+        Http::redirect("/login?redirect=" + t.url() + "/" + (add?"":"un") + "favorite");
+    else{
+        add ? Session::user().addToFavorites(tid)
+            : Session::user().removeFromFavorites(tid);
+        Http::redirect(t.url());
+    }
 }
 
-std::string Action::vote(int cid){
+void Action::vote(int cid){
     if(!fromEqBeats()) return Http::redirect(Contest::url(cid));
     Contest c(cid);
     if(!c) return Html::notFound("Contest");
@@ -49,5 +58,5 @@ std::string Action::vote(int cid){
             c.unvote(tid, host);
         else c.vote(tid, host);
     }
-    return Http::redirect(c.url()+"#submissions");
+    Http::redirect(c.url()+"#submissions");
 }

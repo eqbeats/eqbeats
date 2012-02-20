@@ -1,6 +1,6 @@
 #include "contest.h"
 #include "db.h"
-#include "utils.h"
+#include "number.h"
 
 Contest::Contest(int id){
     _id = 0;

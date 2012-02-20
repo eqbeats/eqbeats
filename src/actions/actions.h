@@ -1,8 +1,8 @@
 #ifndef ACTIONS_H
 #define ACTIONS_H
 
-#include "../comment.h"
 #include <cgicc/Cgicc.h>
+#include "../comment.h"
 
 //! Page generation with effects
 namespace Action{
@@ -10,37 +10,37 @@ namespace Action{
 extern cgicc::Cgicc *cgi;
 
 // login.cpp
-std::string login();
-std::string logout();
+void login();
+void logout();
 
 // registration.cpp
-std::string registration();
-std::string account();
+void registration();
+void account();
 
 // track.cpp
-std::string deleteTrack(int tid);
-std::string renameTrack(int tid);
-std::string updateNotes(int tid);
-std::string publishTrack(int tid);
-std::string updateCategories(int tid);
+void deleteTrack(int tid);
+void renameTrack(int tid);
+void updateNotes(int tid);
+void publishTrack(int tid);
+void updateCategories(int tid);
 
 // upload.cpp
-std::string uploadTrack(int tid);
-std::string newTrack();
+void uploadTrack(int tid);
+void newTrack();
 
 // comment.cpp
-std::string postComment(Comment::Type type, int ref);
+void postComment(Comment::Type type, int ref);
 
 // art.cpp
-std::string uploadArt(int tid);
+void uploadArt(int tid);
 
 // favorite.cpp
-std::string follow(int uid, bool add);
-std::string favorite(int tid, bool add);
-std::string vote(int cid);
+void follow(int uid, bool add);
+void favorite(int tid, bool add);
+void vote(int cid);
 
 // contest.cpp
-std::string contestSubmission(int cid);
+void contestSubmission(int cid);
 
 }
 

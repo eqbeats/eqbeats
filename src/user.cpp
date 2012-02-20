@@ -1,6 +1,6 @@
 #include <sstream>
 #include "user.h"
-#include "utils.h"
+#include "number.h"
 
 User::User(int nId){
     _id = 0;

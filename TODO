@@ -1,16 +1,18 @@
 - Now
-Action::cgi
-Renderer
-TrackList
-Tracks namespace
+cgi* -> cgi&
+Track::List
+Track::artist?
+Track::select
 {Category,User..}::tracks
 clean #includes
 
 - Features
+PG13 rating
 password reset
 Popular -> Featured
 Json (session, favorites)
 inline play button (lists)
+favs -> playlists
 pagination
 sorting
 Player: volume
@@ -20,12 +22,11 @@ Referrers?
 
 - Design
 Player: borders, bouncy title
-News: date
-News ticker
 
 - Tech
 logging
-Optimize hits / async query
+transcoding daemon
+Optimize hits / async query (daemon?)
 audio files: embed cover arts
 full format support?
 W3C validation

@@ -6,24 +6,20 @@
 #include "../art.h"
 #include "../user.h"
 #include "../comment.h"
-
-extern std::string path;
+#include "render.h"
+#include "html/escape.h"
 
 //! Page generation
+namespace Render{
 namespace Html{
 
-// escape.cpp
-std::string escape(const std::string &);
-std::string escapeEmail(const std::string &);
-std::string format(std::string);
-
 // page.cpp
-std::string header(const std::string &title=std::string(), const std::string &head=std::string(), int status=200);
+void header(const std::string &title=std::string(), const std::string &head=std::string(), int status=200);
 std::string atomFeed(const std::string &url);
-std::string footer();
-std::string quickStart();
-std::string notFound(const std::string &what="Page");
-std::string errorPage(const std::string &err);
+void footer();
+void quickStart();
+void notFound(const std::string &what="Page");
+void errorPage(const std::string &err);
 
 enum TrackList {
     Standard,
@@ -32,50 +28,51 @@ enum TrackList {
 };
 
 // track.cpp
-std::string uploadForm(const std::string &action);
-std::string trackPage(int tid);
-std::string embedTrack(int tid);
+void uploadForm(const std::string &action);
+void trackPage(int tid);
+void embedTrack(int tid);
 std::string embedTrackCode(const Track &t, int w=0);
-std::string trackList(const std::vector<Track> &tracks, TrackList l=Standard);
-std::string latestTracks(int n);
-std::string tracksPage(const std::string &title, const std::vector<Track> &tracks);
-std::string trackSearch(const std::string &q);
-std::string category(int cid);
-std::string downloadTrack(int tid, Track::Format f);
-std::string trackArt(int tid, Art::Size sz=Art::Full);
+void trackList(const std::vector<Track> &tracks, TrackList l=Standard);
+void latestTracks(int n);
+void tracksPage(const std::string &title, const std::vector<Track> &tracks);
+void trackSearch(const std::string &q);
+void category(int cid);
+void downloadTrack(int tid, Track::Format f);
+void trackArt(int tid, Art::Size sz=Art::Full);
 
 // feed.cpp
-std::string feedIcon(const std::string &url);
+void feedIcon(const std::string &url);
 
 // user.cpp
-std::string userList(const std::vector<User> &users);
-std::string userPage(int uid);
-std::string userSearch(const std::string &q);
-std::string usersPage();
-std::string artistsPage();
-std::string searchForm(const std::string &action, const std::string &q=std::string());
-std::string favorites(int uid);
+void userList(const std::vector<User> &users);
+void userPage(int uid);
+void userSearch(const std::string &q);
+void usersPage();
+void artistsPage();
+void searchForm(const std::string &action, const std::string &q=std::string());
+void favorites(int uid);
 
 // news.cpp
-std::string newsPage(int nid);
-std::string latestNews(int n);
+void newsPage(int nid);
+void latestNews(int n);
 
 // comment.cpp
-std::string comments(const std::vector<Comment> &cmts, const std::string title="Comments");
-std::string commentForm(const std::string &action);
+void comments(const std::vector<Comment> &cmts, const std::string title="Comments");
+void commentForm(const std::string &action);
 
 // contest.cpp
-std::string contest(int cid, const std::string &host);
+void contest(int cid, const std::string &host);
 
 // fac.cpp
-std::string faq();
+void faq();
 
 // credits.cpp
-std::string credits();
+void credits();
 
 // home.cpp
-std::string home();
+void home();
 
+}
 }
 
 #endif // HTML_H

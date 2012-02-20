@@ -1,5 +1,6 @@
 #include "art.h"
-#include "utils.h"
+#include "number.h"
+#include "path.h"
 #include <Magick++.h>
 #include <stdio.h>
 #include <unistd.h>

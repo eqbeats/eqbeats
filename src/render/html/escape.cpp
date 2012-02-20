@@ -1,8 +1,9 @@
-#include "../html.h"
-#include "../../utils.h"
+#include "escape.h"
+#include "../../number.h"
 #include <pcrecpp.h>
 
 using namespace std;
+using namespace Render;
 
 string Html::escape(const string &str){
     string buf;
@@ -16,8 +17,8 @@ string Html::escape(const string &str){
     return buf;
 }
 
-std::string Html::escapeEmail(const string &email){
-    std::string buf;
+string Html::escapeEmail(const string &email){
+    string buf;
     for(string::const_iterator i=email.begin(); i!=email.end(); i++)
         buf += "&#" + number(*i) + ";";
     return buf;
@@ -25,8 +26,8 @@ std::string Html::escapeEmail(const string &email){
 
 std::string Html::format(std::string txt){
     txt = escape(txt);
-    std::string tmp;
-    for(std::string::const_iterator i=txt.begin(); i!=txt.end(); i++){
+    string tmp;
+    for(string::const_iterator i=txt.begin(); i!=txt.end(); i++){
         if(*i == '\n') tmp += "<br />";
         else tmp += *i;
     }

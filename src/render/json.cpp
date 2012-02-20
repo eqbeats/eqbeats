@@ -1,14 +1,17 @@
 #include "json.h"
 #include "http.h"
 #include "../category.h"
-#include "../utils.h"
+#include "../track.h"
 #include "../user.h"
+#include "../number.h"
+#include "render.h"
 #include <sstream>
 
 using namespace std;
+using namespace Render;
 using namespace Json;
 
-string header(){ return Http::header("application/json"); }
+void header(){ Http::header("application/json"); }
 
 string Json::field(const string &name, const string &val, bool last){
     return "\"" + name + "\":" + val + (last?"":",");
@@ -26,22 +29,24 @@ string Json::jstring(const string &str){
 
 string artistH(int uid, const string &name){
     return "{"
-         + field("id", number(uid))
-         + field("name", jstring(name), true)
-         + "}";
+      + field("id", number(uid))
+      + field("name", jstring(name), true)
+      + "}";
 }
 
 string trackH(const Track &t){
     return "{"
-         + field("id", number(t.id()))
-         + field("title", jstring(t.title()))
-         + field("artist", artistH(t.artistId(), t.artist()), true)
-         + "}";
+      + field("id", number(t.id()))
+      + field("title", jstring(t.title()))
+      + field("artist", artistH(t.artistId(), t.artist()), true)
+      + "}";
 }
 
-string Json::track(const Track &t){
-   if(!t) return Http::notFound();
-   return header() + trackH(t);
+void Json::track(int tid){
+    Track t(tid);
+    if(!t) return Http::header(404);
+    header();
+    o << trackH(t);
 }
 
 string tracksArray(const vector<Track> &ts){
@@ -55,36 +60,38 @@ string tracksArray(const vector<Track> &ts){
     return s.str();
 }
 
-string Json::tracks(const vector<Track> &ts){
-    return header() + "{" + field("tracks", tracksArray(ts), true) + "}";
+void Json::tracks(const vector<Track> &ts){
+    header();
+    o << "{" + field("tracks", tracksArray(ts), true) + "}";
 }
 
-string Json::users(const vector<User> &us){
-    stringstream s;
-    s << header()<< "{\"users\":[";
-    for(vector<User>::const_iterator i=us.begin(); i!=us.end(); i++){
-        if(i != us.begin()) s << ",";
-        s << artistH(i->id(), i->name());
-    }
-    s << "]}";
-    return s.str();
-}
-
-string Json::artist(int uid){
+void Json::artist(int uid){
     User u(uid);
-    if(!u) return Http::notFound();
-    return header()+ "{"
-         + field("id", number(u.id()))
-         + field("name", jstring(u.name()))
-         + field("tracks", tracksArray(Track::byArtist(u.id())), true)
-         + "}";
+    if(!u) return Http::header(404);
+    header();
+    o << "{"
+      << field("id", number(u.id()))
+      << field("name", jstring(u.name()))
+      << field("tracks", tracksArray(Track::byArtist(u.id())), true)
+      << "}";
 }
 
-string Json::category(int cid){
+void Json::users(const vector<User> &us){
+    header();
+    o << "{\"users\":[";
+    for(vector<User>::const_iterator i=us.begin(); i!=us.end(); i++){
+        if(i != us.begin()) o << ",";
+        o << artistH(i->id(), i->name());
+    }
+    o << "]}";
+}
+
+void Json::category(int cid){
     Category c(cid);
-    if(!c) return Http::notFound();
-    return header()+ "{"
-        + field("name", jstring(c.name()))
-        + field("tracks", tracksArray(Track::byCategory(c.id())), true)
-        + "}";
+    if(!c) return Http::header(404);
+    header();
+    o << "{"
+      << field("name", jstring(c.name()))
+      << field("tracks", tracksArray(Track::byCategory(c.id())), true)
+      << "}";
 }

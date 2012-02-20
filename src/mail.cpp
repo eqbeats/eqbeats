@@ -1,5 +1,6 @@
 #include "mail.h"
-#include "utils.h"
+#include "number.h"
+#include "path.h"
 #include <time.h>
 #include <unistd.h>
 #include <sys/wait.h>

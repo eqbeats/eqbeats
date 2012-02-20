@@ -1,5 +1,6 @@
 #include "track.h"
-#include "utils.h"
+#include "number.h"
+#include "path.h"
 #include <unistd.h>
 #include <sys/wait.h>
 #include <stdio.h>

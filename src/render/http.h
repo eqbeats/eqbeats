@@ -5,12 +5,11 @@
 
 namespace Http{
 
-std::string header(int status=200);
-std::string header(const std::string &type, int status=200);
+void header(int status=200);
+void header(const std::string &type, int status=200);
 
-std::string notFound();
-std::string redirect(const std::string &location);
-std::string download(const std::string &path, const std::string &filename, const std::string &mime="application/octet-stream", bool attachment=false);
+void redirect(const std::string &location);
+void download(const std::string &path, const std::string &filename, const std::string &mime="application/octet-stream", bool attachment=false);
 
 }
 

@@ -1,12 +1,16 @@
-#include "html.h"
 #include "json.h"
 #include "http.h"
-#include "../routing.h"
-#include "../utils.h"
-#include "../art.h"
-#include <sstream>
+#include "render.h"
+#include "html.h"
+#include "../path.h"
+#include "../user.h"
+#include "../track.h"
+#include "../number.h"
 
+using namespace Render;
 using namespace std;
+
+bool isXml;
 
 bool drop(const string &s, string &str){
     if(s.length() > str.length())
@@ -24,74 +28,35 @@ string extractPath(string url){
     return drop("eqbeats.org", url) ? url : string();
 }
 
-string field(const string &name, const string &val, bool xml){
-    if(xml)
-        return "<" + name + ">" + val + "</" + name + ">";
-    return Json::field(name, val);
+void field(const string &name, const string &val, bool last=false){
+    if(isXml) o << "<" + name + ">" + val + "</" + name + ">";
+    else      o << Json::field(name, val, last);
 }
 
-string stringField(const string &name, const string &val, bool xml, bool last=false){
-    if(xml)
-        return "<" + name + ">" + Html::escape(val) + "</" + name + ">";
-    return Json::field(name, Json::jstring(val), last);
+void stringField(const string &name, const string &val, bool last=false){
+    field(name, isXml ? Html::escape(val) : Json::jstring(val), last);
 }
 
-string header(bool xml){
-    stringstream s;
-    s << Http::header(xml ? "text/xml" : "application/json");
-    if(xml)
-      s << "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>"
-           "<oembed>";
-    else
-      s << "{";
-    s << stringField("version", "1.0", xml)
-      << stringField("provider_name", "Equestrian Beats", xml)
-      << stringField("provider_url", "http://eqbeats.org", xml);
-    return s.str();
-}
-
-string footer(bool xml){
-    return xml ? "</oembed>" : "}";
-}
-
-string embedH(const Track &t, bool xml){
-    return stringField("title", t.title(), xml)
-         + stringField("author_name", t.artist(), xml)
-         + stringField("author_url", eqbeatsUrl() + User::url(t.artistId()), xml, true);
-}
-
-string oEmbedTrack(int tid, bool xml, int w){
-    Track t(tid);
-    if(!t) return Http::notFound();
+void oEmbed(const string &url, bool xml, int w){
+    isXml = xml;
+    Track t(route("track", extractPath(url)));
+    if(!t) return Http::header(404);
     if(!w) w = 500;
-    return header(xml)
-        + stringField("type", "video", xml)
-        + stringField("url", eqbeatsUrl() + t.url(), xml)
-        + field("width", number(w), xml)
-        + field("height", "150", xml)
-        + stringField("html", Html::embedTrackCode(t, w), xml)
-        + embedH(t, xml)
-        + footer(xml);
-}
 
-string oEmbedArt(int tid, bool xml){
-    Track t(tid);
-    Art art(tid);
-    if(!t || !art) return Http::notFound();
-    return header(xml)
-        + stringField("type", "photo", xml)
-        + stringField("url", eqbeatsUrl() + art.url(), xml)
-        + embedH(t, xml)
-        + footer(xml);
-}
-
-string oEmbed(const string &url, bool xml, int w){
-    string path = stripSlash(extractPath(url));
-    if(path.empty()) return Http::notFound();
-    int id;
-    if((id = routeId("track", path)))
-        return oEmbedTrack(id, xml, w);
-    else if((id = routeAction("track", "art", path)))
-        return oEmbedArt(id, xml);
-    return Http::notFound();
+    Http::header(isXml ? "text/xml" : "application/json");
+    o << (isXml
+           ? "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?><oembed>"
+           : "{" );
+    stringField("version", "1.0");
+    stringField("provider_name", "Equestrian Beats");
+    stringField("provider_url", "http://eqbeats.org");
+    stringField("type", "video");
+    stringField("url", eqbeatsUrl() + t.url());
+    field("width", number(w));
+    field("height", "150");
+    stringField("html", Html::embedTrackCode(t, w));
+    stringField("title", t.title());
+    stringField("author_name", t.artist());
+    stringField("author_url", eqbeatsUrl() + User::url(t.artistId()), true);
+    o << (isXml ? "</oembed>" : "}");
 }

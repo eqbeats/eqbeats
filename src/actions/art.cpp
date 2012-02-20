@@ -1,12 +1,13 @@
+#include "actions.h"
 #include "../art.h"
 #include "../session.h"
 #include "../track.h"
 #include "../user.h"
-#include "../utils.h"
-#include "actions.h"
+#include "../number.h"
+#include "../path.h"
 #include "../render/http.h"
 
-std::string Action::uploadArt(int tid){
+void Action::uploadArt(int tid){
     cgicc::file_iterator file = cgi->getFile("file");
     if(Track(tid).artistId() == Session::user().id() && file != cgi->getFiles().end()){
         std::string filename = eqbeatsDir() + "/art/" + number(tid);
@@ -16,5 +17,5 @@ std::string Action::uploadArt(int tid){
         Art art(tid);
         art.makeThumbs();
     }
-    return Http::redirect(Track::url(tid));
+    Http::redirect(Track::url(tid));
 }

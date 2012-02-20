@@ -1,7 +1,7 @@
 #include <pcrecpp.h>
 #include <stdio.h>
 #include "account.h"
-#include "utils.h"
+#include "number.h"
 
 Account::Account(int nId){
     _id = 0;
@@ -14,8 +14,6 @@ Account::Account(int nId){
         _about = r[0][2];
     }
 }
-
-//Account::Account(const User &user): Account(user.id()){}
 
 Account::Account(int nId, const std::string &nName, const std::string &nEmail)
     : User(nId, nName){
