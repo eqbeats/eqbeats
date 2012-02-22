@@ -1,5 +1,8 @@
 #include "actions.h"
-#include "../render/html.h"
+#include "../render/html/page.h"
+#include "../render/html/escape.h"
+#include "../render/http.h"
+#include "../render/render.h"
 #include "../render/http.h"
 #include "../account.h"
 #include "../session.h"
@@ -47,7 +50,7 @@ void accountForm(const Account &_account, const std::string &error=std::string()
 }
 
 void Action::account(){
-    if(!Session::user()) return Http::redirect("/login?redirect=/account");
+    if(!Session::user()) return Render::Http::redirect("/login?redirect=/account");
     Account a(Session::user().id());
     bool newName = false;
     if(cgi.getEnvironment().getRequestMethod() != "POST")

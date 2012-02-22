@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include "actions.h"
-#include "../render/html.h"
+#include "../render/render.h"
+#include "../render/html/page.h"
+#include "../render/html/escape.h"
 #include "../render/http.h"
 #include "../session.h"
 #include "../number.h"

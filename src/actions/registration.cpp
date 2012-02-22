@@ -1,8 +1,11 @@
 #include "actions.h"
-#include "../render/html.h"
+#include "../render/html/page.h"
 #include "../render/http.h"
 #include "../account.h"
 #include "../session.h"
+#include "../log.h"
+#include "../number.h"
+#include "../render/render.h"
 
 using namespace Render;
 
@@ -37,20 +40,20 @@ void registrationForm(const std::string &error=std::string()){
 void Action::registration(){
     if(Session::user()) return Http::redirect("/");
     if(cgi.getEnvironment().getRequestMethod() != "POST")
-        registrationForm();
+        return registrationForm();
     if(cgi("name").empty())
-        registrationForm("Please specify a display name.");
+        return registrationForm("Please specify a display name.");
     if(cgi("email").empty())
-        registrationForm("Please specify an email address.");
+        return registrationForm("Please specify an email address.");
     if(!Account::validEmail(cgi("email")))
-        registrationForm("Invalid email address.");
+        return registrationForm("Invalid email address.");
     if(cgi("pw").empty())
         registrationForm("Please specify a password.");
     if(cgi("pw")!=cgi("pwconf"))
-        registrationForm("Passwords mismatch.");
+        return registrationForm("Passwords mismatch.");
     Account account = Account::create(cgi("name"), cgi("pw"), cgi("email"));
     if(!account)
-        registrationForm("Sorry, name or email already in use.");
+        return registrationForm("Sorry, name or email already in use.");
 
     log("New user: " + account.name() + " (" + number(account.id()) + ")");
 

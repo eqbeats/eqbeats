@@ -7,6 +7,8 @@
 #include "../path.h"
 #include "../render/http.h"
 
+using namespace Render;
+
 void Action::uploadArt(int tid){
     cgicc::file_iterator file = cgi.getFile("file");
     if(Track(tid).artistId() == Session::user().id() && file != cgi.getFiles().end()){

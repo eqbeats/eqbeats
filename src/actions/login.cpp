@@ -1,7 +1,8 @@
 #include "actions.h"
 #include "../session.h"
-#include "../render/html.h"
+#include "../render/html/page.h"
 #include "../render/http.h"
+#include "../render/render.h"
 
 using namespace Render;
 

@@ -1,5 +1,5 @@
-#ifndef ESCAPE_H
-#define ESCAPE_H
+#ifndef HTML_ESCAPE_H
+#define HTML_ESCAPE_H
 
 #include <string>
 
@@ -13,4 +13,4 @@ std::string format(std::string);
 }
 }
 
-#endif // ESCAPE_H
+#endif // HTML_ESCAPE_H

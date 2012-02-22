@@ -1,7 +1,9 @@
+#include "oembed.h"
 #include "json.h"
 #include "http.h"
 #include "render.h"
-#include "html.h"
+#include "html/escape.h"
+#include "html/player.h"
 #include "../path.h"
 #include "../user.h"
 #include "../track.h"
@@ -37,7 +39,7 @@ void stringField(const string &name, const string &val, bool last=false){
     field(name, isXml ? Html::escape(val) : Json::jstring(val), last);
 }
 
-void oEmbed(const string &url, bool xml, int w){
+void Render::oEmbed(const string &url, bool xml, int w){
     isXml = xml;
     Track t(route("track", extractPath(url)));
     if(!t) return Http::header(404);

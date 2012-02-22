@@ -1,8 +1,11 @@
-#include "../html.h"
+#include "contest.h"
+#include "page.h"
+#include "escape.h"
+#include "../render.h"
 #include "../../contest.h"
-#include <algorithm>
 #include "../../number.h"
 #include "../../session.h"
+#include <algorithm>
 
 void Render::Html::contest(int cid, const std::string &host){
     Contest c(cid);

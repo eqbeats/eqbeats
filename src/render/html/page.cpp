@@ -1,4 +1,5 @@
-#include "../html.h"
+#include "page.h"
+#include "escape.h"
 #include "../render.h"
 #include "../http.h"
 #include "../../timer.h"
@@ -16,14 +17,6 @@ void logStatus(){
     o << (u ?
         "Hi <b><a href=\"" + u.url() + "\">" + Html::escape(u.name()) + "</a></b>. <a href=\"/logout" + redir +"\">Logout</a>" :
         "<a href=\"/login" + redir + "\">Login</a>");
-}
-
-std::string Html::atomFeed(const std::string &url){
-    return "<link href=\"" + url + "\" type=\"application/atom+xml\" rel=\"alternate\" />";
-}
-
-void Html::feedIcon(const std::string &url){
-    o << "<a class=\"feed\" title=\"Feed\" href=\"" + url + "\"><span>(Feed)</span></a>";
 }
 
 void Html::header(const std::string &title, const std::string &head, int status){
@@ -71,11 +64,5 @@ void Html::notFound(const std::string &what){
 void Html::errorPage(const std::string &err){
     header("Error");
     o << "<div class=\"error\">" << err << "</div>";
-    footer();
-}
-
-void Html::quickStart(){
-    header("Thanks");
-    o << "<div class=\"message\">Now that you've registered you can upload tracks: just click your name at the top right corner of the page.</div>";
     footer();
 }

@@ -1,4 +1,7 @@
-#include "../html.h"
+#include "comment.h"
+#include "escape.h"
+#include "../render.h"
+#include "../../comment.h"
 #include "../../session.h"
 
 using namespace std;

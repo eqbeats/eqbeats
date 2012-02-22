@@ -1,5 +1,5 @@
 #include "actions.h"
-#include "../render/html.h"
+#include "../render/html/page.h"
 #include "../render/http.h"
 #include "../contest.h"
 #include "../number.h"

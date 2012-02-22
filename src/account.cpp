@@ -68,6 +68,7 @@ bool Account::exists(const std::string &sName, const std::string &sEmail){
 }
 
 Account Account::create(const std::string &nName, const std::string &nPass, const std::string &nEmail){
+    if(nName.empty() || nPass.empty() || nEmail.empty()) return Account();
     if(exists(nName, nEmail))
         return Account();
     DB::Result r = DB::query(

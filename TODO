@@ -1,8 +1,7 @@
 - Clean up
-html/{forms,player..}.h
-take Track instead of tid
-Track::artist
 Track::select, {Category,User..}::tracks
+Track::artist
+take Track instead of tid
 
 - Features
 password reset

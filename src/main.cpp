@@ -1,10 +1,18 @@
 #include "session.h"
 #include "timer.h"
-#include "render/html.h"
 #include "render/json.h"
 #include "render/oembed.h"
 #include "render/feed.h"
+#include "render/download.h"
 #include "render/http.h"
+#include "render/html/track.h"
+#include "render/html/player.h"
+#include "render/html/user.h"
+#include "render/html/page.h"
+#include "render/html/news.h"
+#include "render/html/static.h"
+#include "render/html/home.h"
+#include "render/html/contest.h"
 #include "actions/actions.h"
 #include "account.h"
 #include "path.h"
@@ -47,15 +55,15 @@ int main(int argc, char** argv){
 
         // Static
         if((id = route("track", "vorbis", path)))
-            Html::downloadTrack(id, Track::Vorbis);
+            Http::downloadTrack(id, Track::Vorbis);
         else if((id = route("track", "mp3", path)))
-            Html::downloadTrack(id, Track::MP3);
+            Http::downloadTrack(id, Track::MP3);
         else if((id = route("track", "art", path)))
-            Html::trackArt(id);
+            Http::trackArt(id);
         else if((id = route("track", "art/medium", path)))
-            Html::trackArt(id, Art::Medium);
+            Http::trackArt(id, Art::Medium);
         else if((id = route("track", "art/thumb", path)))
-            Html::trackArt(id, Art::Thumbnail);
+            Http::trackArt(id, Art::Thumbnail);
         // Json
         else if((id = route("track", "json", path)))
             Json::track(id);

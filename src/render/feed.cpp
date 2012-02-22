@@ -5,6 +5,7 @@
 #include "../user.h"
 #include "../track.h"
 #include "../category.h"
+#include "../path.h"
 #include <vector>
 
 using namespace Render;
