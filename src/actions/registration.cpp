@@ -35,25 +35,25 @@ void registrationForm(const std::string &error=std::string()){
 }
 
 void Action::registration(){
-    if(Session::user()){ Http::redirect("/"); return; }
-    if(cgi->getEnvironment().getRequestMethod() != "POST")
+    if(Session::user()) return Http::redirect("/");
+    if(cgi.getEnvironment().getRequestMethod() != "POST")
         registrationForm();
-    if((*cgi)("name").empty())
+    if(cgi("name").empty())
         registrationForm("Please specify a display name.");
-    if((*cgi)("email").empty())
+    if(cgi("email").empty())
         registrationForm("Please specify an email address.");
-    if(!Account::validEmail((*cgi)("email")))
+    if(!Account::validEmail(cgi("email")))
         registrationForm("Invalid email address.");
-    if((*cgi)("pw").empty())
+    if(cgi("pw").empty())
         registrationForm("Please specify a password.");
-    if((*cgi)("pw")!=(*cgi)("pwconf"))
+    if(cgi("pw")!=cgi("pwconf"))
         registrationForm("Passwords mismatch.");
-    Account account = Account::create((*cgi)("name"), (*cgi)("pw"), (*cgi)("email"));
+    Account account = Account::create(cgi("name"), cgi("pw"), cgi("email"));
     if(!account)
         registrationForm("Sorry, name or email already in use.");
 
     o << "Set-Cookie: sid="
-      << Session::login(account.id(), cgi->getEnvironment().getRemoteAddr())
+      << Session::login(account.id(), cgi.getEnvironment().getRemoteAddr())
       << ";Max-Age=2592000\n"; // 30 days
     Http::redirect("/quickstart");
     o << "Account created, redirecting...";

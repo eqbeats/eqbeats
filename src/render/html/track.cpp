@@ -19,8 +19,8 @@ void renameForm(const Track &t){
 
 void Html::uploadForm(const std::string &action){
     o << "<div id=\"track-uploader\">"
-            "<form action=\"" << action << "\" method=\"post\" enctype=\"multipart/form-data\" id=\"track-uploader-form\">"
-                "<input type=\"file\" accept=\"audio/mpeg\" name=\"file\" />"
+            "<form action=\"" << action << "?js=no\" method=\"post\" enctype=\"multipart/form-data\" id=\"track-uploader-form\">"
+                "<input type=\"file\" accept=\"audio/mpeg\" name=\"qqfile\" />"
                 "<input type=\"submit\" value=\"Upload an MP3\" />"
             "</form>"
         "</div>"
@@ -163,7 +163,7 @@ void Html::trackPage(int tid){
     if(edition){
         o << "<h3><img src=\"/static/pencil.png\" /> Edit</h3>"
              "<div class=\"edit\">";
-      if (t.visible()) publishForm(t);
+      if (!t.visible()) publishForm(t);
         o << "<div class=\"column\">"
           << "<h4>Rename</h4>";
           renameForm(t);

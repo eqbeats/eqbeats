@@ -388,21 +388,6 @@ form.publish input:hover {
     background-color: #509;
 }
 
-.search {
-    text-align: center;
-    font-size: 1.2em;
-    font-weight: 100;
-    margin: 35px 0 5px;
-}
-.search img {
-    vertical-align: middle;
-    padding: 0 4px 3px;
-}
-.search form {
-    display: inline;
-    margin: 0;
-}
-
 /** Follow / Favorite / Delete buttons ****************************************/
 
 .follow {
@@ -460,7 +445,7 @@ form.publish input:hover {
 /** Newsticker ****************************************************************/
 
 .newsticker {
-    margin: 8px 0;
+    margin: 8px 0 30px;
     padding: 10px;
     padding-left: 12px;
     background: #fbffff;
@@ -471,6 +456,23 @@ form.publish input:hover {
     display: block;
     float: left;
     margin: 1px 8px 0 0;
+}
+
+/** Search form (homepage) ****************************************************/
+
+.search {
+    text-align: center;
+    font-size: 1.2em;
+    font-weight: 100;
+    margin: 10px 0 5px;
+}
+.search img {
+    vertical-align: middle;
+    padding: 0 4px 3px;
+}
+.search form {
+    display: inline;
+    margin: 0;
 }
 
 /** File uploader *************************************************************/

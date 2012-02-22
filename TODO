@@ -1,31 +1,32 @@
 - Now
-cgi* -> cgi&
-Track::List
-Track::artist?
-Track::select
-{Category,User..}::tracks
-clean #includes
+html/{forms,player..}.h
+take Track instead of tid
+Track::artist
+Track::select, {Category,User..}::tracks
 
 - Features
-PG13 rating
 password reset
+PG13 rating
 Popular -> Featured
-Json (session, favorites)
 inline play button (lists)
-favs -> playlists
 pagination
 sorting
 Player: volume
 news feed
+favs -> playlists
 m3u playlist generators
+avatar
 Referrers?
 
 - Design
-Player: borders, bouncy title
+Player: bouncy title
 
 - Tech
 logging
 transcoding daemon
+Json (session, favorites)
+JSONP
+XML API
 Optimize hits / async query (daemon?)
 audio files: embed cover arts
 full format support?

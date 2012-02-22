@@ -16,8 +16,9 @@
 
 using namespace cgicc;
 using namespace Render;
+using namespace Action;
 
-cgicc::Cgicc *Action::cgi;
+cgicc::Cgicc Action::cgi;
 
 int main(int argc, char** argv){
     DB::connect();
@@ -38,12 +39,9 @@ int main(int argc, char** argv){
     std::string path;
     int id;
     while(FCGX_Accept_r(&request) == 0){
-
         resetTimer();
         o.attach(&request);
-        Cgicc cgi(&o);
-        Action::cgi = &cgi;
-
+        cgi = Cgicc(&o);
         path = getPath();
 
         // Static

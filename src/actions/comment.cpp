@@ -12,8 +12,8 @@ void Action::postComment(Comment::Type type, int ref){
     else if(type == Comment::News && !News(ref)) Html::notFound("News");
 
     else {
-        if(!(*cgi)("msg").empty() && cgi->getEnvironment().getRequestMethod() == "POST")
-            Comment::add((*cgi)("msg"), (*cgi)("name"), Session::user().id(), ref, type);
+        if(!cgi("msg").empty() && cgi.getEnvironment().getRequestMethod() == "POST")
+            Comment::add(cgi("msg"), cgi("name"), Session::user().id(), ref, type);
         Http::redirect(
             type == Comment::Track ? Track::url(ref) + "#comments" :
             type == Comment::User ? User::url(ref) + "#comments" :

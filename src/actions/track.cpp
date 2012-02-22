@@ -19,12 +19,12 @@ std::string filter(const std::string &str){
 }
 
 void Action::publishTrack(int tid){
-    if(tid != number((*cgi)("tid")))
+    if(tid != number(cgi("tid")))
         return Http::redirect(Track::url(tid));
     User u = Session::user();
     Track t(tid);
     if(u.id() == t.artistId() && t && !t.visible() && u &&
-        cgi->getEnvironment().getRequestMethod() == "POST"){
+        cgi.getEnvironment().getRequestMethod() == "POST"){
         t.setVisible(true);
         t.bump();
         // Mail
@@ -48,17 +48,17 @@ void Action::updateNotes(int tid){
     User u = Session::user();
     Track t(tid);
     if(u.id()==t.artistId() && u &&
-       cgi->getEnvironment().getRequestMethod() == "POST" )
-        t.setNotes((*cgi)("notes"));
+       cgi.getEnvironment().getRequestMethod() == "POST" )
+        t.setNotes(cgi("notes"));
     return Http::redirect(t.url());
 }
 
 void Action::renameTrack(int tid){
     User u = Session::user();
     Track t(tid);
-    if(u.id()==t.artistId() && u && !(*cgi)("title").empty() &&
-       cgi->getEnvironment().getRequestMethod() == "POST" )
-        t.setTitle((*cgi)("title"));
+    if(u.id()==t.artistId() && u && !cgi("title").empty() &&
+       cgi.getEnvironment().getRequestMethod() == "POST" )
+        t.setTitle(cgi("title"));
     return Http::redirect(t.url());
 }
 
@@ -77,7 +77,7 @@ void Action::deleteTrack(int tid){
     Track t(tid);
     if(u.id()!=t.artistId() || !u)
         Http::redirect(t.url());
-    else if(cgi->getEnvironment().getRequestMethod()!="POST" || (*cgi)("confirm")!="Delete")
+    else if(cgi.getEnvironment().getRequestMethod()!="POST" || cgi("confirm")!="Delete")
         deletionForm(t);
     else{
         t.remove();
@@ -88,18 +88,18 @@ void Action::deleteTrack(int tid){
 void Action::updateCategories(int tid){
     User u = Session::user();
     Track t(tid);
-    if(u.id()!=t.artistId() || !u || cgi->getEnvironment().getRequestMethod()!="POST")
+    if(u.id()!=t.artistId() || !u || cgi.getEnvironment().getRequestMethod()!="POST")
         return Http::redirect(t.url());
     
-    if(!(*cgi)("rmcats").empty()){
+    if(!cgi("rmcats").empty()){
         vector<Category> cats = Category::forTrack(tid);
         for(vector<Category>::iterator i = cats.begin(); i != cats.end(); i++){
-            if(!(*cgi)(number(i->id())).empty())
+            if(!cgi(number(i->id())).empty())
                 i->removeTrack(tid);
         }
     }
-    else if(!(*cgi)("cat").empty()){
-        Category c(number((*cgi)("cat")));
+    else if(!cgi("cat").empty()){
+        Category c(number(cgi("cat")));
         if(c) c.addTrack(t.id());
     }
     return Http::redirect(t.url());

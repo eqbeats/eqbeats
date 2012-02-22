@@ -7,7 +7,7 @@
 //! Page generation with effects
 namespace Action{
 
-extern cgicc::Cgicc *cgi;
+extern cgicc::Cgicc cgi;
 
 // login.cpp
 void login();

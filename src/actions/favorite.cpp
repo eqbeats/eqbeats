@@ -10,7 +10,7 @@
 using namespace Render;
 
 bool fromEqBeats(){
-    std::string ref = Action::cgi->getEnvironment().getReferrer();
+    std::string ref = Action::cgi.getEnvironment().getReferrer();
     if(ref.length() < eqbeatsUrl().length()) return false;
     return ref.substr(0, eqbeatsUrl().length()) == eqbeatsUrl();
 }
@@ -49,8 +49,8 @@ void Action::vote(int cid){
     if(!fromEqBeats()) return Http::redirect(Contest::url(cid));
     Contest c(cid);
     if(!c) return Html::notFound("Contest");
-    std::string param = (*cgi)("tid");
-    std::string host = cgi->getEnvironment().getRemoteAddr();
+    std::string param = cgi("tid");
+    std::string host = cgi.getEnvironment().getRemoteAddr();
     if(!param.empty()){
         int tid = number(param.substr(1));
         if(!tid);

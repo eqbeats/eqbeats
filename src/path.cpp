@@ -17,11 +17,11 @@ string eqbeatsDir(){
 }
 
 string eqbeatsUrl(){
-    return "http://" + Action::cgi->getEnvironment().getServerName();
+    return "http://" + Action::cgi.getEnvironment().getServerName();
 }
 
 string getPath(){
-    return stripSlash(Action::cgi->getEnvironment().getPathInfo());
+    return stripSlash(Action::cgi.getEnvironment().getPathInfo());
 }
 
 int route(const string &t, string path){

@@ -40,9 +40,10 @@ audio {
 }
 
 #player-embed {
-    background-color: #FFF;
     padding: 10px 10px 5px;
     border-radius: 7px;
+    border: 1px solid #f0f0f0;
+    background: url("/static/player-bg.png") repeat-x bottom #FFF;
 }
 
 #player-embed a.pic {
@@ -77,7 +78,7 @@ audio {
 }
 
 #player-embed #player {
-    margin: 15px;
+    margin: 20px 15px 10px 15px;
 }
 
 #playtime {

@@ -24,15 +24,14 @@ void Action::uploadTrack(int id){
     User u = Session::user();
     Track t(id);
 
-    cgicc::file_iterator file = cgi->getFile("file");
-    cgicc::file_iterator qqfile = cgi->getFile("qqfile");
-    bool isXhr = !(*cgi)("qqfile").empty();
+    cgicc::file_iterator qqfile = cgi.getFile("qqfile");
+    bool js = cgi("js") != "no";
 
-    isXhr ? Http::header("application/json") : Http::redirect(t?t.url():u?u.url():"/");
+    if(js) Http::header("text/html"); // Opera
 
-    if(!u || !t || t.artistId() != u.id()){
-        if(isXhr)
-            o << "{" << field("success","false",true) << "}";
+    if(t && t.artistId() != u.id()){
+        if(js) o << "{" << field("success","false",true) << "}";
+        else Http::redirect(u ? u.url() : "/");
         return;
     }
 
@@ -41,15 +40,11 @@ void Action::uploadTrack(int id){
     std::ofstream out(tmpFile, std::ios_base::binary);
     std::string upfilename;
 
-    if(qqfile != cgi->getFiles().end()) {
+    if(qqfile != cgi.getFiles().end())
         qqfile->writeToStream(out);
-        upfilename = qqfile->getName();
-    } else if(isXhr) {
-        out << cgi->getEnvironment().getPostData();
-        upfilename = (*cgi)("qqfile");
-    } else if(file != cgi->getFiles().end()) {
-        file->writeToStream(out);
-        upfilename = file->getName();
+    else if(js) {
+        out << cgi.getEnvironment().getPostData();
+        upfilename = cgi("qqfile");
     }
     out.close();
 
@@ -66,9 +61,9 @@ void Action::uploadTrack(int id){
 
     t.updateTags(Track::MP3);
     t.convertToVorbis();
-
-    if(isXhr)
+    if(js)
         o << "{"+field("success","true")+field("track",number(t.id()))+field("title",jstring(t.title()),true)+"}";
+    else Http::redirect(t.url());
 }
 
 void Action::newTrack(){

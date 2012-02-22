@@ -10,7 +10,7 @@ using namespace Render;
 void Action::contestSubmission(int cid){
     Contest c(cid);
     if(!c) return Html::notFound("Contest");
-    Track t(number((*cgi)("tid")));
+    Track t(number(cgi("tid")));
     if(!t) return Html::notFound("Track");
     if(Session::user().id() == t.artistId())
         c.addTrack(t.id());
