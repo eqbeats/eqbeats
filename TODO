@@ -1,4 +1,4 @@
-- Now
+- Clean up
 html/{forms,player..}.h
 take Track instead of tid
 Track::artist
@@ -22,7 +22,6 @@ Referrers?
 Player: bouncy title
 
 - Tech
-logging
 transcoding daemon
 Json (session, favorites)
 JSONP

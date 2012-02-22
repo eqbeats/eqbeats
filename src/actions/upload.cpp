@@ -5,6 +5,7 @@
 #include "../session.h"
 #include "../number.h"
 #include "../path.h"
+#include "../log.h"
 #include <string.h>
 #include <fstream>
 #include <taglib/mpegfile.h>
@@ -58,6 +59,8 @@ void Action::uploadTrack(int id){
     std::string filename = eqbeatsDir() + "/tracks/"+number(t.id())+".mp3";
     rename(tmpFile, filename.c_str());
     free(tmpFile);
+
+    log("Track uploaded: " + t.title() + " (" + number(t.id()) + ")");
 
     t.updateTags(Track::MP3);
     t.convertToVorbis();

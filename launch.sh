@@ -5,7 +5,6 @@ PROGNAME="eqbeats dev server"
 BINARY="$PWD/eqbeats.fcgi"
 SERVCOUNT=1
 PORT=9004
-LOG="$PWD/eqbeats.log"
 
 
 cd $PWD
@@ -17,7 +16,7 @@ case "$1" in
       echo "$PROGNAME : Already running"
     else
       $0 stop > /dev/null
-      spawn-fcgi -F $SERVCOUNT -P $PWD/pid -d $PWD/ -f $BINARY -a 127.0.0.1 -p $PORT >> $LOG
+      spawn-fcgi -F $SERVCOUNT -P $PWD/pid -d $PWD/ -f $BINARY -a 127.0.0.1 -p $PORT > /dev/null
       echo "$PROGNAME : Started."
     fi
     ;;

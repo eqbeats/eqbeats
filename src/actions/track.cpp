@@ -5,6 +5,7 @@
 #include "../session.h"
 #include "../number.h"
 #include "../path.h"
+#include "../log.h"
 #include "../mail.h"
 
 using namespace std;
@@ -57,8 +58,10 @@ void Action::renameTrack(int tid){
     User u = Session::user();
     Track t(tid);
     if(u.id()==t.artistId() && u && !cgi("title").empty() &&
-       cgi.getEnvironment().getRequestMethod() == "POST" )
+       cgi.getEnvironment().getRequestMethod() == "POST" ){
+        log("Renaming track: " + t.title() + " -> " + cgi("title") + " (" + number(t.id()) + ")");
         t.setTitle(cgi("title"));
+    }
     return Http::redirect(t.url());
 }
 
@@ -80,6 +83,7 @@ void Action::deleteTrack(int tid){
     else if(cgi.getEnvironment().getRequestMethod()!="POST" || cgi("confirm")!="Delete")
         deletionForm(t);
     else{
+        log("Deleting track: " + t.title() + " (" + number(t.id()) + ")");
         t.remove();
         Http::redirect(u.url());
     }

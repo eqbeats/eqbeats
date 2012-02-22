@@ -13,6 +13,7 @@
 #include "render/render.h"
 #include <time.h>
 #include <stdio.h>
+#include "log.h"
 
 using namespace cgicc;
 using namespace Render;
@@ -29,8 +30,8 @@ int main(int argc, char** argv){
         return 1;
     }
 
-    std::string log = eqbeatsDir()+"/eqbeats.log";
-    freopen(log.c_str(),"a",stderr);
+    std::string logfile = eqbeatsDir()+"/eqbeats.log";
+    freopen(logfile.c_str(),"a",stderr);
 
     FCGX_Request request;
     FCGX_Init();

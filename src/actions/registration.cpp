@@ -52,6 +52,8 @@ void Action::registration(){
     if(!account)
         registrationForm("Sorry, name or email already in use.");
 
+    log("New user: " + account.name() + " (" + number(account.id()) + ")");
+
     o << "Set-Cookie: sid="
       << Session::login(account.id(), cgi.getEnvironment().getRemoteAddr())
       << ";Max-Age=2592000\n"; // 30 days

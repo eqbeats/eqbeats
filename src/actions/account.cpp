@@ -3,6 +3,7 @@
 #include "../render/http.h"
 #include "../account.h"
 #include "../session.h"
+#include "../log.h"
 
 using namespace Render::Html;
 
@@ -72,6 +73,7 @@ void Action::account(){
     a.setAbout(cgi("about"));
     a.commit();
     if(newName){
+        log("Renaming user: " + Session::user().name() + " -> " + a.name());
         Session::destroy();
         Session::start();
         std::vector<Track> tracks = Track::byArtist(a.id(), true);
