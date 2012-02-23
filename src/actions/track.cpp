@@ -120,8 +120,10 @@ void Action::updateCategories(int tid){
     return Http::redirect(t.url());
 }
 
-void Action::reportTrack(const Track &t){
-    if(!t) return;
+void Action::reportTrack(int tid){
+    if(cgi.getEnvironment().getRequestMethod() != "POST") return Http::redirect(Track::url(tid));
+    Track t(tid);
+    if(!t) return Html::notFound("Track");
     std::string path = eqbeatsDir() + "/reports";
     std::ofstream f(path.c_str(), std::ios_base::app);
     f << t.artist().id() << " " << t.artist().name() << " - " << t.id() << " " << t.title() << std::endl;

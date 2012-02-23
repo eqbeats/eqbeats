@@ -9,8 +9,7 @@ static/stats.html
 static/awstats
 
 *.log
-*.swp
-.sw*
+*.sw?
 pid
 tmp/
 tracks/

@@ -4,8 +4,6 @@
 #include <cgicc/Cgicc.h>
 #include "../comment.h"
 
-class Track;
-
 //! Page generation with effects
 namespace Action{
 
@@ -25,7 +23,7 @@ void renameTrack(int tid);
 void updateNotes(int tid);
 void publishTrack(int tid);
 void updateCategories(int tid);
-void reportTrack(const Track &t);
+void reportTrack(int tid);
 
 // upload.cpp
 void uploadTrack(int tid);

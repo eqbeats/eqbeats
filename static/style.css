@@ -122,7 +122,7 @@ p {
     white-space: nowrap;
 }
 
-.cats a, .toolbar a {
+.cats a, .toolbar a, .report {
     padding: 2px 0;
     margin: 0 5px;
 }
@@ -130,6 +130,27 @@ p {
 .cats img {
     vertical-align: middle;
 }
+
+.toolbar form {
+    display: inline;
+    margin: 0;
+    padding: 0;
+}
+
+.report {
+    border: none;
+    background: none;
+    margin-left: 20px;
+}
+
+.report span { 
+    visibility: hidden; 
+    margin-left: 5px;
+}
+
+.report:hover { cursor: pointer; }
+.report:hover span { visibility: visible; }
+.report img { margin: 0; }
 
 .notes, .news {
     line-height: 1.7em;

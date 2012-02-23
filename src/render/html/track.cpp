@@ -91,7 +91,9 @@ void Html::trackPage(int tid){
         o << " <span><img src=\"/static/edit-number.png\" /> Hits : " << t.getHits()
           << "</span> <span><img src=\"/static/star.png\" /> Favourites : " << t.favoritesCount() << "</span>";
     else
-        o << " <span><img src=\"/static/flag.png\" /><a href=\"" << t.url() << "/report\" rel=\"nofollow\">Report</a></span>";
+        o << " <form action=\"" << t.url() << "/report\" method=\"post\">"
+                "<button type=\"submit\" class=\"report\"><img src=\"/static/flag.png\" /><span>Report</span></button>"
+             "</form>";
     o << "</div>"
 
     // Embed
