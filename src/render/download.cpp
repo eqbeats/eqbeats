@@ -2,6 +2,7 @@
 #include "http.h"
 #include "html/page.h"
 #include "../number.h"
+#include "../user.h"
 #include <string>
 
 using namespace Render;
@@ -12,7 +13,7 @@ void Http::downloadTrack(int tid, Track::Format f){
     if(!t) return Html::notFound("Track");
     string ext = f == Track::Vorbis ? ".ogg" : ".mp3";
     string mime = f == Track::Vorbis ? "ogg" : "mpeg";
-    Http::download("/downloads/tracks/"+number(tid)+ext, t.artist()+" - "+t.title()+ext, "audio/"+mime, true);
+    Http::download("/downloads/tracks/"+number(tid)+ext, t.artist().name()+" - "+t.title()+ext, "audio/"+mime, true);
 }
 
 void Http::trackArt(int tid, Art::Size sz){

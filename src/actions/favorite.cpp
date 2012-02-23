@@ -5,6 +5,7 @@
 #include "../render/html/page.h"
 #include "../number.h"
 #include "../path.h"
+#include "../follower.h"
 #include "../contest.h"
 
 using namespace Render;
@@ -25,8 +26,8 @@ void Action::follow(int uid, bool add){
     else if(Session::user() == u)
         Http::redirect(u.url());
     else{
-        add ? Session::user().follow(uid)
-            : Session::user().unfollow(uid);
+        add ? Follower(Session::user()).follow(uid)
+            : Follower(Session::user()).unfollow(uid);
         Http::redirect(u.url());
     }
 }
@@ -39,8 +40,8 @@ void Action::favorite(int tid, bool add){
     else if(!Session::user())
         Http::redirect("/login?redirect=" + t.url() + "/" + (add?"":"un") + "favorite");
     else{
-        add ? Session::user().addToFavorites(tid)
-            : Session::user().removeFromFavorites(tid);
+        add ? Follower(Session::user()).addToFavorites(tid)
+            : Follower(Session::user()).removeFromFavorites(tid);
         Http::redirect(t.url());
     }
 }

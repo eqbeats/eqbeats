@@ -1,9 +1,13 @@
-#include "track.h"
+#include "media.h"
 #include "number.h"
 #include "path.h"
+#include "user.h"
 #include <unistd.h>
 #include <sys/wait.h>
 #include <stdio.h>
+#include <taglib/taglib.h>
+#include <taglib/mpegfile.h>
+#include <taglib/vorbisfile.h>
 
 using namespace std;
 
@@ -18,7 +22,7 @@ void waitZombies(){
     running = stillRunning;
 }
 
-void Track::convertToVorbis(){
+void Media::convertToVorbis(){
     waitZombies();
     pid_t pid = fork();
     if(pid == 0){
@@ -34,4 +38,22 @@ void Track::convertToVorbis(){
         execlp("ffmpeg", "ffmpeg", "-loglevel", "quiet", "-y", "-i", mp3.c_str(), "-acodec", "libvorbis", vorbis.c_str(), NULL);
     }
     running.push_back(pid);
+}
+
+void Media::updateTags(Track::Format format){
+    if(format == MP3){
+        TagLib::MPEG::File mp3(filePath(Track::MP3).c_str());
+        TagLib::Tag *t = mp3.tag();
+        if(!t) return;
+        t->setTitle(title());
+        t->setArtist(artist().name());
+        mp3.save(TagLib::MPEG::File::ID3v1 | TagLib::MPEG::File::ID3v2);
+    } else if(format == Vorbis) {
+        TagLib::Ogg::Vorbis::File vorbis(filePath(Track::Vorbis).c_str());
+        TagLib::Tag *t = vorbis.tag();
+        if(!t) return;
+        t->setTitle(title());
+        t->setArtist(artist().name());
+        vorbis.save();
+    }
 }

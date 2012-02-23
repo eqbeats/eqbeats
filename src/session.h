@@ -1,7 +1,9 @@
 #ifndef SESSION_H
 #define SESSION_H
 
-#include "user.h"
+#include <string>
+
+class User;
 
 namespace Session{
 

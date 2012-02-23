@@ -6,9 +6,13 @@
 #include "../render/http.h"
 #include "../session.h"
 #include "../number.h"
+#include "../category.h"
+#include "../follower.h"
 #include "../path.h"
 #include "../log.h"
+#include "../track.h"
 #include "../mail.h"
+#include "../media.h"
 
 using namespace std;
 using namespace Render;
@@ -26,12 +30,12 @@ void Action::publishTrack(int tid){
         return Http::redirect(Track::url(tid));
     User u = Session::user();
     Track t(tid);
-    if(u.id() == t.artistId() && t && !t.visible() && u &&
+    if(u == t.artist() && t && !t.visible() && u &&
         cgi.getEnvironment().getRequestMethod() == "POST"){
         t.setVisible(true);
         t.bump();
         // Mail
-        std::vector<std::string> emails = u.followers();
+        std::vector<std::string> emails = Follower(u).followers();
         std::string maildata =
             "From: EqBeats notification <notify@eqbeats.org>\n"
             "Message-ID: notify-t" + number(t.id()) + "\n"
@@ -50,7 +54,7 @@ void Action::publishTrack(int tid){
 void Action::updateNotes(int tid){
     User u = Session::user();
     Track t(tid);
-    if(u.id()==t.artistId() && u &&
+    if(u==t.artist() && u &&
        cgi.getEnvironment().getRequestMethod() == "POST" )
         t.setNotes(cgi("notes"));
     return Http::redirect(t.url());
@@ -59,10 +63,11 @@ void Action::updateNotes(int tid){
 void Action::renameTrack(int tid){
     User u = Session::user();
     Track t(tid);
-    if(u.id()==t.artistId() && u && !cgi("title").empty() &&
+    if(u==t.artist() && u && !cgi("title").empty() &&
        cgi.getEnvironment().getRequestMethod() == "POST" ){
         log("Renaming track: " + t.title() + " -> " + cgi("title") + " (" + number(t.id()) + ")");
         t.setTitle(cgi("title"));
+        Media(t).updateTags();
     }
     return Http::redirect(t.url());
 }
@@ -80,7 +85,7 @@ void deletionForm(const Track &t){
 void Action::deleteTrack(int tid){
     User u = Session::user();
     Track t(tid);
-    if(u.id()!=t.artistId() || !u)
+    if(u!=t.artist() || !u)
         Http::redirect(t.url());
     else if(cgi.getEnvironment().getRequestMethod()!="POST" || cgi("confirm")!="Delete")
         deletionForm(t);
@@ -94,7 +99,7 @@ void Action::deleteTrack(int tid){
 void Action::updateCategories(int tid){
     User u = Session::user();
     Track t(tid);
-    if(u.id()!=t.artistId() || !u || cgi.getEnvironment().getRequestMethod()!="POST")
+    if(u!=t.artist() || !u || cgi.getEnvironment().getRequestMethod()!="POST")
         return Http::redirect(t.url());
     
     if(!cgi("rmcats").empty()){

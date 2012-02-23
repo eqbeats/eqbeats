@@ -6,6 +6,8 @@
 #include "../render/http.h"
 #include "../account.h"
 #include "../session.h"
+#include "../track.h"
+#include "../media.h"
 #include "../log.h"
 
 using namespace Render::Html;
@@ -79,9 +81,9 @@ void Action::account(){
         log("Renaming user: " + Session::user().name() + " -> " + a.name());
         Session::destroy();
         Session::start();
-        std::vector<Track> tracks = Track::byArtist(a.id(), true);
+        std::vector<Track> tracks = a.tracks(true);
         for(std::vector<Track>::iterator i=tracks.begin(); i!=tracks.end(); i++)
-            i->updateTags();
+            Media(*i).updateTags();
     }
     accountForm(a, std::string(), "Changes successful.");
 }

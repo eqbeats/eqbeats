@@ -7,9 +7,11 @@
 #include "user.h"
 #include "../render.h"
 #include "../../session.h"
+#include "../../track.h"
 #include "../../comment.h"
 #include "../../number.h"
 #include "../../account.h"
+#include "../../follower.h"
 
 using namespace std;
 using namespace Render;
@@ -30,7 +32,7 @@ void Html::userPage(int uid){
     // Title
     o << "<h2>" << escape(user.name()) << " ";
     if(Session::user() != user){
-        bool isFollowed = Session::user().isFollowing(user.id());
+        bool isFollowed = Follower(Session::user()).isFollowing(user.id());
         Render::o << "<a class=\"follow" << (isFollowed?"":" disabled")
                   << "\" href=\"" << (Session::user() ? "" : "/login?redirect=")
                   << user.url() << "/" << (isFollowed?"un":"") << "follow\">"
@@ -52,7 +54,7 @@ void Html::userPage(int uid){
          "</div>";
 
     // Tracks
-    vector<Track> tracks = Track::byArtist(user.id(), edition);
+    vector<Track> tracks = user.tracks(edition);
     if(edition || !tracks.empty()){
         o << "<h3><img src=\"/static/disc.png\" /> Tracks ";
         feedIcon(user.url() + "/atom");
@@ -64,7 +66,7 @@ void Html::userPage(int uid){
     if(edition){
         uploadForm("/track/new");
         o << "<h3><img src=\"/static/plus-circle.png\" /> Artists you follow</h3>";
-        userList(user.following());
+        userList(Follower(user).following());
         if(!tracks.empty())
             Html::comments(Comment::forArtist(uid), "Comments on your tracks");
     }

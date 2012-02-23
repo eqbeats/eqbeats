@@ -2,7 +2,9 @@
 #include "escape.h"
 #include "../render.h"
 #include "../../comment.h"
+#include "../../user.h"
 #include "../../session.h"
+#include "../../track.h"
 
 using namespace std;
 using namespace Render;

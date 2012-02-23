@@ -1,5 +1,6 @@
 #include "log.h"
 #include "session.h"
+#include "user.h"
 #include <iostream>
 
 using namespace std;

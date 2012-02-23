@@ -4,10 +4,8 @@
 #include "user.h"
 #include "number.h"
 #include "path.h"
+#include "db.h"
 #include "art.h"
-#include <taglib/taglib.h>
-#include <taglib/mpegfile.h>
-#include <taglib/vorbisfile.h>
 
 using namespace std;
 
@@ -29,6 +27,10 @@ Track::Track(int id){
     }
 }
 
+User Track::artist() const{
+    return User(_artistId, _artist);
+}
+
 std::string Track::filePath(Format f) const{
     string format = f==Vorbis? "ogg" : "mp3";
     return eqbeatsDir() + "/tracks/" + number(_id) + "." + format;
@@ -38,38 +40,12 @@ void Track::setTitle(const std::string &nTitle){
     if(_title == nTitle) return;
     DB::query("UPDATE tracks SET title = $1 WHERE id = " + number(_id), nTitle);
     _title = nTitle;
-    updateTags();
-}
-
-void Track::updateTags(Track::Format format){
-    if(format == MP3){
-        TagLib::MPEG::File mp3(filePath(Track::MP3).c_str());
-        TagLib::Tag *t = mp3.tag();
-        if(!t) return;
-        t->setTitle(_title);
-        t->setArtist(_artist);
-        mp3.save(TagLib::MPEG::File::ID3v1 | TagLib::MPEG::File::ID3v2);
-    } else if(format == Vorbis) {
-        TagLib::Ogg::Vorbis::File vorbis(filePath(Track::Vorbis).c_str());
-        TagLib::Tag *t = vorbis.tag();
-        if(!t) return;
-        t->setTitle(_title);
-        t->setArtist(_artist);
-        vorbis.save();
-    }
 }
 
 std::string Track::url(int id){
     std::stringstream s;
     s << "/track/" << id;
     return s.str();
-}
-
-std::string Track::artUrl() const{
-    string path = eqbeatsDir() + "/art/" + number(_id);
-    if(access(path.c_str(), R_OK))
-        return std::string();
-    return (std::string) "/track/" + number(_id) + "/art";
 }
 
 void Track::setVisible(bool v){
@@ -132,32 +108,35 @@ std::vector<Track> Track::resultToVector(const DB::Result &r){
     return tracks;
 }
 
-#define SEL (std::string) "SELECT tracks.id, tracks.title, tracks.user_id, users.name, tracks.visible, tracks.date FROM tracks CROSS JOIN users " \
-               "WHERE tracks.user_id = users.id AND "
-
-std::vector<Track> Track::byArtist(int sArtistId, bool all){
-    return resultToVector(DB::query(SEL + "tracks.user_id = " + number(sArtistId)
-        + (all? "" : " AND tracks.visible = 't'") + " ORDER BY date DESC "));
+std::vector<Track> Track::select(const char *tables, const std::string cond, const char *order, bool all, int limit){
+    std::string q = "SELECT tracks.id, tracks.title, tracks.user_id, users.name, tracks.visible, tracks.date FROM tracks, users";
+    if(tables) q += (std::string) "," + tables;
+    q += " WHERE tracks.user_id = users.id";
+    if(!all) q += " AND tracks.visible='t'";
+    if(!cond.empty()) q += " AND " + cond;
+    q += (std::string) " ORDER BY " + order;
+    if(limit) q += " LIMIT " + number(limit);
+    return resultToVector(DB::query(q));
 }
 
-std::vector<Track> Track::byCategory(int cat){
-    return resultToVector(DB::query(
-        "SELECT tracks.id, tracks.title, tracks.user_id, users.name, tracks.visible, tracks.date "
-        "FROM tracks, users, track_categories "
-        "WHERE tracks.user_id = users.id"
-        " AND track_categories.cat_id = " + number(cat) +
-        " AND track_categories.track_id = tracks.id"
-        " AND visible='t' ORDER BY date DESC"));
+std::vector<Track> listTracks(const char *order, int limit){
+    return Track::select(0, "", order, false, limit);
 }
 
-std::vector<Track> Track::forContest(int cont){
-    return resultToVector(DB::query(
-        "SELECT tracks.id, tracks.title, tracks.user_id, users.name, tracks.visible, tracks.date FROM tracks, users, contest_submissions "
-        "WHERE tracks.user_id = users.id"
-        " AND tracks.id = contest_submissions.track_id"
-        " AND contest_submissions.contest_id = " + number(cont) + " "
-        "ORDER BY tracks.title ASC"));
+std::vector<Track> Track::latest(int n){ return listTracks("date DESC", n); }
+std::vector<Track> Track::random(int n){ return listTracks("random()", n); }
+std::vector<Track> Track::popular(int n){ return listTracks("hits DESC", n); }
+
+std::vector<Track> Track::favorites(int uid){
+    return select("favorites", 
+        "favorites.type = 'track'"
+        " AND favorites.ref = tracks.id "
+        " AND favorites.user_id = " + number(uid),
+        "users.name ASC");
 }
+
+#define SEL (std::string) ("SELECT tracks.id, tracks.title, tracks.user_id, users.name, tracks.visible, tracks.date " \
+                            "FROM tracks, users WHERE tracks.user_id = users.id AND tracks.visible = 't' ")
 
 std::vector<Track> Track::search(const std::string &q){
     if(q.empty()) return std::vector<Track>();
@@ -170,35 +149,12 @@ std::vector<Track> Track::search(const std::string &q){
         p.push_back("%"+buf+"%");
         sql += " AND (tracks.title ILIKE $" + number(p.size()) + " OR users.name ILIKE $" + number(p.size()) + ")";
     }
-    return resultToVector(DB::query(SEL + "visible = 't'" + sql, p));
+    return resultToVector(DB::query(SEL + sql, p));
 }
 
 std::vector<Track> Track::exactSearch(const std::string &qartist, const std::string &qtitle){
     if(qtitle.empty()||qartist.empty()) return std::vector<Track>();
-    return resultToVector(DB::query(SEL + "visible = 't' AND users.name = $1 AND tracks.title = $2", qartist, qtitle));
-}
-
-std::vector<Track> Track::latest(int n){
-    return resultToVector(DB::query(SEL + "visible = 't' ORDER BY date DESC LIMIT " + number(n)));
-}
-
-std::vector<Track> Track::random(int n){
-    return resultToVector(DB::query(SEL + "visible = 't' ORDER BY random() LIMIT " + number(n)));
-}
-
-std::vector<Track> Track::popular(int n){
-    return resultToVector(DB::query(SEL + "visible = 't' ORDER BY hits DESC LIMIT " + number(n)));
-}
-
-std::vector<Track> Track::favorites(int uid){
-    return resultToVector(DB::query(
-        "SELECT tracks.id, tracks.title, tracks.user_id, users.name, tracks.visible, tracks.date FROM tracks, users, favorites "
-        "WHERE tracks.user_id = users.id "
-        "AND favorites.type = 'track' "
-        "AND favorites.user_id = " + number(uid) + " "
-        "AND favorites.ref = tracks.id "
-        "AND tracks.visible = 't' "
-        "ORDER BY users.name ASC"));
+    return resultToVector(DB::query(SEL + "AND users.name = $1 AND tracks.title = $2", qartist, qtitle));
 }
 
 int Track::favoritesCount() const{

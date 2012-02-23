@@ -33,12 +33,12 @@ void feed(const string &title, const string &link, const vector<Track> &tracks){
     for(std::vector<Track>::const_iterator i=tracks.begin(); i!=tracks.end(); i++){
         string notes = i->getNotes();
         o << "<entry>"
-                "<title>" << Html::escape(i->artist()) << " - " << Html::escape(i->title()) << "</title>"
+                "<title>" << Html::escape(i->artist().name()) << " - " << Html::escape(i->title()) << "</title>"
                 "<updated>" << i->date() << "</updated>"
                 "<id>" << eqbeatsUrl() << i->url() << "</id>"
                 "<author>"
-                    "<name>" << Html::escape(i->artist()) << "</name>"
-                    "<uri>" << eqbeatsUrl() << User::url(i->artistId()) << "</uri>"
+                    "<name>" << Html::escape(i->artist().name()) << "</name>"
+                    "<uri>" << eqbeatsUrl() << i->artist().url() << "</uri>"
                 "</author>"
                 "<link rel=\"alternate\" href=\"" << eqbeatsUrl() << i->url() << "\" />"
           <<    (notes.empty()?"":"<content type=\"html\">" + Html::escape(Html::format(notes)) + "</content>")
@@ -55,12 +55,12 @@ void Feed::latest(int n){
 
 void Feed::user(int uid){
     User u(uid);
-    u ? feed(u.name(), u.url(), Track::byArtist(uid))
+    u ? feed(u.name(), u.url(), u.tracks())
       : notFound("User");
 }
 
 void Feed::category(int cid){
     Category c(cid);
-    c ? feed(c.name(), c.url(), Track::byCategory(cid))
+    c ? feed(c.name(), c.url(), c.tracks())
       : notFound("Category");
 }

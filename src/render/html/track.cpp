@@ -8,10 +8,12 @@
 #include "../render.h"
 #include "../../art.h"
 #include "../../comment.h"
+#include "../../track.h"
 #include "../../category.h"
 #include "../../session.h"
 #include "../../number.h"
 #include "../../path.h"
+#include "../../follower.h"
 #include <algorithm>
 
 using namespace std;
@@ -53,7 +55,7 @@ void cats(const Track &t, bool edition){
 void Html::trackPage(int tid){
     Track t(tid);
     if(!t) return notFound("Track");
-    bool edition = Session::user().id() == t.artistId();
+    bool edition = Session::user().id() == t.artist().id();
     Art art(tid);
     if(!edition)
         t.hit();
@@ -67,12 +69,12 @@ void Html::trackPage(int tid){
     // Title
     o << "<div class=\"track\">"
       << "<h2>" << escape(t.title()) << " ";
-    bool isFav = Session::user().isFavorite(t.id());
+    bool isFav = Follower(Session::user()).isFavorite(t.id());
     o << "<a href=\"" << (Session::user() ? "" : "/login?redirect=") << t.url() << "/" << (isFav?"un":"") << "favorite\""
          " title=\"" << (isFav?"Remove from favorites":"Add to favorites") << "\">"
            "<img src=\"/static/star" << (isFav?"":"-empty") << ".png\" /></a>"
          "</h2>"
-         "<h4>by <a href=\"" << User::url(t.artistId()) <<  "\">" << escape(t.artist()) << "</a></h4>"
+         "<h4>by <a href=\"" << t.artist().url() <<  "\">" << escape(t.artist().name()) << "</a></h4>"
 
       << (art?"<img class=\"art\" src=\"" + art.url(Art::Medium) + "\" />":"");
 

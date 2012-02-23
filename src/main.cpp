@@ -16,6 +16,7 @@
 #include "actions/actions.h"
 #include "account.h"
 #include "path.h"
+#include "db.h"
 #include "track.h"
 #include "number.h"
 #include "render/render.h"

@@ -7,6 +7,9 @@
 #include "../number.h"
 #include "../path.h"
 #include "../log.h"
+#include "../track.h"
+#include "../user.h"
+#include "../media.h"
 #include <string.h>
 #include <fstream>
 #include <taglib/mpegfile.h>
@@ -31,7 +34,7 @@ void Action::uploadTrack(int id){
 
     if(js) Http::header("text/html"); // Opera
 
-    if(t && t.artistId() != u.id()){
+    if(t && t.artist() != u){
         if(js) o << "{" << field("success","false",true) << "}";
         else Http::redirect(u ? u.url() : "/");
         return;
@@ -63,8 +66,9 @@ void Action::uploadTrack(int id){
 
     log("Track uploaded: " + t.title() + " (" + number(t.id()) + ")");
 
-    t.updateTags(Track::MP3);
-    t.convertToVorbis();
+    Media m(t);
+    m.updateTags(Track::MP3);
+    m.convertToVorbis();
     if(js)
         o << "{"+field("success","true")+field("track",number(t.id()))+field("title",jstring(t.title()),true)+"}";
     else Http::redirect(t.url());

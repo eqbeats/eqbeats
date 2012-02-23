@@ -5,6 +5,7 @@
 #include "track.h"
 #include "../render.h"
 #include "../../news.h"
+#include "../../category.h"
 #include "../../number.h"
 #include "../../track.h"
 #include "../json.h"

@@ -58,7 +58,7 @@ void Render::oEmbed(const string &url, bool xml, int w){
     field("height", "150");
     stringField("html", Html::embedTrackCode(t, w));
     stringField("title", t.title());
-    stringField("author_name", t.artist());
-    stringField("author_url", eqbeatsUrl() + User::url(t.artistId()), true);
+    stringField("author_name", t.artist().name());
+    stringField("author_url", eqbeatsUrl() + t.artist().url(), true);
     o << (isXml ? "</oembed>" : "}");
 }

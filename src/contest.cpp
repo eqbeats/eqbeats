@@ -1,6 +1,7 @@
 #include "contest.h"
 #include "db.h"
 #include "number.h"
+#include "track.h"
 
 Contest::Contest(int id){
     _id = 0;
@@ -106,4 +107,10 @@ std::vector<int> Contest::usersVotes(std::string host){
     for(DB::Result::iterator i = r.begin(); i != r.end(); i++)
         tracks.push_back(number((*i)[0]));
     return tracks;
+}
+
+std::vector<Track> Contest::submissions(){
+    return Track::select("contest_submissions", 
+        "tracks.id = contest_submissions.track_id AND contest_submissions.contest_id = " + number(_id),
+        "tracks.title ASC");
 }

@@ -43,7 +43,7 @@ void Html::embedTrack(int tid){
         ) + "</a>";
     if(t) {
         o << "<h3><a href=\"" + t.url() + "\" target=\"_blank\">" + escape(t.title()) + "</a></h3>"
-             "<h4>by <a href=\"" << User::url(t.artistId()) <<  "\" target=\"_blank\">" << escape(t.artist()) << "</a></h4>";
+             "<h4>by <a href=\"" << t.artist().url() <<  "\" target=\"_blank\">" << escape(t.artist().name()) << "</a></h4>";
         player(t);
     }
     else o << "<h3 style=\"margin-bottom:10px;\">Track not found</h3>";
@@ -55,6 +55,6 @@ string Html::embedTrackCode(const Track &t, int w){
     return
         "<iframe width=\""+number(w)+"px\" height=\"150px\" frameborder=\"0\" src=\"" + eqbeatsUrl() + t.url() + "/embed\">"
             "<a href=\"" + eqbeatsUrl() + t.url() + "\" target=\"_blank\">" + Html::escape(Html::escape(t.title())) + "</a>"
-            " by <a href=\"" + eqbeatsUrl() + User::url(t.artistId()) + "\" target=\"_blank\">" + Html::escape(t.artist()) + "</a>"
+            " by <a href=\"" + eqbeatsUrl() + t.artist().url() + "\" target=\"_blank\">" + Html::escape(t.artist().name()) + "</a>"
         "</iframe>";
 }

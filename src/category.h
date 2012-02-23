@@ -4,6 +4,8 @@
 #include <string>
 #include <vector>
 
+class Track;
+
 class Category{
 
     public:
@@ -21,6 +23,8 @@ class Category{
         void addTrack(int tid);
         void removeTrack(int tid);
         static std::vector<Category> forTrack(int tid);
+
+        std::vector<Track> tracks();
 
     private:
         int _id;

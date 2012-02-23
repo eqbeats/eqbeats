@@ -2,7 +2,9 @@
 #include "../render/html/page.h"
 #include "../render/http.h"
 #include "../news.h"
+#include "../track.h"
 #include "../session.h"
+#include "../user.h"
 
 using namespace Render;
 

@@ -1,5 +1,3 @@
-#include <vector>
-#include <string>
 #include "track.h"
 #include "page.h"
 #include "escape.h"
@@ -7,6 +5,7 @@
 #include "forms.h"
 #include "../render.h"
 #include "../../track.h"
+#include "../../category.h"
 #include "../../user.h"
 
 using namespace Render;
@@ -20,8 +19,8 @@ void Html::trackList(const vector<Track> &tracks, Html::TrackList l){
         if(!i->visible()) o << " class=\"hidden\"";
         o << "><a href=\"" << i->url() << "\">" << escape(i->title()) << "</a>";
         if(l != Compact)
-            o << " <span class=\"by\">by <a href=\"" << User::url(i->artistId()) << "\">"
-              << escape(i->artist()) << "</a></span>";
+            o << " <span class=\"by\">by <a href=\"" << i->artist().url() << "\">"
+              << escape(i->artist().name()) << "</a></span>";
         o << "</li>";
     }
     o << "</ul>";
@@ -62,7 +61,7 @@ void Html::category(int cid){
     if(!c) return notFound("Category");
     header(c.name(), atomFeed(c.url()+"/atom"));
     o << "<h2>" << c.name() << "</h2>";
-    trackList(Track::byCategory(cid));
+    trackList(c.tracks());
     footer();
 }
 

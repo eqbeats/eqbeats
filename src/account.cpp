@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include "account.h"
 #include "number.h"
+#include "db.h"
 
 Account::Account(int nId){
     _id = 0;

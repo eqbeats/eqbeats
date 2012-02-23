@@ -4,7 +4,9 @@
 #include "../render.h"
 #include "../../contest.h"
 #include "../../number.h"
+#include "../../track.h"
 #include "../../session.h"
+#include "../../user.h"
 #include <algorithm>
 
 void Render::Html::contest(int cid, const std::string &host){
@@ -17,7 +19,7 @@ void Render::Html::contest(int cid, const std::string &host){
     if(!descr.empty())
         o << "<div class=\"description\">" << descr << "</div>";
     o << "<h3 id=\"submissions\"><img src=\"/static/disc.png\" /> Submissions</h3>";
-    std::vector<Track> tracks = Track::forContest(c.id());
+    std::vector<Track> tracks = c.submissions();
     if(tracks.empty())
         o << "<div class=\"empty tracklist\">No submissions yet.</div>";
     else {
@@ -37,8 +39,8 @@ void Render::Html::contest(int cid, const std::string &host){
             }
             o << "<a href=\"" << i->url() << "\">" << escape(i->title()) << "</a>"
                  " <span class=\"by\">"
-                 "by <a href=\"" << User::url(i->artistId()) << "\">"
-              << escape(i->artist()) << "</a>";
+                 "by <a href=\"" << i->artist().url() << "\">"
+              << escape(i->artist().name()) << "</a>";
             int vcount = votes[i->id()];
             if(vcount>0)
                 o << " (" + number(vcount) + " vote" + (vcount>1?"s":"") + ")";
@@ -48,7 +50,7 @@ void Render::Html::contest(int cid, const std::string &host){
         if(voting) o << "</form>";
     }
     if(Session::user() && c.state()==Contest::Submissions){
-        std::vector<Track> utracks = Track::byArtist(Session::user().id());
+        std::vector<Track> utracks = Session::user().tracks();
         std::vector<Track> toSubmit;
         for(std::vector<Track>::const_iterator i=utracks.begin(); i!=utracks.end(); i++){
             if(std::find(tracks.begin(),tracks.end(),*i)==tracks.end())

@@ -1,5 +1,6 @@
 #include "category.h"
 #include "db.h"
+#include "track.h"
 #include "number.h"
 #include <sstream>
 #include <algorithm>
@@ -40,4 +41,9 @@ void Category::removeTrack(int tid){
 std::vector<Category> Category::forTrack(int tid){
     return getCats("SELECT categories.id, categories.name FROM categories, track_categories "
         "WHERE track_categories.track_id="+number(tid)+" AND categories.id=track_categories.cat_id");
+}
+
+std::vector<Track> Category::tracks(){
+    return Track::select("track_categories",
+        "track_categories.track_id = tracks.id AND track_categories.cat_id = " + number(_id));
 }

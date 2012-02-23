@@ -1,8 +1,14 @@
+#ifndef CONTEST_H
+#define CONTEST_H
+
 #include <string>
 #include <map>
 #include <vector>
 
+class Track;
+
 class Contest{
+
     public:
         Contest(int id);
 
@@ -24,6 +30,8 @@ class Contest{
         std::vector<int> usersVotes(std::string host);
         std::map<int, int> getVotes() const;
 
+        std::vector<Track> submissions();
+
         bool operator==(const Contest &c) { return c._id == _id; }
         operator bool() const { return _id > 0; }
 
@@ -32,3 +40,5 @@ class Contest{
         std::string _name;
         State _state;
 };
+
+#endif // CONTEST_H

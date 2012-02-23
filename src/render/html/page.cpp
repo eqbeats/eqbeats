@@ -4,6 +4,7 @@
 #include "../http.h"
 #include "../../timer.h"
 #include "../../path.h"
+#include "../../user.h"
 #include "../../session.h"
 #include "../../number.h"
 #include <stdio.h>

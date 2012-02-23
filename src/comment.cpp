@@ -1,6 +1,7 @@
 #include "user.h"
 #include "track.h"
 #include "comment.h"
+#include "db.h"
 #include "number.h"
 
 Comment::Type stot(const std::string &in){

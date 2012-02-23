@@ -1,7 +1,8 @@
-- Clean up
-Track::select, {Category,User..}::tracks
-Track::artist
-take Track instead of tid
+- Now
+fcron: restart
+Report
+track DB requests
+thread-safe log?
 
 - Features
 password reset

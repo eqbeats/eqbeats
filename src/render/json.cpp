@@ -38,7 +38,7 @@ string trackH(const Track &t){
     return "{"
       + field("id", number(t.id()))
       + field("title", jstring(t.title()))
-      + field("artist", artistH(t.artistId(), t.artist()), true)
+      + field("artist", artistH(t.artist().id(), t.artist().name()), true)
       + "}";
 }
 
@@ -72,7 +72,7 @@ void Json::artist(int uid){
     o << "{"
       << field("id", number(u.id()))
       << field("name", jstring(u.name()))
-      << field("tracks", tracksArray(Track::byArtist(u.id())), true)
+      << field("tracks", tracksArray(u.tracks()), true)
       << "}";
 }
 
@@ -92,6 +92,6 @@ void Json::category(int cid){
     header();
     o << "{"
       << field("name", jstring(c.name()))
-      << field("tracks", tracksArray(Track::byCategory(c.id())), true)
+      << field("tracks", tracksArray(c.tracks()), true)
       << "}";
 }
