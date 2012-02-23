@@ -13,6 +13,11 @@ using namespace std;
 
 vector<pid_t> running;
 
+std::string Media::filePath(Format f) const{
+    string format = f==Vorbis? "ogg" : "mp3";
+    return eqbeatsDir() + "/tracks/" + number(id()) + "." + format;
+}
+
 void waitZombies(){
     vector<pid_t> stillRunning;
     for(vector<pid_t>::const_iterator i=running.begin(); i!=running.end(); i++){
@@ -40,20 +45,25 @@ void Media::convertToVorbis(){
     running.push_back(pid);
 }
 
-void Media::updateTags(Track::Format format){
+void Media::updateTags(Format format){
     if(format == MP3){
-        TagLib::MPEG::File mp3(filePath(Track::MP3).c_str());
+        TagLib::MPEG::File mp3(filePath(MP3).c_str());
         TagLib::Tag *t = mp3.tag();
         if(!t) return;
         t->setTitle(title());
         t->setArtist(artist().name());
         mp3.save(TagLib::MPEG::File::ID3v1 | TagLib::MPEG::File::ID3v2);
     } else if(format == Vorbis) {
-        TagLib::Ogg::Vorbis::File vorbis(filePath(Track::Vorbis).c_str());
+        TagLib::Ogg::Vorbis::File vorbis(filePath(Vorbis).c_str());
         TagLib::Tag *t = vorbis.tag();
         if(!t) return;
         t->setTitle(title());
         t->setArtist(artist().name());
         vorbis.save();
     }
+}
+
+void Media::unlink(){
+    ::unlink(filePath(MP3).c_str());
+    ::unlink(filePath(Vorbis).c_str());
 }

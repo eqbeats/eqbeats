@@ -4,6 +4,7 @@
 #include "../render/html/page.h"
 #include "../render/html/escape.h"
 #include "../render/http.h"
+#include "../art.h"
 #include "../session.h"
 #include "../number.h"
 #include "../category.h"
@@ -91,6 +92,9 @@ void Action::deleteTrack(int tid){
         deletionForm(t);
     else{
         log("Deleting track: " + t.title() + " (" + number(t.id()) + ")");
+        Art art(tid);
+        if(art) art.remove();
+        Media(t).unlink();
         t.remove();
         Http::redirect(u.url());
     }

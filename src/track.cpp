@@ -3,7 +3,6 @@
 #include "track.h"
 #include "user.h"
 #include "number.h"
-#include "path.h"
 #include "db.h"
 #include "art.h"
 
@@ -29,11 +28,6 @@ Track::Track(int id){
 
 User Track::artist() const{
     return User(_artistId, _artist);
-}
-
-std::string Track::filePath(Format f) const{
-    string format = f==Vorbis? "ogg" : "mp3";
-    return eqbeatsDir() + "/tracks/" + number(_id) + "." + format;
 }
 
 void Track::setTitle(const std::string &nTitle){
@@ -83,13 +77,6 @@ void Track::remove(){
     DB::query("DELETE FROM comments WHERE type = 'track' AND ref = " + number(_id));
     DB::query("DELETE FROM favorites WHERE type = 'track' AND ref = " + number(_id));
     DB::query("DELETE FROM tracks WHERE id = " + number(_id));
-    string base = eqbeatsDir() + "/tracks/" + number(_id) + ".";
-    string path = base + "mp3";
-    unlink(path.c_str());
-    path = base + "ogg";
-    unlink(path.c_str());
-    Art art(_id);
-    if(art) art.remove();
     _id = 0;
 }
 
