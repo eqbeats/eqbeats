@@ -2,6 +2,7 @@
 #include "http.h"
 #include "../category.h"
 #include "../track.h"
+#include "../actions/actions.h"
 #include "../user.h"
 #include "../number.h"
 #include "render.h"
@@ -11,7 +12,18 @@ using namespace std;
 using namespace Render;
 using namespace Json;
 
-void header(){ Http::header("application/json"); }
+void header(){ 
+    if(Action::cgi("jsonp").empty())
+        Http::header("application/json");
+    else {
+        Http::header("text/javascript");
+        o << Action::cgi("jsonp") << "(";
+    }
+}
+
+void footer(){
+    if(!Action::cgi("jsonp").empty()) o << ");";
+}
 
 string Json::field(const string &name, const string &val, bool last){
     return "\"" + name + "\":" + val + (last?"":",");
@@ -47,6 +59,7 @@ void Json::track(int tid){
     if(!t) return Http::header(404);
     header();
     o << trackH(t);
+    footer();
 }
 
 string tracksArray(const vector<Track> &ts){
@@ -63,6 +76,7 @@ string tracksArray(const vector<Track> &ts){
 void Json::tracks(const vector<Track> &ts){
     header();
     o << "{" + field("tracks", tracksArray(ts), true) + "}";
+    footer();
 }
 
 void Json::artist(int uid){
@@ -74,6 +88,7 @@ void Json::artist(int uid){
       << field("name", jstring(u.name()))
       << field("tracks", tracksArray(u.tracks()), true)
       << "}";
+    footer();
 }
 
 void Json::users(const vector<User> &us){
@@ -84,6 +99,7 @@ void Json::users(const vector<User> &us){
         o << artistH(i->id(), i->name());
     }
     o << "]}";
+    footer();
 }
 
 void Json::category(int cid){
@@ -94,4 +110,5 @@ void Json::category(int cid){
       << field("name", jstring(c.name()))
       << field("tracks", tracksArray(c.tracks()), true)
       << "}";
+    footer();
 }

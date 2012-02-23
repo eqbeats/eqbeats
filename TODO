@@ -18,7 +18,6 @@ Player: bouncy title
 - Tech
 transcoding daemon
 Json (session, favorites)
-JSONP
 XML API
 Optimize hits / async query (daemon?)
 audio files: embed cover arts
