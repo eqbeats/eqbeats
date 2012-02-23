@@ -15,6 +15,7 @@ pid
 tmp/
 tracks/
 art/
+reports
 
 eqbeats.fcgi
 /tools/

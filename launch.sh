@@ -3,7 +3,7 @@
 PWD="/home/eqbeats/eqbeats"
 PROGNAME="eqbeats dev server"
 BINARY="$PWD/eqbeats.fcgi"
-SERVCOUNT=1
+SERVCOUNT=3
 PORT=9004
 
 

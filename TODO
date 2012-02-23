@@ -1,9 +1,3 @@
-- Now
-fcron: restart
-Report
-track DB requests
-thread-safe log?
-
 - Features
 password reset
 PG13 rating

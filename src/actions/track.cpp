@@ -115,3 +115,12 @@ void Action::updateCategories(int tid){
     }
     return Http::redirect(t.url());
 }
+
+void Action::reportTrack(const Track &t){
+    if(!t) return;
+    std::string path = eqbeatsDir() + "/reports";
+    std::ofstream f(path.c_str(), std::ios_base::app);
+    f << t.artist().id() << " " << t.artist().name() << " - " << t.id() << " " << t.title() << std::endl;
+    f.close();
+    Http::redirect(t.url());
+}

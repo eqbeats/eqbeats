@@ -133,6 +133,8 @@ int main(int argc, char** argv){
             Action::favorite(id, true);
         else if((id = route("track", "unfavorite", path)))
             Action::favorite(id, false);
+        else if((id = route("track", "report", path)))
+            Action::reportTrack(id);
         else if((id = route("track",path)))
             Html::trackPage(id);
         else if(path == "/track/new")

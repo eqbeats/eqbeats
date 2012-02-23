@@ -90,6 +90,8 @@ void Html::trackPage(int tid){
     if(edition)
         o << " <span><img src=\"/static/edit-number.png\" /> Hits : " << t.getHits()
           << "</span> <span><img src=\"/static/star.png\" /> Favourites : " << t.favoritesCount() << "</span>";
+    else
+        o << " <span><img src=\"/static/flag.png\" /><a href=\"" << t.url() << "/report\">Report</a></span>";
     o << "</div>"
 
     // Embed
