@@ -7,13 +7,22 @@
 User::User(int nId){
     _id = 0;
     if(nId<=0) return;
-
-    DB::Result r = DB::query("SELECT name FROM Users WHERE id=" + number(nId));
+    DB::Result r = DB::query("SELECT name FROM users WHERE id=" + number(nId));
     if(!r.empty()){
         _id = nId;
         _name = r[0][0];
     }
 } 
+
+User::User(const std::string &nName){
+    _id = 0;
+    if(nName.empty()) return;
+    DB::Result r = DB::query("SELECT id FROM users WHERE name=$1", nName);
+    if(!r.empty()){
+        _id = number(r[0][0]);
+        _name = nName;
+    }
+}
 
 std::string User::url(int id){
     std::stringstream s;

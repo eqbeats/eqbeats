@@ -11,6 +11,7 @@ class User{
     public:
         User() { _id = 0; }
         User(int nId);
+        User(const std::string &nName);
         User(int nId, const std::string &nName) { _id = nId; _name = nName; }
         int id() const { return _id; }
         std::string name() const { return _name; }

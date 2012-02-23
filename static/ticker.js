@@ -1,34 +1,97 @@
+var delay = 7000;
+
+// Fading
 var step = 0.2;
-var delay = 60;
-
-var news_entry = document.getElementsByClassName("newsticker")[0].getElementsByTagName("a")[0];
-function fade(news, out){
-    var opacity = parseFloat(news_entry.style.opacity);
-    if(!out && opacity > 1-2*step){
-        news_entry.style.opacity = 1;
-        window.setTimeout(next_entry, 5000);
-        return;
+var fadeDelay = 60;
+function fadeIn(elem, callback){
+    var opacity = parseFloat(elem.style.opacity);
+    if(opacity == 0)
+        elem.style.display = elem==entry ? 'inline' : 'block';
+    if(opacity > 1-2*step){
+        elem.style.opacity = 1;
+        callback();
     }
-    else if(out && opacity < 2*step){
-        out = false;
-        opacity = 0;
-        news_entry.href = "/news/" + news.id;
-        news_entry.innerHTML = news.title;
+    else{
+        elem.style.opacity = opacity + step;
+        window.setTimeout(fadeIn, fadeDelay, elem, callback);
     }
-    else
-        opacity += (out?-step:step);
-    news_entry.style.opacity = opacity;
-    window.setTimeout(fade, delay, news, out);
 }
-function next_entry(){
-    news = news_entries.shift();
-    news_entries.push(news);
-    window.setTimeout(fade, delay, news, true);
+function fadeOut(elem, callback){
+    var opacity = parseFloat(elem.style.opacity);
+    if(opacity < 2*step){
+        elem.style.opacity = 0;
+        elem.style.display = 'none';
+        callback();
+    }
+    else{
+        elem.style.opacity = opacity - step;
+        window.setTimeout(fadeOut, fadeDelay, elem, callback);
+    }
 }
 
-if(news_entry != undefined && news_entries != undefined){
-    news_entry.style.opacity = 1;
-    news = news_entries.shift();
-    news_entries.push(news);
-    window.setTimeout(next_entry, 5000);
+// Celestia Radio
+var head = document.getElementsByTagName('head')[0];
+var script;
+var loaded = false;
+var artist = document.getElementById('nowplaying-artist');
+var track = document.getElementById('nowplaying-track');
+var widget = document.getElementById('nowplaying-widget');
+widget.className = 'loading';
+widget.style.opacity = '0';
+function crRequest(){
+    if(loaded) head.removeChild(script);
+    script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.src = '/nowplaying/cr?jsonp=crUpdate';
+    head.appendChild(script);
+    loaded = true;
 }
+function crUpdate(t){
+    // Artist
+    var nArtist = document.createElement(t.artist.id ? 'a' : 'span');
+    nArtist.id = 'nowplaying-artist';
+    nArtist.appendChild(document.createTextNode(t.artist.name));
+    if(t.artist.id){
+        nArtist.target = '_blank';
+        nArtist.href = 'http://eqbeats.org/user/' + t.artist.id;
+    }
+    artist.parentNode.replaceChild(nArtist, artist)
+    artist = nArtist;
+    // Track
+    var nTrack = document.createElement(t.id ? 'a' : 'span');
+    nTrack.id = 'nowplaying-track';
+    nTrack.appendChild(document.createTextNode(t.title));
+    if(t.id){
+        nTrack.target = '_blank';
+        nTrack.href = 'http://eqbeats.org/track/' + t.id;
+    }
+    track.parentNode.replaceChild(nTrack, track)
+    track = nTrack;
+    // End
+    widget.className = 'loaded';
+    fadeOut(ticker, crShow);
+}
+function crShow(){ fadeIn(widget, crWait); }
+function crWait(){ setTimeout(fadeOut, delay, widget, newsInit); }
+
+// News ticker
+var ticker = document.getElementById("newsticker");
+var entry = ticker.getElementsByTagName("a")[0];
+ticker.style.opacity = '1';
+entry.style.opacity = '1';
+var i = 0;
+function setEntry(){
+    entry.href = "/news/" + news[i].id;
+    entry.replaceChild(document.createTextNode(news[i].title), entry.firstChild);
+}
+function newsInit(){ i = 0; setEntry(); fadeIn(ticker, newsWait); }
+function newsWait() { setTimeout(newsNext, delay); }
+function newsNext(){
+    i++;
+    if(i == news.length) crRequest();
+    else fadeOut(entry, newsSet);
+}
+function newsSet(){ setEntry(); fadeIn(entry, newsWait); }
+
+// Init
+newsWait();

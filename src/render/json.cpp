@@ -7,6 +7,7 @@
 #include "../number.h"
 #include "render.h"
 #include <sstream>
+#include <iostream>
 
 using namespace std;
 using namespace Render;
@@ -110,5 +111,13 @@ void Json::category(int cid){
       << field("name", jstring(c.name()))
       << field("tracks", tracksArray(c.tracks()), true)
       << "}";
+    footer();
+}
+
+void Json::nowPlaying(const string &file){
+    header();
+    ifstream j(file.c_str());
+    o << j.rdbuf();
+    j.close();
     footer();
 }
