@@ -3,7 +3,6 @@
 #include "db.h"
 #include "user.h"
 #include "actions/actions.h"
-#include "log.h"
 #include <cgicc/CgiEnvironment.h>
 #include <cgicc/HTTPCookie.h>
 #include <stdio.h>

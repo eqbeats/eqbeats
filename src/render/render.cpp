@@ -17,6 +17,7 @@ void FCgiIO::attach(FCGX_Request* request){
     fErrBuf.attach(request->err);
 
     // Parse environment
+    fEnv.clear();
     for(char **e = fRequest->envp; *e != NULL; ++e) {
         std::string s(*e);
         std::string::size_type i = s.find('=');
