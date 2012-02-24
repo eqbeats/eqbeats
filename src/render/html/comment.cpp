@@ -10,7 +10,7 @@ using namespace std;
 using namespace Render;
 
 void Html::comments(const vector<Comment> &cmts, const std::string title){
-    o << "<h3 id=\"comments\"><img src=\"/static/balloon.png\" /> " << title << "</h3><div>";
+    o << "<h3 id=\"comments\"><img src=\"/static/balloon.png\" alt=\"\" /> " << title << "</h3><div>";
     if(cmts.empty())
         o << "<div class=\"empty\">No comments yet.</div>";
     for(vector<Comment>::const_iterator i=cmts.begin(); i!=cmts.end(); i++){

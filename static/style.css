@@ -68,8 +68,8 @@ html, body {
     padding: 25px 40px 20px;
     background-color: #FFF;
     margin: 0 auto;
-    box-shadow: 0 0 1px #888;
-    word-wrap: break-word;
+    box-shadow: 0px 0px 1px #888;
+    /* word-wrap: break-word; aparemment ça n'est pas dans les docs w3 */
 }
 
 #footer {
@@ -348,14 +348,12 @@ form {
 form input, textarea, select, .qq-upload-button {
     border: 1px solid #555;
     border-radius: 2px;
-    /*box-shadow: 0 0 1px #888;*/
-    padding: 5px;
+    padding: 4px;
     margin: 2px;
 }
 form input, select {
     vertical-align: middle;
     width: 250px;
-    height: 2em;
 }
 form input[type="file"] {
     border: none;
@@ -412,17 +410,18 @@ form.publish input:hover {
 /** Follow / Favorite / Delete buttons ****************************************/
 
 .follow {
-    color: #fff;
     font-size: 14px;
     padding: 3px 3px 3px 20px;
     margin-left: 5px;
     background: url("/static/plus.png") left center no-repeat;
 }
-.follow.disabled { background-image: url("/static/plus-grey.png"); }
-.follow:hover {
+.follow:hover{ 
     text-decoration: none;
     color: #555;
 }
+.follow.disabled { background-image: url("/static/plus-grey.png"); }
+.follow span { visibility: hidden; }
+.follow:hover span { visibility: visible; }
 
 .delete {
     float: right;
@@ -475,7 +474,7 @@ form.publish input:hover {
     margin-left: 20px;
     margin-right: 20px;
     background: #fbffff;
-    box-shadow: 0 0 1px #8aa;
+    box-shadow: 0px 0px 1px #8aa;
     padding: 10px;
 }
 
@@ -530,21 +529,21 @@ form.publish input:hover {
 .qq-upload-drop-area {
     padding: 30px;
     margin: 10px 0;
-    background: #408;
+    background-color: #408;
     color: #fff;
     text-align:center; 
     border-radius: 5px;
 }
-.qq-upload-drop-area-active {background:#80c;}
+.qq-upload-drop-area-active { background-color:#80c; }
 
-.qq-upload-list {margin:15px 35px; padding:0; list-style:disc;}
+.qq-upload-list { margin:15px 35px; padding:0; list-style:disc; }
 .qq-upload-list li { margin:0; padding:0; line-height:15px; font-size:12px;}
 .qq-upload-file, .qq-upload-spinner, .qq-upload-size, .qq-upload-cancel, .qq-upload-failed-text {
     margin-right: 7px;
 }
 
 .qq-upload-file {}
-.qq-upload-spinner {display:inline-block; /*background: url("loading.gif");*/ width:15px; height:15px; vertical-align:text-bottom;}
+.qq-upload-spinner {display:inline-block; width:15px; height:15px; vertical-align:text-bottom;}
 .qq-upload-size,.qq-upload-cancel {font-size:11px;}
 
 .qq-upload-failed-text {display:none;}

@@ -36,27 +36,27 @@ void Html::userPage(int uid){
         Render::o << "<a class=\"follow" << (isFollowed?"":" disabled")
                   << "\" href=\"" << (Session::user() ? "" : "/login?redirect=")
                   << user.url() << "/" << (isFollowed?"un":"") << "follow\">"
-                  << (isFollowed?"Stop following":"Follow")
-                  << "</a>";
+                     "<span>" << (isFollowed?"Stop following":"Follow") << "</span>"
+                     "</a>";
     }
     o << "</h2>"
 
     // Description
          "<div class=\"user\">"
-             "<div class=\"item\"><img src=\"/static/mail.png\" /> Email: " << escapeEmail(user.email()) << "</div>";
+             "<div class=\"item\"><img src=\"/static/mail.png\" alt=\"\" /> Email: " << escapeEmail(user.email()) << "</div>";
     string about = user.about();
     if(!about.empty())
         o << "<div class=\"notes\">" << format(about) << "</div>";
     bool edition = Session::user().id() == user.id();
     if(edition)
-        o << "<div class=\"item\"><img src=\"/static/card-pencil.png\" /> <a href=\"/account\">Edit</a></div>";
-    o << "<div class=\"item\"><img src=\"/static/star.png\" /> <a href=\"" << user.url() << "/favorites\">Favorite tracks</a></div>"
+        o << "<div class=\"item\"><img src=\"/static/card-pencil.png\" alt=\"\" /> <a href=\"/account\">Edit</a></div>";
+    o << "<div class=\"item\"><img src=\"/static/star.png\" alt=\"\" /> <a href=\"" << user.url() << "/favorites\">Favorite tracks</a></div>"
          "</div>";
 
     // Tracks
     vector<Track> tracks = user.tracks(edition);
     if(edition || !tracks.empty()){
-        o << "<h3><img src=\"/static/disc.png\" /> Tracks ";
+        o << "<h3><img src=\"/static/disc.png\" alt=\"\" /> Tracks ";
         feedIcon(user.url() + "/atom");
         o << "</h3>";
         Html::trackList(tracks, Html::Compact);
@@ -65,7 +65,7 @@ void Html::userPage(int uid){
     // Edition
     if(edition){
         uploadForm("/track/new");
-        o << "<h3><img src=\"/static/plus-circle.png\" /> Artists you follow</h3>";
+        o << "<h3><img src=\"/static/plus-circle.png\" alt=\"\" /> Artists you follow</h3>";
         userList(Follower(user).following());
         if(!tracks.empty())
             Html::comments(Comment::forArtist(uid), "Comments on your tracks");

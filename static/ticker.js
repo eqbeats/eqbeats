@@ -32,19 +32,16 @@ function fadeOut(elem, callback){
 // Celestia Radio
 var head = document.getElementsByTagName('head')[0];
 var script;
-var loaded = false;
 var artist = document.getElementById('nowplaying-artist');
 var track = document.getElementById('nowplaying-track');
 var widget = document.getElementById('nowplaying-widget');
-widget.className = 'loading';
 widget.style.opacity = '0';
 function crRequest(){
-    if(loaded) head.removeChild(script);
+    if(script) head.removeChild(script);
     script = document.createElement('script');
     script.type = 'text/javascript';
     script.src = '/nowplaying/cr?jsonp=crUpdate';
     head.appendChild(script);
-    loaded = true;
 }
 function crUpdate(t){
     // Artist
@@ -68,7 +65,6 @@ function crUpdate(t){
     track.parentNode.replaceChild(nTrack, track)
     track = nTrack;
     // End
-    widget.className = 'loaded';
     fadeOut(ticker, crShow);
 }
 function crShow(){ fadeIn(widget, crWait); }

@@ -14,12 +14,12 @@ using namespace std;
 void Html::player(const Track &t){
     Render::o <<
         "<div id=\"player\"></div>"
-        "<script src=\"/static/sm2.js\"></script>"
+        "<script type=\"text/javascript\" src=\"/static/sm2.js\"></script>"
         "<script>"
             "var mp3path = \"" << t.url(Track::MP3) <<"\";"
             "var oggpath = \"" << t.url(Track::Vorbis) <<"\";"
         "</script>"
-        "<script src=\"/static/player.js\"></script>"
+        "<script type=\"text/javascript\" src=\"/static/player.js\"></script>"
         "<noscript>"
             "<audio controls>"
                 "<source type=\"audio/ogg\" src=\"" << t.url(Track::Vorbis) << "\" />"

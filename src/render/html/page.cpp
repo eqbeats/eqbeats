@@ -22,9 +22,11 @@ void logStatus(){
 
 void Html::header(const std::string &title, const std::string &head, int status){
     Http::header("text/html", status);
-    o << "<html><head>"
+    o << "<!DOCTYPE html>"
+         "<html><head>"
             "<title>" << (title.empty()?"":escape(title)+" - ") << "Equestrian Beats</title>"
-            "<link rel=\"stylesheet\" href=\"/static/style.css\" />"
+            "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">"
+            "<link rel=\"stylesheet\" type=\"text/css\" href=\"/static/style.css\" />"
             << head <<
         "</head><body>"
             "<div id=\"main\">"
@@ -36,7 +38,7 @@ void Html::header(const std::string &title, const std::string &head, int status)
                     "<div id=\"navbar\">"
                         "<a href=\"/\">Home</a> "
                         "<a href=\"/artists\">Artists</a> "
-                        "<img src=\"/static/cm-nav.png\" /> "
+                        "<img src=\"/static/cm-nav.png\" alt=\"-\"/> "
                         "<a href=\"/news\">News</a> "
                         "<a href=\"/faq\">FAQ</a>"
                     "</div>"

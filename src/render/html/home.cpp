@@ -40,7 +40,7 @@ void Html::home(){
     // Head
     ticker();
     o << "<div class=\"search\">"
-         "<img src=\"/static/magnifier.png\" /> Search for tracks : ";
+         "<img src=\"/static/magnifier.png\" alt=\"\" /> Search for tracks : ";
     searchForm("/tracks/search");
     o << "</div>"
     // Tracks

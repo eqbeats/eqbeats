@@ -40,7 +40,7 @@ std::vector<User> User::select(const std::string &q, const std::string &param){
 }
 
 std::vector<User> listHelper(bool artists, unsigned int n, unsigned int begin){
-    return User::select("FROM users" +
+    return User::select("FROM users " +
         (std::string) (artists? "WHERE EXISTS ( SELECT 1 FROM tracks WHERE user_id = users.id AND visible = 't' ) " : "") +
         "ORDER BY lower(name) ASC LIMIT "+number(n)+" OFFSET "+number(begin));
 }

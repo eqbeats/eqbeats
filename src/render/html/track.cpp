@@ -22,7 +22,7 @@ using namespace Render;
 void cats(const Track &t, bool edition){
     vector<Category> cs = Category::forTrack(t.id());
     if(cs.empty() && !edition) return;
-    o << "<div class=\"toolbar cats\"><img src=\"/static/tag.png\" /> Categories:";
+    o << "<div class=\"toolbar cats\"><img src=\"/static/tag.png\" alt=\"\" /> Categories:";
     if(edition)
         o << "<form action=\"" << t.url() << "/cat\" method=\"post\">";
     for(vector<Category>::const_iterator i=cs.begin(); i!=cs.end(); i++){
@@ -63,8 +63,8 @@ void Html::trackPage(int tid){
 
     // Header
     header(t.title(),
-            "<link rel=\"alternate\" type=\"application/json+oembed\" href=\"" + eqbeatsUrl() + "/oembed?url=http%3A//eqbeats.org" + path + "&format=json\">"
-            "<link rel=\"alternate\" type=\"text/xml+oembed\" href=\"" + eqbeatsUrl() + "/oembed?url=http%3A//eqbeats.org" + path + "&format=xml\">");
+            "<link rel=\"alternate\" type=\"application/json+oembed\" href=\"" + eqbeatsUrl() + "/oembed?url=http%3A//eqbeats.org" + path + "%26format=json\" />"
+            "<link rel=\"alternate\" type=\"text/xml+oembed\" href=\"" + eqbeatsUrl() + "/oembed?url=http%3A//eqbeats.org" + path + "%26format=xml\" />");
 
     // Title
     o << "<div class=\"track\">"
@@ -72,27 +72,28 @@ void Html::trackPage(int tid){
     bool isFav = Follower(Session::user()).isFavorite(t.id());
     o << "<a href=\"" << (Session::user() ? "" : "/login?redirect=") << t.url() << "/" << (isFav?"un":"") << "favorite\""
          " title=\"" << (isFav?"Remove from favorites":"Add to favorites") << "\">"
-           "<img src=\"/static/star" << (isFav?"":"-empty") << ".png\" /></a>"
+           "<img src=\"/static/star" << (isFav?"":"-empty") << ".png\""
+             " alt=\"" << (isFav?"Remove from favorites":"Add to favorites") << "\"/></a>"
          "</h2>"
          "<h4>by <a href=\"" << t.artist().url() <<  "\">" << escape(t.artist().name()) << "</a></h4>"
 
-      << (art?"<img class=\"art\" src=\"" + art.url(Art::Medium) + "\" />":"");
+      << (art?"<img class=\"art\" alt=\"\" src=\"" + art.url(Art::Medium) + "\" />":"");
 
     player(t);
 
     // Toolbar
     o << "<div class=\"toolbar\">"
-         "<span><img src=\"/static/drive-download.png\" /> Download : "
+         "<span><img src=\"/static/drive-download.png\" alt=\"\" /> Download : "
          " <a href=\"" << t.url(Track::Vorbis) << "\">OGG Vorbis</a>"
          " <a href=\"" << t.url(Track::MP3) << "\">MP3</a>"
       << (art?" <a href=\"" + art.url() + "\" target=\"_blank\">Art</a>":"")
-      << "</span> <span><img src=\"/static/balloon-white-left.png\" alt=\"Share\" /> Share : <a href=\"#embedcode\" onclick=\"document.getElementById('embedcode').style.display='block';return false;\">Embed</a></span>";
+      << "</span> <span><img src=\"/static/balloon-white-left.png\" alt=\"\" /> Share : <a href=\"#embedcode\" onclick=\"document.getElementById('embedcode').style.display='block';return false;\">Embed</a></span>";
     if(edition)
-        o << " <span><img src=\"/static/edit-number.png\" /> Hits : " << t.getHits()
-          << "</span> <span><img src=\"/static/star.png\" /> Favourites : " << t.favoritesCount() << "</span>";
+        o << " <span><img src=\"/static/edit-number.png\" alt=\"\" /> Hits : " << t.getHits()
+          << "</span> <span><img src=\"/static/star.png\" alt=\"\" /> Favourites : " << t.favoritesCount() << "</span>";
     else
         o << " <form action=\"" << t.url() << "/report\" method=\"post\">"
-                "<button type=\"submit\" class=\"report\"><img src=\"/static/flag.png\" /><span>Report</span></button>"
+                "<button type=\"submit\" class=\"report\"><img src=\"/static/flag.png\" alt=\"\" /><span>Report</span></button>"
              "</form>";
     o << "</div>"
 
