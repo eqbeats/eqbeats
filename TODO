@@ -1,7 +1,9 @@
 - Features
 password reset
-PG13 rating
+Hits -> Like?
 Popular -> Featured
+coops
+PG13 rating
 inline play button (lists)
 pagination
 sorting
@@ -10,6 +12,7 @@ news feed
 favs -> playlists
 m3u playlist generators
 avatar
+embed.ly?
 Referrers?
 
 - Design
@@ -20,7 +23,6 @@ normalize volume
 transcoding daemon
 Json (session, favorites)
 XML API
-Optimize hits / async query (daemon?)
 audio files: embed cover arts
 full format support?
 document json API

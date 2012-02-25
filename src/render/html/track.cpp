@@ -63,8 +63,8 @@ void Html::trackPage(int tid){
 
     // Header
     header(t.title(),
-            "<link rel=\"alternate\" type=\"application/json+oembed\" href=\"" + eqbeatsUrl() + "/oembed?url=http%3A//eqbeats.org" + path + "%26format=json\" />"
-            "<link rel=\"alternate\" type=\"text/xml+oembed\" href=\"" + eqbeatsUrl() + "/oembed?url=http%3A//eqbeats.org" + path + "%26format=xml\" />");
+            "<link rel=\"alternate\" type=\"application/json+oembed\" href=\"" + eqbeatsUrl() + "/oembed?format=json&amp;url=http%3A//eqbeats.org" + path + "\" />"
+            "<link rel=\"alternate\" type=\"text/xml+oembed\" href=\"" + eqbeatsUrl() + "/oembed?format=xml&amp;url=http%3A//eqbeats.org" + path + "\" />");
 
     // Title
     o << "<div class=\"track\">"
@@ -98,8 +98,7 @@ void Html::trackPage(int tid){
     o << "</div>"
 
     // Embed
-      << "<textarea id=\"embedcode\">" << Html::embedTrackCode(t) << "</textarea>"
-         "<script>document.getElementById('embedcode').style.display='none';</script>";
+      << "<textarea id=\"embedcode\" style=\"display:none;\">" << Html::embedTrackCode(t) << "</textarea>";
 
     // Notes
     string notes = t.getNotes();
