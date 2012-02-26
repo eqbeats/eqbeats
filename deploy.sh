@@ -7,9 +7,7 @@ install -m775 eqbeats.fcgi failsafe /srv/eqbeats/
 install -m775 tools/nowplaying.{json,sh} /srv/eqbeats/tools
 
 cd static
-for f in *.js *.css *.txt *.swf *.png
-do install -m664 $f /srv/eqbeats/static
-done
+install -m664 *.js *.css *.txt *.swf *.png 502.html /srv/eqbeats/static
 
 install -m664 favicon-pub.ico /srv/eqbeats/static/favicon.ico
 
