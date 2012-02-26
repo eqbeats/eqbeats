@@ -23,6 +23,8 @@
 #include "cgi.h"
 #include <time.h>
 #include <stdio.h>
+#include <unistd.h>
+#include <sys/wait.h>
 
 using namespace cgicc;
 using namespace Render;
@@ -204,6 +206,7 @@ int main(int argc, char** argv){
         }
 
         FCGX_Finish_r(&request);
+        while(waitpid(-1, NULL, WNOHANG) > 0); // wait for zombies
     }
 
     DB::close();
