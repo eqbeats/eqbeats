@@ -4,6 +4,7 @@
 #include "../track.h"
 #include "../actions/actions.h"
 #include "../user.h"
+#include "../path.h"
 #include "../number.h"
 #include "render.h"
 #include <sstream>
@@ -114,9 +115,10 @@ void Json::category(int cid){
     footer();
 }
 
-void Json::nowPlaying(const string &file){
+void Json::nowPlaying(const string &radio){
     header();
-    ifstream j(file.c_str());
+    string path = eqbeatsDir() + "/nowplaying/" + radio + ".json";
+    ifstream j(path.c_str());
     o << j.rdbuf();
     j.close();
     footer();

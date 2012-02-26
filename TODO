@@ -1,5 +1,6 @@
 - Features
 password reset
+Cover art deletion
 Hits -> Like?
 Popular -> Featured
 coops
@@ -16,9 +17,11 @@ embed.ly?
 Referrers?
 
 - Design
+update favicon/title when playing
 Player: bouncy title
 
 - Tech
+Smart caching system (nowplaying)
 normalize volume
 transcoding daemon
 Json (session, favorites)

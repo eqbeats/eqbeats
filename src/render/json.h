@@ -21,7 +21,7 @@ void users(const std::vector<User> &);
 
 void category(int cid);
 
-void nowPlaying(const std::string &file);
+void nowPlaying(const std::string &radio);
 
 }
 }

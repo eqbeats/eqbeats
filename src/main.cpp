@@ -87,7 +87,7 @@ int main(int argc, char** argv){
         else if((id = route("cat", "json", path)))
             Json::category(id);
         else if(path == "/nowplaying/cr")
-            Json::nowPlaying(eqbeatsDir() + "/cr.json");
+            Json::nowPlaying("cr");
         // Feeds
         else if((id = route("cat", "atom", path)))
             Feed::category(id);
