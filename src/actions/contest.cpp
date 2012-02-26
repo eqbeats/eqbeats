@@ -6,6 +6,7 @@
 #include "../track.h"
 #include "../user.h"
 #include "../session.h"
+#include "../cgi.h"
 
 using namespace Render;
 

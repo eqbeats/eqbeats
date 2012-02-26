@@ -2,7 +2,7 @@
 #include "http.h"
 #include "../category.h"
 #include "../track.h"
-#include "../actions/actions.h"
+#include "../cgi.h"
 #include "../user.h"
 #include "../path.h"
 #include "../number.h"
@@ -15,16 +15,16 @@ using namespace Render;
 using namespace Json;
 
 void header(){ 
-    if(Action::cgi("jsonp").empty())
+    if(cgi("jsonp").empty())
         Http::header("application/json");
     else {
         Http::header("text/javascript");
-        o << Action::cgi("jsonp") << "(";
+        o << cgi("jsonp") << "(";
     }
 }
 
 void footer(){
-    if(!Action::cgi("jsonp").empty()) o << ");";
+    if(!cgi("jsonp").empty()) o << ");";
 }
 
 string Json::field(const string &name, const string &val, bool last){

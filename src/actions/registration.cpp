@@ -6,6 +6,7 @@
 #include "../log.h"
 #include "../number.h"
 #include "../render/render.h"
+#include "../cgi.h"
 
 using namespace Render;
 

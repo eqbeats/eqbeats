@@ -7,11 +7,12 @@
 #include "../path.h"
 #include "../follower.h"
 #include "../contest.h"
+#include "../cgi.h"
 
 using namespace Render;
 
 bool fromEqBeats(){
-    std::string ref = Action::cgi.getEnvironment().getReferrer();
+    std::string ref = cgi.getEnvironment().getReferrer();
     if(ref.length() < eqbeatsUrl().length()) return false;
     return ref.substr(0, eqbeatsUrl().length()) == eqbeatsUrl();
 }

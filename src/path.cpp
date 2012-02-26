@@ -1,6 +1,6 @@
 #include "path.h"
 #include "number.h"
-#include "actions/actions.h"
+#include "cgi.h"
 
 using namespace std;
 
@@ -17,11 +17,11 @@ string eqbeatsDir(){
 }
 
 string eqbeatsUrl(){
-    return "http://" + Action::cgi.getEnvironment().getServerName();
+    return "http://" + cgi.getEnvironment().getServerName();
 }
 
 string getPath(){
-    return stripSlash(Action::cgi.getEnvironment().getPathInfo());
+    return stripSlash(cgi.getEnvironment().getPathInfo());
 }
 
 int route(const string &t, string path){

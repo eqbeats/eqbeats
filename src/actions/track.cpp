@@ -13,6 +13,7 @@
 #include "../log.h"
 #include "../track.h"
 #include "../mail.h"
+#include "../cgi.h"
 #include "../media.h"
 
 using namespace std;

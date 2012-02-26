@@ -8,7 +8,7 @@
 #include "../../category.h"
 #include "../../user.h"
 #include "../../number.h"
-#include "../../actions/actions.h"
+#include "../../cgi.h"
 
 using namespace Render;
 using namespace std;
@@ -40,7 +40,7 @@ void Html::latestTracks(unsigned n){
     o << "<h2>Latest tracks ";
     feedIcon("/tracks/latest/atom");
     o << "</h2>";
-    int p = number(Action::cgi("p"));
+    int p = number(cgi("p"));
     if(p < 1) p = 1;
     std::vector<Track> tracks = Track::latest(n+1, n*(p-1));
     bool lastPage = tracks.size() < n+1;

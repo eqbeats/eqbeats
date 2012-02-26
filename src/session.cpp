@@ -2,7 +2,7 @@
 #include "number.h"
 #include "db.h"
 #include "user.h"
-#include "actions/actions.h"
+#include "cgi.h"
 #include <cgicc/CgiEnvironment.h>
 #include <cgicc/HTTPCookie.h>
 #include <stdio.h>
@@ -23,7 +23,7 @@ User u;
 std::string sid;
 
 void Session::start(){
-    CgiEnvironment env = Action::cgi.getEnvironment();
+    CgiEnvironment env = cgi.getEnvironment();
     for(std::vector<HTTPCookie>::const_iterator i=env.getCookieList().begin(); i!= env.getCookieList().end(); i++){
         if(i->getName() == "sid")
             sid = i->getValue();

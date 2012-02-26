@@ -9,6 +9,7 @@
 #include "../track.h"
 #include "../media.h"
 #include "../log.h"
+#include "../cgi.h"
 
 using namespace Render::Html;
 

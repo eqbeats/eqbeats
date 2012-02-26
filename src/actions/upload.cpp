@@ -9,6 +9,7 @@
 #include "../log.h"
 #include "../track.h"
 #include "../user.h"
+#include "../cgi.h"
 #include "../media.h"
 #include <string.h>
 #include <fstream>

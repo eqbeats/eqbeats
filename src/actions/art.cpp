@@ -5,6 +5,7 @@
 #include "../user.h"
 #include "../number.h"
 #include "../path.h"
+#include "../cgi.h"
 #include "../render/http.h"
 
 using namespace Render;

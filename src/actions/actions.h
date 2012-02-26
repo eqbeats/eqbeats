@@ -1,13 +1,10 @@
 #ifndef ACTIONS_H
 #define ACTIONS_H
 
-#include <cgicc/Cgicc.h>
 #include "../comment.h"
 
 //! Page generation with effects
 namespace Action{
-
-extern cgicc::Cgicc cgi;
 
 // login.cpp
 void login();

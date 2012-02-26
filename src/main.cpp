@@ -20,15 +20,15 @@
 #include "track.h"
 #include "number.h"
 #include "render/render.h"
+#include "cgi.h"
 #include <time.h>
 #include <stdio.h>
-#include "log.h"
 
 using namespace cgicc;
 using namespace Render;
 using namespace Action;
 
-cgicc::Cgicc Action::cgi;
+Cgicc cgi;
 
 int main(int argc, char** argv){
     DB::connect();

@@ -1,4 +1,5 @@
 #include "actions.h"
+#include "../cgi.h"
 #include "../session.h"
 #include "../user.h"
 #include "../render/html/page.h"
@@ -16,7 +17,7 @@ void loginForm(const std::string &error=std::string()){
                 "<tr>"
                     "<td><label for=\"r_email\">Email:</label></td>"
                     "<td><input id=\"r_email\" name=\"email\" "
-                    "value=\"" << Action::cgi("email") << "\"/></td>"
+                    "value=\"" << cgi("email") << "\"/></td>"
                 "</tr>"
                 "<tr>"
                     "<td><label for=\"r_pw\">Password:</label></td>"
@@ -24,7 +25,7 @@ void loginForm(const std::string &error=std::string()){
                 "</tr>"
             "</table>"
             "<input type=\"submit\" value=\"Login\" />"
-            "<input type=\"hidden\" name=\"redirect\" value=\"" << Action::cgi("redirect") << "\" />"
+            "<input type=\"hidden\" name=\"redirect\" value=\"" << cgi("redirect") << "\" />"
         "</form>"
         "<a href=\"/register\">Register</a>";
     Html::footer();
