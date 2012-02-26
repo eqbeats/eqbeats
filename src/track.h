@@ -48,6 +48,7 @@ class Track{
         static std::vector<Track> latest(int n);
         static std::vector<Track> random(int n);
         static std::vector<Track> popular(int n);
+        static std::vector<Track> featured(int n);
         static std::vector<Track> favorites(int uid);
 
         operator bool() const { return _id > 0; }

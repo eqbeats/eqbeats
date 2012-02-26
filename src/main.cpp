@@ -80,6 +80,8 @@ int main(int argc, char** argv){
             Json::tracks(Track::random(50));
         else if(path == "/tracks/popular/json")
             Json::tracks(Track::popular(50));
+        else if(path == "/tracks/featured/json")
+            Json::tracks(Track::featured(50));
         else if(path == "/artists/json")
             Json::users(User::listArtists(200));
         else if(path == "/users/search/json")
@@ -152,6 +154,8 @@ int main(int argc, char** argv){
             Html::tracksPage("Random tracks", Track::random(50));
         else if(path == "/tracks/popular")
             Html::tracksPage("Popular tracks", Track::popular(50));
+        else if(path == "/tracks/featured")
+            Html::tracksPage("Featured tracks", Track::featured(50));
         // Categories
         else if((id = route("cat", path)))
             Html::category(id);

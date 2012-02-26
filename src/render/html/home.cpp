@@ -51,10 +51,9 @@ void Html::home(){
     trackList(Track::latest(10));
     o << "<a class=\"more\" href=\"/tracks/latest\">More</a>"
          "</div><div class=\"rightcol\">"
-         "<h3><a href=\"/tracks/popular\">Popular</a></h3>";
-    trackList(Track::popular(10));
-    o << "<a class=\"more\" href=\"/tracks/popular\">More</a>"
-         "</div><div class=\"leftcol\">"
+         "<h3>Featured</h3>";
+    trackList(Track::featured(10));
+    o << "</div><div class=\"leftcol\">"
          "<h3><a href=\"/tracks/random\">Random</a></h3>";
     trackList(Track::random(10));
     o << "<a class=\"more\" href=\"/tracks/random\">More</a>"

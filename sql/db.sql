@@ -73,3 +73,7 @@ CREATE TABLE votes (
     track_id integer not null REFERENCES tracks(id),
     contest_id integer not null REFERENCES contests(id)
 );
+CREATE TABLE featured_tracks (
+    track_id integer not null REFERENCES tracks(id),
+    date timestamptz not null
+);

@@ -1,0 +1,2 @@
+#!/bin/bash
+psql -c "INSERT INTO featured_tracks (track_id, date) VALUES ($1, 'now')"

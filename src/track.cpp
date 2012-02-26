@@ -73,6 +73,7 @@ Track Track::create(int nArtistId, const std::string &nTitle){
 void Track::remove(){
     DB::query("DELETE FROM track_categories WHERE track_id = "+ number(_id));
     DB::query("DELETE FROM contest_submissions WHERE track_id = " + number(_id));
+    DB::query("DELETE FROM featured_tracks WHERE track_id = " + number(_id));
     DB::query("DELETE FROM votes WHERE track_id = " + number(_id));
     DB::query("DELETE FROM comments WHERE type = 'track' AND ref = " + number(_id));
     DB::query("DELETE FROM favorites WHERE type = 'track' AND ref = " + number(_id));
@@ -113,6 +114,10 @@ std::vector<Track> listTracks(const char *order, int limit){
 std::vector<Track> Track::latest(int n){ return listTracks("date DESC", n); }
 std::vector<Track> Track::random(int n){ return listTracks("random()", n); }
 std::vector<Track> Track::popular(int n){ return listTracks("hits DESC", n); }
+
+std::vector<Track> Track::featured(int n){
+    return Track::select("featured_tracks", "featured_tracks.track_id = tracks.id", "featured_tracks.date DESC", false, n);
+}
 
 std::vector<Track> Track::favorites(int uid){
     return select("favorites", 
