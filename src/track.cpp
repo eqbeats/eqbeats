@@ -96,7 +96,7 @@ std::vector<Track> Track::resultToVector(const DB::Result &r){
     return tracks;
 }
 
-std::vector<Track> Track::select(const char *tables, const std::string cond, const char *order, bool all, int limit){
+std::vector<Track> Track::select(const char *tables, const std::string cond, const char *order, bool all, int limit, int offset){
     std::string q = "SELECT tracks.id, tracks.title, tracks.user_id, users.name, tracks.visible, tracks.date FROM tracks, users";
     if(tables) q += (std::string) "," + tables;
     q += " WHERE tracks.user_id = users.id";
@@ -104,14 +104,15 @@ std::vector<Track> Track::select(const char *tables, const std::string cond, con
     if(!cond.empty()) q += " AND " + cond;
     q += (std::string) " ORDER BY " + order;
     if(limit) q += " LIMIT " + number(limit);
+    if(offset) q += " OFFSET " + number(offset);
     return resultToVector(DB::query(q));
 }
 
-std::vector<Track> listTracks(const char *order, int limit){
-    return Track::select(0, "", order, false, limit);
+std::vector<Track> listTracks(const char *order, int limit, int offset=0){
+    return Track::select(0, "", order, false, limit, offset);
 }
 
-std::vector<Track> Track::latest(int n){ return listTracks("date DESC", n); }
+std::vector<Track> Track::latest(int n, int offset){ return listTracks("date DESC", n, offset); }
 std::vector<Track> Track::random(int n){ return listTracks("random()", n); }
 std::vector<Track> Track::popular(int n){ return listTracks("hits DESC", n); }
 

@@ -149,7 +149,7 @@ int main(int argc, char** argv){
         else if(path == "/tracks/search")
             Html::trackSearch(cgi("q"));
         else if(path == "/tracks/latest")
-            Html::latestTracks(50);
+            Html::latestTracks(20);
         else if(path == "/tracks/random")
             Html::tracksPage("Random tracks", Track::random(50));
         else if(path == "/tracks/popular")

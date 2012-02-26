@@ -7,6 +7,8 @@
 #include "../../track.h"
 #include "../../category.h"
 #include "../../user.h"
+#include "../../number.h"
+#include "../../actions/actions.h"
 
 using namespace Render;
 using namespace std;
@@ -33,12 +35,20 @@ void Html::tracksPage(const string &title, const vector<Track> &tracks){
     footer();
 }
 
-void Html::latestTracks(int n){
+void Html::latestTracks(unsigned n){
     header("Latest tracks", atomFeed("/tracks/latest/atom"));
     o << "<h2>Latest tracks ";
     feedIcon("/tracks/latest/atom");
     o << "</h2>";
-    trackList(Track::latest(n));
+    int p = number(Action::cgi("p"));
+    if(p < 1) p = 1;
+    std::vector<Track> tracks = Track::latest(n+1, n*(p-1));
+    bool lastPage = tracks.size() < n+1;
+    if(!lastPage) tracks.pop_back();
+    trackList(tracks);
+    if(p != 1) o << "<a href=\"?p=" << p-1 << "\">&laquo; Newer tracks</a>";
+    if(p != 1 && !lastPage) o << " - ";
+    if(!lastPage) o << "<a href=\"?p=" << p+1 << "\">Older tracks &raquo;</a>";
     footer();
 }
 

@@ -42,10 +42,10 @@ class Track{
         static std::vector<Track> search(const std::string &q);
         static std::vector<Track> exactSearch(const std::string &qartist, const std::string &qtitle);
 
-        static std::vector<Track> select(const char *tables, const std::string cond, const char *order="tracks.date DESC", bool all=false, int limit=0);
+        static std::vector<Track> select(const char *tables, const std::string cond, const char *order="tracks.date DESC", bool all=false, int limit=0, int offset=0);
 
         // Track lists
-        static std::vector<Track> latest(int n);
+        static std::vector<Track> latest(int n, int offset=0);
         static std::vector<Track> random(int n);
         static std::vector<Track> popular(int n);
         static std::vector<Track> featured(int n);
