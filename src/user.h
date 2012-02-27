@@ -21,6 +21,7 @@ class User{
 
         operator bool() const { return _id > 0; }
         bool operator==(const User &u){ return _id == u._id; }
+        bool operator!=(const User &u){ return _id != u._id; }
 
         static std::vector<User> select(const std::string &p, const std::string &param=std::string());
         static std::vector<User> list(unsigned int n, unsigned int begin=0);
