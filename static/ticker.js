@@ -1,4 +1,4 @@
-var delay = 7000;
+var delay = 3000;
 
 // Fading
 var step = 0.2;
@@ -29,65 +29,19 @@ function fadeOut(elem, callback){
     }
 }
 
-// Celestia Radio
-var head = document.getElementsByTagName('head')[0];
-var script;
-var artist = document.getElementById('nowplaying-artist');
-var track = document.getElementById('nowplaying-track');
-var widget = document.getElementById('nowplaying-widget');
-widget.style.opacity = '0';
-function crRequest(){
-    if(script) head.removeChild(script);
-    script = document.createElement('script');
-    script.type = 'text/javascript';
-    script.src = '/nowplaying/cr?jsonp=crUpdate';
-    head.appendChild(script);
-}
-function crUpdate(t){
-    // Artist
-    var nArtist = document.createElement(t.artist.id ? 'a' : 'span');
-    nArtist.id = 'nowplaying-artist';
-    nArtist.appendChild(document.createTextNode(t.artist.name));
-    if(t.artist.id){
-        nArtist.target = '_blank';
-        nArtist.href = 'http://eqbeats.org/user/' + t.artist.id;
-    }
-    artist.parentNode.replaceChild(nArtist, artist)
-    artist = nArtist;
-    // Track
-    var nTrack = document.createElement(t.id ? 'a' : 'span');
-    nTrack.id = 'nowplaying-track';
-    nTrack.appendChild(document.createTextNode(t.title));
-    if(t.id){
-        nTrack.target = '_blank';
-        nTrack.href = 'http://eqbeats.org/track/' + t.id;
-    }
-    track.parentNode.replaceChild(nTrack, track)
-    track = nTrack;
-    // End
-    fadeOut(ticker, crShow);
-}
-function crShow(){ fadeIn(widget, crWait); }
-function crWait(){ setTimeout(fadeOut, delay, widget, newsInit); }
-
 // News ticker
-var ticker = document.getElementById("newsticker");
-var entry = ticker.getElementsByTagName("a")[0];
-ticker.style.opacity = '1';
+var entry = document.getElementById('newsticker').getElementsByTagName("a")[0];
 entry.style.opacity = '1';
 var i = 0;
 function setEntry(){
     entry.href = "/news/" + news[i].id;
     entry.replaceChild(document.createTextNode(news[i].title), entry.firstChild);
 }
-function newsInit(){ i = 0; setEntry(); fadeIn(ticker, newsWait); }
 function newsWait() { setTimeout(newsNext, delay); }
 function newsNext(){
-    i++;
-    if(i == news.length) crRequest();
-    else fadeOut(entry, newsSet);
+    i = (i+1) % news.length;
+    fadeOut(entry, newsSet);
 }
 function newsSet(){ setEntry(); fadeIn(entry, newsWait); }
 
-// Init
 newsWait();

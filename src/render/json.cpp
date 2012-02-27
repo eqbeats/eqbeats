@@ -114,12 +114,3 @@ void Json::category(int cid){
       << "}";
     footer();
 }
-
-void Json::nowPlaying(const string &radio){
-    header();
-    string path = eqbeatsDir() + "/nowplaying/" + radio + ".json";
-    ifstream j(path.c_str());
-    o << j.rdbuf();
-    j.close();
-    footer();
-}

@@ -17,22 +17,15 @@ void ticker(){
     std::vector<News> news = News::recent(7);
     if(news.empty()) news = News::latest(1);
     o << "<div id=\"newsticker\"><img src=\"/static/newspaper.png\" alt=\"news\" /> <b>Latest news</b>: <a href=\"" + news[0].url() + "\">" + news[0].title() + "</a></div>";
-    o << "<script>var news = [";
-    for(std::vector<News>::iterator i = news.begin(); i != news.end(); i++){
-        if(i != news.begin()) o << ",";
-        o << "{id: " + number(i->id()) + ", title: " + Json::jstring(i->title()) + "}";
+    if(news.size() > 1){
+        o << "<script>var news = [";
+        for(std::vector<News>::iterator i = news.begin(); i != news.end(); i++){
+            if(i != news.begin()) o << ",";
+            o << "{id: " + number(i->id()) + ", title: " + Json::jstring(i->title()) + "}";
+        }
+        o << "];</script>"
+             "<script src=\"/static/ticker.js\"></script>";
     }
-    o << "];</script>";
-    // CR
-    o << "<script>function celestiaRadio(url){var win=window.open(url,\"celestiaRadio\",\"width=488,height=130,menubar=no,toolbar=no\"); win.focus();}</script>"
-         "<div id=\"nowplaying-widget\">"
-            "<a href=\"http://ponify.me/player.html\" target=\"_blank\" onClick=\"celestiaRadio(this.href);return false;\" title=\"Celestia Radio\"><img src=\"/static/cr.png\" alt=\"Celestia Radio\" /></a>"
-            "<div><b>Now playing:</b> "
-            "<span id=\"nowplaying-track\"></span> "
-            "<span class=\"by\">by <span id=\"nowplaying-artist\"></span></span></div>"
-         "</div>"
-    // Tick
-         "<script src=\"/static/ticker.js\"></script>";
 }
 
 void Html::home(){
@@ -64,6 +57,9 @@ void Html::home(){
     std::vector<Category> cs = Category::list();
     for(std::vector<Category>::const_iterator i=cs.begin(); i!=cs.end(); i++)
         o << "<li><a href=\"" << i->url() << "\">" << i->name() << "</a></li>";
-    o << "</ul></div><div style=\"clear:both;\"></div>";
+    o << "</ul>"
+         "<h3>Partners</h3>"
+         "<a href=\"http://ponify.me\" target=\"_blank\" class=\"partner\"><img src=\"/static/cr.png\" alt=\"Celestia Radio\" /></a>"
+         "</div><div style=\"clear:both;\"></div>";
     footer();
 }

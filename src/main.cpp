@@ -90,8 +90,6 @@ int main(int argc, char** argv){
             Json::users(User::search(cgi("q")));
         else if((id = route("cat", "json", path)))
             Json::category(id);
-        else if(path == "/nowplaying/cr")
-            Json::nowPlaying("cr");
         // Feeds
         else if((id = route("cat", "atom", path)))
             Feed::category(id);

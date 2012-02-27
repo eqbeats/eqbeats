@@ -4,8 +4,6 @@ cd /home/eqbeats/eqbeats
 make || return 1
 install -m775 eqbeats.fcgi failsafe /srv/eqbeats/
 
-install -m775 tools/nowplaying.{json,sh} /srv/eqbeats/tools
-
 cd static
 install -m664 *.js *.css *.txt *.swf *.png 502.html /srv/eqbeats/static
 

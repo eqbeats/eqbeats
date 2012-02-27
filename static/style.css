@@ -484,16 +484,6 @@ form.publish input:hover {
     margin: 1px 8px 0 0;
 }
 
-#nowplaying-widget { display: none; }
-#nowplaying-widget div { padding: 10px; }
-#nowplaying-widget .by { font-size: 0.8em; }
-
-#nowplaying-widget img {
-    margin: 4px 15px 0 0px;
-    float: left;
-    vertical-align: middle;
-}
-
 /** Search form (homepage) ****************************************************/
 
 .search {
@@ -509,6 +499,13 @@ form.publish input:hover {
 .search form {
     display: inline;
     margin: 0;
+}
+
+/** Parners (homepage) ********************************************************/
+
+.partner {
+    display: block;
+    margin: 20px;
 }
 
 /** File uploader *************************************************************/
