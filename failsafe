@@ -1,12 +1,20 @@
 #!/bin/bash
 
-SERVCOUNT=$(ls /proc | egrep -c "^($(cat ${EQBEATS_DIR}/pid | tr "\n" "|"))$")
+SERVCOUNT=$(ps -A | egrep -c "^($(cat ${EQBEATS_DIR}/pid | tr "\n" "|"))$")
 
 if [[ $SERVCOUNT == "" ]]; then #something went wrong with the pidfile
     SERVCOUNT=0
 fi
 
-if [[ $SERVCOUNT -lt 3 ]]; then
+REACHABLE=1
+curl --connect-timeout 3 -If eqbeats.org > /dev/null 2>&1 || {
+    REACHABLE=0
+    echo "$(date '+[%F %T %Z]') Unreachable, restarting..." >> ${EQBEATS_DIR}/eqbeats.log
+}
+
+
+if [[ $SERVCOUNT -lt 3 || $REACHABLE == 0 ]]; then
+    [[ $SERVCOUNT -lt 3 ]] && echo "$(date '+[%F %T %Z]') $SERVCOUNT servers left, restarting..." >> ${EQBEATS_DIR}/eqbeats.log
     pkill eqbeats.fcgi 2> /dev/null
     ${EQBEATS_DIR}/launch.sh restart > /dev/null
     exit $[3 - $SERVCOUNT]
