@@ -15,7 +15,8 @@ tmp/
 tracks/
 art/
 reports
-cr.json
+hits.dat
+hitsd.sock
 
 eqbeats.fcgi
 /tools/

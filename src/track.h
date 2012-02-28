@@ -37,7 +37,7 @@ class Track{
         void remove();
 
         int getHits() const;
-        void hit();
+        int hit();
 
         int favoritesCount() const;
 
@@ -49,7 +49,6 @@ class Track{
         // Track lists
         static std::vector<Track> latest(int n, int offset=0);
         static std::vector<Track> random(int n);
-        static std::vector<Track> popular(int n);
         static std::vector<Track> featured(int n);
         static std::vector<Track> favorites(int uid);
 

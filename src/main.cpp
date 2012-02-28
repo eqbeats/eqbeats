@@ -80,8 +80,6 @@ int main(int argc, char** argv){
             Json::tracks(Track::latest(50));
         else if(path == "/tracks/random/json")
             Json::tracks(Track::random(50));
-        else if(path == "/tracks/popular/json")
-            Json::tracks(Track::popular(50));
         else if(path == "/tracks/featured/json")
             Json::tracks(Track::featured(50));
         else if(path == "/artists/json")
@@ -154,8 +152,6 @@ int main(int argc, char** argv){
             Html::latestTracks(20);
         else if(path == "/tracks/random")
             Html::tracksPage("Random tracks", Track::random(50));
-        else if(path == "/tracks/popular")
-            Html::tracksPage("Popular tracks", Track::popular(50));
         else if(path == "/tracks/featured")
             Html::tracksPage("Featured tracks", Track::featured(50));
         // Categories

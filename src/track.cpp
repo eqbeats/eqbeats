@@ -5,6 +5,10 @@
 #include "number.h"
 #include "db.h"
 #include "art.h"
+#include "repl.h"
+#include "path.h"
+
+Repl hitsd;
 
 using namespace std;
 
@@ -89,12 +93,20 @@ void Track::remove(){
     _id = 0;
 }
 
-int Track::getHits() const{
-    DB::Result r = DB::query("SELECT hits FROM tracks WHERE id = " + number(_id));
-    return number(r[0][0]);
+void initHitsd(){
+    if(!hitsd){
+        string path = eqbeatsDir() + "/hitsd.sock";
+        hitsd = Repl(path.c_str());
+    }
 }
-void Track::hit(){
-    DB::query("UPDATE tracks SET hits = hits+1 WHERE id = " + number(_id));
+
+int Track::getHits() const{
+    initHitsd();
+    return number(hitsd.exec("get " + number(_id)));
+}
+int Track::hit(){
+    initHitsd();
+    return number(hitsd.exec("increment " + number(_id)));
 }
 
 std::vector<Track> Track::resultToVector(const DB::Result &r){
@@ -122,7 +134,6 @@ std::vector<Track> listTracks(const char *order, int limit, int offset=0){
 
 std::vector<Track> Track::latest(int n, int offset){ return listTracks("date DESC", n, offset); }
 std::vector<Track> Track::random(int n){ return listTracks("random()", n); }
-std::vector<Track> Track::popular(int n){ return listTracks("hits DESC", n); }
 
 std::vector<Track> Track::featured(int n){
     return Track::select("featured_tracks", "featured_tracks.track_id = tracks.id", "featured_tracks.date DESC", false, n);

@@ -57,8 +57,7 @@ void Html::trackPage(int tid){
     if(!t) return notFound("Track");
     bool edition = Session::user().id() == t.artist().id();
     Art art(tid);
-    if(!edition)
-        t.hit();
+    unsigned hits = edition ? t.getHits() : t.hit();
     string path = getPath();
     bool dw = t.getDownloadable();
 
@@ -93,9 +92,11 @@ void Html::trackPage(int tid){
         o << "</span> ";
     }
     o << "<span><img src=\"/static/balloon-white-left.png\" alt=\"\" /> Share : <a href=\"#embedcode\" onclick=\"document.getElementById('embedcode').style.display='block';return false;\">Embed</a></span>";
-    if(edition)
-        o << " <span><img src=\"/static/edit-number.png\" alt=\"\" /> Hits : " << t.getHits()
-          << "</span> <span><img src=\"/static/star.png\" alt=\"\" /> Favourites : " << t.favoritesCount() << "</span>";
+    if(edition){
+        if(hits)
+            o << " <span><img src=\"/static/edit-number.png\" alt=\"\" /> Hits : " << hits << "</span>";
+        o << " <span><img src=\"/static/star.png\" alt=\"\" /> Favourites : " << t.favoritesCount() << "</span>";
+    }
     else
         o << " <form action=\"" << t.url() << "/report\" method=\"post\">"
                 "<button type=\"submit\" class=\"report\"><img src=\"/static/flag.png\" alt=\"\" /><span>Report</span></button>"

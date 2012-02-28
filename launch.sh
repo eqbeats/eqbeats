@@ -12,7 +12,6 @@ case "$1" in
     if [[ $SERVRUNNING -ge $SERVCOUNT ]]; then
       echo "$PROGNAME : Already running"
     else
-      $0 stop > /dev/null
       spawn-fcgi -F $SERVCOUNT -P pid -f ./$BINARY -a 127.0.0.1 -p $PORT > /dev/null
       echo "$PROGNAME : Started."
     fi
