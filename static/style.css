@@ -233,11 +233,6 @@ a.danger {
     display: inline;
     margin: 0;
 }
-.cats input {
-    margin: 0 5px;
-    padding: 0;
-    width: auto;
-}
 
 .track h4 {
     margin: 10px;
@@ -354,6 +349,11 @@ form input, textarea, select, .qq-upload-button {
 form input, select {
     vertical-align: middle;
     width: 250px;
+}
+input[type="checkbox"] {
+    margin: 0 5px;
+    padding: 0;
+    width: auto;
 }
 form input[type="file"] {
     border: none;

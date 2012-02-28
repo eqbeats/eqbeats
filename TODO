@@ -19,7 +19,9 @@ update favicon/title when playing
 Player: bouncy title
 
 - Tech
-Smart caching system (nowplaying)
+hits: intd
+feed: fix n+1
+upload -> process -> redirect
 normalize volume
 transcoding daemon
 Json (session, favorites)

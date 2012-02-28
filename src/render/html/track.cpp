@@ -27,7 +27,7 @@ void cats(const Track &t, bool edition){
         o << "<form action=\"" << t.url() << "/cat\" method=\"post\">";
     for(vector<Category>::const_iterator i=cs.begin(); i!=cs.end(); i++){
         if(edition)
-            o << " <input type=\"checkbox\" name=\"" << i->id() << "\" />";
+            o << " <input type=\"checkbox\" name=\"cats\" value=\"" << i->id() << "\" />";
         o << " <a href=\"" << i->url() << "\">" << i->name() << "</a>";
     }
     if(edition){
@@ -60,6 +60,7 @@ void Html::trackPage(int tid){
     if(!edition)
         t.hit();
     string path = getPath();
+    bool dw = t.getDownloadable();
 
     // Header
     header(t.title(),
@@ -82,12 +83,16 @@ void Html::trackPage(int tid){
     player(t);
 
     // Toolbar
-    o << "<div class=\"toolbar\">"
-         "<span><img src=\"/static/drive-download.png\" alt=\"\" /> Download : "
-         " <a href=\"" << t.url(Track::Vorbis) << "\">OGG Vorbis</a>"
-         " <a href=\"" << t.url(Track::MP3) << "\">MP3</a>"
-      << (art?" <a href=\"" + art.url() + "\" target=\"_blank\">Art</a>":"")
-      << "</span> <span><img src=\"/static/balloon-white-left.png\" alt=\"\" /> Share : <a href=\"#embedcode\" onclick=\"document.getElementById('embedcode').style.display='block';return false;\">Embed</a></span>";
+    o << "<div class=\"toolbar\">";
+    if(dw||art){
+        o << "<span><img src=\"/static/drive-download.png\" alt=\"\" /> Download : ";
+        if(dw)
+            o << "<a href=\"" << t.url(Track::Vorbis) << "\">OGG Vorbis</a> "
+                 "<a href=\"" << t.url(Track::MP3) << "\">MP3</a> ";
+        if (art) o << "<a href=\"" + art.url() + "\" target=\"_blank\">Art</a>";
+        o << "</span> ";
+    }
+    o << "<span><img src=\"/static/balloon-white-left.png\" alt=\"\" /> Share : <a href=\"#embedcode\" onclick=\"document.getElementById('embedcode').style.display='block';return false;\">Embed</a></span>";
     if(edition)
         o << " <span><img src=\"/static/edit-number.png\" alt=\"\" /> Hits : " << t.getHits()
           << "</span> <span><img src=\"/static/star.png\" alt=\"\" /> Favourites : " << t.favoritesCount() << "</span>";
@@ -131,8 +136,16 @@ void Html::trackPage(int tid){
         // Art
         o << "<h4>Art</h4>"
              "<form action=\"" << t.url() << "/art/upload\" method=\"post\" enctype=\"multipart/form-data\">"
-                 "<input type=\"file\" name=\"file\" /><br />"
+                 "<input type=\"file\" name=\"file\" />"
                  "<input type=\"submit\" value=\"Upload a picture\" />"
+             "</form>"
+        // Flags
+             "<h4>Flags</h4>"
+             "<form action=\"" << t.url() << "/flags\" method=\"post\">"
+                 "<input type=\"checkbox\" name=\"downloadable\" "
+                   << (dw ? "checked=\"checked\" " : "") << " /> "
+                 "Downloadable"
+                 " <input type=\"submit\" value=\"Update\" />"
              "</form>"
              "</div>"
              "<div class=\"column\">"

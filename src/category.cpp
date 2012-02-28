@@ -40,7 +40,17 @@ void Category::removeTrack(int tid){
 
 std::vector<Category> Category::forTrack(int tid){
     return getCats("SELECT categories.id, categories.name FROM categories, track_categories "
-        "WHERE track_categories.track_id="+number(tid)+" AND categories.id=track_categories.cat_id");
+        "WHERE track_categories.track_id="+number(tid)+" AND categories.id=track_categories.cat_id "
+        "ORDER BY name ASC");
+}
+
+std::vector<int> Category::idForTrack(int tid){
+    DB::Result r = DB::query("SELECT cat_id FROM track_categories "
+        "WHERE track_categories.track_id="+number(tid));
+    std::vector<int> cats(r.size());
+    for(unsigned i=0; i<r.size(); i++)
+        cats[i] = number(r[i][0]);
+    return cats;
 }
 
 std::vector<Track> Category::tracks(){

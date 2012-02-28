@@ -16,11 +16,13 @@ class Track{
         std::string title() const{ return _title; }
         User artist() const;
         bool visible() const{ return _visible; }
-        std::string getNotes() const;
         std::string date() const { return _date; }
+        std::string getNotes() const;
+        bool getDownloadable() const;
 
         void setTitle(const std::string &nTitle);
         void setVisible(bool);
+        void setDownloadable(bool);
         void setNotes(const std::string &nNotes);
         void bump();
 

@@ -47,6 +47,14 @@ void Track::setVisible(bool v){
     _visible = v;
 }
 
+bool Track::getDownloadable() const{
+    DB::Result r = DB::query("SELECT downloadable FROM tracks WHERE id = " + number(_id));
+    return r.empty() ? true : r[0][0][0] == 't';
+}
+void Track::setDownloadable(bool d){
+    DB::query("UPDATE tracks SET downloadable = '" + (std::string)(d?"t":"f") + "' WHERE id = " + number(_id));
+}
+
 std::string Track::getNotes() const{
     DB::Result r = DB::query("SELECT notes FROM tracks WHERE id = " + number(_id));
     return r.empty() ? std::string() : r[0][0];

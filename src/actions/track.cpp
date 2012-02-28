@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <algorithm>
 #include "actions.h"
 #include "../render/render.h"
 #include "../render/html/page.h"
@@ -101,17 +102,29 @@ void Action::deleteTrack(int tid){
     }
 }
 
+void Action::setFlags(int tid){
+    User u = Session::user();
+    Track t(tid);
+    if(u==t.artist() && t && cgi.getEnvironment().getRequestMethod()=="POST")
+        t.setDownloadable(cgi.queryCheckbox("downloadable"));
+    Http::redirect(t.url());
+}
+
 void Action::updateCategories(int tid){
     User u = Session::user();
     Track t(tid);
     if(u!=t.artist() || !u || cgi.getEnvironment().getRequestMethod()!="POST")
         return Http::redirect(t.url());
     
-    if(!cgi("rmcats").empty()){
-        vector<Category> cats = Category::forTrack(tid);
-        for(vector<Category>::iterator i = cats.begin(); i != cats.end(); i++){
-            if(!cgi(number(i->id())).empty())
-                i->removeTrack(tid);
+    vector<cgicc::FormEntry> rmcats;
+    cgi.getElement("cats", rmcats);
+    if(!rmcats.empty()){
+        vector<int> cats = Category::idForTrack(tid);
+        for(unsigned i=0; i<rmcats.size(); i++){
+            int cid = number(rmcats[i].getValue());
+            if(!cid) continue;
+            if(std::find(cats.begin(), cats.end(), cid) != cats.end())
+                Category(cid, "").removeTrack(tid);
         }
     }
     else if(!cgi("cat").empty()){
