@@ -1,6 +1,6 @@
 #!/bin/bash
 
-SERVCOUNT=$(ps -A | egrep -c "^($(cat ${EQBEATS_DIR}/pid | tr "\n" "|"))$")
+SERVCOUNT=$(ps -A | egrep -c "$(cat ${EQBEATS_DIR}/pid | tr "\n" "|")")
 
 if [[ $SERVCOUNT == "" ]]; then #something went wrong with the pidfile
     SERVCOUNT=0
