@@ -42,7 +42,7 @@ void Render::Html::contest(int cid, const std::string &host){
                  "by <a href=\"" << i->artist().url() << "\">"
               << escape(i->artist().name()) << "</a>";
             int vcount = votes[i->id()];
-            if(vcount>0)
+            if(vcount>0 && voting)
                 o << " (" + number(vcount) + " vote" + (vcount>1?"s":"") + ")";
             o << "</span></li>";
         }
