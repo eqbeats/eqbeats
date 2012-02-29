@@ -17,7 +17,6 @@ void sendMail(const char *to, const char *data){
         freopen(logfile.c_str(),"a",stdout);
         freopen(logfile.c_str(),"a",stderr);
         execlp("sendmail", "sendmail", to, NULL);
-        //execlp("cat","cat",NULL);
     }
     close(fd[0]);
     time_t now = time(NULL);

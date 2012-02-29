@@ -7,42 +7,22 @@ class User;
 
 namespace Session{
 
-//! \name Session management
-//@{
-
-/*! \brief Initialize the session.
- *
- * Reads the \c sid cookie and checks the \c sessions table.
- */
+// Reads the sid cookie.
 void start();
 
-//! Reset the cached user.
+// Resets the cached user.
 void destroy();
 
-//! Logged user.
+// Logged user.
 User user();
 
-//@}
-
-//! \name Logging in/out
-//@{
-
-/*!
- * Creates a session in the \c sessions table.
- * \return The created session's id or an empty string.
- * \note The \c sid cookie must be sent to the client.
- */
+// Returns the sid. Doesn't set the cookie.
 std::string login(const std::string &email, const std::string &pw, const std::string &host);
 
-//! \brief Trusted login.
+// Trusted login.
 std::string login(int id, const std::string &host);
 
-/*!
- * Deletes the session from the database and unsets the \c sid cookie.
- */
 void logout();
-
-//@}
 
 }
 
