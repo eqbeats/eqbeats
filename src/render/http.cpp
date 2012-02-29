@@ -32,8 +32,8 @@ void Http::redirect(const std::string &location){
 std::string httpFilename(const std::string &str){
     std::string buf;
     for(std::string::const_iterator i=str.begin(); i!=str.end(); i++){
-        if     (*i == '"') buf += "\\\"";
-        else if(*i >= ' ') buf += *i;
+        if   (*i == '"') buf += "\\\"";
+        else buf += *i;
     }
     return buf;
 }

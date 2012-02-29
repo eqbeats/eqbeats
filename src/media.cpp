@@ -30,15 +30,15 @@ void Media::updateTags(Format format){
         TagLib::MPEG::File mp3(filePath(MP3).c_str());
         TagLib::Tag *t = mp3.tag();
         if(!t) return;
-        t->setTitle(title());
-        t->setArtist(artist().name());
+        t->setTitle(TagLib::String(title(), TagLib::String::UTF8));
+        t->setArtist(TagLib::String(artist().name(), TagLib::String::UTF8));
         mp3.save(TagLib::MPEG::File::ID3v1 | TagLib::MPEG::File::ID3v2);
     } else if(format == Vorbis) {
         TagLib::Ogg::Vorbis::File vorbis(filePath(Vorbis).c_str());
         TagLib::Tag *t = vorbis.tag();
         if(!t) return;
-        t->setTitle(title());
-        t->setArtist(artist().name());
+        t->setTitle(TagLib::String(title(), TagLib::String::UTF8));
+        t->setArtist(TagLib::String(artist().name(), TagLib::String::UTF8));
         vorbis.save();
     }
 }
