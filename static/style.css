@@ -122,13 +122,9 @@ p {
     white-space: nowrap;
 }
 
-.cats a, .toolbar a, .report {
+.tags a, .toolbar a, .report {
     padding: 2px 0;
     margin: 0 5px;
-}
-
-.cats img {
-    vertical-align: middle;
 }
 
 .toolbar form {
@@ -229,7 +225,7 @@ a.danger {
     border: 1px solid #ddd;
 }
 
-.cats form {
+.tags form {
     display: inline;
     margin: 0;
 }

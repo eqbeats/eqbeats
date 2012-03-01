@@ -17,13 +17,9 @@ class Track{
         User artist() const;
         bool visible() const{ return _visible; }
         std::string date() const { return _date; }
-        std::string getNotes() const;
-        bool getDownloadable() const;
 
         void setTitle(const std::string &nTitle);
         void setVisible(bool);
-        void setDownloadable(bool);
-        void setNotes(const std::string &nNotes);
         void bump();
 
         std::string url() const { return Track::url(_id); }
@@ -43,6 +39,7 @@ class Track{
 
         static std::vector<Track> search(const std::string &q);
         static std::vector<Track> exactSearch(const std::string &qartist, const std::string &qtitle);
+        static std::vector<Track> byTag(const std::string &tag);
 
         static std::vector<Track> select(const char *tables, const std::string cond, const char *order="tracks.date DESC", bool all=false, int limit=0, int offset=0);
 
@@ -55,17 +52,39 @@ class Track{
         operator bool() const { return _id > 0; }
         bool operator==(const Track &c) { return c._id == _id; }
 
-    private:
+    protected:
         int _id;
         std::string _title;
         int _artistId;
         std::string _artist;
         std::string _date;
         bool _visible;
+
+    private:
         Track(int nId, const std::string &nTitle, int nArtistId, const std::string &nArtist, bool nVisible, const std::string &nDate)
             { _id = nId; _title = nTitle; _visible = nVisible;
               _artistId = nArtistId; _artist = nArtist; _date = nDate; }
         static std::vector<Track> resultToVector(const std::vector<std::vector<std::string> > &r);
+
+};
+
+class ExtendedTrack: public Track {
+
+    public:
+        ExtendedTrack(int tid);
+
+        std::string notes() const { return _notes; }
+        bool downloadable() const { return _downloadable; }
+        std::vector<std::string> tags() const { return _tags; }
+
+        void setDownloadable(bool);
+        void setNotes(const std::string &nNotes);
+        void setTags(const std::string &nTags);
+
+    private:
+        std::string _notes;
+        bool _downloadable;
+        std::vector<std::string> _tags;
 
 };
 

@@ -18,7 +18,7 @@ Track::Track(int id){
     if(id<=0) return;
 
     DB::Result r = DB::query(
-        "SELECT tracks.title, tracks.user_id, users.name, tracks.visible, tracks.date FROM tracks CROSS JOIN users "
+        "SELECT tracks.title, tracks.user_id, users.name, tracks.visible, tracks.date FROM tracks, users "
         "WHERE tracks.id = " + number(id) + " AND tracks.user_id = users.id");
     if(!r.empty()){
         _id = id;
@@ -34,45 +34,29 @@ User Track::artist() const{
     return User(_artistId, _artist);
 }
 
-void Track::setTitle(const std::string &nTitle){
+void Track::setTitle(const string &nTitle){
     if(_title == nTitle) return;
     DB::query("UPDATE tracks SET title = $1 WHERE id = " + number(_id), nTitle);
     _title = nTitle;
 }
 
-std::string Track::url(int id){
-    std::stringstream s;
+string Track::url(int id){
+    stringstream s;
     s << "/track/" << id;
     return s.str();
 }
 
 void Track::setVisible(bool v){
-    DB::query("UPDATE tracks SET visible = '" + (std::string)(v?"t":"f") + "' WHERE id = " + number(_id));
+    DB::query("UPDATE tracks SET visible = '" + (string)(v?"t":"f") + "' WHERE id = " + number(_id));
     _visible = v;
 }
 
-bool Track::getDownloadable() const{
-    DB::Result r = DB::query("SELECT downloadable FROM tracks WHERE id = " + number(_id));
-    return r.empty() ? true : r[0][0][0] == 't';
-}
-void Track::setDownloadable(bool d){
-    DB::query("UPDATE tracks SET downloadable = '" + (std::string)(d?"t":"f") + "' WHERE id = " + number(_id));
-}
-
-std::string Track::getNotes() const{
-    DB::Result r = DB::query("SELECT notes FROM tracks WHERE id = " + number(_id));
-    return r.empty() ? std::string() : r[0][0];
-}
-void Track::setNotes(const std::string &nNotes){
-    DB::query("UPDATE tracks SET notes = $1 WHERE id = " + number(_id), nNotes);
-}
-
-std::string Track::url(Format f) const{
+string Track::url(Format f) const{
     string format = f==Vorbis? "vorbis" : "mp3";
-    return (std::string) "/track/" + number(_id) + "/" + format;
+    return (string) "/track/" + number(_id) + "/" + format;
 }
 
-Track Track::create(int nArtistId, const std::string &nTitle){
+Track Track::create(int nArtistId, const string &nTitle){
     Track t;
     DB::Result r = DB::query(
         "INSERT INTO tracks (user_id, title, date) VALUES "
@@ -109,37 +93,37 @@ int Track::hit(){
     return number(hitsd.exec("increment " + number(_id)));
 }
 
-std::vector<Track> Track::resultToVector(const DB::Result &r){
-    std::vector<Track> tracks(r.size());
+vector<Track> Track::resultToVector(const DB::Result &r){
+    vector<Track> tracks(r.size());
     for(unsigned i=0; i<r.size(); i++)
         tracks[i] = Track(number(r[i][0]), r[i][1], number(r[i][2]), r[i][3], r[i][4]=="t", r[i][5]);
     return tracks;
 }
 
-std::vector<Track> Track::select(const char *tables, const std::string cond, const char *order, bool all, int limit, int offset){
-    std::string q = "SELECT tracks.id, tracks.title, tracks.user_id, users.name, tracks.visible, tracks.date FROM tracks, users";
-    if(tables) q += (std::string) "," + tables;
+vector<Track> Track::select(const char *tables, const string cond, const char *order, bool all, int limit, int offset){
+    string q = "SELECT tracks.id, tracks.title, tracks.user_id, users.name, tracks.visible, tracks.date FROM tracks, users";
+    if(tables) q += (string) "," + tables;
     q += " WHERE tracks.user_id = users.id";
     if(!all) q += " AND tracks.visible='t'";
     if(!cond.empty()) q += " AND " + cond;
-    q += (std::string) " ORDER BY " + order;
+    q += (string) " ORDER BY " + order;
     if(limit) q += " LIMIT " + number(limit);
     if(offset) q += " OFFSET " + number(offset);
     return resultToVector(DB::query(q));
 }
 
-std::vector<Track> listTracks(const char *order, int limit, int offset=0){
+vector<Track> listTracks(const char *order, int limit, int offset=0){
     return Track::select(0, "", order, false, limit, offset);
 }
 
-std::vector<Track> Track::latest(int n, int offset){ return listTracks("date DESC", n, offset); }
-std::vector<Track> Track::random(int n){ return listTracks("random()", n); }
+vector<Track> Track::latest(int n, int offset){ return listTracks("date DESC", n, offset); }
+vector<Track> Track::random(int n){ return listTracks("random()", n); }
 
-std::vector<Track> Track::featured(int n){
+vector<Track> Track::featured(int n){
     return Track::select("featured_tracks", "featured_tracks.track_id = tracks.id", "featured_tracks.date DESC", false, n);
 }
 
-std::vector<Track> Track::favorites(int uid){
+vector<Track> Track::favorites(int uid){
     return select("favorites", 
         "favorites.type = 'track'"
         " AND favorites.ref = tracks.id "
@@ -147,15 +131,15 @@ std::vector<Track> Track::favorites(int uid){
         "users.name ASC");
 }
 
-#define SEL (std::string) ("SELECT tracks.id, tracks.title, tracks.user_id, users.name, tracks.visible, tracks.date " \
+#define SEL (string) ("SELECT tracks.id, tracks.title, tracks.user_id, users.name, tracks.visible, tracks.date " \
                             "FROM tracks, users WHERE tracks.user_id = users.id AND tracks.visible = 't' ")
 
-std::vector<Track> Track::search(const std::string &q){
-    if(q.empty()) return std::vector<Track>();
-    std::vector<std::string> p;
-    std::istringstream in(q);
-    std::string buf;
-    std::string sql;
+vector<Track> Track::search(const string &q){
+    if(q.empty()) return vector<Track>();
+    vector<string> p;
+    istringstream in(q);
+    string buf;
+    string sql;
     while(in){
         in >> buf;
         p.push_back("%"+buf+"%");
@@ -164,9 +148,13 @@ std::vector<Track> Track::search(const std::string &q){
     return resultToVector(DB::query(SEL + sql, p));
 }
 
-std::vector<Track> Track::exactSearch(const std::string &qartist, const std::string &qtitle){
-    if(qtitle.empty()||qartist.empty()) return std::vector<Track>();
+vector<Track> Track::exactSearch(const string &qartist, const string &qtitle){
+    if(qtitle.empty()||qartist.empty()) return vector<Track>();
     return resultToVector(DB::query(SEL + "AND users.name = $1 AND tracks.title = $2", qartist, qtitle));
+}
+
+vector<Track> Track::byTag(const std::string &tag){
+    return resultToVector(DB::query(SEL + "AND $1 = ANY(tracks.tags) ORDER BY tracks.date DESC", tag));
 }
 
 int Track::favoritesCount() const{
@@ -178,4 +166,54 @@ int Track::favoritesCount() const{
 void Track::bump(){
     if(_id<=0) return;
     DB::query("UPDATE tracks SET date = 'now' WHERE id = " + number(_id));
+}
+
+ExtendedTrack::ExtendedTrack(int id){
+    _id = 0;
+    _artistId = 0;
+    if(id<=0) return;
+
+    DB::Result r = DB::query(
+        "SELECT tracks.title, tracks.user_id, users.name, tracks.visible, tracks.date,"
+        " tracks.notes, tracks.downloadable, array_to_string(tracks.tags, ',') FROM tracks, users "
+        "WHERE tracks.id = " + number(id) + " AND tracks.user_id = users.id");
+    if(!r.empty()){
+        _id = id;
+        _title = r[0][0];
+        _artistId = number(r[0][1]);
+        _artist = r[0][2];
+        _visible = r[0][3] == "t";
+        _date = r[0][4];
+        // Ext
+        _notes = r[0][5];
+        _downloadable = r[0][6][0] == 't';
+        // Tags
+        string tstr = r[0][7];
+        string buf;
+        for(string::const_iterator i=tstr.begin(); i!=tstr.end(); i++){
+            if(*i == ','){
+                if(!buf.empty()){
+                    _tags.push_back(buf);
+                    buf.clear();
+                }
+            }
+            else buf += *i;
+        }
+        if(!buf.empty()) _tags.push_back(buf); // last tag
+    }
+}
+
+void ExtendedTrack::setDownloadable(bool d){
+    DB::query("UPDATE tracks SET downloadable = '" + (string)(d?"t":"f") + "' WHERE id = " + number(_id));
+    _downloadable = d;
+}
+
+void ExtendedTrack::setNotes(const string &nNotes){
+    DB::query("UPDATE tracks SET notes = $1 WHERE id = " + number(_id), nNotes);
+    _notes = nNotes;
+}
+
+void ExtendedTrack::setTags(const string &nTags){
+    DB::query("UPDATE tracks SET tags = regexp_split_to_array($1, E' *, *') WHERE id = " + number(_id), nTags);
+    // Doesn't update _tags!
 }

@@ -19,13 +19,12 @@ using namespace std;
 using namespace Render;
 
 void Html::trackPage(int tid){
-    Track t(tid);
+    ExtendedTrack t(tid);
     if(!t) return notFound("Track");
     bool edition = Session::user().id() == t.artist().id();
     Art art(tid);
     unsigned hits = edition ? t.getHits() : t.hit();
     string path = getPath();
-    bool dw = t.getDownloadable();
 
     // Header
     header(t.title(),
@@ -49,9 +48,9 @@ void Html::trackPage(int tid){
 
     // Toolbar
     o << "<div class=\"toolbar\">";
-    if(dw||art){
+    if(t.downloadable()||art){
         o << "<span><img src=\"/static/drive-download.png\" alt=\"\" /> Download : ";
-        if(dw)
+        if(t.downloadable())
             o << "<a href=\"" << t.url(Track::Vorbis) << "\">OGG Vorbis</a> "
                  "<a href=\"" << t.url(Track::MP3) << "\">MP3</a> ";
         if (art) o << "<a href=\"" + art.url() + "\" target=\"_blank\">Art</a>";
@@ -68,14 +67,32 @@ void Html::trackPage(int tid){
                 "<button type=\"submit\" class=\"report\"><img src=\"/static/flag.png\" alt=\"\" /><span>Report</span></button>"
              "</form>";
     o << "</div>"
-
     // Embed
-      << "<textarea id=\"embedcode\" style=\"display:none;\">" << Html::embedTrackCode(t) << "</textarea>";
+         "<textarea id=\"embedcode\" style=\"display:none;\">" << Html::embedTrackCode(t) << "</textarea>";
+
+    // Tags
+    if(!t.tags().empty() || edition){
+        o << "<div class=\"toolbar tags\"><img src=\"/static/tag.png\" alt=\"\" /> Tags:";
+        vector<string> ts = t.tags();
+        if(edition){
+            o << " <form action=\"" << t.url() << "/tags\" method=\"post\">"
+                    "<input name=\"tags\" value=\"";
+            for(vector<string>::const_iterator i=ts.begin(); i!=ts.end(); i++){
+                if(i != ts.begin()) o << ", ";
+                o << escape(*i);
+            }
+            o <<    "\" /> <input type=\"submit\" value=\"Update\" /></form>";
+        }
+        else{
+            for(vector<string>::const_iterator i=ts.begin(); i!=ts.end(); i++)
+                o << " <a href=\"/tracks/tag/" << escape(*i) << "\">" << escape(*i) << "</a>";
+        }
+        o << "</div>";
+    }
 
     // Notes
-    string notes = t.getNotes();
-    if(!notes.empty())
-        o << "<div class=\"notes\">" << format(notes) << "</div>";
+    if(!t.notes().empty())
+        o << "<div class=\"notes\">" << format(t.notes()) << "</div>";
 
     if(edition){
         o << "<h3><img src=\"/static/pencil.png\" /> Edit</h3>"
@@ -107,7 +124,7 @@ void Html::trackPage(int tid){
              "<h4>Flags</h4>"
              "<form action=\"" << t.url() << "/flags\" method=\"post\">"
                  "<input type=\"checkbox\" name=\"downloadable\" "
-                   << (dw ? "checked=\"checked\" " : "") << " /> "
+                   << (t.downloadable() ? "checked=\"checked\" " : "") << " /> "
                  "Downloadable"
                  " <input type=\"submit\" value=\"Update\" />"
              "</form>"
@@ -116,7 +133,7 @@ void Html::trackPage(int tid){
         // Notes
              "<h4>Notes</h4>"
              "<form action=\"" << t.url() << "/notes\" method=\"post\">"
-                 "<textarea name=\"notes\">" << escape(notes) << "</textarea><br />"
+                 "<textarea name=\"notes\">" << escape(t.notes()) << "</textarea><br />"
                  "<input type=\"submit\" value=\"Update description\" />"
              "</form>"
         // End

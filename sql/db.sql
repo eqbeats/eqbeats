@@ -17,7 +17,8 @@ CREATE TABLE tracks (
     hits integer not null default 0,
     visible boolean not null default 'f',
     notes text not null default '',
-    downloadable boolean not null default 't'
+    downloadable boolean not null default 't',
+    tags text[] not null default ARRAY[]::text[]
 );
 
 CREATE TABLE sessions (

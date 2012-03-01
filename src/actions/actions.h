@@ -21,6 +21,7 @@ void updateNotes(int tid);
 void publishTrack(int tid);
 void setFlags(int tid);
 void reportTrack(int tid);
+void setTags(int tid);
 
 // upload.cpp
 void uploadTrack(int tid);

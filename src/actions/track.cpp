@@ -55,7 +55,7 @@ void Action::publishTrack(int tid){
 
 void Action::updateNotes(int tid){
     User u = Session::user();
-    Track t(tid);
+    ExtendedTrack t(tid);
     if(u==t.artist() && u &&
        cgi.getEnvironment().getRequestMethod() == "POST" )
         t.setNotes(cgi("notes"));
@@ -103,7 +103,7 @@ void Action::deleteTrack(int tid){
 
 void Action::setFlags(int tid){
     User u = Session::user();
-    Track t(tid);
+    ExtendedTrack t(tid);
     if(u==t.artist() && t && cgi.getEnvironment().getRequestMethod()=="POST")
         t.setDownloadable(cgi.queryCheckbox("downloadable"));
     Http::redirect(t.url());
@@ -117,5 +117,12 @@ void Action::reportTrack(int tid){
     std::ofstream f(path.c_str(), std::ios_base::app);
     f << t.artist().id() << " " << t.artist().name() << " - " << t.id() << " " << t.title() << std::endl;
     f.close();
+    Http::redirect(t.url());
+}
+
+void Action::setTags(int tid){
+    ExtendedTrack t(tid);
+    if(Session::user()=t.artist() && t && cgi.getEnvironment().getRequestMethod() == "POST")
+        t.setTags(cgi("tags"));
     Http::redirect(t.url());
 }

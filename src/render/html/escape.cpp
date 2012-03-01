@@ -11,7 +11,7 @@ string Html::escape(const string &str){
         if(*i == '<') buf += "&lt;";
         else if(*i == '>') buf += "&gt;";
         else if(*i == '&') buf += "&amp;";
-        //else if(*i == '"') buf += "&quot;";
+        else if(*i == '"') buf += "&quot;";
         else buf += *i;
     }
     return buf;

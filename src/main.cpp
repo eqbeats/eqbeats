@@ -133,6 +133,8 @@ int main(int argc, char** argv){
             Action::reportTrack(id);
         else if((id = route("track", "flags", path)))
             Action::setFlags(id);
+        else if((id = route("track", "tags", path)))
+            Action::setTags(id);
         else if((id = route("track",path)))
             Html::trackPage(id);
         else if(path == "/track/new")
@@ -148,6 +150,10 @@ int main(int argc, char** argv){
             Html::tracksPage("Random tracks", Track::random(50));
         else if(path == "/tracks/featured")
             Html::tracksPage("Featured tracks", Track::featured(50));
+        else if(path.substr(0,12) == "/tracks/tag/"){
+            std::string tag = path.substr(12);
+            Html::tracksPage(tag, Track::byTag(tag));
+        }
         // News
         else if((id = route("news", path)))
             Html::newsPage(id);

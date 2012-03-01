@@ -29,7 +29,7 @@ void Html::trackList(const vector<Track> &tracks, Html::TrackList l){
 
 void Html::tracksPage(const string &title, const vector<Track> &tracks){
     header(title);
-    o << "<h2>" << title << "</h2>";
+    o << "<h2>" << escape(title) << "</h2>";
     trackList(tracks);
     footer();
 }
