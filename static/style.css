@@ -105,6 +105,11 @@ p {
     margin-right: 7px;
 }
 
+.legend {
+    color: #444;
+    font-size: 0.8em;
+}
+
 /** Track page ****************************************************************/
 
 .toolbar {
@@ -125,11 +130,6 @@ p {
 .tags a, .toolbar a, .report {
     padding: 2px 0;
     margin: 0 5px;
-}
-
-.tags form span {
-    color: #444;
-    font-size: 0.8em;
 }
 
 .toolbar form {

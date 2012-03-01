@@ -174,7 +174,7 @@ ExtendedTrack::ExtendedTrack(int id){
 
     DB::Result r = DB::query(
         "SELECT tracks.title, tracks.user_id, users.name, tracks.visible, tracks.date,"
-        " tracks.notes, tracks.downloadable, array_to_string(tracks.tags, ',') FROM tracks, users "
+        " tracks.notes, tracks.downloadable, tracks.airable, array_to_string(tracks.tags, ',') FROM tracks, users "
         "WHERE tracks.id = " + number(id) + " AND tracks.user_id = users.id");
     if(!r.empty()){
         _id = id;
@@ -186,8 +186,9 @@ ExtendedTrack::ExtendedTrack(int id){
         // Ext
         _notes = r[0][5];
         _downloadable = r[0][6][0] == 't';
+        _airable = r[0][7][0] == 't';
         // Tags
-        string tstr = r[0][7];
+        string tstr = r[0][8];
         string buf;
         for(string::const_iterator i=tstr.begin(); i!=tstr.end(); i++){
             if(*i == ','){
@@ -202,12 +203,16 @@ ExtendedTrack::ExtendedTrack(int id){
     }
 }
 
-void ExtendedTrack::setDownloadable(bool d){
-    DB::query("UPDATE tracks SET downloadable = '" + (string)(d?"t":"f") + "' WHERE id = " + number(_id));
-    _downloadable = d;
+void ExtendedTrack::setFlags(bool dw, bool air){
+    if(dw == _downloadable && air == _airable) return;
+    DB::query("UPDATE tracks SET downloadable = '" + (string)(dw?"t":"f") + "', "
+                                "airable = '" + (string)(air?"t":"f") + "' WHERE id = " + number(_id));
+    _downloadable = dw;
+    _airable = air;
 }
 
 void ExtendedTrack::setNotes(const string &nNotes){
+    if(_notes == nNotes) return;
     DB::query("UPDATE tracks SET notes = $1 WHERE id = " + number(_id), nNotes);
     _notes = nNotes;
 }

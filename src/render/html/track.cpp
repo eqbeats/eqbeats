@@ -81,7 +81,7 @@ void Html::trackPage(int tid){
                 if(i != ts.begin()) o << ", ";
                 o << escape(*i);
             }
-            o <<    "\" /> <input type=\"submit\" value=\"Update\" /> <span>(e.g. instrumental, electronic)</span></form>";
+            o <<    "\" /> <input type=\"submit\" value=\"Update\" /> <span class=\"legend\">(e.g. instrumental, electronic)</span></form>";
         }
         else{
             for(vector<string>::const_iterator i=ts.begin(); i!=ts.end(); i++)
@@ -125,8 +125,11 @@ void Html::trackPage(int tid){
              "<form action=\"" << t.url() << "/flags\" method=\"post\">"
                  "<input type=\"checkbox\" name=\"downloadable\" "
                    << (t.downloadable() ? "checked=\"checked\" " : "") << " /> "
-                 "Downloadable"
-                 " <input type=\"submit\" value=\"Update\" />"
+                 "Downloadable<br />"
+                 "<input type=\"checkbox\" name=\"airable\" "
+                   << (t.airable() ? "checked=\"checked\" " : "") << " /> "
+                 "Airable <span class=\"legend\">(on Celestia Radio)</span><br />"
+                 "<input type=\"submit\" value=\"Update\" />"
              "</form>"
              "</div>"
              "<div class=\"column\">"
