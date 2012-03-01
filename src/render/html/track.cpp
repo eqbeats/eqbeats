@@ -9,23 +9,24 @@
 #include "../../art.h"
 #include "../../comment.h"
 #include "../../track.h"
-#include "../../category.h"
 #include "../../session.h"
 #include "../../number.h"
 #include "../../path.h"
 #include "../../follower.h"
+#include "../../flag.h"
 #include <algorithm>
 
 using namespace std;
 using namespace Render;
 
 void cats(const Track &t, bool edition){
-    vector<Category> cs = Category::forTrack(t.id());
+    Flags fs = Flags(t.id()).categories();
+    Flags cs = fs(true);
     if(cs.empty() && !edition) return;
     o << "<div class=\"toolbar cats\"><img src=\"/static/tag.png\" alt=\"\" /> Categories:";
     if(edition)
         o << "<form action=\"" << t.url() << "/cat\" method=\"post\">";
-    for(vector<Category>::const_iterator i=cs.begin(); i!=cs.end(); i++){
+    for(vector<Flag>::const_iterator i=cs.begin(); i!=cs.end(); i++){
         if(edition)
             o << " <input type=\"checkbox\" name=\"cats\" value=\"" << i->id() << "\" />";
         o << " <a href=\"" << i->url() << "\">" << i->name() << "</a>";
@@ -33,20 +34,14 @@ void cats(const Track &t, bool edition){
     if(edition){
         if(!cs.empty())
             o << " <input type=\"submit\" name=\"rmcats\" value=\"Remove selected\" />";
-        bool rendered = false;
-        vector<Category> all = Category::list();
-        for(vector<Category>::const_iterator i=all.begin(); i!=all.end(); i++){
-            if(find(cs.begin(),cs.end(),*i) == cs.end()){
-                if(!rendered){
-                    o << " <select name=\"cat\">";
-                    rendered = true;
-                }
+        cs = fs(false);
+        if(!cs.empty()){
+            o << " <select name=\"cat\">";
+            for(vector<Flag>::const_iterator i=cs.begin(); i!=cs.end(); i++)
                 o << "<option value=\"" << i->id() << "\">" << i->name() << "</option>";
-            }
-        }
-        if(rendered)
             o << "</select>"
                  "<input type=\"submit\" name=\"addcat\" value=\"Add\" />";
+        }
         o << "</form>";
     }
     o << "</div>";

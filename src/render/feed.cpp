@@ -4,7 +4,7 @@
 #include "html/escape.h"
 #include "../user.h"
 #include "../track.h"
-#include "../category.h"
+#include "../flag.h"
 #include "../path.h"
 #include <vector>
 
@@ -60,7 +60,8 @@ void Feed::user(int uid){
 }
 
 void Feed::category(int cid){
-    Category c(cid);
-    c ? feed(c.name(), c.url(), c.tracks())
+    Flag c(cid);
+    c && c.type() == Flag::Category
+      ? feed(c.name(), c.url(), c.tracks())
       : notFound("Category");
 }

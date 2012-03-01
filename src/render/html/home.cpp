@@ -5,7 +5,7 @@
 #include "track.h"
 #include "../render.h"
 #include "../../news.h"
-#include "../../category.h"
+#include "../../flag.h"
 #include "../../number.h"
 #include "../../track.h"
 #include "../json.h"
@@ -54,8 +54,8 @@ void Html::home(){
     // Categories
          "<h3>Categories</h3>"
          "<ul>";
-    std::vector<Category> cs = Category::list();
-    for(std::vector<Category>::const_iterator i=cs.begin(); i!=cs.end(); i++)
+    Flags cs = Flags::all().categories();
+    for(Flags::const_iterator i=cs.begin(); i!=cs.end(); i++)
         o << "<li><a href=\"" << i->url() << "\">" << i->name() << "</a></li>";
     o << "</ul>"
          "<h3>Partners</h3>"

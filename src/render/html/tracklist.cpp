@@ -5,7 +5,7 @@
 #include "forms.h"
 #include "../render.h"
 #include "../../track.h"
-#include "../../category.h"
+#include "../../flag.h"
 #include "../../user.h"
 #include "../../number.h"
 #include "../../cgi.h"
@@ -67,8 +67,8 @@ void Html::trackSearch(const std::string &q){
 }
 
 void Html::category(int cid){
-    Category c(cid);
-    if(!c) return notFound("Category");
+    Flag c(cid);
+    if(!c || c.type() != Flag::Category) return notFound("Category");
     header(c.name(), atomFeed(c.url()+"/atom"));
     o << "<h2>" << c.name() << "</h2>";
     trackList(c.tracks());

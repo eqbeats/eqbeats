@@ -1,6 +1,6 @@
 #include "json.h"
 #include "http.h"
-#include "../category.h"
+#include "../flag.h"
 #include "../track.h"
 #include "../cgi.h"
 #include "../user.h"
@@ -105,8 +105,8 @@ void Json::users(const vector<User> &us){
 }
 
 void Json::category(int cid){
-    Category c(cid);
-    if(!c) return Http::header(404);
+    Flag c(cid);
+    if(!c || c.type() != Flag::Category) return Http::header(404);
     header();
     o << "{"
       << field("name", jstring(c.name()))

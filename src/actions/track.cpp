@@ -8,7 +8,7 @@
 #include "../art.h"
 #include "../session.h"
 #include "../number.h"
-#include "../category.h"
+#include "../flag.h"
 #include "../follower.h"
 #include "../path.h"
 #include "../log.h"
@@ -116,21 +116,14 @@ void Action::updateCategories(int tid){
     if(u!=t.artist() || !u || cgi.getEnvironment().getRequestMethod()!="POST")
         return Http::redirect(t.url());
     
+    Flags fs(tid);
     vector<cgicc::FormEntry> rmcats;
     cgi.getElement("cats", rmcats);
-    if(!rmcats.empty()){
-        vector<int> cats = Category::idForTrack(tid);
-        for(unsigned i=0; i<rmcats.size(); i++){
-            int cid = number(rmcats[i].getValue());
-            if(!cid) continue;
-            if(std::find(cats.begin(), cats.end(), cid) != cats.end())
-                Category(cid, "").removeTrack(tid);
-        }
-    }
-    else if(!cgi("cat").empty()){
-        Category c(number(cgi("cat")));
-        if(c) c.addTrack(t.id());
-    }
+    for(unsigned i=0; i<rmcats.size(); i++)
+        fs[number(rmcats[i].getValue())] = false;
+    if(!cgi("cat").empty())
+        fs[number(cgi("cat"))] = true;
+
     return Http::redirect(t.url());
 }
 
