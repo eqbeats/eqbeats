@@ -214,6 +214,6 @@ void ExtendedTrack::setNotes(const string &nNotes){
 }
 
 void ExtendedTrack::setTags(const string &nTags){
-    DB::query("UPDATE tracks SET tags = regexp_split_to_array($1, E' *, *') WHERE id = " + number(_id), nTags);
+    DB::query("UPDATE tracks SET tags = regexp_split_to_array(lower($1), E' *, *') WHERE id = " + number(_id), nTags);
     // Doesn't update _tags!
 }
