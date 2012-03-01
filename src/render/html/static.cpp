@@ -45,6 +45,7 @@ void Html::credits(){
         "<ul>"
             "<li><a href=\"/user/3\">AspectOfTheStorm</a></li>"
             "<li><a href=\"/user/6\">Makkon</a></li>"
+            "<li><a href=\"/user/68\">Karai</a></li>"
         "</ul>"
         "<h4>Design</h4>"
         "<ul>"
