@@ -7,6 +7,7 @@ CREATE TABLE users (
     registration timestamptz not null,
     last_login timestamptz not null
 );
+
 CREATE TABLE tracks (
     id serial primary key,
     user_id integer not null REFERENCES users(id),
@@ -18,6 +19,7 @@ CREATE TABLE tracks (
     notes text not null default '',
     downloadable boolean not null default 't'
 );
+
 CREATE TABLE sessions (
     sid text not null,
     host inet not null,
@@ -25,12 +27,14 @@ CREATE TABLE sessions (
     date timestamptz not null,
     UNIQUE (sid, host)
 );
+
 CREATE TABLE news (
     id serial primary key,
     title text not null,
     contents text not null,
     date timestamptz not null
 );
+
 CREATE TYPE comment_type AS ENUM ('track', 'user', 'news');
 CREATE TABLE comments (
     ref integer not null,
@@ -40,21 +44,14 @@ CREATE TABLE comments (
     contents text not null,
     date timestamptz not null
 );
-CREATE TABLE categories (
-    id serial primary key,
-    name text not null
-);
-CREATE TABLE track_categories (
-    track_id integer not null REFERENCES tracks(id),
-    cat_id integer not null REFERENCES categories(id),
-    UNIQUE (track_id, cat_id)
-);
+
 CREATE TYPE favorite_type AS ENUM ('track', 'artist');
 CREATE TABLE favorites (
     user_id integer not null,
     ref integer not null,
     type favorite_type not null
 );
+
 CREATE TYPE contest_state AS ENUM ('submissions', 'voting', 'closed');
 CREATE TABLE contests (
     id serial primary key,
@@ -73,6 +70,7 @@ CREATE TABLE votes (
     track_id integer not null REFERENCES tracks(id),
     contest_id integer not null REFERENCES contests(id)
 );
+
 CREATE TABLE featured_tracks (
     track_id integer not null REFERENCES tracks(id),
     date timestamptz not null

@@ -5,7 +5,6 @@ namespace Feed{
 
 void latest(int n);
 void user(int uid);
-void category(int cid);
 
 }
 

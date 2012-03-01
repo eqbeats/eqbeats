@@ -86,11 +86,7 @@ int main(int argc, char** argv){
             Json::users(User::listArtists(200));
         else if(path == "/users/search/json")
             Json::users(User::search(cgi("q")));
-        else if((id = route("cat", "json", path)))
-            Json::category(id);
         // Feeds
-        else if((id = route("cat", "atom", path)))
-            Feed::category(id);
         else if(path == "/tracks/latest/atom")
             Feed::latest(200);
         else if((id = route("user", "atom", path)))
@@ -129,8 +125,6 @@ int main(int argc, char** argv){
             Action::publishTrack(id);
         else if((id = route("track", "comment", path)))
             Action::postComment(Comment::Track, id);
-        else if((id = route("track", "cat", path)))
-            Action::updateCategories(id);
         else if((id = route("track", "favorite", path)))
             Action::favorite(id, true);
         else if((id = route("track", "unfavorite", path)))
@@ -154,9 +148,6 @@ int main(int argc, char** argv){
             Html::tracksPage("Random tracks", Track::random(50));
         else if(path == "/tracks/featured")
             Html::tracksPage("Featured tracks", Track::featured(50));
-        // Categories
-        else if((id = route("cat", path)))
-            Html::category(id);
         // News
         else if((id = route("news", path)))
             Html::newsPage(id);

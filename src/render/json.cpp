@@ -1,6 +1,5 @@
 #include "json.h"
 #include "http.h"
-#include "../flag.h"
 #include "../track.h"
 #include "../cgi.h"
 #include "../user.h"
@@ -101,16 +100,5 @@ void Json::users(const vector<User> &us){
         o << artistH(i->id(), i->name());
     }
     o << "]}";
-    footer();
-}
-
-void Json::category(int cid){
-    Flag c(cid);
-    if(!c || c.type() != Flag::Category) return Http::header(404);
-    header();
-    o << "{"
-      << field("name", jstring(c.name()))
-      << field("tracks", tracksArray(c.tracks()), true)
-      << "}";
     footer();
 }

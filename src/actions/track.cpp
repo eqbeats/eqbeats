@@ -8,7 +8,6 @@
 #include "../art.h"
 #include "../session.h"
 #include "../number.h"
-#include "../flag.h"
 #include "../follower.h"
 #include "../path.h"
 #include "../log.h"
@@ -108,23 +107,6 @@ void Action::setFlags(int tid){
     if(u==t.artist() && t && cgi.getEnvironment().getRequestMethod()=="POST")
         t.setDownloadable(cgi.queryCheckbox("downloadable"));
     Http::redirect(t.url());
-}
-
-void Action::updateCategories(int tid){
-    User u = Session::user();
-    Track t(tid);
-    if(u!=t.artist() || !u || cgi.getEnvironment().getRequestMethod()!="POST")
-        return Http::redirect(t.url());
-    
-    Flags fs(tid);
-    vector<cgicc::FormEntry> rmcats;
-    cgi.getElement("cats", rmcats);
-    for(unsigned i=0; i<rmcats.size(); i++)
-        fs[number(rmcats[i].getValue())] = false;
-    if(!cgi("cat").empty())
-        fs[number(cgi("cat"))] = true;
-
-    return Http::redirect(t.url());
 }
 
 void Action::reportTrack(int tid){

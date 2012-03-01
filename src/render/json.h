@@ -19,8 +19,6 @@ void tracks(const std::vector<Track> &);
 void artist(int uid);
 void users(const std::vector<User> &);
 
-void category(int cid);
-
 }
 }
 

@@ -13,39 +13,10 @@
 #include "../../number.h"
 #include "../../path.h"
 #include "../../follower.h"
-#include "../../flag.h"
 #include <algorithm>
 
 using namespace std;
 using namespace Render;
-
-void cats(const Track &t, bool edition){
-    Flags fs = Flags(t.id()).categories();
-    Flags cs = fs(true);
-    if(cs.empty() && !edition) return;
-    o << "<div class=\"toolbar cats\"><img src=\"/static/tag.png\" alt=\"\" /> Categories:";
-    if(edition)
-        o << "<form action=\"" << t.url() << "/cat\" method=\"post\">";
-    for(vector<Flag>::const_iterator i=cs.begin(); i!=cs.end(); i++){
-        if(edition)
-            o << " <input type=\"checkbox\" name=\"cats\" value=\"" << i->id() << "\" />";
-        o << " <a href=\"" << i->url() << "\">" << i->name() << "</a>";
-    }
-    if(edition){
-        if(!cs.empty())
-            o << " <input type=\"submit\" name=\"rmcats\" value=\"Remove selected\" />";
-        cs = fs(false);
-        if(!cs.empty()){
-            o << " <select name=\"cat\">";
-            for(vector<Flag>::const_iterator i=cs.begin(); i!=cs.end(); i++)
-                o << "<option value=\"" << i->id() << "\">" << i->name() << "</option>";
-            o << "</select>"
-                 "<input type=\"submit\" name=\"addcat\" value=\"Add\" />";
-        }
-        o << "</form>";
-    }
-    o << "</div>";
-}
 
 void Html::trackPage(int tid){
     Track t(tid);
@@ -105,9 +76,6 @@ void Html::trackPage(int tid){
     string notes = t.getNotes();
     if(!notes.empty())
         o << "<div class=\"notes\">" << format(notes) << "</div>";
-
-    // Categories
-    cats(t, edition);
 
     if(edition){
         o << "<h3><img src=\"/static/pencil.png\" /> Edit</h3>"

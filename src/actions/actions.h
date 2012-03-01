@@ -20,7 +20,6 @@ void renameTrack(int tid);
 void updateNotes(int tid);
 void publishTrack(int tid);
 void setFlags(int tid);
-void updateCategories(int tid);
 void reportTrack(int tid);
 
 // upload.cpp
