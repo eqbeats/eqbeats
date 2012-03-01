@@ -81,7 +81,7 @@ void Html::trackPage(int tid){
                 if(i != ts.begin()) o << ", ";
                 o << escape(*i);
             }
-            o <<    "\" /> <input type=\"submit\" value=\"Update\" /></form>";
+            o <<    "\" /> <input type=\"submit\" value=\"Update\" /> <span>(e.g. instrumental, electronic)</span></form>";
         }
         else{
             for(vector<string>::const_iterator i=ts.begin(); i!=ts.end(); i++)

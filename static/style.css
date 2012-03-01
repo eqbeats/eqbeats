@@ -127,6 +127,11 @@ p {
     margin: 0 5px;
 }
 
+.tags form span {
+    color: #444;
+    font-size: 0.8em;
+}
+
 .toolbar form {
     display: inline;
     margin: 0;
