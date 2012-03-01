@@ -30,7 +30,6 @@ void feed(const string &title, const string &link, const vector<Track> &tracks){
            "<id>" << eqbeatsUrl() << link << "</id>"
            "<updated>" << (tracks.empty()? "1970-01-01 01:00:00+01:00": tracks[0].date()) << "</updated>";
     for(std::vector<Track>::const_iterator i=tracks.begin(); i!=tracks.end(); i++){
-        string notes = i->getNotes();
         o << "<entry>"
                 "<title>" << Html::escape(i->artist().name()) << " - " << Html::escape(i->title()) << "</title>"
                 "<updated>" << i->date() << "</updated>"
@@ -40,7 +39,6 @@ void feed(const string &title, const string &link, const vector<Track> &tracks){
                     "<uri>" << eqbeatsUrl() << i->artist().url() << "</uri>"
                 "</author>"
                 "<link rel=\"alternate\" href=\"" << eqbeatsUrl() << i->url() << "\" />"
-          <<    (notes.empty()?"":"<content type=\"html\">" + Html::escape(Html::format(notes)) + "</content>")
           <<    "<link rel=\"enclosure\" type=\"audio/ogg\"  href=\"" << eqbeatsUrl() << i->url(Track::Vorbis) << "\" />"
                 "<link rel=\"enclosure\" type=\"audio/mpeg\" href=\"" << eqbeatsUrl() << i->url(Track::MP3) << "\" />"
              "</entry>";

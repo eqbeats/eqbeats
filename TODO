@@ -19,7 +19,6 @@ update favicon/title when playing
 Player: bouncy title
 
 - Tech
-feed: fix n+1
 upload -> process -> redirect
 normalize volume
 transcoding daemon
