@@ -2,7 +2,7 @@
 #include "http.h"
 #include "../track.h"
 #include "../cgi.h"
-#include "../user.h"
+#include "../account.h"
 #include "../path.h"
 #include "../number.h"
 #include "render.h"
@@ -35,6 +35,7 @@ string Json::jstring(const string &str){
     for(string::const_iterator i=str.begin(); i!=str.end(); i++){
         if(*i == '"') buf += "\\\"";
         else if(*i == '\n') buf += "\\n";
+        else if(*i == '\r');
         else buf += *i;
     }
     return "\"" + buf + "\"";
@@ -47,19 +48,20 @@ string artistH(int uid, const string &name){
       + "}";
 }
 
-string trackH(const Track &t){
+string trackH(const Track &t, const string &notes=string()){
     return "{"
       + field("id", number(t.id()))
       + field("title", jstring(t.title()))
+      + (notes.empty() ? "" : field("description", jstring(notes)))
       + field("artist", artistH(t.artist().id(), t.artist().name()), true)
       + "}";
 }
 
 void Json::track(int tid){
-    Track t(tid);
+    ExtendedTrack t(tid);
     if(!t) return Http::header(404);
     header();
-    o << trackH(t);
+    o << trackH(t, t.notes());
     footer();
 }
 
@@ -81,13 +83,15 @@ void Json::tracks(const vector<Track> &ts){
 }
 
 void Json::artist(int uid){
-    User u(uid);
+    Account u(uid);
     if(!u) return Http::header(404);
+    string about = u.about();
     header();
     o << "{"
       << field("id", number(u.id()))
-      << field("name", jstring(u.name()))
-      << field("tracks", tracksArray(u.tracks()), true)
+      << field("name", jstring(u.name()));
+    if(!about.empty()) o << field("description", jstring(about));
+    o << field("tracks", tracksArray(u.tracks()), true)
       << "}";
     footer();
 }
