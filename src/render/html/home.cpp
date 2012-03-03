@@ -28,7 +28,7 @@ void ticker(){
 }
 
 void Html::home(){
-    header("", atomFeed("/tracks/latest/atom"));
+    header("", metaDescription("Publish your MLP-related tracks and listen to your favorite songs.") + atomFeed("/tracks/latest/atom"));
     // Head
     ticker();
     o << "<div class=\"search\">"

@@ -58,6 +58,15 @@ void Html::footer(){
       "</body></html>";
 }
 
+std::string Html::metaDescription(std::string descr){
+    descr = escape(descr);
+    if(descr.size() > 160){
+        int pos = descr.rfind(' ', 160);
+        descr = descr.substr(0, pos>160?160:pos) + "&hellip;";
+    }
+    return "<meta name=\"description\" content=\"" + descr + "\" />";
+}
+
 void Html::notFound(const std::string &what){
     header(what + " not found", "", 404);
     o << "<h2>" << what << " not found";

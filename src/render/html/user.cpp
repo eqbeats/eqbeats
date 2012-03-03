@@ -27,7 +27,9 @@ void userList(const vector<User> &users){
 void Html::userPage(int uid){
     Account user(uid);
     if(!user) return notFound("User");
-    header(user.name(), atomFeed(user.url() + "/atom"));
+    string about = user.about();
+
+    header(user.name(), (about.empty()?"":metaDescription(strip(about))) + atomFeed(user.url() + "/atom"));
 
     // Title
     o << "<h2>" << escape(user.name()) << " ";
@@ -44,7 +46,6 @@ void Html::userPage(int uid){
     // Description
          "<div class=\"user\">"
              "<div class=\"item\"><img src=\"/static/mail.png\" alt=\"\" /> Email: " << escapeEmail(user.email()) << "</div>";
-    string about = user.about();
     if(!about.empty())
         o << "<div class=\"notes\">" << format(about) << "</div>";
     bool edition = Session::user().id() == user.id();
