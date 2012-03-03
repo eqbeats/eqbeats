@@ -81,7 +81,7 @@ void Html::trackPage(int tid){
                 if(i != ts.begin()) o << ", ";
                 o << escape(*i);
             }
-            o <<    "\" /> <input type=\"submit\" value=\"Update\" /> <span class=\"legend\">(e.g. instrumental, electronic)</span></form>";
+            o <<    "\" /> <input type=\"submit\" value=\"Update\" /> <span class=\"legend\">(comma-separated, e.g. instrumental, electronic)</span></form>";
         }
         else{
             for(vector<string>::const_iterator i=ts.begin(); i!=ts.end(); i++)
@@ -95,33 +95,37 @@ void Html::trackPage(int tid){
         o << "<div class=\"notes\">" << format(t.notes()) << "</div>";
 
     if(edition){
-        o << "<h3><img src=\"/static/pencil.png\" /> Edit</h3>"
-             "<div class=\"edit\">";
+        o << "<div class=\"edit\">"
+             "<h3><img src=\"/static/pencil.png\" alt=\"\" /> Edit</h3>";
         // Publishing
         if(!t.visible())
             o << "<form class=\"publish\" action=\"" << t.url() << "/publish\" method=\"post\">"
-                     "This track is not yet published. "
+                     "<img src=\"/static/disc-arrow.png\" alt=\"\" />"
+                     " This track is not yet published."
                      " <input type=\"submit\" value=\"Publish\"/>"
                      "<input type=\"hidden\" name=\"tid\" value=\"" << number(t.id()) << "\"/>"
                  "</form>";
-        o << "<div class=\"column\">"
         // Rename
-             "<h4>Rename</h4>"
+        o << "<div class=\"rename\">"
+             "<h4><img src=\"/static/rename.png\" alt=\"\" /> Rename</h4>"
              "<form method=\"post\" action=\"" << t.url() << "/rename\">"
+                 "<b>" << Html::escape(t.artist().name()) << "</b> - "
                  "<input type=\"text\" name=\"title\" value=\"" << Html::escape(t.title()) << "\" />"
                  "<input type=\"submit\" value=\"Rename\" />"
              "</form>"
+             "</div>"
         // Reupload
-          << "<h4>Re-upload</h4>";
+             "<div class=\"column\">"
+             "<h4><img src=\"/static/drive-upload.png\" alt=\"\" /> Re-upload</h4>";
         uploadForm(t.url()+"/upload");
         // Art
-        o << "<h4>Art</h4>"
+        o << "<h4><img src=\"/static/picture.png\" alt=\"\" /> Art</h4>"
              "<form action=\"" << t.url() << "/art/upload\" method=\"post\" enctype=\"multipart/form-data\">"
                  "<input type=\"file\" name=\"file\" />"
                  "<input type=\"submit\" value=\"Upload a picture\" />"
              "</form>"
         // Flags
-             "<h4>Flags</h4>"
+             "<h4><img src=\"/static/flag-yellow.png\" alt=\"\" /> Flags</h4>"
              "<form action=\"" << t.url() << "/flags\" method=\"post\">"
                  "<input type=\"checkbox\" name=\"downloadable\" "
                    << (t.downloadable() ? "checked=\"checked\" " : "") << " /> "
@@ -134,9 +138,10 @@ void Html::trackPage(int tid){
              "</div>"
              "<div class=\"column\">"
         // Notes
-             "<h4>Notes</h4>"
+             "<h4><img src=\"/static/card-pencil.png\" alt=\"\" /> Notes</h4>"
              "<form action=\"" << t.url() << "/notes\" method=\"post\">"
                  "<textarea name=\"notes\">" << escape(t.notes()) << "</textarea><br />"
+                 "<div class=\"legend\">(tags: [b]old, [u]nderline, [i]talic)</div>"
                  "<input type=\"submit\" value=\"Update description\" />"
              "</form>"
         // End

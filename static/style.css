@@ -99,7 +99,7 @@ p {
     background: url("/static/title-grad.png") repeat-x bottom #fbfbfb;
 }
 
-#contents h3 img {
+#contents h3 img, #contents h4 img {
     float: left;
     display: block;
     margin-right: 7px;
@@ -108,6 +108,10 @@ p {
 .legend {
     color: #444;
     font-size: 0.8em;
+}
+div.legend {
+    float: right;
+    margin: 6px;
 }
 
 /** Track page ****************************************************************/
@@ -380,31 +384,60 @@ textarea {
     margin: 10px 20px;
 }
 
+.edit {
+    padding-bottom: 10px;
+    margin: 30px 0;
+    border-radius: 5px;
+    border: 1px solid #eee;
+}
+.edit h4 {
+    border-bottom: 1px solid #e0e0e0;
+}
+.edit h4 img {
+    margin-top: 2px;
+}
+#contents .edit h3 {
+    margin: 0;
+    border: none;
+    border-radius: 5px 5px 0 0;
+}
+.edit h4 {
+    margin: 15px 0 0 0;
+    padding: 5px;
+}
+.edit form {
+    margin: 10px 10px;
+}
 .edit .column {
-    padding: 0 2%;
     float: left;
+}
+.edit .column, .edit .rename, .edit .publish {
+    padding: 0 3%;
+}
+.edit .rename input[type="text"]{
+    width: 400px;
+    max-width: 50%;
 }
 .edit textarea {
     width: 350px;
-    height: 300px;
+    height: 220px;
 }
-.edit form {
-    margin-top: 10px;
-    margin-bottom: 25px;
-}
-
-form.publish {
+.edit .publish {
+    margin: 25px 0 0 0;
     font-weight: bold;
     color: #548;
-    text-align: center;
+    text-align: left;
 }
-
-form.publish input {
+.edit .publish img {
+    float: left;
+    margin: 2px 7px 0 5px;
+}
+.edit .publish input {
     color: #FFF;
     background: #307;
     border: none;
 }
-form.publish input:hover {
+.edit .publish input:hover {
     background-color: #509;
 }
 
