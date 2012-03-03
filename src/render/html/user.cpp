@@ -84,14 +84,6 @@ void Html::favorites(int uid){
     Html::tracksPage(Html::escape(u.name())+" - Favorite tracks", Track::favorites(uid));
 }
 
-void Html::usersPage(){
-    header("Users");
-    o << "<h2>Users</h2>";
-    searchForm("/users/search");
-    userList(User::list(50));
-    footer();
-}
-
 void Html::artistsPage(){
     header("Artists");
     o << "<h2>Artists</h2>";

@@ -171,8 +171,6 @@ int main(int argc, char** argv){
         // Users
         else if(path == "/users/search")
             Html::userSearch(cgi("q"));
-        else if(path == "/users")
-            Html::usersPage();
         else if(path == "/artists")
             Html::artistsPage();
         // Actions
