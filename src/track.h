@@ -74,17 +74,15 @@ class ExtendedTrack: public Track {
         ExtendedTrack(int tid);
 
         std::string notes() const { return _notes; }
-        bool downloadable() const { return _downloadable; }
         bool airable() const { return _airable; }
         std::vector<std::string> tags() const { return _tags; }
 
-        void setFlags(bool dw, bool air);
+        void setAirable(bool);
         void setNotes(const std::string &nNotes);
         void setTags(const std::string &nTags);
 
     private:
         std::string _notes;
-        bool _downloadable;
         bool _airable;
         std::vector<std::string> _tags;
 

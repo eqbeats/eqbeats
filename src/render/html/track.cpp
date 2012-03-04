@@ -47,15 +47,12 @@ void Html::trackPage(int tid){
     player(t);
 
     // Toolbar
-    o << "<div class=\"toolbar\">";
-    if(t.downloadable()||art){
-        o << "<span><img src=\"/static/drive-download.png\" alt=\"\" /> Download : ";
-        if(t.downloadable())
-            o << "<a href=\"" << t.url(Track::Vorbis) << "\">OGG Vorbis</a> "
-                 "<a href=\"" << t.url(Track::MP3) << "\">MP3</a> ";
-        if (art) o << "<a href=\"" + art.url() + "\" target=\"_blank\">Art</a>";
-        o << "</span> ";
-    }
+    o << "<div class=\"toolbar\">"
+         "<span><img src=\"/static/drive-download.png\" alt=\"\" /> Download : "
+         "<a href=\"" << t.url(Track::Vorbis) << "\">OGG Vorbis</a> "
+         "<a href=\"" << t.url(Track::MP3) << "\">MP3</a> ";
+    if (art) o << "<a href=\"" + art.url() + "\" target=\"_blank\">Art</a>";
+    o << "</span> ";
     o << "<span><img src=\"/static/balloon-white-left.png\" alt=\"\" /> Share : <a href=\"#embedcode\" onclick=\"document.getElementById('embedcode').style.display='block';return false;\">Embed</a></span>";
     if(edition){
         if(hits)
@@ -125,14 +122,11 @@ void Html::trackPage(int tid){
                  "<input type=\"submit\" value=\"Upload a picture\" />"
              "</form>"
         // Flags
-             "<h4><img src=\"/static/flag-yellow.png\" alt=\"\" /> Flags</h4>"
+             "<h4><img src=\"/static/balloon-sound.png\" alt=\"\" /> Broadcast</h4>"
              "<form action=\"" << t.url() << "/flags\" method=\"post\">"
-                 "<input type=\"checkbox\" name=\"downloadable\" "
-                   << (t.downloadable() ? "checked=\"checked\" " : "") << " /> "
-                 "Downloadable<br />"
                  "<input type=\"checkbox\" name=\"airable\" "
                    << (t.airable() ? "checked=\"checked\" " : "") << " /> "
-                 "Airable <span class=\"legend\">(on Celestia Radio)</span><br />"
+                 "Celestia Radio</span><br />"
                  "<input type=\"submit\" value=\"Update\" />"
              "</form>"
              "</div>"

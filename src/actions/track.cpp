@@ -105,7 +105,7 @@ void Action::setFlags(int tid){
     User u = Session::user();
     ExtendedTrack t(tid);
     if(u==t.artist() && t && cgi.getEnvironment().getRequestMethod()=="POST")
-        t.setFlags(cgi.queryCheckbox("downloadable"), cgi.queryCheckbox("airable"));
+        t.setAirable(cgi.queryCheckbox("airable"));
     Http::redirect(t.url());
 }
 
