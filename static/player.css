@@ -84,6 +84,6 @@ audio {
     margin-bottom: 10px;
 }
 
-#player-embed #player {
+#player-embed .player {
     margin: 20px 15px 10px 15px;
 }

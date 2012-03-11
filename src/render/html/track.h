@@ -11,13 +11,7 @@ namespace Html{
 
 void trackPage(int tid);
 
-enum TrackList {
-    Standard,
-    //! Artist not displayed.
-    Compact,
-};
-
-void trackList(const std::vector<Track> &tracks, TrackList l=Standard);
+void trackList(const std::vector<Track> &tracks, const std::string &list="default");
 void tracksPage(const std::string &title, const std::vector<Track> &tracks);
 void latestTracks(unsigned n);
 void trackSearch(const std::string &q);

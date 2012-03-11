@@ -3,25 +3,30 @@
 #include "escape.h"
 #include "feed.h"
 #include "forms.h"
+#include "player.h"
 #include "../render.h"
 #include "../../track.h"
 #include "../../user.h"
+#include "../../art.h"
 #include "../../number.h"
 #include "../../cgi.h"
 
 using namespace Render;
 using namespace std;
 
-void Html::trackList(const vector<Track> &tracks, Html::TrackList l){
+void Html::trackList(const vector<Track> &tracks, const std::string &list){
     if(tracks.empty()){ o << "<div class=\"empty tracklist\">Nothing here yet.</div>"; return; }
     o << "<ul class=\"tracklist\">";
     for(vector<Track>::const_iterator i=tracks.begin(); i!=tracks.end(); i++){
-        o << "<li";
-        if(!i->visible()) o << " class=\"hidden\"";
-        o << "><a href=\"" << i->url() << "\">" << escape(i->title()) << "</a>";
-        if(l != Compact)
-            o << " <span class=\"by\">by <a href=\"" << i->artist().url() << "\">"
-              << escape(i->artist().name()) << "</a></span>";
+        Art art(i->id());
+        o << "<li class=\"trackitem" << (i->visible()?"":" hidden") << "\">";
+        if(art) o << "<img alt=\"\" src=\"" << art.url(Art::Thumbnail) << "\" />";
+        o << "<span class=\"title\"><a href=\"" << i->url() << "\">" << escape(i->title()) << "</a></span>"
+             " <span class=\"by\">by <a href=\"" << i->artist().url() << "\">"
+                    << escape(i->artist().name()) << "</a></span>";
+        o << "<div style=\"clear:both;\"></div>";
+        player(*i, list);
+        o << "<div style=\"clear:both;\"></div>";
         o << "</li>";
     }
     o << "</ul>";

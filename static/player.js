@@ -79,7 +79,7 @@ function scrub(e){
 }
 
 function initTrack(t){
-    t.player = document.getElementById(t.list + '-' + t.id);
+    t.player = document.getElementById(t.id);
     t.player.playpause = document.createElement('div');
     t.player.scrubberbar = document.createElement('div');
     t.player.scrubber = document.createElement('div');

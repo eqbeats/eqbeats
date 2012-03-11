@@ -40,14 +40,14 @@ void Html::home(){
          "<h3><a href=\"/tracks/latest\">Latest</a> ";
     feedIcon("/tracks/latest/atom");
     o << "</h3>";
-    trackList(Track::latest(10));
+    trackList(Track::latest(10), "latest");
     o << "<a class=\"more\" href=\"/tracks/latest\">More</a>"
          "</div><div class=\"rightcol\">"
          "<h3>Featured</h3>";
-    trackList(Track::featured(10));
+    trackList(Track::featured(10), "featured");
     o << "</div><div class=\"leftcol\">"
          "<h3><a href=\"/tracks/random\">Random</a></h3>";
-    trackList(Track::random(10));
+    trackList(Track::random(10), "random");
     o << "<a class=\"more\" href=\"/tracks/random\">More</a>"
     // End
          "</div><div class=\"rightcol\">"

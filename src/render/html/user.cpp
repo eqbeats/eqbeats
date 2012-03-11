@@ -60,7 +60,7 @@ void Html::userPage(int uid){
         o << "<h3><img src=\"/static/disc.png\" alt=\"\" /> Tracks ";
         feedIcon(user.url() + "/atom");
         o << "</h3>";
-        Html::trackList(tracks, Html::Compact);
+        Html::trackList(tracks);
     }
 
     // Edition
