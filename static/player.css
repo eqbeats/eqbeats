@@ -23,6 +23,8 @@ audio {
     left: 0;
     top: 0;
 }
+.hidden .playpause { background-image: url("/static/pp-gray.png"); }
+
 .paused .playpause { background-position: top left; }
 .paused .playpause:hover { background-position: bottom left; }
 .playing .playpause { background-position: top right; }
@@ -34,9 +36,12 @@ audio {
     padding: 3px;
 }
 .scrubber {
-    background: #406;
+    background-color: #406;
     height: 8px;
     width: 0;
+}
+.hidden .scrubber {
+    background-color: #999;
 }
 
 .playtime {
