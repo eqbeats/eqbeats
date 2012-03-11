@@ -153,6 +153,7 @@ soundManager.audioFormats.mp3.required=false;
 soundManager.onready(function(){
     for(var i=0; i<tracks.length; i++)
         initTrack(tracks[i]);
+    if(!playing) return;
     load(playing);
     addListener(document, 'mouseup', function(){
         if(scrubbing){
