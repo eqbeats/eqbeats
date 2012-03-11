@@ -51,6 +51,10 @@ audio {
     color: #555;
 }
 
+.cover {
+    border: 1px solid #ddd;
+}
+
 #player-embed {
     padding: 10px 10px 5px;
     border-radius: 7px;
@@ -64,7 +68,6 @@ audio {
     margin-right: 15px;
 }
 #player-embed img.cover {
-    border: 1px solid #ddd;
     padding: 1px;
     margin-top: 2px;
 }
