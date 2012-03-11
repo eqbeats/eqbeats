@@ -129,11 +129,6 @@ function initTrack(t){
             e.preventDefault();
             snd.pause();
             scrubbing = true;
-            addListener(document, 'mouseup', function(){
-                play(playing);
-                scrubbing = false;
-                removeListener(document, 'mousemove', scrub);
-            });
             addListener(document, 'mousemove', scrub);
             scrub(e);
         });
@@ -159,5 +154,12 @@ soundManager.onready(function(){
     for(var i=0; i<tracks.length; i++)
         initTrack(tracks[i]);
     load(playing);
+    addListener(document, 'mouseup', function(){
+        if(scrubbing){
+            play(playing);
+            scrubbing = false;
+            removeListener(document, 'mousemove', scrub);
+        }
+    });
 });
 
