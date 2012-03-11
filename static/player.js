@@ -48,46 +48,74 @@ function prettyTime(ms){
     return time[0] + ':' + time[1]
 }
 
+function load(player){
+    if(playing != player){
+        playing.style.display = 'none';
+        pause(playing);
+        playing.scrubber.style.width = '0px';
+        playing.playtime.innerHTML = '0:00/0:00';
+    }
+    if(snd) snd.destruct();
+    snd = soundManager.createSound({
+        id: "snd",
+        autoLoad: false,
+        whileloading: function(){
+            player.playtime.innerHTML = prettyTime(this.position) + '/' + prettyTime(this.durationEstimate);
+        },
+        url: [
+            {url:player.track.vorbis, type:'audio/ogg'},
+            {url:player.track.mp3, type:'audio/mp3'}
+        ]
+    });
+    playing = player;
+    playing.style.display = 'block';
+}
+
+function pause(player){
+    snd.pause();
+    player.className = 'player paused';
+}
 function play(player){
-    player.snd.play({
+    if(player != playing)
+        load(player);
+    snd.play({
         whileplaying: function(){
-            this.player.scrubber.style.width = (100 * this.position / this.durationEstimate) + '%';
-            this.player.playtime.innerHTML = prettyTime(this.position) + '/' + prettyTime(this.durationEstimate);
+            playing.scrubber.style.width = (100 * this.position / this.durationEstimate) + '%';
+            playing.playtime.innerHTML = prettyTime(this.position) + '/' + prettyTime(this.durationEstimate);
         },
         onfinish: function(){
-            this.player.className = 'player paused';
-            if(this.player.next) play(this.player.next);
+            playing.className = 'player paused';
+            if(playing.next) play(playing.next);
         }
     });
     player.className = 'player playing';
 }
 function toggle(player){
-    with(player){
-        if(className == 'player playing'){
-            snd.pause();
-            className = 'player paused';
-        } else {
-            play(player);
-        }
-    }
-};
+    if(player == playing && player.className == 'player playing')
+        pause(player);
+    else
+        play(player);
+}
 function pp(e) { toggle(this.parentNode); }
 
+function display(player){
+    if(playing != player)
+        play(player);
+}
+
 function scrub(e){
-    with(scrubbingplayer)
+    with(playing)
         snd.setPosition((e.clientX - (scrubberbar.offsetLeft + scrubberbar.offsetParent.offsetLeft + 3))*snd.durationEstimate/(scrubberbar.clientWidth - 6));
 }
 
 function initTrack(t){
-    t.player = document.getElementById(t.id);
-    t.player.playpause = document.createElement('div');
-    t.player.scrubberbar = document.createElement('div');
-    t.player.scrubber = document.createElement('div');
-    t.player.playtime = document.createElement('div');
-    t.player.snd = soundManager.getSoundById(t.id);
-    t.player.scrubbing = false;
-    with (t.player){
-        style.display='block';
+    var player = document.getElementById(t.id);
+    player.track = t;
+    player.playpause = document.createElement('div');
+    player.scrubberbar = document.createElement('div');
+    player.scrubber = document.createElement('div');
+    player.playtime = document.createElement('div');
+    with (player){
         playpause.className = 'playpause';
         scrubberbar.className = 'scrubberbar';
         scrubber.className = 'scrubber';
@@ -96,49 +124,31 @@ function initTrack(t){
         scrubberbar.appendChild(scrubber);
         appendChild(scrubberbar);
         appendChild(playtime);
-        if(!snd){
-            snd = soundManager.createSound({
-                id: t.id,
-                autoLoad: false,
-                whileloading: function(){
-                    playtime.innerHTML = prettyTime(this.position) + '/' + prettyTime(this.durationEstimate);
-                },
-                url: [
-                    {url:t.vorbis, type:'audio/ogg'},
-                    {url:t.mp3, type:'audio/mp3'}
-                ]
-            });
-        }
-        snd.player = t.player;
         addListener(playpause, 'click', pp);
         addListener(scrubberbar, 'mousedown', function(e){
             e.preventDefault();
-            var player = this.parentNode;
-            with(player){
-                snd.pause();
-                scrubbing = true;
-            }
-            scrubbingplayer = player;
+            snd.pause();
+            scrubbing = true;
             addListener(document, 'mouseup', function(){
-                with(scrubbingplayer){
-                    if(className == 'player playing' && scrubbing)
-                        snd.resume();
-                    scrubbing = false;
-                    removeListener(document, 'mousemove', scrub);
-                }
+                play(playing);
+                scrubbing = false;
+                removeListener(document, 'mousemove', scrub);
             });
             addListener(document, 'mousemove', scrub);
             scrub(e);
         });
     }
     if(lists[t.list])
-        lists[t.list].next = t.player;
-    lists[t.list] = t.player;
+        lists[t.list].next = player;
+    lists[t.list] = player;
+    if(!playing) playing = player; // preload the first player
 }
 
-var scrubbingplayer = null;
+var playing;
 var tracks = [];
 var lists = Object();
+var snd;
+var scrubbing = false;
 
 function registerTrack(t){ tracks.push(t); }
 
@@ -148,4 +158,6 @@ soundManager.audioFormats.mp3.required=false;
 soundManager.onready(function(){
     for(var i=0; i<tracks.length; i++)
         initTrack(tracks[i]);
+    load(playing);
 });
+

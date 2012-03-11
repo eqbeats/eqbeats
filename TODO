@@ -1,7 +1,5 @@
 embedded player: scripts, doctype
-
-auto featuring
-news -> "blog" + feed
+disable <audio> for lists
 
 - Features
 password reset
@@ -17,10 +15,12 @@ embed.ly?
 Referrers?
 
 - Design
+news -> "blog" + feed
 update favicon/title when playing
 Player: bouncy title
 
 - Tech
+auto featuring
 upload -> process -> redirect
 normalize volume
 transcoding daemon

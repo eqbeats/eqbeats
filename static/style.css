@@ -354,7 +354,7 @@ ul {
 
 .tracklist li img {
     float: right;
-    width: 64px;
+    max-width: 128px;
 }
 
 /** Credits page **************************************************************/
