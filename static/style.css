@@ -292,15 +292,18 @@ a.more:before {
 
 /** Contests ******************************************************************/
 
-.contest {
-    margin-top: 15px;
-}
+.contest { margin-top: 15px; }
 
 .contest button {
     background: none;
     border: none;
     cursor: pointer;
     padding: 0;
+}
+
+.contest .votes {
+    font-size: 0.7em;
+    padding-left: 5px;
 }
 
 /** Lists *********************************************************************/
