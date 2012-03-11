@@ -11,15 +11,19 @@
 using namespace Render;
 using namespace std;
 
-void Html::player(const Track &t){
+void Html::player(const Track &t, const string &list){
     Render::o <<
-        "<div id=\"player\"></div>"
-        "<script type=\"text/javascript\" src=\"/static/sm2.js\"></script>"
+        "<div id=\"" << list << "-" << t.id() << "\" class=\"player\"></div>"
         "<script>"
-            "var mp3path = \"" << t.url(Track::MP3) <<"\";"
-            "var oggpath = \"" << t.url(Track::Vorbis) <<"\";"
+            "var track = {"
+                "id: " << t.id() << ","
+                "mp3: \"" << t.url(Track::MP3) <<"\","
+                "vorbis: \"" << t.url(Track::Vorbis) <<"\","
+                "list: \"" << list << "\""
+            "};"
+            "if(typeof lists['" << list << "'] == 'undefined'){ lists['" << list << "'] = []; }"
+            "lists['" << list << "'].push(track);"
         "</script>"
-        "<script type=\"text/javascript\" src=\"/static/player.js\"></script>"
         "<noscript>"
             "<audio controls>"
                 "<source type=\"audio/ogg\" src=\"" << t.url(Track::Vorbis) << "\" />"

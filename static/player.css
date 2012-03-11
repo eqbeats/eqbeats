@@ -6,7 +6,7 @@ audio {
     width: 90%;
 }
 
-#player {
+.player {
     height: 22px;
     margin: 20px;
     padding: 4px 0 4px 36px;
@@ -14,7 +14,7 @@ audio {
     display: none;
 }
 
-#playpause {
+.playpause {
     height: 22px;
     width: 22px;
     background-image: url("/static/pp.png");
@@ -23,20 +23,27 @@ audio {
     left: 0;
     top: 0;
 }
-.paused #playpause { background-position: top left; }
-.paused #playpause:hover { background-position: bottom left; }
-.playing #playpause { background-position: top right; }
-.playing #playpause:hover { background-position: bottom right; }
+.paused .playpause { background-position: top left; }
+.paused .playpause:hover { background-position: bottom left; }
+.playing .playpause { background-position: top right; }
+.playing .playpause:hover { background-position: bottom right; }
 
-#scrubberbar {
+.scrubberbar {
     border: solid 1px #ddd;
     height: 8px;
     padding: 3px;
 }
-#scrubber {
+.scrubber {
     background: #406;
     height: 8px;
     width: 0;
+}
+
+.playtime {
+    margin: 6px;
+    text-align: right;
+    font-size: .8em;
+    color: #555;
 }
 
 #player-embed {
@@ -79,11 +86,4 @@ audio {
 
 #player-embed #player {
     margin: 20px 15px 10px 15px;
-}
-
-#playtime {
-    margin: 6px;
-    text-align: right;
-    font-size: .8em;
-    color: #555;
 }
