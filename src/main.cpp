@@ -145,11 +145,11 @@ int main(int argc, char** argv){
         else if(path == "/tracks/search")
             Html::trackSearch(cgi("q"));
         else if(path == "/tracks/latest")
-            Html::latestTracks(20);
+            Html::latestTracks(15);
         else if(path == "/tracks/random")
-            Html::tracksPage("Random tracks", Track::random(50));
+            Html::tracksPage("Random tracks", Track::random(15));
         else if(path == "/tracks/featured")
-            Html::tracksPage("Featured tracks", Track::featured(50));
+            Html::tracksPage("Featured tracks", Track::featured(15));
         else if(path.substr(0,12) == "/tracks/tag/"){
             std::string tag = path.substr(12);
             Html::tracksPage(tag, Track::byTag(tag));
