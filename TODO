@@ -1,11 +1,8 @@
-embedded player: scripts, doctype
-
 - Features
 password reset
 Cover art deletion
 coops
 PG13 rating
-inline play button (lists)
 sorting
 Player: volume
 favs -> playlists (+ m3u)

@@ -35,17 +35,21 @@ void Html::embedTrack(int tid){
     Track t(tid);
     Art art(tid);
     Http::header("text/html", t?200:404);
-    o << "<html><head>"
+    o << "<!DOCTYPE html>"
+         "<html><head>"
             "<title>" << (t ? escape(t.title()) : "Track not found") << " - Equestrian Beats</title>"
+            "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">"
             "<link rel=\"stylesheet\" type=\"text/css\" href=\"/static/player.css\" />"
+            "<script type=\"text/javascript\" src=\"/static/sm2.js\"></script>"
+            "<script type=\"text/javascript\" src=\"/static/player.js\"></script>"
         "</head><body><div id=\"player-embed\">"
-        "<a href=\"" + t.url() + "\" target=\"_blank\" class=\"pic\">"
+        "<a href=\"" << t.url() << "\" target=\"_blank\" class=\"pic\">"
         + (art?
             "<img src=\"" + art.url(Art::Thumbnail) + "\" class=\"cover\" alt=\"Cover\"  />":
             "<img src=\"/static/logo.png\" class=\"logo\" alt=\"Equestrian Beats\" />"
         ) + "</a>";
-    if(t) {
-        o << "<h3><a href=\"" + t.url() + "\" target=\"_blank\">" + escape(t.title()) + "</a></h3>"
+    if(t){
+        o << "<h3><a href=\"" << t.url() + "\" target=\"_blank\">" << escape(t.title()) << "</a></h3>"
              "<h4>by <a href=\"" << t.artist().url() <<  "\" target=\"_blank\">" << escape(t.artist().name()) << "</a></h4>";
         player(t);
     }
