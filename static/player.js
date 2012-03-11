@@ -134,6 +134,16 @@ function initTrack(t){
             scrub(e);
         });
     }
+    with (player.parentNode){
+        if (tagName == 'LI'){
+            links = getElementsByTagName('a');
+            for(var i = 0; i < links.length; i++){
+                addListener(links[i], 'click', function(e){
+                    e.stopPropagation();
+                });
+            }
+        }
+    }
     if(lists[t.list])
         lists[t.list].next = player;
     lists[t.list] = player;
