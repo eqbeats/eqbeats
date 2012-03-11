@@ -11,7 +11,7 @@
 using namespace Render;
 using namespace std;
 
-void Html::player(const Track &t, const string &list){
+void Html::player(const Track &t, const string &list, bool fallback){
     Render::o <<
         "<div id=\"" << list << "-" << t.id() << "\" class=\"player\"></div>"
         "<script>"
@@ -21,13 +21,14 @@ void Html::player(const Track &t, const string &list){
                 "vorbis: \"" << t.url(Track::Vorbis) <<"\","
                 "list: \"" << list << "\""
             "});"
-        "</script>"
-        "<noscript>"
-            "<audio controls>"
-                "<source type=\"audio/ogg\" src=\"" << t.url(Track::Vorbis) << "\" />"
-                "<source type=\"audio/mpeg\" src=\"" << t.url(Track::MP3) << "\" />"
-            "</audio>"
-        "</noscript>";
+        "</script>";
+    if(fallback)
+        o <<"<noscript>"
+                "<audio controls>"
+                    "<source type=\"audio/ogg\" src=\"" << t.url(Track::Vorbis) << "\" />"
+                    "<source type=\"audio/mpeg\" src=\"" << t.url(Track::MP3) << "\" />"
+                "</audio>"
+            "</noscript>";
 }
 
 void Html::embedTrack(int tid){

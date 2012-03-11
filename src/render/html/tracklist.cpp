@@ -25,7 +25,7 @@ void Html::trackList(const vector<Track> &tracks, const std::string &list){
              " <span class=\"by\">by <a href=\"" << i->artist().url() << "\">"
                     << escape(i->artist().name()) << "</a></span>";
         o << "<div style=\"clear:both;\"></div>";
-        player(*i, list);
+        player(*i, list, false);
         o << "<div style=\"clear:both;\"></div>";
         o << "</li>";
     }

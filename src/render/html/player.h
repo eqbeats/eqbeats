@@ -10,7 +10,7 @@ namespace Html {
 
 void embedTrack(int tid);
 std::string embedTrackCode(const Track &t, int w=0);
-void player(const Track &t, const std::string &list="default");
+void player(const Track &t, const std::string &list="default", bool fallback=true);
 
 }
 }
