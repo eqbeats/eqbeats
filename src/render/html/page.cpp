@@ -57,6 +57,7 @@ void Html::footer(){
                 "<!--Generated in " << number(usecs()) << " µS by " << number(getpid()) << ".-->"
             "</div>"
         "</div>"
+      "<script>document.body.className = 'js';</script>"
       "</body></html>";
 }
 

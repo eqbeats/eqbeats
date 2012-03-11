@@ -335,6 +335,7 @@ ul {
     margin: 0;
     display: block;
 }
+.js .tracklist li { cursor: pointer; }
 
 .tracklist li:hover {
     background-color: #f4f4f4;

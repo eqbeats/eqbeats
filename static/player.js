@@ -96,11 +96,9 @@ function toggle(player){
     else
         play(player);
 }
-function pp(e) { toggle(this.parentNode); }
-
-function display(player){
-    if(playing != player)
-        play(player);
+function pp(e){
+    e.stopPropagation();
+    toggle(this.parentNode);
 }
 
 function scrub(e){
@@ -125,6 +123,9 @@ function initTrack(t){
         appendChild(scrubberbar);
         appendChild(playtime);
         addListener(playpause, 'click', pp);
+        addListener(scrubberbar, 'click', function(e){
+            e.stopPropagation();
+        });
         addListener(scrubberbar, 'mousedown', function(e){
             e.preventDefault();
             snd.pause();
