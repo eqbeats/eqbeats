@@ -5,13 +5,8 @@
 
 Contest::Contest(int id){
     _id = 0;
-
     if(id <= 0) return;
-
-    DB::Result r = DB::query(
-        "SELECT name, state FROM contests "
-        "WHERE id = " + number(id)
-    );
+    DB::Result r = DB::query("SELECT name, state FROM contests WHERE id = " + number(id));
     if(!r.empty()){
         _id = id;
         _name = r[0][0];
@@ -112,5 +107,5 @@ std::vector<int> Contest::usersVotes(std::string host){
 std::vector<Track> Contest::submissions(){
     return Track::select("contest_submissions", 
         "tracks.id = contest_submissions.track_id AND contest_submissions.contest_id = " + number(_id),
-        "tracks.title ASC");
+        "tracks.date ASC");
 }

@@ -1,5 +1,6 @@
 #include "contest.h"
 #include "page.h"
+#include "player.h"
 #include "escape.h"
 #include "../render.h"
 #include "../../contest.h"
@@ -7,6 +8,7 @@
 #include "../../track.h"
 #include "../../session.h"
 #include "../../user.h"
+#include "../../art.h"
 #include <algorithm>
 
 void Render::Html::contest(int cid, const std::string &host){
@@ -30,21 +32,24 @@ void Render::Html::contest(int cid, const std::string &host){
             o << "<form action=\"" + c.url() + "/vote\" method=\"post\">";
         }
         std::map<int,int> votes = c.getVotes();
-        o << "<ul>";
+        o << "<ul class=\"tracklist\">";
         for(std::vector<Track>::const_iterator i=tracks.begin(); i!=tracks.end(); i++){
-            o << "<li>";
+            Art art(i->id());
+            o << "<li onclick=\"toggle(this.getElementsByClassName('player')[0]);\">";
+            if(art) o << "<img class=\"cover\" alt=\"\" src=\"" << art.url(Art::Thumbnail) << "\" />";
+            o << "<div class=\"title\">";
             if(voting){
                 bool vote = std::find(uvotes.begin(),uvotes.end(),i->id()) != uvotes.end();
                 o << (std::string) "<button type=\"submit\" name=\"tid\" title=\"" + (vote?"Cancel vote":"Vote") + "\" value=\"" + (vote?"-":"+") + number(i->id()) + "\"><img src=\"/static/" + (vote?"vote":"star-empty") + ".png\"alt=\"" + (vote?"Cancel vote":"Vote") + "\" /></button> ";
             }
-            o << "<a href=\"" << i->url() << "\">" << escape(i->title()) << "</a>"
-                 " <span class=\"by\">"
-                 "by <a href=\"" << i->artist().url() << "\">"
-              << escape(i->artist().name()) << "</a>";
+            o << "<a href=\"" << i->url() << "\">" << escape(i->title()) << "</a>";
             int vcount = votes[i->id()];
             if(vcount>0 && voting)
                 o << " (" + number(vcount) + " vote" + (vcount>1?"s":"") + ")";
-            o << "</span></li>";
+            o << "</div><div class=\"by\">by <a href=\"" << i->artist().url() << "\">" << escape(i->artist().name()) << "</a></div>";
+            o << "<div style=\"clear:both;\"></div>";
+            player(*i, "contest", false);
+            o << "</li>";
         }
         o << "</ul>";
         if(voting) o << "</form>";

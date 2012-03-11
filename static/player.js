@@ -134,20 +134,23 @@ function initTrack(t){
             scrub(e);
         });
     }
-    with (player.parentNode){
-        if (tagName == 'LI'){
-            links = getElementsByTagName('a');
-            for(var i = 0; i < links.length; i++){
-                addListener(links[i], 'click', function(e){
-                    e.stopPropagation();
-                });
-            }
-        }
+    if (player.parentNode.tagName == 'LI'){
+        preventBubbling(player.parentNode, 'a');
+        preventBubbling(player.parentNode, 'button');
     }
     if(lists[t.list])
         lists[t.list].next = player;
     lists[t.list] = player;
     if(!playing) playing = player; // preload the first player
+}
+
+function preventBubbling(el, tagname){
+    elts = el.getElementsByTagName(tagname);
+    for(var i = 0; i < elts.length; i++){
+        addListener(elts[i], 'click', function(e){
+            e.stopPropagation();
+        });
+    }
 }
 
 var playing;

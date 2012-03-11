@@ -299,12 +299,8 @@ a.more:before {
 .contest button {
     background: none;
     border: none;
-    padding: 0;
     cursor: pointer;
-}
-.contest button img {
-    vertical-align: middle;
-    margin-bottom: 6px;
+    padding: 0;
 }
 
 /** Lists *********************************************************************/
@@ -341,7 +337,6 @@ ul {
 }
 
 .tracklist .title, .tracklist .by {
-    display: block;
     line-height: 33px;
     font-weight: 100;
     height: 33px;

@@ -21,9 +21,9 @@ void Html::trackList(const vector<Track> &tracks, const std::string &list){
         Art art(i->id());
         o << "<li"<< (i->visible()?"":" class=\"hidden\"") << " onclick=\"toggle(this.getElementsByClassName('player')[0]);\">";
         if(art) o << "<img class=\"cover\" alt=\"\" src=\"" << art.url(Art::Thumbnail) << "\" />";
-        o << "<span class=\"title\"><a href=\"" << i->url() << "\">" << escape(i->title()) << "</a></span>"
-             " <span class=\"by\">by <a href=\"" << i->artist().url() << "\">"
-                    << escape(i->artist().name()) << "</a></span>";
+        o << "<div class=\"title\"><a href=\"" << i->url() << "\">" << escape(i->title()) << "</a></div>"
+             " <div class=\"by\">by <a href=\"" << i->artist().url() << "\">"
+                    << escape(i->artist().name()) << "</a></div>";
         o << "<div style=\"clear:both;\"></div>";
         player(*i, list, false);
         o << "</li>";
