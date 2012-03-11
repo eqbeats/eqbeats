@@ -48,23 +48,31 @@ function prettyTime(ms){
     return time[0] + ':' + time[1]
 }
 
-function pp(e){
-    with(this.parentNode){
+function play(player){
+    player.snd.play({
+        whileplaying: function(){
+            this.player.scrubber.style.width = (100 * this.position / this.durationEstimate) + '%';
+            this.player.playtime.innerHTML = prettyTime(this.position) + '/' + prettyTime(this.durationEstimate);
+        },
+        onfinish: function(){
+            this.player.className = 'player paused';
+            if(this.player.next) play(this.player.next);
+        }
+    });
+    player.className = 'player playing';
+}
+function toggle(player){
+    with(player){
         if(className == 'player playing'){
             snd.pause();
             className = 'player paused';
         } else {
-            snd.play({
-                whileplaying: function(){
-                    this.player.scrubber.style.width = (100 * this.position / this.durationEstimate) + '%';
-                    playtime.innerHTML = prettyTime(this.position) + '/' + prettyTime(this.durationEstimate);
-                },
-                onfinish: function(){ this.player.className = 'player paused'; }
-            });
-            className = 'player playing';
+            play(player);
         }
     }
 };
+function pp(e) { toggle(this.parentNode); }
+
 function scrub(e){
     with(scrubbingplayer)
         snd.setPosition((e.clientX - (scrubberbar.offsetLeft + scrubberbar.offsetParent.offsetLeft + 3))*snd.durationEstimate/(scrubberbar.clientWidth - 6));
@@ -123,17 +131,21 @@ function initTrack(t){
             scrub(e);
         });
     }
+    if(lists[t.list])
+        lists[t.list].next = t.player;
+    lists[t.list] = t.player;
 }
 
 var scrubbingplayer = null;
+var tracks = [];
 var lists = Object();
+
+function registerTrack(t){ tracks.push(t); }
 
 soundManager.url = '/static/';
 soundManager.preferFlash = false;
 soundManager.audioFormats.mp3.required=false;
 soundManager.onready(function(){
-    for(var l in lists){
-        for(j=0; j < lists[l].length; j++)
-            initTrack(lists[l][j]);
-    }
+    for(var i=0; i<tracks.length; i++)
+        initTrack(tracks[i]);
 });
