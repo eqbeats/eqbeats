@@ -11,12 +11,11 @@ embed.ly?
 Referrers?
 
 - Design
-news -> "blog" + feed
 update favicon/title when playing
+news -> "blog" + feed
 Player: bouncy title
 
 - Tech
-auto featuring
 upload -> process -> redirect
 normalize volume
 transcoding daemon
