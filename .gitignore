@@ -19,4 +19,12 @@ hits.dat
 hitsd.sock
 
 eqbeats.fcgi
-/tools/
+/tools/CMakeFiles
+/tools/cmake_install.cmake
+/tools/Makefile
+/tools/dumptracks
+/tools/mkcontest
+/tools/mknews
+/tools/nowplaying.json
+/tools/stats
+/tools/updatetags

@@ -1,0 +1,11 @@
+#!/bin/bash
+
+QUEUE="$EQBEATS_DIR/feature.queue"
+
+tid=$(head -n 1 "$QUEUE")
+[ -z "$tid" ] && exit 1
+
+feature "$tid"
+
+tail -n +2 "$QUEUE" > "$QUEUE.tail"
+mv "$QUEUE.tail" "$QUEUE"
