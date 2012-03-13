@@ -43,7 +43,7 @@ void Html::embedTrack(int tid){
             "<script type=\"text/javascript\" src=\"/static/sm2.js\"></script>"
             "<script type=\"text/javascript\" src=\"/static/player.js\"></script>"
         "</head><body><div id=\"player-embed\">"
-        "<a href=\"" << t.url() << "\" target=\"_blank\" class=\"pic\">"
+        "<a href=\"" << (t ? t.url() : "/") << "\" target=\"_blank\" class=\"pic\">"
         + (art?
             "<img src=\"" + art.url(Art::Thumbnail) + "\" class=\"cover\" alt=\"Cover\"  />":
             "<img src=\"/static/logo.png\" class=\"logo\" alt=\"Equestrian Beats\" />"
@@ -54,7 +54,7 @@ void Html::embedTrack(int tid){
         player(t);
     }
     else o << "<h3 style=\"margin-bottom:10px;\">Track not found</h3>";
-    o << "</div></body></html>";
+    o << "<div style=\"clear:both;\"></div></div></body></html>";
 }
 
 string Html::embedTrackCode(const Track &t, int w){
