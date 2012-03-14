@@ -48,6 +48,15 @@ function prettyTime(ms){
     return time[0] + ':' + time[1]
 }
 
+function setIcon(href){
+    oldicon = document.getElementById("favicon-link");
+    icon = document.createElement('link');
+    icon.id = 'favicon-link';
+    icon.rel = 'shortcut icon';
+    icon.href = href;
+    document.head.replaceChild(icon, oldicon);
+}
+
 function load(player){
     if(playing != player){
         playing.style.display = 'none';
@@ -74,7 +83,9 @@ function load(player){
 function pause(player){
     snd.pause();
     player.className = 'player paused';
+    setIcon('/static/favicon.ico');
 }
+
 function play(player){
     if(player != playing)
         load(player);
@@ -89,6 +100,7 @@ function play(player){
         }
     });
     player.className = 'player playing';
+    setIcon('/static/playing.ico');
 }
 function toggle(player){
     if(player == playing && player.className == 'player playing')
