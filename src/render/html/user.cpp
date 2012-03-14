@@ -45,19 +45,19 @@ void Html::userPage(int uid){
 
     // Description
          "<div class=\"user\">"
-             "<div class=\"item\"><img src=\"/static/mail.png\" alt=\"\" /> Email: " << escapeEmail(user.email()) << "</div>";
+             "<div class=\"item\">" << icon("mail") << " Email: " << escapeEmail(user.email()) << "</div>";
     if(!about.empty())
         o << "<div class=\"notes\">" << format(about) << "</div>";
     bool edition = Session::user().id() == user.id();
     if(edition)
-        o << "<div class=\"item\"><img src=\"/static/card-pencil.png\" alt=\"\" /> <a href=\"/account\">Edit</a></div>";
-    o << "<div class=\"item\"><img src=\"/static/star.png\" alt=\"\" /> <a href=\"" << user.url() << "/favorites\">Favorite tracks</a></div>"
+        o << "<div class=\"item\">" << icon("card-pencil") << " <a href=\"/account\">Edit</a></div>";
+    o << "<div class=\"item\">" << icon("star") << " <a href=\"" << user.url() << "/favorites\">Favorite tracks</a></div>"
          "</div>";
 
     // Tracks
     vector<Track> tracks = user.tracks(edition);
     if(edition || !tracks.empty()){
-        o << "<h3><img src=\"/static/disc.png\" alt=\"\" /> Tracks ";
+        o << "<h3>" << icon("disc") << " Tracks ";
         feedIcon(user.url() + "/atom");
         o << "</h3>";
         Html::trackList(tracks);
@@ -66,7 +66,7 @@ void Html::userPage(int uid){
     // Edition
     if(edition){
         uploadForm("/track/new");
-        o << "<h3><img src=\"/static/plus-circle.png\" alt=\"\" /> Artists you follow</h3>";
+        o << "<h3>" << icon("plus-circle") << " Artists you follow</h3>";
         userList(Follower(user).following());
         if(!tracks.empty())
             Html::comments(Comment::forArtist(uid), "Comments on your tracks");

@@ -17,13 +17,13 @@ audio {
 .playpause {
     height: 22px;
     width: 22px;
-    background-image: url("/static/pp.png");
+    background-image: url("/static/icons/pp.png");
     cursor: pointer;
     position: absolute;
     left: 0;
     top: 0;
 }
-.hidden .playpause { background-image: url("/static/pp-gray.png"); }
+.hidden .playpause { background-image: url("/static/icons/pp-gray.png"); }
 
 .paused .playpause { background-position: top left; }
 .paused .playpause:hover { background-position: bottom left; }

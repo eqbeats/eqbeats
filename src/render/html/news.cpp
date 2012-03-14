@@ -37,7 +37,7 @@ void Html::latestNews(int n){
              "Comments (" << number(Comment::countForNews(news[0].id())) << ")</a>";
         if(news.size()>1){
             o << "<div class=\"oldnews\">"
-              << "<h3><img src=\"/static/newspaper-24.png\" alt=\"\" />Older news</h3>"
+              << "<h3>" << icon("newspaper-24") << " Older news</h3>"
               << "<ul>";
             for(std::vector<News>::const_iterator i=news.begin()+1; i!=news.end(); i++)
                 o << "<li><a href=\"" << i->url() << "\">" << i->title() << "</a></li>";

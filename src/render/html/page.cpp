@@ -41,8 +41,8 @@ void Html::header(const std::string &title, const std::string &head, int status)
                     "<div id=\"navbar\">"
                         "<a href=\"/\">Home</a> "
                         "<a href=\"/artists\">Artists</a> "
-                        "<img src=\"/static/cm-nav.png\" alt=\"-\"/> "
-                        "<a href=\"/news\">News</a> "
+                        << icon("cm-nav", "-") <<
+                        " <a href=\"/news\">News</a> "
                         "<a href=\"/faq\">FAQ</a>"
                     "</div>"
                     "<div style=\"clear:both;\"></div>"
@@ -81,4 +81,8 @@ void Html::errorPage(const std::string &err){
     header("Error");
     o << "<div class=\"error\">" << err << "</div>";
     footer();
+}
+
+std::string Html::icon(const std::string &name, const std::string &alt){
+    return "<img src=\"/static/icons/" + name + ".png\" alt=\"" + alt + "\" />";
 }

@@ -37,8 +37,7 @@ void Html::trackPage(int tid){
     bool isFav = Follower(Session::user()).isFavorite(t.id());
     o << "<a href=\"" << (Session::user() ? "" : "/login?redirect=") << t.url() << "/" << (isFav?"un":"") << "favorite\""
          " title=\"" << (isFav?"Remove from favorites":"Add to favorites") << "\">"
-           "<img src=\"/static/star" << (isFav?"":"-empty") << ".png\""
-             " alt=\"" << (isFav?"Remove from favorites":"Add to favorites") << "\"/></a>"
+    <<     icon(isFav?"star":"star-empty", isFav?"Remove from favorites":"Add to favorites") << "</a>"
          "</h2>"
          "<h4>by <a href=\"" << t.artist().url() <<  "\">" << escape(t.artist().name()) << "</a></h4>"
 
@@ -48,20 +47,20 @@ void Html::trackPage(int tid){
 
     // Toolbar
     o << "<div class=\"toolbar\">"
-         "<span><img src=\"/static/drive-download.png\" alt=\"\" /> Download : "
+         "<span>" << icon("drive-download") << " Download : "
          "<a href=\"" << t.url(Track::Vorbis) << "\">OGG Vorbis</a> "
          "<a href=\"" << t.url(Track::MP3) << "\">MP3</a> ";
     if (art) o << "<a href=\"" + art.url() + "\" target=\"_blank\">Art</a>";
     o << "</span> ";
-    o << "<span><img src=\"/static/balloon-white-left.png\" alt=\"\" /> Share : <a href=\"#embedcode\" onclick=\"document.getElementById('embedcode').style.display='block';return false;\">Embed</a></span>";
+    o << "<span>" << icon("balloon-white-left") << " Share : <a href=\"#embedcode\" onclick=\"document.getElementById('embedcode').style.display='block';return false;\">Embed</a></span>";
     if(edition){
         if(hits)
-            o << " <span><img src=\"/static/edit-number.png\" alt=\"\" /> Hits : " << hits << "</span>";
-        o << " <span><img src=\"/static/star.png\" alt=\"\" /> Favourites : " << t.favoritesCount() << "</span>";
+            o << " <span>" << icon("edit-number") << " Hits : " << hits << "</span>";
+        o << " <span>" << icon("star") << " Favourites : " << t.favoritesCount() << "</span>";
     }
     else
         o << " <form action=\"" << t.url() << "/report\" method=\"post\">"
-                "<button type=\"submit\" class=\"report\"><img src=\"/static/flag.png\" alt=\"\" /><span>Report</span></button>"
+                "<button type=\"submit\" class=\"report\">" << icon("flag") << "<span> Report</span></button>"
              "</form>";
     o << "</div>"
     // Embed
@@ -69,7 +68,7 @@ void Html::trackPage(int tid){
 
     // Tags
     if(!t.tags().empty() || edition){
-        o << "<div class=\"toolbar tags\"><img src=\"/static/tag.png\" alt=\"\" /> Tags:";
+        o << "<div class=\"toolbar tags\">" << icon("tag") << " Tags:";
         vector<string> ts = t.tags();
         if(edition){
             o << " <form action=\"" << t.url() << "/tags\" method=\"post\">"
@@ -93,18 +92,18 @@ void Html::trackPage(int tid){
 
     if(edition){
         o << "<div class=\"edit\">"
-             "<h3><img src=\"/static/pencil.png\" alt=\"\" /> Edit</h3>";
+             "<h3>" << icon("pencil") << " Edit</h3>";
         // Publishing
         if(!t.visible())
             o << "<form class=\"publish\" action=\"" << t.url() << "/publish\" method=\"post\">"
-                     "<img src=\"/static/disc-arrow.png\" alt=\"\" />"
+                     << icon("disc-arrow") <<
                      " This track is not yet published."
                      " <input type=\"submit\" value=\"Publish\"/>"
                      "<input type=\"hidden\" name=\"tid\" value=\"" << number(t.id()) << "\"/>"
                  "</form>";
         // Rename
         o << "<div class=\"rename\">"
-             "<h4><img src=\"/static/rename.png\" alt=\"\" /> Rename</h4>"
+             "<h4>" << icon("rename") << " Rename</h4>"
              "<form method=\"post\" action=\"" << t.url() << "/rename\">"
                  "<b>" << Html::escape(t.artist().name()) << "</b> - "
                  "<input type=\"text\" name=\"title\" value=\"" << Html::escape(t.title()) << "\" />"
@@ -113,16 +112,16 @@ void Html::trackPage(int tid){
              "</div>"
         // Reupload
              "<div class=\"column\">"
-             "<h4><img src=\"/static/drive-upload.png\" alt=\"\" /> Re-upload</h4>";
+             "<h4>" << icon("drive-upload") << " Re-upload</h4>";
         uploadForm(t.url()+"/upload");
         // Art
-        o << "<h4><img src=\"/static/picture.png\" alt=\"\" /> Art</h4>"
+        o << "<h4>" << icon("picture") << " Art</h4>"
              "<form action=\"" << t.url() << "/art/upload\" method=\"post\" enctype=\"multipart/form-data\">"
                  "<input type=\"file\" name=\"file\" />"
                  "<input type=\"submit\" value=\"Upload a picture\" />"
              "</form>"
         // Flags
-             "<h4><img src=\"/static/balloon-sound.png\" alt=\"\" /> Broadcast</h4>"
+             "<h4>" << icon("balloon-sound") << " Broadcast</h4>"
              "<form action=\"" << t.url() << "/flags\" method=\"post\">"
                  "<input type=\"checkbox\" name=\"airable\" "
                    << (t.airable() ? "checked=\"checked\" " : "") << " /> "
@@ -132,7 +131,7 @@ void Html::trackPage(int tid){
              "</div>"
              "<div class=\"column\">"
         // Notes
-             "<h4><img src=\"/static/card-pencil.png\" alt=\"\" /> Notes</h4>"
+             "<h4>" << icon("card-pencil") << " Notes</h4>"
              "<form action=\"" << t.url() << "/notes\" method=\"post\">"
                  "<textarea name=\"notes\">" << escape(t.notes()) << "</textarea><br />"
                  "<div class=\"legend\">(tags: [b]old, [u]nderline, [i]talic)</div>"

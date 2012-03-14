@@ -33,7 +33,7 @@ html, body {
     display: inline-block;
     height: 12px;
     width: 12px;
-    background: url("/static/feed.png") center left;
+    background: url("/static/icons/feed.png") center left;
 }
 .feed span { display: none; }
 .feed:hover { background-position: center right; }
@@ -486,14 +486,14 @@ textarea {
     text-decoration: none;
     color: #555;
 }
-.follow.disabled { background-image: url("/static/plus-grey.png"); }
+.follow.disabled { background-image: url("/static/icons/plus-grey.png"); }
 .follow span { visibility: hidden; }
 .follow:hover span { visibility: visible; }
 
 .delete {
     float: right;
     margin-right: 20px;
-    background: url("/static/delete.png") no-repeat 7px center;
+    background: url("/static/icons/delete.png") no-repeat 7px center;
     padding-left: 37px;
     color: #b00;
     border-radius: 2px;

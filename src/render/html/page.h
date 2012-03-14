@@ -13,6 +13,8 @@ std::string metaDescription(std::string descr);
 void notFound(const std::string &what="Page");
 void errorPage(const std::string &err);
 
+std::string icon(const std::string &name, const std::string &alt="");
+
 }
 }
 

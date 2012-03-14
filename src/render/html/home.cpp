@@ -15,12 +15,12 @@ void ticker(){
     // News
     std::vector<News> news = News::recent(7);
     if(news.empty()) news = News::latest(1);
-    o << "<div id=\"newsticker\"><img src=\"/static/newspaper.png\" alt=\"news\" /> <b>Latest news</b>: <a href=\"" + news[0].url() + "\">" + news[0].title() + "</a></div>";
+    o << "<div id=\"newsticker\">" << Html::icon("newspaper") << " <b>Latest news</b>: <a href=\"" << news[0].url() << "\">" << news[0].title() << "</a></div>";
     if(news.size() > 1){
         o << "<script>var news = [";
         for(std::vector<News>::iterator i = news.begin(); i != news.end(); i++){
             if(i != news.begin()) o << ",";
-            o << "{id: " + number(i->id()) + ", title: " + Json::jstring(i->title()) + "}";
+            o << "{id: " << number(i->id()) << ", title: " << Json::jstring(i->title()) << "}";
         }
         o << "];</script>"
              "<script src=\"/static/ticker.js\"></script>";
@@ -32,7 +32,7 @@ void Html::home(){
     // Head
     ticker();
     o << "<div class=\"search\">"
-         "<img src=\"/static/magnifier.png\" alt=\"\" /> Search for tracks : ";
+      << icon("magnifier") << " Search for tracks : ";
     searchForm("/tracks/search");
     o << "</div>"
     // Tracks
