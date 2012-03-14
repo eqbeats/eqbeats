@@ -95,7 +95,7 @@ function play(player){
             playing.playtime.innerHTML = prettyTime(this.position) + '/' + prettyTime(this.durationEstimate);
         },
         onfinish: function(){
-            playing.className = 'player paused';
+            pause(playing);
             if(playing.next) play(playing.next);
         }
     });
