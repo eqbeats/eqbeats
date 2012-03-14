@@ -16,7 +16,6 @@ news -> "blog" + feed
 Player: bouncy title
 
 - Tech
-upload -> process -> redirect
 normalize volume
 transcoding daemon
 Json (session, favorites)

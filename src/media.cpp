@@ -2,7 +2,9 @@
 #include "number.h"
 #include "path.h"
 #include "user.h"
+#include "log.h"
 #include <stdio.h>
+#include <sys/wait.h>
 #include <taglib/taglib.h>
 #include <taglib/mpegfile.h>
 #include <taglib/vorbisfile.h>
@@ -13,7 +15,8 @@ std::string Media::filePath(Format f) const{
 }
 
 void Media::convertToVorbis(){
-    if(fork() == 0){
+    pid_t child = fork();
+    if(child == 0){
         freopen("/dev/null","r",stdin);
         std::string logfile = eqbeatsDir() + "/ffmpeg.log";
         freopen(logfile.c_str(),"a",stdout);
@@ -22,6 +25,11 @@ void Media::convertToVorbis(){
         string mp3 = base + "mp3";
         string vorbis = base + "ogg";
         execlp("ffmpeg", "ffmpeg", "-loglevel", "quiet", "-y", "-i", mp3.c_str(), "-acodec", "libvorbis", vorbis.c_str(), NULL);
+    }
+    else if(child > 0){
+        int stat;
+        waitpid(child, &stat, 0);
+        log("ffmpeg: exited with " + number(stat));
     }
 }
 

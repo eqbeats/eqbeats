@@ -13,8 +13,8 @@ curl --connect-timeout 3 -If eqbeats.org > /dev/null 2>&1 || {
 }
 
 
-if [[ $SERVCOUNT -lt 3 || $REACHABLE == 0 ]]; then
-    [[ $SERVCOUNT -lt 3 ]] && echo "$(date '+[%F %T %Z]') $SERVCOUNT servers left, restarting..." >> ${EQBEATS_DIR}/eqbeats.log
+if [[ $SERVCOUNT -lt 5 || $REACHABLE == 0 ]]; then
+    [[ $SERVCOUNT -lt 5 ]] && echo "$(date '+[%F %T %Z]') $SERVCOUNT servers left, restarting..." >> ${EQBEATS_DIR}/eqbeats.log
     pkill eqbeats.fcgi 2> /dev/null
     ${EQBEATS_DIR}/launch.sh restart > /dev/null
     exit $[3 - $SERVCOUNT]
