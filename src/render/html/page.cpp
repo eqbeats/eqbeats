@@ -27,7 +27,7 @@ void Html::header(const std::string &title, const std::string &head, int status)
             "<title>" << (title.empty()?"":escape(title)+" - ") << "Equestrian Beats</title>"
             "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">"
             "<link rel=\"stylesheet\" type=\"text/css\" href=\"/static/style.css\" />"
-            "<link rel=\"shortcut icon\" href=\"/static/favicon.ico\" id=\"favicon-link\" type=\"image/vnd.microsoft.icon\" />"
+            "<link rel=\"shortcut icon\" href=\"/static/favicon.ico\" id=\"favicon-link\" />"
             "<script type=\"text/javascript\" src=\"/static/sm2.js\"></script>"
             "<script type=\"text/javascript\" src=\"/static/player.js\"></script>"
             << head <<
