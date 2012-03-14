@@ -49,7 +49,7 @@ void Html::embedTrack(int tid){
             "<img src=\"/static/logo.png\" class=\"logo\" alt=\"Equestrian Beats\" />"
         ) + "</a>";
     if(t){
-        o << "<h3><a href=\"" << t.url() + "\" target=\"_blank\">" << escape(t.title()) << "</a></h3>"
+        o << "<h3><a href=\"" << t.url() + "\" target=\"_blank\" title=\""<< escape(t.title()) <<"\">" << escape(t.title()) << "</a></h3>"
              "<h4>by <a href=\"" << t.artist().url() <<  "\" target=\"_blank\">" << escape(t.artist().name()) << "</a></h4>";
         player(t);
     }
