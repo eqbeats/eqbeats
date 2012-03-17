@@ -8,13 +8,12 @@
 #include "../follower.h"
 #include "../contest.h"
 #include "../cgi.h"
+#include <pcrecpp.h>
 
 using namespace Render;
 
 bool fromEqBeats(){
-    std::string ref = cgi.getEnvironment().getReferrer();
-    if(ref.length() < eqbeatsUrl().length()) return false;
-    return ref.substr(0, eqbeatsUrl().length()) == eqbeatsUrl();
+    return pcrecpp::RE("http://(www\\.)?" + cgi.getEnvironment().getServerName() + "/.*", pcrecpp::RE_Options().set_caseless(true)).FullMatch(cgi.getEnvironment().getReferrer());
 }
 
 void Action::follow(int uid, bool add){

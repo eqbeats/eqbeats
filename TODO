@@ -1,15 +1,20 @@
+fix fromEqBeats
+report: msg
+
 - Features
+password reset
 Player: volume
 avatar
-password reset
+favs -> playlists
 Cover art deletion
 coops
 sorting
-favs -> playlists (+ m3u)
+m3u playlists
 Stats (counts, referrers)
 PG13 rating
 
 - Design
+nicer toolbar
 news -> "blog" + feed
 Player: bouncy title
 
