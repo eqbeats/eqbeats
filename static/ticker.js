@@ -34,7 +34,7 @@ var entry = document.getElementById('newsticker').getElementsByTagName("a")[0];
 entry.style.opacity = '1';
 var i = 0;
 function setEntry(){
-    entry.href = "/news/" + news[i].id;
+    entry.href = news[i].url;
     entry.replaceChild(document.createTextNode(news[i].title), entry.firstChild);
 }
 function newsWait() { setTimeout(newsNext, delay); }

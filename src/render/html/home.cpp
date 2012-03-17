@@ -3,24 +3,27 @@
 #include "page.h"
 #include "forms.h"
 #include "track.h"
-#include "../render.h"
+#include "escape.h"
 #include "../../news.h"
 #include "../../number.h"
 #include "../../track.h"
+#include "../../db.h"
+#include "../render.h"
 #include "../json.h"
 
 using namespace Render;
 
 void ticker(){
-    // News
-    std::vector<News> news = News::recent(7);
-    if(news.empty()) news = News::latest(1);
-    o << "<div id=\"newsticker\">" << Html::icon("newspaper") << " <b>Latest news</b>: <a href=\"" << news[0].url() << "\">" << news[0].title() << "</a></div>";
+    DB::Result news = DB::query("SELECT title, url FROM ticker WHERE 'now'-date < '7d' ORDER BY date DESC");
+    if(news.empty()) news = DB::query("SELECT title, url FROM ticker ORDER BY date DESC LIMIT 1");
+    if(news.empty()) return;
+    o << "<div id=\"newsticker\">" << Html::icon("newspaper")
+      << " <b>Latest news</b>: <a href=\"" << Html::escape(news[0][1]) << "\">" << Html::escape(news[0][0]) << "</a></div>";
     if(news.size() > 1){
         o << "<script>var news = [";
-        for(std::vector<News>::iterator i = news.begin(); i != news.end(); i++){
-            if(i != news.begin()) o << ",";
-            o << "{id: " << number(i->id()) << ", title: " << Json::jstring(i->title()) << "}";
+        for(unsigned i=0; i<news.size(); i++){
+            if(i) o << ",";
+            o << "{title: " << Json::jstring(news[i][0]) << ", url: " << Json::jstring(news[i][1]) << "}";
         }
         o << "];</script>"
              "<script src=\"/static/ticker.js\"></script>";

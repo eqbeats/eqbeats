@@ -36,6 +36,13 @@ CREATE TABLE news (
     date timestamptz not null
 );
 
+CREATE TABLE ticker (
+    id serial primary key,
+    title text not null,
+    url text not null,
+    date timestamptz not null
+);
+
 CREATE TYPE comment_type AS ENUM ('track', 'user', 'news');
 CREATE TABLE comments (
     ref integer not null,

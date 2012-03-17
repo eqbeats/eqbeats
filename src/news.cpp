@@ -26,18 +26,10 @@ std::string News::url(int nid){
     return "/news/" + number(nid);
 }
 
-std::vector<News> newsHelper(std::string query){
-    DB::Result r = DB::query("SELECT id, title, to_char(date, 'FMMonth FMDDth YYYY') FROM news " + query);
-    std::vector<News> news(r.size());
-    for(unsigned i=0; i<r.size(); i++){
-        news[i] = News(number(r[i][0]), r[i][1], r[i][2]);
-    }
-    return news;
-}
 std::vector<News> News::latest(int n){
-    return newsHelper("ORDER BY date DESC LIMIT " + number(n));
-}
-
-std::vector<News> News::recent(int days){
-    return newsHelper("WHERE 'now' - date < '" + number(days) + "d' ORDER BY date DESC");
+    DB::Result r = DB::query("SELECT id, title, to_char(date, 'FMMonth FMDDth YYYY') FROM news ORDER BY date DESC LIMIT " + number(n));
+    std::vector<News> news(r.size());
+    for(unsigned i=0; i<r.size(); i++)
+        news[i] = News(number(r[i][0]), r[i][1], r[i][2]);
+    return news;
 }

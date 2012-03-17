@@ -20,7 +20,6 @@ class News {
         static std::string url(int nid);
 
         static std::vector<News> latest(int n);
-        static std::vector<News> recent(int days);
 
         operator bool() const { return _id > 0; }
 

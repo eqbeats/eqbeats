@@ -30,6 +30,7 @@ int main(int argc, char **argv){
             cerr << "Fail." << endl;
             return 1;
         }
+        DB::query("INSERT INTO ticker (title, url, date) VALUES ($1, $2, 'now') RETURNING id", arg, "/news/" + r[0][0]);
         cout << "News id: " << r[0][0] << endl;
     }
 
