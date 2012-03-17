@@ -88,6 +88,8 @@ int main(int argc, char** argv){
         // Feeds
         else if(path == "/tracks/latest/atom")
             Feed::latest(200);
+        else if(path == "/tracks/featured/atom")
+            Feed::featured(50);
         else if((id = route("user", "atom", path)))
             Feed::user(id);
         // oEmbed

@@ -4,6 +4,8 @@
 namespace Feed{
 
 void latest(int n);
+void featured(int n);
+
 void user(int uid);
 
 }

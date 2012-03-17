@@ -50,6 +50,10 @@ void Feed::latest(int n){
     feed("Latest tracks", "/tracks/latest", Track::latest(n));
 }
 
+void Feed::featured(int n){
+    feed("Featured tracks", "/tracks/featured", Track::featured(n));
+}
+
 void Feed::user(int uid){
     User u(uid);
     u ? feed(u.name(), u.url(), u.tracks())

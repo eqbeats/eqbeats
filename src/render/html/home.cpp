@@ -46,7 +46,9 @@ void Html::home(){
     trackList(Track::latest(7), "latest");
     o << "<a class=\"more\" href=\"/tracks/latest\">More</a>"
          "</div><div class=\"rightcol\">"
-         "<h3>Featured</h3>";
+         "<h3><a href=\"/tracks/featured\">Featured</a> ";
+    feedIcon("/tracks/featured/atom");
+    o << "</h3>";
     trackList(Track::featured(7), "featured");
     o << "</div><div class=\"leftcol\">"
          "<h3><a href=\"/tracks/random\">Random</a></h3>";
