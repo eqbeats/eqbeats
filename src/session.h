@@ -24,6 +24,8 @@ std::string login(int id, const std::string &host);
 
 void logout();
 
+std::string randomString();
+
 }
 
 #endif // SESSION_H

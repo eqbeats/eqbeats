@@ -179,6 +179,8 @@ int main(int argc, char** argv){
             Action::registration();
         else if(path == "/account")
             Action::account();
+        else if(path == "/account/reset")
+            Action::passwordReset();
         else if(path == "/login")
             Action::login();
         else if(path == "/logout")

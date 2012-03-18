@@ -2,6 +2,7 @@
 #define ACTIONS_H
 
 #include "../comment.h"
+#include "../account.h"
 
 //! Page generation with effects
 namespace Action{
@@ -10,9 +11,16 @@ namespace Action{
 void login();
 void logout();
 
+// password.cpp
+void passwordReset();
+
 // registration.cpp
 void registration();
 void account();
+void accountForm(const Account &_account,
+    const std::string &error=std::string(),
+    const std::string &message=std::string(),
+    const std::string &oldpw=std::string()); 
 
 // track.cpp
 void deleteTrack(int tid);

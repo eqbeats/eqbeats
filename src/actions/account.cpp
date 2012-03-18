@@ -13,8 +13,8 @@
 
 using namespace Render::Html;
 
-void accountForm(const Account &_account, const std::string &error=std::string(),
-                                const std::string &message=std::string()){
+void Action::accountForm(const Account &_account, const std::string &error,
+                                const std::string &message, const std::string &oldpw){
     header("Your account");
     Render::o << "<h2>Your account</h2>" <<
         (message.empty() ? "" : "<div class=\"message\">" + message + "</div>") <<
@@ -32,7 +32,7 @@ void accountForm(const Account &_account, const std::string &error=std::string()
                 "</tr>"
                 "<tr>"
                     "<td><label for=\"r_oldpw\">Old password:</label></td>"
-                    "<td><input type=\"password\" id=\"r_oldpw\" name=\"oldpw\" /></td>"
+                    "<td><input type=\"password\" id=\"r_oldpw\" name=\"oldpw\" value=\"" << oldpw << "\" /></td>"
                 "</tr>"
                 "<tr>"
                     "<td><label for=\"r_newpw\">New password:</label></td>"

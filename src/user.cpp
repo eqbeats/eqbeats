@@ -58,6 +58,12 @@ std::vector<User> User::search(const std::string &q){
     return select("FROM users WHERE name ILIKE $1 ORDER BY registration DESC", "%"+q+"%");
 }
 
+User User::withEmail(const std::string &email){
+    DB::Result r = DB::query("SELECT id, name FROM users WHERE email = $1", email);
+    if(r.empty()) return User();
+    return User(number(r[0][0]), r[0][1]);
+}
+
 std::vector<Track> User::tracks(bool all){
     if(_id<=0) return std::vector<Track>();
     return Track::select(0, "tracks.user_id = " + number(_id), "tracks.date DESC", all);

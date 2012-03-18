@@ -27,6 +27,7 @@ class User{
         static std::vector<User> list(unsigned int n, unsigned int begin=0);
         static std::vector<User> listArtists(unsigned int n, unsigned int begin=0);
         static std::vector<User> search(const std::string &q);
+        static User withEmail(const std::string &email);
 
         std::vector<Track> tracks(bool all=false);
 

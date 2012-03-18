@@ -83,3 +83,8 @@ CREATE TABLE featured_tracks (
     track_id integer not null REFERENCES tracks(id),
     date timestamptz not null
 );
+
+CREATE TABLE resets (
+    user_id int not null REFERENCES users(id),
+    token text unique not null
+);

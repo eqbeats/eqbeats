@@ -12,7 +12,7 @@ typedef unsigned long int ulong;
 
 using namespace cgicc;
 
-std::string randomSid(){
+std::string Session::randomString(){
     ulong n = ((ulong) rand() << 32) | (ulong) rand();
     char str[16];
     sprintf(str, "%016lx", n);
@@ -48,7 +48,7 @@ std::string Session::login(const std::string &email, const std::string &pw, cons
 }
 
 std::string Session::login(int id, const std::string &host){
-    sid = randomSid();
+    sid = randomString();
     DB::query("INSERT INTO sessions (user_id, sid, host, date) VALUES ($1, $2, $3, 'now')", number(id), sid, host);
     DB::query("UPDATE users SET last_login = 'now' WHERE id = " + number(id));
     u = User(id);
