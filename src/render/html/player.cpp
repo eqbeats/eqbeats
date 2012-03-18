@@ -39,6 +39,7 @@ void Html::embedTrack(int tid){
          "<html><head>"
             "<title>" << (t ? escape(t.title()) : "Track not found") << " - Equestrian Beats</title>"
             "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">"
+            "<meta name=\"robots\" content=\"noindex\" />"
             "<link rel=\"stylesheet\" type=\"text/css\" href=\"/static/player.css\" />"
             "<script type=\"text/javascript\" src=\"/static/sm2.js\"></script>"
             "<script type=\"text/javascript\" src=\"/static/player.js\"></script>"
