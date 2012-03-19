@@ -27,8 +27,7 @@ void loginForm(const std::string &error=std::string()){
             "<input type=\"submit\" value=\"Login\" />"
             "<input type=\"hidden\" name=\"redirect\" value=\"" << cgi("redirect") << "\" />"
         "</form>"
-        "<a href=\"/register\">Register</a><br/>"
-        "<a href=\"/account/reset\">Lost your passord?</a>";
+        "<a href=\"/register\">Register</a> &middot; <a href=\"/account/reset\">Lost your passord?</a>";
     Html::footer();
 }
 
