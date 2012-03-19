@@ -5,7 +5,10 @@ make || return 1
 install -m775 eqbeats.fcgi failsafe hitsd.sh /srv/eqbeats/
 
 cd static
-install -m664 *.js *.css *.txt *.swf *.png playing.ico 502.html /srv/eqbeats/static
+install -m664 *.css *.txt *.swf *.png playing.ico 502.html /srv/eqbeats/static
+for f in *.js do
+    jsmin < $f > /srv/eqbeats/static/$f
+done
 
 install -m664 favicon-pub.ico /srv/eqbeats/static/favicon.ico
 
