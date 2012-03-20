@@ -24,5 +24,5 @@ void Http::trackArt(int tid, Art::Size sz){
     Art::Format f = art.getFormat();
     string ext = f == Art::PNG ? ".png" : f == Art::JPEG ? ".jpg" : f == Art::GIF ? ".gif" : "";
     string mime = f == Art::PNG ? "image/png" : f == Art::JPEG ? "image/jpeg" : f == Art::GIF ? "image/gif" : "application/octet-stream";
-    Http::download((string)"/downloads/art/"+(sz==Art::Medium?"medium/":sz==Art::Thumbnail?"thumb/":"")+number(tid), t.artist()+" - "+t.title()+ext, mime);
+    Http::download((string)"/downloads/art/"+(sz==Art::Medium?"medium/":sz==Art::Thumbnail?"thumb/":"")+number(tid), t.artist().name()+" - "+t.title()+ext, mime);
 }
