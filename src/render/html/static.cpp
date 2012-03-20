@@ -28,7 +28,8 @@ void Html::faq(){
         "<p>We're two developers: <a href=\"/user/1\">codl</a> and <a href=\"/user/2\">fmang</a>. For more information check the <a href=\"/credits\">credits</a>.</p></div>"
 
         "<div><h4>I've got a question/problem/idea!</h4>"
-        "<p>What are you waiting for? Drop us a line at contact@eqbeats.org.</p></div>"
+        "<p>What are you waiting for? Drop us a line at contact@eqbeats.org.</p>"
+        "<p>Or <a href=\"http://iris.ponychat.net/?nick=pony_......&channels=eqbeats&prompt=1\">come chat with us</a> in <tt>#eqbeats</tt> on <tt>irc.ponychat.net</tt>. Don't be shy, we're friendly!</p></div>"
 
         "</div>";
     footer();

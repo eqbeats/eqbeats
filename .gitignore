@@ -5,7 +5,7 @@ Makefile
 
 dox/html
 dox/latex
-static/stats.html
+static/stats*.html
 static/awstats
 
 *.log
