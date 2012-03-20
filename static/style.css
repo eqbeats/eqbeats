@@ -303,7 +303,8 @@ a.more:before {
 
 .contest .votes {
     font-size: 0.7em;
-    padding-left: 5px;
+    margin: 5px 10px;
+    float:right;
 }
 
 /** Lists *********************************************************************/
