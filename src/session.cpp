@@ -42,9 +42,9 @@ User Session::user(){
     return u;
 }
 
-std::string Session::login(const std::string &email, const std::string &pw, const std::string &host){
+std::string Session::login(const std::string &email, const std::string &pw){
     DB::Result r = DB::query("SELECT id FROM users WHERE lower(email) = lower($1) AND password = crypt($2, password)", email, pw);
-    return r.empty() ? std::string() : login(number(r[0][0]), host);
+    return r.empty() ? std::string() : login(number(r[0][0]), cgi.getEnvironment().getRemoteAddr());
 }
 
 std::string Session::login(int id, const std::string &host){

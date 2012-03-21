@@ -44,7 +44,7 @@ void Action::login(){
         loginForm("Please specify a password.");
     // Logging in
     else{
-        std::string sid = Session::login(cgi("email"), cgi("pw"), cgi.getEnvironment().getRemoteAddr());
+        std::string sid = Session::login(cgi("email"), cgi("pw"));
         if(sid.empty())
             loginForm("Sorry, wrong credentials.");
         else {

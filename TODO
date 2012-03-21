@@ -16,7 +16,6 @@ Player: bouncy title
 
 - Tech
 report: msg
-session: login, drop host arg (use cgi instead)
 normalize volume
 Json (session, favorites)
 XML API
