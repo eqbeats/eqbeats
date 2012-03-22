@@ -44,15 +44,34 @@ audio {
     background-color: #999;
 }
 
-.playtime {
-    margin: 6px;
-    text-align: right;
+.playtime, .volume {
+    margin: 5px 8px;
+    float: right;
     font-size: .8em;
     color: #555;
 }
 
+.volume img {
+    padding: 3px 2px;
+}
+
+.volume .slider, .volume .slider div {
+    height: 5px;
+    border-radius: 3px;
+}
+.volume .slider {
+    background-color: #bbb;
+    padding: 1px;
+    margin: 4px;
+    float: right;
+}
+.volume .slider div {
+    float: left;
+    background-color: #ddd;
+}
+
 .cover {
-    border: 1px solid #ddd;
+    border: 1px solid #aaa;
 }
 
 #player-embed {

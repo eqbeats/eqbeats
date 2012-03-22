@@ -68,6 +68,7 @@ function load(player){
     snd = soundManager.createSound({
         id: "snd",
         autoLoad: false,
+        volume: globalVolume,
         whileloading: function(){
             player.playtime.innerHTML = prettyTime(this.position) + '/' + prettyTime(this.durationEstimate);
         },
@@ -77,6 +78,7 @@ function load(player){
         ]
     });
     playing = player;
+    playing.volume.slider.inner.style.width = parseInt(playing.volume.slider.style.width) * globalVolume / 100 + 'px';
     playing.style.display = 'block';
 }
 
@@ -113,6 +115,15 @@ function pp(e){
     toggle(this.parentNode);
 }
 
+function vol(e){
+    e.stopPropagation();
+    with(playing.volume.slider){
+        inner.style.width = e.clientX - (inner.offsetLeft + inner.offsetParent.offsetLeft) + 'px';
+        globalVolume = parseInt(inner.style.width) * 100 / parseInt(style.width);
+        snd.setVolume(globalVolume);
+    }
+}
+
 function scrub(e){
     with(playing)
         snd.setPosition((e.clientX - (scrubberbar.offsetLeft + scrubberbar.offsetParent.offsetLeft + 3))*snd.durationEstimate/(scrubberbar.clientWidth - 6));
@@ -125,16 +136,33 @@ function initTrack(t){
     player.scrubberbar = document.createElement('div');
     player.scrubber = document.createElement('div');
     player.playtime = document.createElement('div');
+    player.volume = document.createElement('div');
     with (player){
         playpause.className = 'playpause';
         scrubberbar.className = 'scrubberbar';
         scrubber.className = 'scrubber';
         playtime.className = 'playtime';
+        volume.className = 'volume';
         appendChild(playpause);
         scrubberbar.appendChild(scrubber);
         appendChild(scrubberbar);
         appendChild(playtime);
+        // Volume
+        volume.slider = document.createElement('div');
+        volume.icon = document.createElement('img');
+        with(volume){
+            slider.className = 'slider';
+            slider.style.width = '50px';
+            slider.inner = document.createElement('div');
+            slider.appendChild(slider.inner);
+            icon.src = '/static/icons/volume.png';
+            appendChild(slider);
+            appendChild(icon);
+        }
+        appendChild(volume);
+        // Events
         addListener(playpause, 'click', pp);
+        addListener(volume.slider, 'click', vol);
         addListener(scrubberbar, 'click', function(e){
             e.stopPropagation();
         });
@@ -170,6 +198,7 @@ var tracks = [];
 var lists = Object();
 var snd;
 var scrubbing = false;
+var globalVolume = 100;
 
 function registerTrack(t){ tracks.push(t); }
 
