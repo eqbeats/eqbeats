@@ -14,7 +14,6 @@ news -> "blog" + feed
 Player: bouncy title
 
 - Tech
-store volume in a cookie
 report: msg
 normalize volume
 Json (session, favorites)

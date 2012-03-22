@@ -120,6 +120,7 @@ function vol(e){
     with(playing.volume.slider){
         inner.style.width = e.clientX - (inner.offsetLeft + inner.offsetParent.offsetLeft) + 'px';
         globalVolume = parseInt(inner.style.width) * 100 / parseInt(style.width);
+        document.cookie = 'volume=' + globalVolume + '; path=/';
         snd.setVolume(globalVolume);
     }
 }
@@ -200,6 +201,12 @@ var snd;
 var scrubbing = false;
 var globalVolume = 100;
 
+function parseCookies(){
+    var i = document.cookie.indexOf('volume=');
+    if(i >= 0)
+        globalVolume = parseInt(document.cookie.substr(i+7));
+}
+
 function registerTrack(t){ tracks.push(t); }
 
 soundManager.url = '/static/';
@@ -209,6 +216,7 @@ soundManager.onready(function(){
     for(var i=0; i<tracks.length; i++)
         initTrack(tracks[i]);
     if(!playing) return;
+    parseCookies();
     load(playing);
     addListener(document, 'mouseup', function(){
         if(scrubbing){
