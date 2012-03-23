@@ -14,6 +14,8 @@
 #include "../../path.h"
 #include "../../follower.h"
 #include <algorithm>
+#include <cstring>
+#include <time.h>
 
 using namespace std;
 using namespace Render;
@@ -38,8 +40,13 @@ void Html::trackPage(int tid){
     o << "<a href=\"" << (Session::user() ? "" : "/login?redirect=") << t.url() << "/" << (isFav?"un":"") << "favorite\""
          " title=\"" << (isFav?"Remove from favorites":"Add to favorites") << "\">"
     <<     icon(isFav?"star":"star-empty", isFav?"Remove from favorites":"Add to favorites") << "</a>"
-         "</h2>"
-         "<h4>by <a href=\"" << t.artist().url() <<  "\">" << escape(t.artist().name()) << "</a></h4>"
+         "</h2>";
+    char date[200];
+    strcpy(date, t.date().c_str());
+    struct tm tm;
+    strptime(date, "%Y-%m-%d", &tm);
+    strftime(date, 200, "%b %d, %Y", &tm);
+    o << "<h4>by <a href=\"" << t.artist().url() <<  "\">" << escape(t.artist().name()) << "</a> <span class=\"date\">on " << date << "</span></h4>"
 
       << (art?"<img class=\"art\" alt=\"\" src=\"" + art.url(Art::Medium) + "\" />":"");
 
