@@ -1,6 +1,7 @@
 #include "art.h"
 #include "number.h"
 #include "path.h"
+#include "log.h"
 #include <Magick++.h>
 #include <stdio.h>
 #include <unistd.h>
@@ -46,7 +47,10 @@ void Art::makeThumbs(){
     unlink(filepath(Thumbnail).c_str());
     symlink(("../" + number(_tid)).c_str(), filepath(Thumbnail).c_str());
     try {
-        i.read(filepath());
+        try{ i.read(filepath()); }
+        catch(Magick::Warning &warn){
+            log((std::string) "ImageMagick Warning : " + warn.what());
+        }
         if(getFormat() == JPEG && i.quality() > 90)
             i.quality(90);
         if(i.size().height() > 480){
@@ -60,7 +64,7 @@ void Art::makeThumbs(){
             i.write(filepath(Thumbnail));
         }
     } catch ( Magick::Exception &err ) {
-        return;
+        log((std::string) "ImageMagick Exceptions : " + err.what());
     }
 }
 
