@@ -299,14 +299,18 @@ a.more:before {
 
 .contest { margin-top: 15px; }
 
-.contest button {
+.submissions form {
+    margin: 0;
+}
+
+.submissions button {
     background: none;
     border: none;
     cursor: pointer;
     padding: 0;
 }
 
-.contest .votes {
+.submissions .votes {
     font-size: 0.7em;
     margin: 5px 10px;
     float:right;

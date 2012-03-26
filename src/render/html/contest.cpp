@@ -15,6 +15,7 @@ void Render::Html::submissions(const Contest &c, const std::vector<Track> &track
     if(tracks.empty())
         o << "<div class=\"empty tracklist\">No submissions yet.</div>";
     else {
+        o << "<div class=\"submissions\">";
         bool voting = c.state()==Contest::Voting;
         std::vector<int> uvotes;
         if(voting){
@@ -43,6 +44,7 @@ void Render::Html::submissions(const Contest &c, const std::vector<Track> &track
         }
         o << "</ul>";
         if(voting) o << "</form>";
+        o << "</div>";
     }
 }
 
