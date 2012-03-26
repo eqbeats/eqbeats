@@ -164,7 +164,7 @@ int main(int argc, char** argv){
             Html::latestNews(20);
         // Contests
         else if((id = route("contest", path)))
-            Html::contest(id, cgi.getEnvironment().getRemoteAddr());
+            Html::contest(id);
         else if((id = route("contest", "submit", path)))
             Action::contestSubmission(id);
         else if((id = route("contest", "vote", path)))

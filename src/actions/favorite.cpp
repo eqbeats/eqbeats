@@ -51,13 +51,12 @@ void Action::vote(int cid){
     Contest c(cid);
     if(!c) return Html::notFound("Contest");
     std::string param = cgi("tid");
-    std::string host = cgi.getEnvironment().getRemoteAddr();
     if(!param.empty()){
         int tid = number(param.substr(1));
         if(!tid);
         else if(param[0] == '-')
-            c.unvote(tid, host);
-        else c.vote(tid, host);
+            c.unvote(tid);
+        else c.vote(tid);
     }
     Http::redirect(c.url()+"#submissions");
 }

@@ -21,13 +21,13 @@ class Contest{
         enum State { Submissions, Voting, Closed };
         State state() const { return _state; }
 
-        void vote(int tid, std::string host);
-        void unvote(int tid, std::string host);
+        void vote(int tid);
+        void unvote(int tid);
 
         static std::string url(int id);
         std::string url() const { return url(_id); }
 
-        std::vector<int> usersVotes(std::string host);
+        std::vector<int> usersVotes() const;
         std::map<int, int> getVotes() const;
 
         std::vector<Track> submissions();

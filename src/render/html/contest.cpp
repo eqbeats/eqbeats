@@ -11,24 +11,14 @@
 #include "../../art.h"
 #include <algorithm>
 
-void Render::Html::contest(int cid, const std::string &host){
-    Contest c(cid);
-    if(!c) return notFound("Contest");
-    header(c.name());
-    o << "<h2>" + escape(c.name()) + "</h2>"
-         "<div class=\"contest\">";
-    std::string descr = c.getDescription();
-    if(!descr.empty())
-        o << "<div class=\"description\">" << descr << "</div>";
-    o << "<h3 id=\"submissions\">" << icon("disc") << " Submissions</h3>";
-    std::vector<Track> tracks = c.submissions();
+void Render::Html::submissions(const Contest &c, const std::vector<Track> &tracks){
     if(tracks.empty())
         o << "<div class=\"empty tracklist\">No submissions yet.</div>";
     else {
         bool voting = c.state()==Contest::Voting;
         std::vector<int> uvotes;
         if(voting){
-            uvotes = c.usersVotes(host);
+            uvotes = c.usersVotes();
             o << "<form action=\"" + c.url() + "/vote\" method=\"post\">";
         }
         std::map<int,int> votes = c.getVotes();
@@ -54,6 +44,20 @@ void Render::Html::contest(int cid, const std::string &host){
         o << "</ul>";
         if(voting) o << "</form>";
     }
+}
+
+void Render::Html::contest(int cid){
+    Contest c(cid);
+    if(!c) return notFound("Contest");
+    header(c.name());
+    o << "<h2>" + escape(c.name()) + "</h2>"
+         "<div class=\"contest\">";
+    std::string descr = c.getDescription();
+    if(!descr.empty())
+        o << "<div class=\"description\">" << descr << "</div>";
+    o << "<h3 id=\"submissions\">" << icon("disc") << " Submissions</h3>";
+    std::vector<Track> tracks = c.submissions();
+    submissions(c, tracks);
     if(Session::user() && c.state()==Contest::Submissions){
         std::vector<Track> utracks = Session::user().tracks();
         std::vector<Track> toSubmit;

@@ -2,6 +2,7 @@
 #include "db.h"
 #include "number.h"
 #include "track.h"
+#include "cgi.h"
 
 Contest::Contest(int id){
     _id = 0;
@@ -31,8 +32,9 @@ void Contest::addTrack(int tid){
     );
 }
 
-void Contest::vote(int tid, std::string host){
+void Contest::vote(int tid){
     if(state() != Voting) return;
+    std::string host = cgi.getEnvironment().getRemoteAddr();
     // Check if the user didn't already vote
     DB::Result r = DB::query(
         "SELECT 1 FROM votes "
@@ -60,7 +62,7 @@ void Contest::vote(int tid, std::string host){
         );
 }
 
-void Contest::unvote(int tid, std::string host){
+void Contest::unvote(int tid){
     if(state() != Voting) return;
     DB::Result r = DB::query(
         "DELETE FROM votes "
@@ -68,7 +70,7 @@ void Contest::unvote(int tid, std::string host){
         " AND track_id = " + number(tid) +
         " AND host = $1 "
         " RETURNING 1"
-        , host);
+        , cgi.getEnvironment().getRemoteAddr());
     if(!r.empty())
         DB::query(
             "UPDATE contest_submissions "
@@ -93,11 +95,11 @@ std::string Contest::url(int id){
     return "/contest/" + number(id);
 }
 
-std::vector<int> Contest::usersVotes(std::string host){
+std::vector<int> Contest::usersVotes() const{
     DB::Result r = DB::query(
         "SELECT track_id FROM votes "
         "WHERE host = $1 AND contest_id = " + number(_id)
-        , host);
+        , cgi.getEnvironment().getRemoteAddr());
     std::vector<int> tracks;
     for(DB::Result::iterator i = r.begin(); i != r.end(); i++)
         tracks.push_back(number((*i)[0]));
