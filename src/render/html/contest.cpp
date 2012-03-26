@@ -36,9 +36,9 @@ void Render::Html::submissions(const Contest &c, const std::vector<Track> &track
                 bool vote = std::find(uvotes.begin(),uvotes.end(),i->id()) != uvotes.end();
                 o << (std::string) "<button type=\"submit\" name=\"tid\" title=\"" + (vote?"Cancel vote":"Vote") + "\" value=\"" + (vote?"-":"+") + number(i->id()) + "\">" + icon(vote?"vote":"star-empty", vote?"Cancel vote":"Vote") + "</button> ";
             }
-            o << "<a href=\"" << i->url() << "\">" << escape(i->title()) << "</a></div>";
-            o << "<div class=\"by\">by <a href=\"" << i->artist().url() << "\">" << escape(i->artist().name()) << "</a></div>";
-            o << "<div style=\"clear:both;\"></div>";
+            o << "<a href=\"" << i->url() << "\" title=\"" << escape(i->title()) << "\">" << escape(i->title()) << "</a></div>"
+                 "<div class=\"by\">by <a href=\"" << i->artist().url() << "\">" << escape(i->artist().name()) << "</a></div>"
+                 "<div style=\"clear:both;\"></div>";
             player(*i, "contest", false);
             o << "</li>";
         }
