@@ -97,8 +97,10 @@ function play(player){
             playing.playtime.innerHTML = prettyTime(this.position) + '/' + prettyTime(this.durationEstimate);
         },
         onfinish: function(){
-            pause(playing);
-            if(playing.next) play(playing.next);
+            if(!scrubbing){
+                pause(playing);
+                if(playing.next) play(playing.next);
+            }
         }
     });
     player.className = 'player playing';
