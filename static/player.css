@@ -34,12 +34,23 @@ audio {
     border: solid 1px #ddd;
     height: 8px;
     padding: 3px;
+    border-radius: 3px;
+    box-shadow: inset 0 1px 2px -1px rgba(0,0,0,.2);
+    background: white;
 }
+
 .scrubber {
     background-color: #406;
     height: 8px;
     width: 0;
+    border-radius: 2px;
+    box-shadow: 0 1px 2px rgba(0,0,0,.2);
 }
+
+.scrubberbar:hover .scrubber {
+    background-color: #619;
+}
+
 .hidden .scrubber {
     background-color: #999;
 }
