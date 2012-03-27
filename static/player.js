@@ -50,11 +50,13 @@ function prettyTime(ms){
 
 function setFavicon(href){
     var oldIcon = document.getElementById('favicon-link');
-    var icon = document.createElement('link');
-    icon.id = 'favicon-link';
-    icon.rel = 'shortcut icon';
-    icon.href = href;
-    document.head.replaceChild(icon, oldIcon);
+    if(oldIcon){
+        var icon = document.createElement('link');
+        icon.id = 'favicon-link';
+        icon.rel = 'shortcut icon';
+        icon.href = href;
+        document.head.replaceChild(icon, oldIcon);
+    }
 }
 
 function load(player){
