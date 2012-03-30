@@ -7,7 +7,7 @@ if [[ $SERVCOUNT == "" ]]; then #something went wrong with the pidfile
 fi
 
 REACHABLE=1
-curl --connect-timeout 3 -If eqbeats.org > /dev/null 2>&1 || {
+curl --connect-timeout 6 -If eqbeats.org > /dev/null 2>&1 || {
     REACHABLE=0
     echo "$(date '+[%F %T %Z]') Unreachable, restarting..." >> ${EQBEATS_DIR}/eqbeats.log
 }
