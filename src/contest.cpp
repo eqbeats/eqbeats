@@ -3,6 +3,8 @@
 #include "number.h"
 #include "track.h"
 #include "cgi.h"
+#include "session.h"
+#include "user.h"
 
 Contest::Contest(int id){
     _id = 0;
@@ -35,13 +37,16 @@ void Contest::addTrack(int tid){
 void Contest::vote(int tid){
     if(state() != Voting) return;
     std::string host = cgi.getEnvironment().getRemoteAddr();
+    User u = Session::user();
     // Check if the user didn't already vote
     DB::Result r = DB::query(
         "SELECT 1 FROM votes "
         "WHERE contest_id = " + number(_id) +
         " AND track_id = " + number(tid) +
-        " AND host = $1"
-        , host);
+        " AND " +
+         (u?"user_id = "+number(u.id()):
+            "host = "+host+" AND user_id ISNULL")
+        );
     if(!r.empty()) return;
     // Check if the track is linked to the contest
     r = DB::query(
@@ -51,8 +56,8 @@ void Contest::vote(int tid){
     if(r.empty()) return;
     // Update
     DB::query(
-        "INSERT INTO votes (host, track_id, contest_id) "
-        "VALUES ($1, "+number(tid)+", "+number(_id)+")"
+        "INSERT INTO votes (host, track_id, contest_id, user_id) "
+        "VALUES ($1, "+number(tid)+", "+number(_id)+", "+(u?number(u.id()):"null")+")"
         , host);
     DB::query(
         "UPDATE contest_submissions "
@@ -64,13 +69,15 @@ void Contest::vote(int tid){
 
 void Contest::unvote(int tid){
     if(state() != Voting) return;
+    User u = Session::user();
     DB::Result r = DB::query(
         "DELETE FROM votes "
         "WHERE contest_id = " + number(_id) +
         " AND track_id = " + number(tid) +
-        " AND host = $1 "
-        " RETURNING 1"
-        , cgi.getEnvironment().getRemoteAddr());
+     (u?" AND user_id = " + number(u.id()):
+        " AND host = "+cgi.getEnvironment().getRemoteAddr()+
+        " AND user_id ISNULL") +
+        " RETURNING 1");
     if(!r.empty())
         DB::query(
             "UPDATE contest_submissions "
@@ -96,10 +103,13 @@ std::string Contest::url(int id){
 }
 
 std::vector<int> Contest::usersVotes() const{
+    User u = Session::user();
     DB::Result r = DB::query(
         "SELECT track_id FROM votes "
-        "WHERE host = $1 AND contest_id = " + number(_id)
-        , cgi.getEnvironment().getRemoteAddr());
+        "WHERE contest_id = " + number(_id) +
+     (u?" AND user_id = " + number(u.id()):
+        " AND host = " + cgi.getEnvironment().getRemoteAddr() + 
+        " AND user_id ISNULL"));
     std::vector<int> tracks;
     for(DB::Result::iterator i = r.begin(); i != r.end(); i++)
         tracks.push_back(number((*i)[0]));

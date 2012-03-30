@@ -75,6 +75,7 @@ CREATE TABLE contest_submissions (
 );
 CREATE TABLE votes (
     host inet not null,
+    user_id integer,
     track_id integer not null REFERENCES tracks(id),
     contest_id integer not null REFERENCES contests(id)
 );
