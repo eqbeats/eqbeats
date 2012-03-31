@@ -50,7 +50,8 @@ void Html::home(){
     feedIcon("/tracks/featured/atom");
     o << "</h3>";
     trackList(Track::featured(7), "featured");
-    o << "</div><div class=\"leftcol\">"
+    o << "<a class=\"more\" href=\"/tracks/featured\">More</a>"
+         "</div><div class=\"leftcol\">"
          "<h3><a href=\"/tracks/random\">Random</a></h3>";
     trackList(Track::random(3), "random");
     o << "<a class=\"more\" href=\"/tracks/random\">More</a>"
