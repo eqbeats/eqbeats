@@ -217,6 +217,8 @@ soundManager.url = '/static/';
 soundManager.preferFlash = false;
 soundManager.audioFormats.mp3.required=false;
 soundManager.onready(function(){
+    if(!document.head)
+        document.head = document.getElementsByTagName("HEAD")[0];
     for(var i=0; i<tracks.length; i++)
         initTrack(tracks[i]);
     if(!playing) return;
