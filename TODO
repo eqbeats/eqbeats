@@ -17,6 +17,7 @@ news -> "blog" + feed
 Player: bouncy title
 
 - Tech
+remove obsolete events
 prevent duplicates when publishing
 report: msg
 normalize volume

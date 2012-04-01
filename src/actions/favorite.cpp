@@ -8,6 +8,7 @@
 #include "../follower.h"
 #include "../contest.h"
 #include "../cgi.h"
+#include "../event.h"
 #include <pcrecpp.h>
 
 using namespace Render;
@@ -26,8 +27,12 @@ void Action::follow(int uid, bool add){
     else if(Session::user() == u)
         Http::redirect(u.url());
     else{
-        add ? Follower(Session::user()).follow(uid)
-            : Follower(Session::user()).unfollow(uid);
+        if(add){
+            Follower(Session::user()).follow(uid);
+            Event::follow(u, Session::user());
+        }
+        else
+            Follower(Session::user()).unfollow(uid);
         Http::redirect(u.url());
     }
 }
@@ -40,8 +45,12 @@ void Action::favorite(int tid, bool add){
     else if(!Session::user())
         Http::redirect("/login?redirect=" + t.url() + "/" + (add?"":"un") + "favorite");
     else{
-        add ? Follower(Session::user()).addToFavorites(tid)
-            : Follower(Session::user()).removeFromFavorites(tid);
+        if(add){
+            Follower(Session::user()).addToFavorites(tid);
+            Event::favorite(t, Session::user());
+        }
+        else
+            Follower(Session::user()).removeFromFavorites(tid);
         Http::redirect(t.url());
     }
 }

@@ -11,6 +11,7 @@ class Track{
     public:
         Track() { _id = 0; _artistId = 0; }
         Track(int nId);
+        Track(int nId, std::string nTitle){ _id = nId; _title = nTitle; }
 
         int id() const{ return _id; }
         std::string title() const{ return _title; }

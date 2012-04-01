@@ -1,6 +1,7 @@
 #include "track.h"
 #include "page.h"
 #include "escape.h"
+#include "event.h"
 #include "player.h"
 #include "comment.h"
 #include "forms.h"
@@ -151,8 +152,9 @@ void Html::trackPage(int tid){
              "</div>";
     }
 
-    // Comments
-    comments(Comment::forTrack(t.id()));
+    // Events
+    o << "<h3>Feed</h3>";
+    eventStream(Event::trackEvents(t));
     commentForm(t.url() + "/comment");
 
     o << "</div>";

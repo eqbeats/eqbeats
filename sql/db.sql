@@ -89,3 +89,17 @@ CREATE TABLE resets (
     user_id int not null REFERENCES users(id),
     token text unique not null
 );
+
+CREATE TYPE event_type AS ENUM ('publish', 'comment', 'favorite', 'follow');
+CREATE TABLE events (
+    id serial primary key,
+    type event_type not null,
+    date timestamptz not null,
+    target_id int,
+    target_name text,
+    source_id int,
+    source_name text,
+    track_id int,
+    track_title text,
+    message text not null
+);

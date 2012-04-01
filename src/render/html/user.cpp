@@ -5,6 +5,7 @@
 #include "forms.h"
 #include "track.h"
 #include "user.h"
+#include "event.h"
 #include "../render.h"
 #include "../../session.h"
 #include "../../track.h"
@@ -12,6 +13,7 @@
 #include "../../number.h"
 #include "../../account.h"
 #include "../../follower.h"
+#include "../../event.h"
 
 using namespace std;
 using namespace Render;
@@ -68,12 +70,11 @@ void Html::userPage(int uid){
         uploadForm("/track/new");
         o << "<h3>" << icon("plus-circle") << " Artists you follow</h3>";
         userList(Follower(user).following());
-        if(!tracks.empty())
-            Html::comments(Comment::forArtist(uid), "Comments on your tracks");
     }
 
-    // Comments
-    Html::comments(Comment::forUser(uid));
+    // Events
+    o << "<h3>Feed</h3>";
+    Html::eventStream(Event::userEvents(user));
     Html::commentForm(user.url()+"/comment");;
 
     footer();

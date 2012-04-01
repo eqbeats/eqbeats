@@ -15,6 +15,7 @@
 #include "../mail.h"
 #include "../cgi.h"
 #include "../media.h"
+#include "../event.h"
 
 using namespace std;
 using namespace Render;
@@ -36,6 +37,7 @@ void Action::publishTrack(int tid){
         cgi.getEnvironment().getRequestMethod() == "POST"){
         t.setVisible(true);
         t.bump();
+        Event::publish(t);
         // Mail
         std::vector<std::string> emails = Follower(u).followers();
         std::string maildata =
