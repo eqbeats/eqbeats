@@ -37,6 +37,7 @@ bool Follower::isFollowing(int uid) const{
 }
 
 void Follower::follow(int uid){
+    if(uid == id()) return;
     if(isFollowing(uid)) return;
     DB::query("INSERT INTO favorites (user_id, type, ref) "
         "VALUES (" + number(id()) + ", 'artist', " + number(uid) + ")");

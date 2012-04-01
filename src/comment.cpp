@@ -17,13 +17,10 @@ std::string ttos(Comment::Type in){
     else return "";
 }
 
-void Comment::add(const std::string &msg, std::string name, int uid, int ref, Comment::Type type){
-    if(uid > 0)
-        name = ::User(uid).name();
-    if(!DB::query("SELECT 1 FROM comments WHERE author_name = $1 AND 'now' - date < '8s'",
-        name).empty()) return;
+void Comment::add(const std::string &msg, ::User u, int ref, Comment::Type type){
+    if(!DB::query("SELECT 1 FROM comments WHERE author_name = $1 AND 'now' - date < '8s'", u.name()).empty()) return;
     DB::query("INSERT INTO comments (author_id, author_name, contents, ref, type, date) "
-    "VALUES (" + number(uid) + ", $1, $2, "+ number(ref) +", $3, 'now')", name, msg, ttos(type));
+        "VALUES (" + number(u.id()) + ", $1, $2, "+ number(ref) +", $3, 'now')", u.name(), msg, ttos(type));
 }
 
 std::vector<Comment> Comment::forArtist(int uid){

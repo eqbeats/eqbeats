@@ -490,7 +490,7 @@ textarea {
     font-size: 14px;
     padding: 3px 3px 3px 20px;
     margin-left: 5px;
-    background: url("/static/plus.png") left center no-repeat;
+    background: url("/static/icons/plus.png") left center no-repeat;
 }
 .follow:hover{ 
     text-decoration: none;

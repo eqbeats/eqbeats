@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+class User;
 
 class Comment {
 
@@ -20,7 +21,7 @@ class Comment {
         int trackId;
         std::string trackTitle;
 
-        static void add(const std::string &msg, std::string name, int uid, int ref, Type type);
+        static void add(const std::string &msg, ::User u, int ref, Type type);
 
         static std::vector<Comment> forArtist(int uid);
         static std::vector<Comment> forUser(int uid);

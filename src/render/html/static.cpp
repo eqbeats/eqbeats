@@ -24,6 +24,9 @@ void Html::faq(){
         "<div><h4>Why not [INSERT SITE HERE]?</h4>"
         "<p>Because we try to make the publishing and listening process as smooth as can be. No ads, no limits, no downsides.</p></div>"
 
+        "<div><h4>So how do I get on the list of artists? I wanna be one of the cool kids!</h4>"
+        "<p><a href=\"/register\">Sign up</a> for an account. Log in, get to your user page, and upload a track, then publish it. <i>Voilà</i>, you're on the list.</p></div>"
+
         "<div><h4>Who are you anyway?</h4>"
         "<p>We're two developers: <a href=\"/user/1\">codl</a> and <a href=\"/user/2\">fmang</a>. For more information check the <a href=\"/credits\">credits</a>.</p></div>"
 
