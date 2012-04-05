@@ -153,8 +153,7 @@ void Html::trackPage(int tid){
     }
 
     // Events
-    o << "<h3>Feed</h3>";
-    eventStream(Event::trackEvents(t));
+    eventStream(Event::trackEvents(t), "Latest updates", false);
     commentForm(t.url() + "/comment");
 
     o << "</div>";

@@ -16,6 +16,7 @@ class Event {
         User source() const { return _source; }
         Track track() const { return _track; }
         std::string message() const { return _message; }
+        std::string date() const { return _date; }
 
         static void publish(const Track &t);
         static void favorite(const Track &t, const User &src);
@@ -23,18 +24,20 @@ class Event {
         static void comment(const User &tgt, const User &src, std::string msg);
         static void follow(const User &tgt, const User &src);
 
-        static std::vector<Event> userEvents(const User &u);
+        static std::vector<Event> userEvents(const User &u, int limit=0);
         static std::vector<Event> trackEvents(const Track &t);
+        static std::vector<Event> userComments(const User &u);
 
     private:
-        Event(Type nType, User nSource=User(), User nTarget=User(), Track nTrack=Track(), std::string nMessage="");
-        static std::vector<Event> select(std::string cond);
+        Event(Type nType, User nSource=User(), User nTarget=User(), Track nTrack=Track(), std::string nMessage="", std::string nDate="");
+        static std::vector<Event> select(std::string cond, int limit=0);
         void push();
         Type _type;
         User _target;
         User _source;
         Track _track;
         std::string _message;
+        std::string _date;
 
 };
 

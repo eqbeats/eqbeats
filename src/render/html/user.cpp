@@ -48,13 +48,19 @@ void Html::userPage(int uid){
     // Description
          "<div class=\"user\">"
              "<div class=\"item\">" << icon("mail") << " Email: " << escapeEmail(user.email()) << "</div>";
-    if(!about.empty())
-        o << "<div class=\"notes\">" << format(about) << "</div>";
     bool edition = Session::user().id() == user.id();
     if(edition)
         o << "<div class=\"item\">" << icon("card-pencil") << " <a href=\"/account\">Edit</a></div>";
-    o << "<div class=\"item\">" << icon("star") << " <a href=\"" << user.url() << "/favorites\">Favorite tracks</a></div>"
-         "</div>";
+    o << "<div class=\"item\">" << icon("star") << " <a href=\"" << user.url() << "/favorites\">Favorite tracks</a></div>";
+    if(!about.empty())
+        o << "<div class=\"notes\">" << format(about) << "</div>";
+    o << "</div>";
+
+    // Feed
+    o << "<div class=\"events_wrapper\">";
+    Html::commentForm(user.url()+"/comment", true);
+    Html::eventStream(Event::userEvents(user, 8), "Recent happenings");
+    o << "</div>";
 
     // Tracks
     vector<Track> tracks = user.tracks(edition);
@@ -71,11 +77,6 @@ void Html::userPage(int uid){
         o << "<h3>" << icon("plus-circle") << " Artists you follow</h3>";
         userList(Follower(user).following());
     }
-
-    // Events
-    o << "<h3>Feed</h3>";
-    Html::eventStream(Event::userEvents(user));
-    Html::commentForm(user.url()+"/comment");;
 
     footer();
 }

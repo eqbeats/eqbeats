@@ -46,6 +46,7 @@ void Follower::follow(int uid){
 void Follower::unfollow(int uid){
     DB::query("DELETE FROM favorites "
         "WHERE type = 'artist' AND ref = " + number(uid) + " AND user_id = " + number(id()));
+    DB::query("DELETE FROM events WHERE type = 'follow' AND source_id = " + number(id()) + " AND target_id = " + number(uid));
 }
 
 int Follower::followersCount() const{
@@ -68,4 +69,5 @@ void Follower::addToFavorites(int tid){
 void Follower::removeFromFavorites(int tid){
     DB::query("DELETE FROM favorites "
         "WHERE type = 'track' AND ref = " + number(tid) + " AND user_id = " + number(_id));
+    DB::query("DELETE FROM events WHERE type = 'favorite' AND source_id = " + number(id()) + " AND track_id = " + number(tid));
 }

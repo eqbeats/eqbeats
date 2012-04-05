@@ -251,6 +251,7 @@ a.danger {
 
 .user .item {
     margin: 2px 15px 15px;
+    display: inline-block;
 }
 .user .item img {
     vertical-align: middle;
@@ -260,6 +261,11 @@ a.danger {
 
 .user .notes {
     margin: 0 0 15px;
+    background: #fefefe;
+    border: 1px #f3f3f3 solid;
+    border-top-color: #eee;
+    box-shadow: inset 0 5px 30px -15px #f3f3f3;
+    font-size: 0.8em;
 }
 
 /** FAQ page ******************************************************************/
@@ -514,6 +520,74 @@ textarea {
     text-decoration: none;
     background-color: #d00;
     color: #fff;
+}
+
+/** Events ********************************************************************/
+
+.events {
+    border: 1px #eee solid;
+    border-bottom: none;
+    padding: 0;
+    margin: 15px 0 5px;
+    font-size : 0.7em;
+}
+.events h4 {
+    background: #f3f3f3;
+    margin: 0 0 2px 0;
+    padding: 8px 12px;
+    border-bottom: 1px #eee solid;
+    border-right:none;
+}
+.events .event, .events .empty {
+    color: #555;
+    border-bottom: 1px #eee solid;
+    padding: 5px 20px;
+    margin: 0;
+    list-style: none;
+}
+.event img {
+    vertical-align: middle;
+    position: relative;
+    right: 10px;
+    opacity: .8;
+}
+.event:hover img {
+    opacity: 1;
+}
+.event .date {
+    float: right;
+    font-size: 1em;
+}
+.events .comment {
+    color: #555;
+    border: none;
+    margin: 5px 10px 5px 30px;
+    padding: 0;
+    font-size: 1.1em;
+    text-indent:0;
+}
+.events .event:nth-child(2n+1) { background: #fcfcfc; }
+.event a { color: #7733bb; }
+
+.event:hover {
+    color: black;
+}
+.event:hover a { color: #440088; }
+.events_wrapper form {
+    float : right;
+    margin: 1px;
+}
+.events_wrapper input {
+    border-color: #aaa;
+}
+.events_wrapper input:hover {
+    border-color: #555;
+}
+.events_wrapper input[type="text"] {
+    width: 220px;
+}
+.events_wrapper input[type="text"][name="name"] {
+    width: 90px;
 }
 
 /** Track grid ****************************************************************/

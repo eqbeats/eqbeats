@@ -68,8 +68,9 @@ Track Track::create(int nArtistId, const string &nTitle){
 
 void Track::remove(){
     DB::query("DELETE FROM contest_submissions WHERE track_id = " + number(_id));
-    DB::query("DELETE FROM featured_tracks WHERE track_id = " + number(_id));
     DB::query("DELETE FROM votes WHERE track_id = " + number(_id));
+    DB::query("DELETE FROM events WHERE track_id = " + number(_id));
+    DB::query("DELETE FROM featured_tracks WHERE track_id = " + number(_id));
     DB::query("DELETE FROM comments WHERE type = 'track' AND ref = " + number(_id));
     DB::query("DELETE FROM favorites WHERE type = 'track' AND ref = " + number(_id));
     DB::query("DELETE FROM tracks WHERE id = " + number(_id));

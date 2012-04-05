@@ -28,11 +28,16 @@ void Html::comments(const vector<Comment> &cmts, const std::string title){
     o << "</div>";
 }
 
-void Html::commentForm(const string &action){
-    o << "<form class=\"postcomment\" action=\"" << action << "\" method=\"post\">" 
-         "<h3>Post a comment</h3>"
-      << (Session::user() ? "" : "Name : <input type=\"text\" name=\"name\" /><br />")
-      << "<textarea name=\"msg\"></textarea><br />"
-         "<input type=\"submit\" value=\"Post a comment\" onclick=\"this.form.submit();this.disabled=true;return false;\" />"
-         "</form>";
+void Html::commentForm(const string &action, bool quick){
+    o << "<form class=\"postcomment\" action=\"" << action << "\" method=\"post\">" ;
+    if(quick)
+        o << (Session::user()?"":"<input type=\"text\" name=\"name\" placeholder=\"Name\"/>")
+          << "<input type=\"text\" name=\"msg\" placeholder=\"Leave a note\"/>"
+             "<input type=\"submit\" value=\"Post\" onclick=\"this.form.submit();this.disabled=true;return false;\" />";
+    else{
+        o << (Session::user() ? "" : "Name : <input type=\"text\" name=\"name\" /><br />")
+          << "<textarea name=\"msg\"></textarea><br />"
+             "<input type=\"submit\" value=\"Post a comment\" onclick=\"this.form.submit();this.disabled=true;return false;\" />";
+    }
+    o << "</form>";
 }

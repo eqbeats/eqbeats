@@ -7,8 +7,8 @@
 namespace Render {
 namespace Html {
 
-void event(const Event &e);
-void eventStream(const std::vector<Event> &events);
+void event(const Event &e, bool context);
+void eventStream(const std::vector<Event> &events, std::string header="", bool context=true);
 
 }
 }
