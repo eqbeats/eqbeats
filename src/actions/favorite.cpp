@@ -28,8 +28,8 @@ void Action::follow(int uid, bool add){
         Http::redirect(u.url());
     else{
         if(add){
-            Follower(Session::user()).follow(uid);
             Event::follow(u, Session::user());
+            Follower(Session::user()).follow(uid);
         }
         else
             Follower(Session::user()).unfollow(uid);

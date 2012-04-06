@@ -59,9 +59,10 @@ std::vector<Event> Event::select(std::string cond, int limit){
 }
 
 std::vector<Event> Event::userEvents(const User &u, int limit){
-    return select("source_id = " + number(u.id()) + " OR target_id = " + number(u.id())
+    return select("(source_id = " + number(u.id()) + " OR target_id = " + number(u.id())
         + (u == Session::user() ? " OR source_id IN (SELECT ref FROM favorites WHERE type = 'artist' AND user_id = "+number(u.id())+")":
             " AND type = 'comment'")
+            + ") AND track_id NOT IN (select id FROM tracks WHERE visible = 'f')"
             , limit);
 }
 
