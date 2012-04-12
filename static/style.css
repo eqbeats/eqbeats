@@ -80,6 +80,7 @@ html, body {
     text-align: center;
     background: url("silhouette.png") no-repeat 98% center;
     text-shadow: 0 1px white;
+    line-height: 1.2em;
 }
 
 #footer a { color: #777; }
