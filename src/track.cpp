@@ -157,6 +157,10 @@ vector<Track> Track::byTag(const std::string &tag){
     return resultToVector(DB::query(SEL + "AND $1 = ANY(tracks.tags) ORDER BY tracks.date DESC", tag));
 }
 
+vector<Track> Track::byPlaylist(const int &id){
+    return resultToVector(DB::query("WITH playlist AS(SELECT track_id, row_number() as pos FROM unnest(coalesce((select track_ids FROM playlists where id = "+number(id)+"))) " + SEL + "AND tracks.id = playlist.track_id ORDER BY playlist.pos")) // pfiou
+}
+
 int Track::favoritesCount() const{
     DB::Result r = DB::query("SELECT COUNT(*) FROM favorites "
         "WHERE type = 'track' AND ref = " + number(_id));

@@ -41,6 +41,7 @@ class Track{
         static std::vector<Track> search(const std::string &q);
         static std::vector<Track> exactSearch(const std::string &qartist, const std::string &qtitle);
         static std::vector<Track> byTag(const std::string &tag);
+        static std::vector<Track> byPlaylist(const int &id);
 
         static std::vector<Track> select(const char *tables, const std::string cond, const char *order="tracks.date DESC", bool all=false, int limit=0, int offset=0);
 

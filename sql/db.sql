@@ -103,3 +103,11 @@ CREATE TABLE events (
     track_title text,
     message text not null
 );
+
+CREATE TABLE playlists (
+    id serial primary key,
+    user_id int,
+    name text,
+    description text,
+    track_ids int[] not null
+)
