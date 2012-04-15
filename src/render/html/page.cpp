@@ -15,7 +15,7 @@
 using namespace Render;
 
 std::string ircName(std::string name){
-    const char* accepted = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789|-[]{}\`^_";
+    const char* accepted = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789|-[]{}\\`^_";
     name = name.substr(0, 20);
     std::string newname;
     for(std::string::iterator i = name.begin(); i != name.end(); i++){

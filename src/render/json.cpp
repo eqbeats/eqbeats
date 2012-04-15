@@ -44,7 +44,8 @@ string Json::jstring(const string &str){
 string artistH(int uid, const string &name){
     return "{"
       + field("id", number(uid))
-      + field("name", jstring(name), true)
+      + field("name", jstring(name))
+      + field("link", jstring("http://eqbeats.org/user/" + number(uid)), true)
       + "}";
 }
 
@@ -53,7 +54,12 @@ string trackH(const Track &t, const string &notes=string()){
       + field("id", number(t.id()))
       + field("title", jstring(t.title()))
       + (notes.empty() ? "" : field("description", jstring(notes)))
-      + field("artist", artistH(t.artist().id(), t.artist().name()), true)
+      + field("artist", artistH(t.artist().id(), t.artist().name()))
+      + field("link", jstring("http://eqbeats.org/track/" + number(t.id())))
+      + field("download", "{"
+          + field("mp3", jstring("http://eqbeats.org/track/" + number(t.id()) + "/mp3"))
+          + field("vorbis", jstring("http://eqbeats.org/track/" + number(t.id()) + "/vorbis"), true)
+          + "}", true)
       + "}";
 }
 
@@ -91,7 +97,8 @@ void Json::artist(int uid){
       << field("id", number(u.id()))
       << field("name", jstring(u.name()));
     if(!about.empty()) o << field("description", jstring(about));
-    o << field("tracks", tracksArray(u.tracks()), true)
+    o << field("tracks", tracksArray(u.tracks()))
+      << field("link", jstring("http://eqbeats.org/user/" + number(uid)), true)
       << "}";
     footer();
 }
