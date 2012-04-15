@@ -7,6 +7,7 @@ namespace Html {
 void faq();
 void credits();
 void quickStart();
+void apiDoc();
 
 }
 }

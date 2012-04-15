@@ -8,6 +8,7 @@
 #include "render.h"
 #include <sstream>
 #include <iostream>
+#include "html/escape.h"
 
 using namespace std;
 using namespace Render;
@@ -53,7 +54,10 @@ string trackH(const Track &t, const string &notes=string()){
     return "{"
       + field("id", number(t.id()))
       + field("title", jstring(t.title()))
-      + (notes.empty() ? "" : field("description", jstring(notes)))
+      + (notes.empty() ? "" : 
+            field("description", jstring(notes))
+          + field("html_description", jstring(Html::format(notes)))
+        )
       + field("artist", artistH(t.artist().id(), t.artist().name()))
       + field("link", jstring("http://eqbeats.org/track/" + number(t.id())))
       + field("download", "{"
@@ -95,9 +99,12 @@ void Json::artist(int uid){
     header();
     o << "{"
       << field("id", number(u.id()))
-      << field("name", jstring(u.name()));
-    if(!about.empty()) o << field("description", jstring(about));
-    o << field("tracks", tracksArray(u.tracks()))
+      << field("name", jstring(u.name()))
+      << (about.empty() ? "" : 
+            field("description", jstring(about))
+          + field("html_description", jstring(Html::format(about)))
+        )
+      << field("tracks", tracksArray(u.tracks()))
       << field("link", jstring("http://eqbeats.org/user/" + number(uid)), true)
       << "}";
     footer();

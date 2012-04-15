@@ -192,6 +192,8 @@ int main(int argc, char** argv){
             Html::faq();
         else if(path == "/credits")
             Html::credits();
+        else if(path == "/api")
+            Html::apiDoc();
         else if(path == "")
             Html::home();
         else
