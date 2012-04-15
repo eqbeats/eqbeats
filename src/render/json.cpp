@@ -88,7 +88,7 @@ string tracksArray(const vector<Track> &ts){
 
 void Json::tracks(const vector<Track> &ts){
     header();
-    o << "{" + field("tracks", tracksArray(ts), true) + "}";
+    o << tracksArray(ts);
     footer();
 }
 
@@ -112,11 +112,11 @@ void Json::artist(int uid){
 
 void Json::users(const vector<User> &us){
     header();
-    o << "{\"users\":[";
+    o << "[";
     for(vector<User>::const_iterator i=us.begin(); i!=us.end(); i++){
         if(i != us.begin()) o << ",";
         o << artistH(i->id(), i->name());
     }
-    o << "]}";
+    o << "]";
     footer();
 }
