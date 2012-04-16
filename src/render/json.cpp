@@ -8,6 +8,7 @@
 #include "render.h"
 #include <sstream>
 #include <iostream>
+#include "html/escape.h"
 
 using namespace std;
 using namespace Render;
@@ -44,7 +45,8 @@ string Json::jstring(const string &str){
 string artistH(int uid, const string &name){
     return "{"
       + field("id", number(uid))
-      + field("name", jstring(name), true)
+      + field("name", jstring(name))
+      + field("link", jstring("http://eqbeats.org/user/" + number(uid)), true)
       + "}";
 }
 
@@ -52,8 +54,16 @@ string trackH(const Track &t, const string &notes=string()){
     return "{"
       + field("id", number(t.id()))
       + field("title", jstring(t.title()))
-      + (notes.empty() ? "" : field("description", jstring(notes)))
-      + field("artist", artistH(t.artist().id(), t.artist().name()), true)
+      + (notes.empty() ? "" : 
+            field("description", jstring(notes))
+          + field("html_description", jstring(Html::format(notes)))
+        )
+      + field("artist", artistH(t.artist().id(), t.artist().name()))
+      + field("link", jstring("http://eqbeats.org/track/" + number(t.id())))
+      + field("download", "{"
+          + field("mp3", jstring("http://eqbeats.org/track/" + number(t.id()) + "/mp3"))
+          + field("vorbis", jstring("http://eqbeats.org/track/" + number(t.id()) + "/vorbis"), true)
+          + "}", true)
       + "}";
 }
 
@@ -78,7 +88,7 @@ string tracksArray(const vector<Track> &ts){
 
 void Json::tracks(const vector<Track> &ts){
     header();
-    o << "{" + field("tracks", tracksArray(ts), true) + "}";
+    o << tracksArray(ts);
     footer();
 }
 
@@ -89,20 +99,24 @@ void Json::artist(int uid){
     header();
     o << "{"
       << field("id", number(u.id()))
-      << field("name", jstring(u.name()));
-    if(!about.empty()) o << field("description", jstring(about));
-    o << field("tracks", tracksArray(u.tracks()), true)
+      << field("name", jstring(u.name()))
+      << (about.empty() ? "" : 
+            field("description", jstring(about))
+          + field("html_description", jstring(Html::format(about)))
+        )
+      << field("tracks", tracksArray(u.tracks()))
+      << field("link", jstring("http://eqbeats.org/user/" + number(uid)), true)
       << "}";
     footer();
 }
 
 void Json::users(const vector<User> &us){
     header();
-    o << "{\"users\":[";
+    o << "[";
     for(vector<User>::const_iterator i=us.begin(); i!=us.end(); i++){
         if(i != us.begin()) o << ",";
         o << artistH(i->id(), i->name());
     }
-    o << "]}";
+    o << "]";
     footer();
 }

@@ -711,3 +711,34 @@ a.qq-upload-file, a.qq-upload-file:hover {
     color: #80C;
     text-decoration: underline;
 }
+
+/** API documentation *********************************************************/
+
+#api p {
+    text-indent: 0;
+    margin: 15px 40px;
+    line-height: 1.2em;
+}
+#api tt, #api pre { color: #511; }
+#api var { 
+    color: #840;
+    font-style: normal;
+}
+#api pre {
+    padding: 3px 7px;
+    background: #fbfbfb;
+    border: 1px solid #ddd;
+    margin: 10px 40px;
+    border-radius: 3px;
+}
+#api table { 
+    margin: 10px 40px;
+    border : 1px solid #fafafa;
+    border-bottom : none;
+    }
+#api td {
+    vertical-align: top; 
+    padding: 3px 7px;
+    border-bottom : 1px solid #fafafa;
+}
+

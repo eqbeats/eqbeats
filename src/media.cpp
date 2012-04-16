@@ -8,6 +8,7 @@
 #include <taglib/taglib.h>
 #include <taglib/mpegfile.h>
 #include <taglib/vorbisfile.h>
+#include <unistd.h>
 
 std::string Media::filePath(Format f) const{
     string format = f==Vorbis? "ogg" : "mp3";

@@ -2,6 +2,7 @@
 #include "session.h"
 #include "user.h"
 #include <iostream>
+#include <unistd.h>
 
 using namespace std;
 
