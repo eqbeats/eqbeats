@@ -1,6 +1,5 @@
 - Features
 avatar
-favs -> playlists
 Cover art deletion
 coops
 sorting
@@ -10,19 +9,16 @@ PG13 rating
 tag as remix of *
 
 - Design
-nicer date
 screenshots in quickstart
 nicer toolbar
 news -> "blog" + feed
 Player: bouncy title
 
 - Tech
-remove obsolete events
 prevent duplicates when publishing
 report: msg
 normalize volume
 Json (session, favorites)
-XML API
+XML API?
 audio files: embed cover arts
 full format support?
-document json API

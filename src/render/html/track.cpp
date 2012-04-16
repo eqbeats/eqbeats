@@ -60,7 +60,7 @@ void Html::trackPage(int tid){
     strcpy(date, t.date().c_str());
     struct tm tm;
     strptime(date, "%Y-%m-%d", &tm);
-    strftime(date, 200, "%b %d, %Y", &tm);
+    strftime(date, 200, "%B %-d, %Y", &tm);
     o << "<h4>by <a href=\"" << t.artist().url() <<  "\">" << escape(t.artist().name()) << "</a> <span class=\"date\">on " << date << "</span></h4>"
 
       << (art?"<img class=\"art\" alt=\"\" src=\"" + art.url(Art::Medium) + "\" />":"");
