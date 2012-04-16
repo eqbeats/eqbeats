@@ -50,7 +50,7 @@ void Html::trackPage(int tid){
                  "<form action=\"/track/"+number(tid)+"/playlist\" method=\"post\">"
                  "<select name=\"playlist\">";
             for(vector<Playlist>::iterator p = playlists.begin(); p != playlists.end(); p++)
-                o << "<option value=\""+number(p->id())+"\">" + p->name() + "</option>";
+                o << "<option value=\""+number(p->id())+"\">" + escape(p->name()) + "</option>";
             o << "<input type=\"submit\" value=\"Add to this playlist\"/></form>"
                  "</span>";
         }

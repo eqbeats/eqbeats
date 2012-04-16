@@ -36,7 +36,7 @@ void Html::playlistPage(int id){
         int i = 0;
         o << "<ul class=\"tracklist\" id=\"tracks\">";
         for(std::vector<Track>::iterator t=tracks.begin(); t != tracks.end(); t++)
-            Html::trackListEntry(*t, p.name(), edition?buttons(id, i++, p.length()):"");
+            Html::trackListEntry(*t, "playlist" + number(p.id()), edition?buttons(id, i++, p.length()):"");
         o << "</ul>";
     }
     if(edition){
