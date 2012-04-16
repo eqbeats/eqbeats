@@ -14,6 +14,7 @@
 #include "../../account.h"
 #include "../../follower.h"
 #include "../../event.h"
+#include "../../playlist.h"
 
 using namespace std;
 using namespace Render;
@@ -70,10 +71,35 @@ void Html::userPage(int uid){
         o << "</h3>";
         Html::trackList(tracks);
     }
+    if(edition) uploadForm("/track/new");
 
-    // Edition
+    // Playlists
+    if(edition)
+        o << "<form class=\"newplaylist\" action=\"/playlist/new\" method=\"POST\">"
+                 "<input type=\"text\" name=\"name\" placeholder=\"Name\"/>"
+                 "<input type=\"submit\" value=\"New playlist\"/>"
+             "</form>";
+    o << "<h3>Playlists</h3>";
+    std::vector<Playlist> playlists = Playlist::forUser(user);
+    if(playlists.size() == 0)
+        o << "<div class=\"playlists empty\">Nothing here yet.</div>";
+    else
+        o << "<ul class=\"playlists\">";
+    for(std::vector<Playlist>::const_iterator i=playlists.begin(); i!=playlists.end(); i++){
+        unsigned len = i->length();
+        o << "<li>"
+               "<div class=\"title\">"
+                 "<a href=\"" << i->url() << "\">" << escape(i->name()) << "</a>"
+                 " <span class=\"count\">" << (len==0?"No":number(len)) << " track" << (len==1?"":"s") << "</span>"
+               "</div>";
+        if(!i->description().empty())
+            o << "<div class=\"description\">" << format(i->description()) << "</div>";
+        o << "</li>";
+    }
+    o << "</ul>";
+
+    // Follow
     if(edition){
-        uploadForm("/track/new");
         o << "<h3>" << icon("plus-circle") << " Artists you follow</h3>";
         userList(Follower(user).following());
     }

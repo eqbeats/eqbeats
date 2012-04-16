@@ -49,6 +49,14 @@ void vote(int cid);
 // contest.cpp
 void contestSubmission(int cid);
 
+// playlist.cpp
+void createPlaylist();
+void deletePlaylist(int pid);
+void editPlaylist(int pid);
+void playlistAdd(int tid);
+void playlistRemove(int pid);
+void playlistMove(int pid);
+
 }
 
 #endif // ACTIONS_H

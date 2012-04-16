@@ -14,6 +14,7 @@
 #include "../../number.h"
 #include "../../path.h"
 #include "../../follower.h"
+#include "../../playlist.h"
 #include <algorithm>
 #include <cstring>
 #include <time.h>
@@ -40,8 +41,21 @@ void Html::trackPage(int tid){
     bool isFav = Follower(Session::user()).isFavorite(t.id());
     o << "<a href=\"" << (Session::user() ? "" : "/login?redirect=") << t.url() << "/" << (isFav?"un":"") << "favorite\""
          " title=\"" << (isFav?"Remove from favorites":"Add to favorites") << "\">"
-    <<     icon(isFav?"star":"star-empty", isFav?"Remove from favorites":"Add to favorites") << "</a>"
-         "</h2>";
+      <<   icon(isFav?"star":"star-empty", isFav?"Remove from favorites":"Add to favorites") << "</a>";
+    if(Session::user() && t.visible()){
+        vector<Playlist> playlists = Playlist::forUser(Session::user().id());
+        if(!playlists.empty()){
+            o << "<span id=\"addplaylist\">"
+                 "<img src=\"/static/icons/playlist-add.png\" alt=\"Playlists\" title=\"Playlists\">"
+                 "<form action=\"/track/"+number(tid)+"/playlist\" method=\"post\">"
+                 "<select name=\"playlist\">";
+            for(vector<Playlist>::iterator p = playlists.begin(); p != playlists.end(); p++)
+                o << "<option value=\""+number(p->id())+"\">" + p->name() + "</option>";
+            o << "<input type=\"submit\" value=\"Add to this playlist\"/></form>"
+                 "</span>";
+        }
+    }
+    o << "</h2>";
     char date[200];
     strcpy(date, t.date().c_str());
     struct tm tm;

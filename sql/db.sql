@@ -110,4 +110,4 @@ CREATE TABLE playlists (
     name text,
     description text,
     track_ids int[] not null
-)
+);

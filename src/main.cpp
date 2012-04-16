@@ -13,6 +13,7 @@
 #include "render/html/static.h"
 #include "render/html/home.h"
 #include "render/html/contest.h"
+#include "render/html/playlist.h"
 #include "actions/actions.h"
 #include "account.h"
 #include "path.h"
@@ -169,6 +170,21 @@ int main(int argc, char** argv){
             Action::contestSubmission(id);
         else if((id = route("contest", "vote", path)))
             Action::vote(id);
+        // Playlists
+        else if((id = route("playlist", path)))
+            Html::playlistPage(id);
+        else if((id = route("track", "playlist", path)))
+            Action::playlistAdd(id);
+        else if((id = route("playlist", "remove", path)))
+            Action::playlistRemove(id);
+        else if((id = route("playlist", "move", path)))
+            Action::playlistMove(id);
+        else if((id = route("playlist", "delete", path)))
+            Action::deletePlaylist(id);
+        else if((id = route("playlist", "edit", path)))
+            Action::editPlaylist(id);
+        else if(path == "/playlist/new")
+            Action::createPlaylist();
         // Users
         else if(path == "/users/search")
             Html::userSearch(cgi("q"));

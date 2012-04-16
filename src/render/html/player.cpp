@@ -12,16 +12,18 @@ using namespace Render;
 using namespace std;
 
 void Html::player(const Track &t, const string &list, bool fallback){
-    Render::o <<
-        "<div id=\"" << list << "-" << t.id() << "\" class=\"player\"></div>"
+    static int count = 0;
+    o <<
+        "<div id=\"" << list << "-" << count << "\" class=\"player\"></div>"
         "<script>"
             "registerTrack({"
-                "id: \"" << list << "-" << t.id() << "\","
+                "id: \"" << list << "-" << count << "\","
                 "mp3: \"" << t.url(Track::MP3) <<"\","
                 "vorbis: \"" << t.url(Track::Vorbis) <<"\","
                 "list: \"" << list << "\""
             "});"
         "</script>";
+    count++;
     if(fallback)
         o <<"<noscript>"
                 "<audio controls>"

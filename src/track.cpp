@@ -7,6 +7,7 @@
 #include "art.h"
 #include "repl.h"
 #include "path.h"
+#include "playlist.h"
 
 Repl hitsd;
 
@@ -73,6 +74,7 @@ void Track::remove(){
     DB::query("DELETE FROM featured_tracks WHERE track_id = " + number(_id));
     DB::query("DELETE FROM comments WHERE type = 'track' AND ref = " + number(_id));
     DB::query("DELETE FROM favorites WHERE type = 'track' AND ref = " + number(_id));
+    Playlist::removeTrack(_id);
     DB::query("DELETE FROM tracks WHERE id = " + number(_id));
     _id = 0;
 }
@@ -158,7 +160,10 @@ vector<Track> Track::byTag(const std::string &tag){
 }
 
 vector<Track> Track::byPlaylist(const int &id){
-    return resultToVector(DB::query("WITH playlist AS(SELECT track_id, row_number() as pos FROM unnest(coalesce((select track_ids FROM playlists where id = "+number(id)+"))) " + SEL + "AND tracks.id = playlist.track_id ORDER BY playlist.pos")) // pfiou
+    return resultToVector(DB::query("WITH playlist AS(SELECT unnest AS track_id, row_number() OVER () AS pos FROM unnest(coalesce((select track_ids FROM playlists where id = "+number(id)+")))) "
+    "SELECT tracks.id, tracks.title, tracks.user_id, users.name, tracks.visible, tracks.date "
+    "FROM tracks, users, playlist WHERE tracks.user_id = users.id AND tracks.visible = 't' "
+    "AND tracks.id = playlist.track_id ORDER BY playlist.pos"));
 }
 
 int Track::favoritesCount() const{

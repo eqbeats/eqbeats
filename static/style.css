@@ -161,12 +161,19 @@ div.legend {
 .notes, .news {
     line-height: 1.7em;
     font-size: 0.9em;
+    text-align: justify;
 }
 
 .notes {
     border-radius: 3px;
-    background-color: #f0f0f0;
     padding: 15px 20px;
+    margin: 0 0 15px;
+    background: #fefefe;
+    border: 1px #f3f3f3 solid;
+    border-top-color: #eee;
+    box-shadow: inset 0 5px 30px -15px #f3f3f3;
+    font-size: 0.8em;
+    color: #111;
 }
 .track .notes {
     margin: 15px 20px 0;
@@ -235,13 +242,44 @@ a.danger {
     margin: 0;
 }
 
-.track h4 {
+.track h4, .playlist h4 {
     margin: 10px;
 }
 
 .date {
     font-size: 0.7em;
     color: #666;
+}
+
+h2 img {
+    margin: 0 3px;
+}
+
+#addplaylist {
+    padding-left: 4px;
+    position: relative;
+    vertical-align: middle;
+}
+#addplaylist img {
+    padding-bottom: 1px;
+}
+#addplaylist form {
+    display: none;
+    position: absolute;
+    margin: 0;
+    left: 0;
+    padding-left: 27px;
+    top: 0;
+    width: 300px;
+}
+
+#addplaylist:hover form, #addplaylist:active form, #addplaylist form:focus {
+    display: block;
+}
+
+#addplaylist input, #addplaylist select {
+    padding : 3px;
+    font-size: 0.4em;
 }
 
 /** User page *****************************************************************/
@@ -260,13 +298,28 @@ a.danger {
     margin-right: 4px;
 }
 
-.user .notes {
-    margin: 0 0 15px;
-    background: #fefefe;
-    border: 1px #f3f3f3 solid;
-    border-top-color: #eee;
-    box-shadow: inset 0 5px 30px -15px #f3f3f3;
-    font-size: 0.8em;
+.newplaylist{
+    float: right;
+    margin: 14px 10px;
+}
+.playlists {
+    clear: both;
+    margin: 0;
+}
+.playlists li{
+    list-style: none;
+    color: #222;
+}
+.playlists .count{
+    font-size: 0.7em;
+    margin-left: 10px;
+}
+.playlists .description{
+    border-left: 1px solid #eee;
+    padding: 5px 8px;
+    font-size: 0.9em;
+    line-height: 1.3em;
+    text-align: justify;
 }
 
 /** FAQ page ******************************************************************/
@@ -310,7 +363,7 @@ a.more:before {
     margin: 0;
 }
 
-.submissions button {
+button {
     background: none;
     border: none;
     cursor: pointer;
@@ -349,6 +402,7 @@ ul {
     margin: 0;
     display: block;
     border-bottom: 1px solid #e3e3e3;
+    clear: both;
 }
 .js .tracklist li { cursor: pointer; }
 
@@ -366,7 +420,7 @@ ul {
     font-size: 1.1em;
 }
 
-.tracklist img {
+.tracklist .cover {
     float: right;
     max-width: 128px;
 }
@@ -382,6 +436,16 @@ ul {
 
 .tracklist .player {
     margin: 5px 0 10px 0;
+}
+
+/** Playlists *****************************************************************/
+
+.playlist .notes { margin-bottom: 30px; }
+.tracklist .buttons { float: right; }
+.tracklist .buttons form { margin: 2px; }
+.playlist .edit form img {
+    vertical-align: middle;
+    padding-bottom: 2px;
 }
 
 /** Credits page **************************************************************/
@@ -578,10 +642,10 @@ textarea {
     float : right;
     margin: 1px;
 }
-.events_wrapper input {
+.events_wrapper input, .newplaylist input {
     border-color: #aaa;
 }
-.events_wrapper input:hover {
+.events_wrapper input:hover, .newplaylist input:hover{
     border-color: #555;
 }
 .events_wrapper input[type="text"] {
