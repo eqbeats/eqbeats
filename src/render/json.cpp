@@ -88,6 +88,20 @@ string tracksArray(const vector<Track> &ts){
     return s.str();
 }
 
+string playlistArray(const vector<Playlist> &ps){
+    stringstream s;
+    s << "[";
+    for(vector<Playlist>::const_iterator i=ps.begin(); i!=ps.end(); i++){
+        if(i != ps.begin()) s << ",";
+        s << "{" << field("id", number(i->id()))
+                 << field("name", jstring(i->name()))
+                 << field("author", artistH(i->author().id(), i->author().name()))
+                 << field("link", jstring(eqbeatsUrl() + i->url()), true) << "}";
+    }
+    s << "]";
+    return s.str();
+}
+
 void Json::tracks(const vector<Track> &ts){
     header();
     o << tracksArray(ts);
@@ -107,6 +121,7 @@ void Json::artist(int uid){
           + field("html_description", jstring(Html::format(about)))
         )
       << field("tracks", tracksArray(u.tracks()))
+      << field("playlists", playlistArray(Playlist::forUser(u)))
       << field("link", jstring(eqbeatsUrl() + u.url()), true)
       << "}";
     footer();

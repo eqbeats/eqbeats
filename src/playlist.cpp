@@ -95,7 +95,7 @@ void Playlist::removeTrack(int tid){
     }
 }
 
-std::vector<Playlist> Playlist::forUser(User u){
+std::vector<Playlist> Playlist::forUser(const User &u){
     DB::Result r = DB::query("SELECT id, name, array_length(track_ids, 1), description FROM playlists WHERE user_id = " + number(u.id()) + " ORDER BY name ASC");
     std::vector<Playlist> playlists(r.size());
     for(unsigned i=0; i < r.size(); i++)

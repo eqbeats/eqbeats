@@ -29,7 +29,7 @@ class Playlist {
 
         static void removeTrack(int tid);
 
-        static std::vector<Playlist> forUser(User u);
+        static std::vector<Playlist> forUser(const User &u);
 
     private:
         Playlist(int nid, User nauthor, int nlength, std::string nname, std::string ndescription)
