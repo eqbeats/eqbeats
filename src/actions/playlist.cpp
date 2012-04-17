@@ -17,6 +17,7 @@ void Action::createPlaylist(){
     if(name.empty() || cgi.getEnvironment().getRequestMethod() != "POST")
         return Http::redirect(Session::user().url());
     Playlist p = Playlist::create(name);
+    log("New playlist: " + p.name() + " (" + number(p.id()) + ")");
     return Http::redirect(p.url());
 }
 

@@ -6,6 +6,7 @@
 
 class Track;
 class User;
+class Playlist;
 
 namespace Render {
 namespace Json {
@@ -18,6 +19,8 @@ void tracks(const std::vector<Track> &);
 
 void artist(int uid);
 void users(const std::vector<User> &);
+void favorites(int uid);
+void playlist(int pid);
 
 }
 }

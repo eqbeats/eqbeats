@@ -72,6 +72,10 @@ int main(int argc, char** argv){
             Json::track(id);
         else if((id = route("user", "json", path)))
             Json::artist(id);
+        else if((id = route("user", "favorites/json", path)))
+            Json::favorites(id);
+        else if((id = route("playlist", "json", path)))
+            Json::playlist(id);
         else if(path == "/tracks/search/json")
             Json::tracks(Track::search(cgi("q")));
         else if(path == "/tracks/search/exact/json")

@@ -3,8 +3,10 @@
 #include "../track.h"
 #include "../cgi.h"
 #include "../account.h"
+#include "../follower.h"
 #include "../path.h"
 #include "../number.h"
+#include "../playlist.h"
 #include "render.h"
 #include <sstream>
 #include <iostream>
@@ -14,7 +16,7 @@ using namespace std;
 using namespace Render;
 using namespace Json;
 
-void header(){ 
+void header(){
     if(cgi("jsonp").empty())
         Http::header("application/json");
     else {
@@ -46,7 +48,7 @@ string artistH(int uid, const string &name){
     return "{"
       + field("id", number(uid))
       + field("name", jstring(name))
-      + field("link", jstring("http://eqbeats.org/user/" + number(uid)), true)
+      + field("link", jstring(eqbeatsUrl() + User::url(uid)), true)
       + "}";
 }
 
@@ -59,10 +61,10 @@ string trackH(const Track &t, const string &notes=string()){
           + field("html_description", jstring(Html::format(notes)))
         )
       + field("artist", artistH(t.artist().id(), t.artist().name()))
-      + field("link", jstring("http://eqbeats.org/track/" + number(t.id())))
+      + field("link", jstring(eqbeatsUrl() + t.url()))
       + field("download", "{"
-          + field("mp3", jstring("http://eqbeats.org/track/" + number(t.id()) + "/mp3"))
-          + field("vorbis", jstring("http://eqbeats.org/track/" + number(t.id()) + "/vorbis"), true)
+          + field("mp3", jstring(eqbeatsUrl() + t.url() + "/mp3"))
+          + field("vorbis", jstring(eqbeatsUrl() + t.url() + "/vorbis"), true)
           + "}", true)
       + "}";
 }
@@ -100,12 +102,12 @@ void Json::artist(int uid){
     o << "{"
       << field("id", number(u.id()))
       << field("name", jstring(u.name()))
-      << (about.empty() ? "" : 
+      << (about.empty() ? "" :
             field("description", jstring(about))
           + field("html_description", jstring(Html::format(about)))
         )
       << field("tracks", tracksArray(u.tracks()))
-      << field("link", jstring("http://eqbeats.org/user/" + number(uid)), true)
+      << field("link", jstring(eqbeatsUrl() + u.url()), true)
       << "}";
     footer();
 }
@@ -118,5 +120,30 @@ void Json::users(const vector<User> &us){
         o << artistH(i->id(), i->name());
     }
     o << "]";
+    footer();
+}
+
+void Json::favorites(int uid){
+    header();
+    o << tracksArray(Track::favorites(uid));
+    footer();
+}
+
+void Json::playlist(int pid){
+    Playlist p(pid);
+    if(!p) return Http::header(404);
+    string notes = p.description();
+    header();
+    o << "{"
+      << field("id", number(p.id()))
+      << field("name", jstring(p.name()))
+      << field("author", artistH(p.author().id(), p.author().name()))
+      << (notes.empty() ? "" :
+            field("description", jstring(notes))
+          + field("html_description", jstring(Html::format(notes)))
+        )
+      << field("tracks", tracksArray(p.tracks()))
+      << field("link", jstring(eqbeatsUrl() + p.url()), true)
+      << "}";
     footer();
 }
