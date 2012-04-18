@@ -5,6 +5,7 @@
 #include "cgi.h"
 #include "session.h"
 #include "user.h"
+#include "log.h"
 
 Contest::Contest(int id){
     _id = 0;
@@ -39,13 +40,15 @@ void Contest::vote(int tid){
     std::string host = cgi.getEnvironment().getRemoteAddr();
     User u = Session::user();
     // Check if the user didn't already vote
+    if(u) log("u!");
+    else log(host);
     DB::Result r = DB::query(
         "SELECT 1 FROM votes "
         "WHERE contest_id = " + number(_id) +
         " AND track_id = " + number(tid) +
         " AND " +
-         (u?"user_id = "+number(u.id()):
-            "host = "+host+" AND user_id ISNULL")
+         (u.id()!=0?"user_id = "+number(u.id()):
+            "host = '"+host+"' AND user_id ISNULL")
         );
     if(!r.empty()) return;
     // Check if the track is linked to the contest
@@ -75,7 +78,7 @@ void Contest::unvote(int tid){
         "WHERE contest_id = " + number(_id) +
         " AND track_id = " + number(tid) +
      (u?" AND user_id = " + number(u.id()):
-        " AND host = "+cgi.getEnvironment().getRemoteAddr()+
+        " AND host = '"+cgi.getEnvironment().getRemoteAddr()+"'"
         " AND user_id ISNULL") +
         " RETURNING 1");
     if(!r.empty())
@@ -108,7 +111,7 @@ std::vector<int> Contest::usersVotes() const{
         "SELECT track_id FROM votes "
         "WHERE contest_id = " + number(_id) +
      (u?" AND user_id = " + number(u.id()):
-        " AND host = " + cgi.getEnvironment().getRemoteAddr() + 
+        " AND host = '" + cgi.getEnvironment().getRemoteAddr() + "'"
         " AND user_id ISNULL"));
     std::vector<int> tracks;
     for(DB::Result::iterator i = r.begin(); i != r.end(); i++)
