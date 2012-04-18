@@ -151,7 +151,20 @@ void Html::trackPage(int tid){
                  "<input type=\"submit\" value=\"Update\" />"
              "</form>"
              "</div>"
-             "<div class=\"column\">"
+             "<div class=\"column\">";
+        // Youtube
+        std::string url;
+        std::string button;
+        if(t.artist().hasYoutube()){
+            url = t.url() + "/youtube_upload";
+            button = "Upload this track to your YouTube account";
+        } else {
+            url = "https://accounts.google.com/o/oauth2/auth?response_type=code&client_id=767490682254.apps.googleusercontent.com&approval_prompt=force&scope=https%3A%2F%2Fuploads.gdata.youtube.com%2Ffeeds%2Fapi%2Fusers%2Fdefault%2Fuploads&access_type=offline&redirect_uri=http%3A%2F%2Feqbeats.org%2Foauth%2Fyt";
+            button = "Link your youtube account to be able to upload your track";
+        }
+        o << "<h4>" << icon("youtube-up") << "Youtube</h4>"
+             "<a class=\"button\" href=\""<< url <<"\">"<< button <<"</a>"
+             "<a href=\"/faq#youtube\">Huh?</a>"
         // Notes
              "<h4>" << icon("card-pencil") << " Notes</h4>"
              "<form action=\"" << t.url() << "/notes\" method=\"post\">"

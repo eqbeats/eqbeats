@@ -141,6 +141,8 @@ int main(int argc, char** argv){
             Action::setFlags(id);
         else if((id = route("track", "tags", path)))
             Action::setTags(id);
+        else if((id = route("track", "youtube_upload", path)))
+            Action::youtubeUpload(id);
         else if((id = route("track",path)))
             Html::trackPage(id);
         else if(path == "/track/new")
@@ -205,6 +207,8 @@ int main(int argc, char** argv){
             Action::login();
         else if(path == "/logout")
             Action::logout();
+        else if(path == "/oauth/yt")
+            Action::youtubeOauthCallback();
         // Static
         else if(path == "/quickstart")
             Html::quickStart();

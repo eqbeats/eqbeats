@@ -18,7 +18,7 @@ class Follower: public User{
         void unfollow(int uid);
         bool isFollowing(int uid) const;
         int followersCount() const;
-   
+
 };
 
 

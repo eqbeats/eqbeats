@@ -17,6 +17,8 @@ bool fromEqBeats(){
     return pcrecpp::RE("http://(www\\.)?" + cgi.getEnvironment().getServerName() + "/.*", pcrecpp::RE_Options().set_caseless(true)).FullMatch(cgi.getEnvironment().getReferrer());
 }
 
+#include "../render/render.h"
+
 void Action::follow(int uid, bool add){
     if(!fromEqBeats()) return Http::redirect(User::url(uid));
     User u(uid);

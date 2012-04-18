@@ -111,3 +111,14 @@ CREATE TABLE playlists (
     description text,
     track_ids int[] not null
 );
+
+CREATE TABLE youtube_refresh_tokens (
+    user_id int not null,
+    token text not null
+);
+
+CREATE TABLE youtube_access_tokens (
+    user_id int not null unique,
+    token text not null,
+    expire timestamptz not null
+);
