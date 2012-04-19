@@ -20,7 +20,7 @@ void account();
 void accountForm(const Account &_account,
     const std::string &error=std::string(),
     const std::string &message=std::string(),
-    const std::string &oldpw=std::string()); 
+    const std::string &oldpw=std::string());
 
 // track.cpp
 void deleteTrack(int tid);
@@ -56,6 +56,11 @@ void editPlaylist(int pid);
 void playlistAdd(int tid);
 void playlistRemove(int pid);
 void playlistMove(int pid);
+
+// youtube.cpp
+void youtubeOauthCallback();
+void youtubeUnlink();
+void youtubeUpload(int tid);
 
 }
 

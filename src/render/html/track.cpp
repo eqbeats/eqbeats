@@ -150,10 +150,30 @@ void Html::trackPage(int tid){
                  "Celestia Radio</span><br />"
                  "<input type=\"submit\" value=\"Update\" />"
              "</form>"
-             "</div>"
-             "<div class=\"column\">"
+        // Youtube
+             "<h4>" << icon("youtube-up") << "Youtube</h4>";
+        if(t.artist().hasYoutube()){
+            o << "<form action=\""<<t.url()<<"/youtube_upload\">"
+                 "<input type=\"submit\" value=\"Upload this to YouTube\"/>"
+                 " <a href=\"/faq#youtube\">Huh?</a>"
+                 "</form>";
+        } else {
+            o << "<form action=\"https://accounts.google.com/o/oauth2/auth\">"
+                 "Your YouTube account is not linked."
+                 " <a class=\"huh\" href=\"/faq#youtube\">Huh?</a><br/>"
+                 "<input type=\"submit\" value=\"Link your YouTube account\"/>"
+                 "<input type=\"hidden\" name=\"response_type\" value=\"code\"/>"
+                 "<input type=\"hidden\" name=\"client_id\" value=\"767490682254.apps.googleusercontent.com\"/>"
+                 "<input type=\"hidden\" name=\"scope\" value=\"https://uploads.gdata.youtube.com/feeds/api/users/default/uploads\"/>"
+                 "<input type=\"hidden\" name=\"access_type\" value=\"offline\"/>"
+                 "<input type=\"hidden\" name=\"redirect_uri\" value=\"http://eqbeats.org/oauth/yt\"/>"
+                 "<input type=\"hidden\" name=\"approval_prompt\" value=\"force\"/>"
+                 "</form>";
+        }
+        o << "</div>"
+             "<div class=\"column\">";
         // Notes
-             "<h4>" << icon("card-pencil") << " Notes</h4>"
+        o << "<h4>" << icon("card-pencil") << " Notes</h4>"
              "<form action=\"" << t.url() << "/notes\" method=\"post\">"
                  "<textarea name=\"notes\">" << escape(t.notes()) << "</textarea><br />"
                  "<div class=\"legend\">(tags: [b]old, [u]nderline, [i]talic)</div>"

@@ -12,7 +12,7 @@ User::User(int nId){
         _id = nId;
         _name = r[0][0];
     }
-} 
+}
 
 User::User(const std::string &nName){
     _id = 0;
@@ -36,7 +36,7 @@ std::vector<User> User::select(const std::string &q, const std::string &param){
     std::vector<User> users(r.size());
     for(unsigned i=0; i<r.size(); i++)
         users[i] = User(number(r[i][0]), r[i][1]);
-    return users; 
+    return users;
 }
 
 std::vector<User> listHelper(bool artists, unsigned int n, unsigned int begin){
@@ -67,4 +67,9 @@ User User::withEmail(const std::string &email){
 std::vector<Track> User::tracks(bool all){
     if(_id<=0) return std::vector<Track>();
     return Track::select(0, "tracks.user_id = " + number(_id), "tracks.date DESC", all);
+}
+
+bool User::hasYoutube() const {
+    DB::Result r = DB::query("SELECT 1 FROM youtube_refresh_tokens WHERE user_id = "+number(_id));
+    return r.size() > 0;
 }
