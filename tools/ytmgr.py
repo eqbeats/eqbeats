@@ -24,11 +24,11 @@ class YoutubeManager:
         return db
 
     def log(self, msg):
-        if(isinstance(msg, str)):
-            msg = msg.encode("UTF-8")
         os.chdir(os.getenv("EQBEATS_DIR"))
-        f = open("eqbeats.log", "a")
+        f = open("ytmgr.log", "a")
+        f.write("\n\n" + datetime.datetime.utcnow().isoformat() + "\n")
         f.write(msg)
+        f.write("\n")
         f.close()
 
     def auth(self, auth_token, uid):
@@ -72,10 +72,9 @@ class YoutubeManager:
             self.insert_access_token(data["access_token"], data["expires_in"], uid)
             return True
 
-        except (TypeError, KeyError) as e:
+        except (TypeError, KeyError):
             c.execute("DELETE FROM youtube_refresh_tokens WHERE user_id = %s", (uid,))
             db.commit()
-            print(e)
             return False
 
 
@@ -96,7 +95,8 @@ class YoutubeManager:
             os.spawnvp(os.P_WAIT, "convert", ("convert", "-flatten", "art/" + str(tid), art))
         else:
             art = "static/placeholder.jpg"
-        os.spawnvp(os.P_WAIT, "ffmpeg", ("ffmpeg","-loop","1","-r","0.1","-shortest","-i", art,"-i","tracks/"+str(tid)+".mp3","-vf","scale=-1:720,scale=trunc(iw/2)*2:0","-vcodec","libtheora","-acodec","copy","-y",out))
+        #os.spawnvp(os.P_WAIT, "ffmpeg", ("ffmpeg","-loop","1","-r","0.1","-shortest","-i", art,"-i","tracks/"+str(tid)+".mp3","-vf","scale=-1:720,scale=trunc(iw/2)*2:0","-vcodec","libtheora","-acodec","copy","-y",out))
+        os.spawnvp(os.P_WAIT, "ffmpeg", ("ffmpeg","-loop","1","-r","0.1","-shortest","-i", art,"-i","tracks/"+str(tid)+".mp3","-vf","scale=-1:720","-vcodec","libtheora","-acodec","copy","-y",out))
         return open(out, "rb")
 
     def upload(self, tid):
@@ -105,9 +105,8 @@ class YoutubeManager:
         c.execute("SELECT users.name, tracks.title, tracks.notes, tracks.tags, youtube_access_tokens.token FROM tracks, users, youtube_access_tokens WHERE tracks.id = %s and tracks.user_id = users.id and tracks.user_id = youtube_access_tokens.user_id and youtube_access_tokens.expire > 'now'", (tid,))
         data = c.fetchone()
         if data:
-            print(data)
             title = (data[0] + " - " + data[1]).translate(str.maketrans("", "", "<>")).encode("utf-8")[:100]
-            desc = re.sub("\[/?[bis]\]", "", data[2]).translate(str.maketrans("","","<>")) + "\n--\nhttp://eqbeats.org/track/" + str(tid) + "/mp3"
+            desc = re.sub("\[/?[bis]\]", "", data[2]).translate(str.maketrans("","","<>")) + "\n--\nhttp://eqbeats.org/track/" + str(tid) + "\nDownload: http://eqbeats.org/track/" + str(tid) + "/mp3"
             tags = (tag for tag in data[3] if not "<" in tag and not ">" in tag and not len(tag.encode("utf-8")) < 2 and not len(tag.encode("utf-8")) > 30)
             f = self.mkvideo(tid)
             h = hc.HTTPSConnection("uploads.gdata.youtube.com")
@@ -127,9 +126,9 @@ xmlns:yt="http://gdata.youtube.com/schemas/2007">
     </media:description>
     <media:category scheme="http://gdata.youtube.com/schemas/2007/categories.cat">Music</media:category>
     <media:keywords>"""+(html.escape(",".join(tags))).encode("utf-8")+b"""</media:keywords>
-</media:group>
-<yt:accessControl action='list' permission='denied'/>
-</entry>
+</media:group>"""
+#<yt:accessControl action='list' permission='denied'/>
+            body += b"""</entry>
 --"""+boundary+b"""
 Content-Type: video/avi
 Content-Transfer-Encoding: binary
@@ -143,15 +142,13 @@ Content-Transfer-Encoding: binary
                     "Content-Type": "multipart/related; boundary="+boundary.decode("utf-8"),
                     "Authorization": "OAuth " + data[4]
                     }
-            g = open("/tmp/body", "wb")
-            g.write(body)
-            del g
             h.request("POST", "/feeds/api/users/default/uploads", body, headers)
             r = h.getresponse()
-            print(r.status, r.reason)
-            print(r.read())
+            if r.status != 201:
+                self.log("YT upload failed. Track : " + str(tid) + "\nResponse follows:\n" + r.read().decode("utf-8"))
+            else:
+                self.log("YT upload successful. Track : " + str(tid))
         else:
-            c.execute("SELECT tracks.user_id FROM tracks WHERE tracks.id = %s", (tid,))
             try:
                 if self.new_access_token(c.fetchone()[0]):
                     self.upload(tid)
@@ -170,7 +167,6 @@ Content-Transfer-Encoding: binary
                 command = b""
                 while command[-1:] != b"\n":
                     command += s.recv(2048)
-                print(command)
                 if command[:4] == b"auth":
                     args = command[5:-1].split(b" ")
                     args[1] = int(args[1]) # uid
@@ -183,15 +179,13 @@ Content-Transfer-Encoding: binary
                     threading.Thread(target=self.upload, args=(tid,)).start()
                     s.send(b"OK\n")
                 else:
-                    print("unknown command")
+                    s.send(b"! Not a command\n")
             except TypeError:
-                print("wrong number of arguments")
                 s.send(b"! Wrong number of arguments\n")
             except ValueError:
-                print("not a number")
                 s.send(b"! Illegal argument\n")
             except socket.timeout:
-                print("timeout", e)
+                pass
             except (KeyboardInterrupt, SystemExit):
                 print("\nclosing sockets")
                 self.socket.shutdown(socket.SHUT_RDWR)

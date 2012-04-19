@@ -43,9 +43,9 @@ void Html::faq(){
 
         "<h3>Technical stuff</h3>"
 
-        "<h4>What quality / bitrate are the audio files on EqBeats?</h4>"
-        "<p>OGG Vorbis files are 128kbps.</p>"
-        "<p>MP3 files are untouched, they are exactly the same quality as when the artists upload them, we only update the title and artist tags.</p>"
+        "<h4>What quality or bitrate are the audio files on EqBeats?</h4>"
+        "<p>OGG Vorbis files are ~128kbps.</p>"
+        "<p>We do not re-encode MP3 files, we only update the title and artist tags. This means they are exactly the same quality as the artist's original MP3 file.</p>"
         "<p>Your browser will stream either depending on its capabilities. "
         "As of today (April 19 2012), Firefox will only play OGG, Chrome can play either and will prefer OGG, and Safari and IE will only play MP3.</p>"
         "<p>And before you ask, the cover art files are left untouched as well. We just make a few thumbnails.</p>"
@@ -155,6 +155,7 @@ void Html::apiDoc(){
          "<tr><td><tt>/artists/json</tt></td><td>[Array] All artists (as shortened <a href=\"#user\">user objects</a>, without their tracks).</td></tr>"
          "<tr><td><tt>/track/<var>{id}</var>/json</tt></td><td>One <a href=\"#track\">track object</a>.</td></tr>"
          "<tr><td><tt>/tracks/search/json?q=<var>{query}</var></tt></td><td>[Array] <a href=\"#track\">Track objects</a> matching the query.</td></tr>"
+         "<tr><td><tt>/tracks/exactsearch/json?artist=<var>{artist}</var>&track=<var>{track}</var></tt></td><td>[Array] <a href=\"#track\">Track object</a> matching the artist and track name exactly (case sensitive).</td></tr>"
          "<tr><td><tt>/tracks/latest/json</tt></td><td>[Array] The latest 50 tracks.</td></tr>"
          "<tr><td><tt>/tracks/featured/json</tt></td><td>[Array] The latest 50 featured tracks.</td></tr>"
          "<tr><td><tt>/tracks/random/json</tt></td><td>[Array] 50 random tracks.</td></tr>"

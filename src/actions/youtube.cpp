@@ -28,7 +28,7 @@ void Action::youtubeUpload(int tid){
                  "<div class=\"overlay\"></div>"
              "</div>"
              "<p>" << Html::format(t.notes())
-          << "<br/> --<br/>Download : <a href=\""<<t.url(Track::MP3)<<"\">"<<eqbeatsUrl()<<t.url(Track::MP3)<<"</a></p>"
+          << "<br/> --<br/><a href=\""<< t.url() <<"\">"<< eqbeatsUrl() << t.url() <<"</a><br/>Download: <a href=\""<<t.url(Track::MP3)<<"\">"<<eqbeatsUrl()<<t.url(Track::MP3)<<"</a></p>"
              "<div class=\"tags\">Tags :<br/>";
         std::vector<std::string> tags = t.tags();
         for(std::vector<std::string>::iterator tag=tags.begin(); tag != tags.end(); tag++){
