@@ -9,26 +9,52 @@
 #include "../path.h"
 #include "../number.h"
 #include "../cgi.h"
+#include "../db.h"
+#include "../art.h"
 #include "../log.h"
 
 using namespace Render;
 
 void Action::youtubeUpload(int tid){
-    Track t(tid);
-    if(Session::user().hasYoutube()) log("user hasYoutube");
-    if(t.artist().hasYoutube()) log("artist hasYoutube");
+    ExtendedTrack t(tid);
     if(Session::user() != t.artist() || !Session::user().hasYoutube()) return Http::redirect(t.url());
-    Repl ytmgr((eqbeatsDir() + "/ytmgr.sock").c_str());
-    Html::header("YouTube upload");
-    if(ytmgr.exec("upload "+number(tid)).find("OK") != 0){
-        o << "<h2>There was a problem</h2>"
-             "Try again in a few minutes. If it still doesn't work, drop us a note.<br/>"
-             "<a href=\""+t.url()+"\">Back to "+Html::escape(t.title())+"</a>";
+    if(cgi.getEnvironment().getRequestMethod() != "POST"){
+        Html::header("YouTube upload preview");
+        o << "<div class=\"ytpreview\">"
+             "<h2>" << (Html::escape(Session::user().name()) + " - " + Html::escape(t.title())).substr(0,100) << "</h2>";
+        Art a(tid);
+        o << "<div class=\"ytplayer\">"
+                 "<img src=\"" << (a?a.url(Art::Medium):"/static/placeholder.jpg") << "\"/>"
+                 "<div class=\"overlay\"></div>"
+             "</div>"
+             "<p>" << Html::format(t.notes())
+          << "<br/> --<br/>Download : <a href=\""<<t.url(Track::MP3)<<"\">"<<eqbeatsUrl()<<t.url(Track::MP3)<<"</a></p>"
+             "<div class=\"tags\">Tags :<br/>";
+        std::vector<std::string> tags = t.tags();
+        for(std::vector<std::string>::iterator tag=tags.begin(); tag != tags.end(); tag++){
+            o << "<span class=\"tag\">" << Html::escape(*tag) << "</span> ";
+        }
+        o << "</div>"
+             "</div>"
+             "<div class=\"ytsidebar\">"
+             "This is what your video will look like. If you have cover art, make sure you upload it before you continue."
+             "<form method=\"POST\"><input type=\"submit\" value=\"Continue\"/> &nbsp; <a class=\"danger\" href=\""<< t.url() <<"\">Cancel</a></form>"
+             "</div>"
+             "<div style=\"clear: both\"></div>";
+        Html::footer();
     } else {
-        o << "<h2>Upload started</h2>"
-             "The new video should appear <a href=\"https://www.youtube.com/my_videos\">on your YouTube account</a> in the next few seconds.";
+        Repl ytmgr((eqbeatsDir() + "/ytmgr.sock").c_str());
+        Html::header("YouTube upload");
+        if(ytmgr.exec("upload "+number(tid)).find("OK") != 0){
+            o << "<h2>There was a problem</h2>"
+                 "Try again in a few minutes. If it still doesn't work, drop us a note.<br/>"
+                 "<a href=\""+t.url()+"\">Back to "+Html::escape(t.title())+"</a>";
+        } else {
+            o << "<h2>Upload started</h2>"
+                 "The new video should appear <a href=\"https://www.youtube.com/my_videos\">on your YouTube account</a> in the next few seconds.";
+        }
+        Html::footer();
     }
-    Html::footer();
 }
 
 void Action::youtubeOauthCallback(){
@@ -44,4 +70,9 @@ void Action::youtubeOauthCallback(){
              "Your YouTube account is now linked to your EqBeats account.";
     }
     Html::footer();
+}
+
+void Action::youtubeUnlink(){
+    DB::query("DELETE FROM youtube_refresh_tokens WHERE user_id = "+number(Session::user().id()));
+    Http::redirect("/account");
 }

@@ -69,7 +69,7 @@ std::vector<Track> User::tracks(bool all){
     return Track::select(0, "tracks.user_id = " + number(_id), "tracks.date DESC", all);
 }
 
-bool User::hasYoutube(){
+bool User::hasYoutube() const {
     DB::Result r = DB::query("SELECT 1 FROM youtube_refresh_tokens WHERE user_id = "+number(_id));
     return r.size() > 0;
 }

@@ -19,7 +19,7 @@ class User{
         std::string url() const { return url(_id); }
         static std::string url(int id);
 
-        bool hasYoutube();
+        bool hasYoutube() const;
 
         operator bool() const { return _id > 0; }
         bool operator==(const User &u) const { return _id == u._id; }

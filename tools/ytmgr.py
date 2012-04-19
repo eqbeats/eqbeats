@@ -23,6 +23,14 @@ class YoutubeManager:
         db.set_client_encoding("UTF8")
         return db
 
+    def log(self, msg):
+        if(isinstance(msg, str)):
+            msg = msg.encode("UTF-8")
+        os.chdir(os.getenv("EQBEATS_DIR"))
+        f = open("eqbeats.log", "a")
+        f.write(msg)
+        f.close()
+
     def auth(self, auth_token, uid):
         h = hc.HTTPSConnection("accounts.google.com")
         params = up.urlencode({
@@ -94,12 +102,13 @@ class YoutubeManager:
     def upload(self, tid):
         db = self.db()
         c = db.cursor()
-        c.execute("SELECT tracks.title, tracks.notes, tracks.tags, youtube_access_tokens.token FROM tracks, youtube_access_tokens WHERE tracks.id = %s and tracks.user_id = youtube_access_tokens.user_id and youtube_access_tokens.expire > 'now'", (tid,))
+        c.execute("SELECT users.name, tracks.title, tracks.notes, tracks.tags, youtube_access_tokens.token FROM tracks, users, youtube_access_tokens WHERE tracks.id = %s and tracks.user_id = users.id and tracks.user_id = youtube_access_tokens.user_id and youtube_access_tokens.expire > 'now'", (tid,))
         data = c.fetchone()
         if data:
             print(data)
-            desc = re.sub("\[/?[bis]\]", "", data[1]).translate(str.maketrans("","","<>"))
-            tags = (tag for tag in data[2] if not "<" in tag and not ">" in tag)
+            title = (data[0] + " - " + data[1]).translate(str.maketrans("", "", "<>")).encode("utf-8")[:100]
+            desc = re.sub("\[/?[bis]\]", "", data[2]).translate(str.maketrans("","","<>")) + "\n--\nhttp://eqbeats.org/track/" + str(tid) + "/mp3"
+            tags = (tag for tag in data[3] if not "<" in tag and not ">" in tag and not len(tag.encode("utf-8")) < 2 and not len(tag.encode("utf-8")) > 30)
             f = self.mkvideo(tid)
             h = hc.HTTPSConnection("uploads.gdata.youtube.com")
             boundary = ("".join(random.choice("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-_") for _ in range(15))).encode("utf-8")
@@ -112,7 +121,7 @@ Content-Type: application/atom+xml; charset=UTF-8
 xmlns:media="http://search.yahoo.com/mrss/"
 xmlns:yt="http://gdata.youtube.com/schemas/2007">
 <media:group>
-    <media:title type="plain">"""+data[0].translate(str.maketrans("", "", "<>")).encode("utf-8")+b"""</media:title>
+    <media:title type="plain">"""+title+b"""</media:title>
     <media:description type="plain">
     """+desc.encode("utf-8")+b"""
     </media:description>
@@ -132,7 +141,7 @@ Content-Transfer-Encoding: binary
                     "GData-Version": "2",
                     "Slug": "video", # worst bogus filename ever
                     "Content-Type": "multipart/related; boundary="+boundary.decode("utf-8"),
-                    "Authorization": "OAuth " + data[3]
+                    "Authorization": "OAuth " + data[4]
                     }
             g = open("/tmp/body", "wb")
             g.write(body)

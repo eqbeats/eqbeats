@@ -59,6 +59,7 @@ void playlistMove(int pid);
 
 // youtube.cpp
 void youtubeOauthCallback();
+void youtubeUnlink();
 void youtubeUpload(int tid);
 
 }

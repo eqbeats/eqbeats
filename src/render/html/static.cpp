@@ -15,6 +15,8 @@ void Html::faq(){
     header("FAQ");
     o << "<h2>Frequently Asked Questions</h2><div class=\"faq\">"
 
+        "<h3>General</h3>"
+
         "<div><h4>What is this?</h4>"
         "<p>A place for artists to publish their MLP-related music, and get in touch with their audience.</p></div>"
 
@@ -25,10 +27,33 @@ void Html::faq(){
         "<p>Because we try to make the publishing and listening process as smooth as can be. No ads, no limits, no downsides.</p></div>"
 
         "<div><h4>So how do I get on the list of artists? I wanna be one of the cool kids!</h4>"
-        "<p><a href=\"/register\">Sign up</a> for an account. Log in, get to your user page, and upload a track, then publish it. <i>Voilà</i>, you're on the list.</p></div>"
+        "<p><a href=\"/register\">Sign up</a> for an account. Log in, get to your user page, and upload a track, then publish it. <i>Voil&agrave;</i>, you're on the list.</p></div>"
 
-        "<div><h4>Do you have an API?</h4>"
+        "<h3 id=\"youtube\">YouTube</h3>"
+
+        "<h4>Why would I want to link my YouTube account to my EqBeats account?</h4>"
+        "<p>When your YouTube account is linked, by the click of a button, we'll create a video out of your track and its cover art, upload it to your YouTube channel, and stick a direct download link in the description. "
+        "Basically it allows you to reach both your YouTube audience and your audience here in a single upload.</p>"
+
+        "<h4>How do I link my YouTube account?</h4>"
+        "<p>Look for a button on your <a href=\"/account\">account edition</a> page, as well as any of your tracks. Google will ask you to verify that you trust us. Then, you're done!</p>"
+
+        "<h4>How do I unlink my YouTube account?</h4>"
+        "<p>There is a button on your <a href=\"/account\">account edition</a> page.</p>"
+
+        "<h3>Technical stuff</h3>"
+
+        "<h4>What quality / bitrate are the audio files on EqBeats?</h4>"
+        "<p>OGG Vorbis files are 128kbps.</p>"
+        "<p>MP3 files are untouched, they are exactly the same quality as when the artists upload them, we only update the title and artist tags.</p>"
+        "<p>Your browser will stream either depending on its capabilities. "
+        "As of today (April 19 2012), Firefox will only play OGG, Chrome can play either and will prefer OGG, and Safari and IE will only play MP3.</p>"
+        "<p>And before you ask, the cover art files are left untouched as well. We just make a few thumbnails.</p>"
+
+        "<h4>Do you have an API?</h4>"
         "<p><a href=\"/api\">We do.</a></p>"
+
+        "<h3>Contact</h3>"
 
         "<div><h4>Who are you anyway?</h4>"
         "<p>We're two developers: <a href=\"/user/1\">codl</a> and <a href=\"/user/2\">fmang</a>. For more information check the <a href=\"/credits\">credits</a>.</p></div>"

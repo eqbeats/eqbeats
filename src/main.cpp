@@ -207,6 +207,8 @@ int main(int argc, char** argv){
             Action::login();
         else if(path == "/logout")
             Action::logout();
+        else if(path == "/oauth/yt/unlink")
+            Action::youtubeUnlink();
         else if(path == "/oauth/yt")
             Action::youtubeOauthCallback();
         // Static
