@@ -19,7 +19,9 @@ class YoutubeManager:
         self.socket = socket.socket(socket.AF_UNIX)
 
     def db(self):
-        return psycopg2.connect("")
+        db = psycopg2.connect("")
+        db.set_client_encoding("UTF8")
+        return db
 
     def auth(self, auth_token, uid):
         h = hc.HTTPSConnection("accounts.google.com")
@@ -95,8 +97,8 @@ class YoutubeManager:
         c.execute("SELECT tracks.title, tracks.notes, tracks.tags, youtube_access_tokens.token FROM tracks, youtube_access_tokens WHERE tracks.id = %s and tracks.user_id = youtube_access_tokens.user_id and youtube_access_tokens.expire > 'now'", (tid,))
         data = c.fetchone()
         if data:
-            print(data[2])
-            desc = html.escape(re.sub("\[/?[bis]\]", "", data[1]))
+            print(data)
+            desc = re.sub("\[/?[bis]\]", "", data[1]).translate(str.maketrans("","","<>"))
             tags = (tag for tag in data[2] if not "<" in tag and not ">" in tag)
             f = self.mkvideo(tid)
             h = hc.HTTPSConnection("uploads.gdata.youtube.com")
@@ -110,7 +112,7 @@ Content-Type: application/atom+xml; charset=UTF-8
 xmlns:media="http://search.yahoo.com/mrss/"
 xmlns:yt="http://gdata.youtube.com/schemas/2007">
 <media:group>
-    <media:title type="plain">"""+html.escape(data[0]).encode("utf-8")+b"""</media:title>
+    <media:title type="plain">"""+data[0].translate(str.maketrans("", "", "<>")).encode("utf-8")+b"""</media:title>
     <media:description type="plain">
     """+desc.encode("utf-8")+b"""
     </media:description>
@@ -132,6 +134,9 @@ Content-Transfer-Encoding: binary
                     "Content-Type": "multipart/related; boundary="+boundary.decode("utf-8"),
                     "Authorization": "OAuth " + data[3]
                     }
+            g = open("/tmp/body", "wb")
+            g.write(body)
+            del g
             h.request("POST", "/feeds/api/users/default/uploads", body, headers)
             r = h.getresponse()
             print(r.status, r.reason)
