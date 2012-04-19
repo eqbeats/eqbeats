@@ -155,12 +155,13 @@ void Html::trackPage(int tid){
         if(t.artist().hasYoutube()){
             o << "<form action=\""<<t.url()<<"/youtube_upload\">"
                  "<input type=\"submit\" value=\"Upload this to YouTube\"/>"
-                 " <a href=\"/faq#youtube\">Huh?</a>"
+                 " <a class=\"huh\" href=\"/faq#youtube\">Huh?</a>"
                  "</form>";
         } else {
             o << "<form action=\"https://accounts.google.com/o/oauth2/auth\">"
                  "Your YouTube account is not linked."
-                 " <a class=\"huh\" href=\"/faq#youtube\">Huh?</a><br/>"
+                 " <a class=\"huh\" href=\"/faq#youtube\">Huh?</a>"
+                 "</br>"
                  "<input type=\"submit\" value=\"Link your YouTube account\"/>"
                  "<input type=\"hidden\" name=\"response_type\" value=\"code\"/>"
                  "<input type=\"hidden\" name=\"client_id\" value=\"767490682254.apps.googleusercontent.com\"/>"

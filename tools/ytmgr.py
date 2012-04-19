@@ -14,6 +14,8 @@ import datetime
 import http.client as hc
 import urllib.parse as up
 
+sockloc = "/tmp/ytmgr-"+str(os.getuid())+".sock"
+
 class YoutubeManager:
     def __init__(self):
         self.socket = socket.socket(socket.AF_UNIX)
@@ -157,7 +159,7 @@ Content-Transfer-Encoding: binary
                 pass
     def run(self):
         os.chdir(os.getenv("EQBEATS_DIR"))
-        self.socket.bind("./ytmgr.sock")
+        self.socket.bind(sockloc)
         self.socket.settimeout(None)
         self.socket.listen(5)
         while True:
@@ -178,6 +180,10 @@ Content-Transfer-Encoding: binary
                     tid = int(command[7:-1])
                     threading.Thread(target=self.upload, args=(tid,)).start()
                     s.send(b"OK\n")
+                elif command[:4] == b"exit":
+                    s.send(b"OK\n")
+                    s.shutdown(socket.SHUT_RDWR)
+                    exit(0)
                 else:
                     s.send(b"! Not a command\n")
             except TypeError:
@@ -190,7 +196,7 @@ Content-Transfer-Encoding: binary
                 print("\nclosing sockets")
                 self.socket.shutdown(socket.SHUT_RDWR)
                 self.socket.close()
-                os.remove("ytmgr.sock")
+                os.remove(sockloc)
                 exit(0)
 
 yt = YoutubeManager()

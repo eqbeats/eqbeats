@@ -12,6 +12,7 @@
 #include "../db.h"
 #include "../art.h"
 #include "../log.h"
+#include <unistd.h>
 
 using namespace Render;
 
@@ -43,7 +44,7 @@ void Action::youtubeUpload(int tid){
              "<div style=\"clear: both\"></div>";
         Html::footer();
     } else {
-        Repl ytmgr((eqbeatsDir() + "/ytmgr.sock").c_str());
+        Repl ytmgr(("/tmp/ytmgr-"+number(getuid())+".sock").c_str());
         Html::header("YouTube upload");
         if(ytmgr.exec("upload "+number(tid)).find("OK") != 0){
             o << "<h2>There was a problem</h2>"
@@ -60,7 +61,7 @@ void Action::youtubeUpload(int tid){
 void Action::youtubeOauthCallback(){
     if(!Session::user()) return Http::redirect("/login?redirect=/account");
     if(!cgi("error").empty() || cgi("code").empty()) return Http::redirect("/account");
-    Repl ytmgr((eqbeatsDir() + "/ytmgr.sock").c_str());
+    Repl ytmgr(("/tmp/ytmgr-"+number(getuid())+".sock").c_str());
     Html::header("Linking your YouTube account");
     if(ytmgr.exec("auth " + cgi("code") + " " + number(Session::user().id())).find("OK") != 0){
         o << "<h2>There was a problem</h2>"
