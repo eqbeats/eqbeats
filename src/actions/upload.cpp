@@ -28,13 +28,14 @@ std::string getTitle(const char *filename){
 
 void Action::uploadTrack(int id){
     User u = Session::user();
-    Track t(id);
+    if(!u) return Http::redirect(Track::url(id));
 
     cgicc::file_iterator qqfile = cgi.getFile("qqfile");
     bool js = cgi("js") != "no";
 
     if(js) Http::header("text/html"); // Opera
 
+    Track t(id);
     if(t && t.artist() != u){
         if(js) o << "{" << field("success","false",true) << "}";
         else Http::redirect(u ? u.url() : "/");
