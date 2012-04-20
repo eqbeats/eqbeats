@@ -152,6 +152,7 @@ Content-Transfer-Encoding: binary
                 self.log("YT upload successful. Track : " + str(tid))
         else:
             try:
+                c.execute("SELECT user_id FROM tracks WHERE id=" + str(tid))
                 if self.new_access_token(c.fetchone()[0]):
                     self.upload(tid)
                 ### else: warn that account has been unlinked somehow?
