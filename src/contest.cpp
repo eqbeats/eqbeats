@@ -5,7 +5,6 @@
 #include "cgi.h"
 #include "session.h"
 #include "user.h"
-#include "log.h"
 
 Contest::Contest(int id){
     _id = 0;
@@ -40,8 +39,6 @@ void Contest::vote(int tid){
     std::string host = cgi.getEnvironment().getRemoteAddr();
     User u = Session::user();
     // Check if the user didn't already vote
-    if(u) log("u!");
-    else log(host);
     DB::Result r = DB::query(
         "SELECT 1 FROM votes "
         "WHERE contest_id = " + number(_id) +
