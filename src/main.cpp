@@ -56,8 +56,14 @@ int main(int argc, char** argv){
         cgi = Cgicc(&o);
         path = getPath();
 
+        // Nope
+        if (cgi.getElementByValue("PHPE9568F34-D428-11d2-A769-00AA001ACF42") != cgi.getElements().end() ||
+            cgi.getElementByValue("PHPE9568F35-D428-11d2-A769-00AA001ACF42") != cgi.getElements().end() ||
+            cgi.getElementByValue("PHPE9568F36-D428-11d2-A769-00AA001ACF42") != cgi.getElements().end()){
+            Http::redirect("http://youtu.be/gvdf5n-zI14");
+        }
         // Static
-        if((id = route("track", "vorbis", path)))
+        else if((id = route("track", "vorbis", path)))
             Http::downloadTrack(id, Track::Vorbis);
         else if((id = route("track", "mp3", path)))
             Http::downloadTrack(id, Track::MP3);
