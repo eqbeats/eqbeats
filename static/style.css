@@ -285,17 +285,29 @@ h2 img {
 /** User page *****************************************************************/
 
 .user {
-    margin: 20px 0;
+    margin-bottom: 20px;
+}
+
+.user h2 {
+    padding: 6px 0;
+}
+
+.user .avatar {
+    float: left;
+    margin: 0 15px;
 }
 
 .user .item {
-    margin: 2px 15px 15px;
+    margin: 10px 25px 15px 5px;
     display: inline-block;
 }
 .user .item img {
     vertical-align: middle;
     padding-bottom: 4px;
     margin-right: 4px;
+}
+.user .notes {
+    margin-top: 7px;
 }
 
 .newplaylist{

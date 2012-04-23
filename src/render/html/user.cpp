@@ -1,3 +1,4 @@
+#include <algorithm>
 #include "page.h"
 #include "escape.h"
 #include "feed.h"
@@ -15,9 +16,15 @@
 #include "../../follower.h"
 #include "../../event.h"
 #include "../../playlist.h"
+#include "../../md5.h"
 
 using namespace std;
 using namespace Render;
+
+string toLower(string str){
+    std::transform(str.begin(), str.end(), str.begin(), ::tolower);
+    return str;
+}
 
 void userList(const vector<User> &users){
     if(users.empty()) o << "<div class=\"empty\">Nobody here yet.</div>";
@@ -34,8 +41,9 @@ void Html::userPage(int uid){
 
     header(user.name(), (about.empty()?"":metaDescription(strip(about))) + atomFeed(user.url() + "/atom"));
 
-    // Title
-    o << "<h2>" << escape(user.name()) << " ";
+    o << "<div class=\"user\">"
+         "<img src=\"http://www.gravatar.com/avatar/" << md5(toLower(user.email())) << "\" class=\"avatar\" />"
+         "<h2>" << escape(user.name()) << " ";
     if(Session::user() != user){
         bool isFollowed = Follower(Session::user()).isFollowing(user.id());
         Render::o << "<a class=\"follow" << (isFollowed?"":" disabled")
@@ -47,12 +55,12 @@ void Html::userPage(int uid){
     o << "</h2>"
 
     // Description
-         "<div class=\"user\">"
              "<div class=\"item\">" << icon("mail") << " Email: " << escapeEmail(user.email()) << "</div>";
     bool edition = Session::user().id() == user.id();
     if(edition)
         o << "<div class=\"item\">" << icon("card-pencil") << " <a href=\"/account\">Edit</a></div>";
-    o << "<div class=\"item\">" << icon("star") << " <a href=\"" << user.url() << "/favorites\">Favorite tracks</a></div>";
+    o << "<div class=\"item\">" << icon("star") << " <a href=\"" << user.url() << "/favorites\">Favorite tracks</a></div>"
+         "<div style=\"clear:both;\"></div>";
     if(!about.empty())
         o << "<div class=\"notes\">" << format(about) << "</div>";
     o << "</div>";
