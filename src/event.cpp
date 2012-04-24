@@ -30,20 +30,30 @@ void Event::push(){
 
 }
 
-void Event::publish(const Track &t){
-    Event(Publish, t.artist(), User(), t).push();
+Event Event::publish(const Track &t){
+    Event e(Publish, t.artist(), User(), t);
+    e.push();
+    return e;
 }
-void Event::favorite(const Track &t, const User &src){
-    Event(Favorite, src, t.artist(), t).push();
+Event Event::favorite(const Track &t, const User &src){
+    Event e(Favorite, src, t.artist(), t);
+    e.push();
+    return e;
 }
-void Event::follow(const User &u, const User &src){
-    Event(Follow, src, u).push();
+Event Event::follow(const User &u, const User &src){
+    Event e(Follow, src, u);
+    e.push();
+    return e;
 }
-void Event::comment(const Track &t, const User &src, std::string msg){
-    Event(Comment, src, t.artist(), t, msg).push();
+Event Event::comment(const Track &t, const User &src, std::string msg){
+    Event e(Comment, src, t.artist(), t, msg);
+    e.push();
+    return e;
 }
-void Event::comment(const User &tgt, const User &src, std::string msg){
-    Event(Comment, src, tgt, Track(), msg).push();
+Event Event::comment(const User &tgt, const User &src, std::string msg){
+    Event e(Comment, src, tgt, Track(), msg);
+    e.push();
+    return e;
 }
 
 std::vector<Event> Event::select(std::string cond, int limit){

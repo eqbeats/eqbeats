@@ -1,12 +1,14 @@
 #include "actions.h"
 #include "../render/html/page.h"
 #include "../render/http.h"
+#include "../path.h"
 #include "../news.h"
 #include "../track.h"
 #include "../session.h"
 #include "../user.h"
 #include "../cgi.h"
 #include "../event.h"
+#include "../mail.h"
 
 using namespace Render;
 
@@ -25,10 +27,33 @@ void Action::postComment(Comment::Type type, int ref){
     else {
         if(!cgi("msg").empty() && cgi.getEnvironment().getRequestMethod() == "POST"){
             User u = Session::user() ? Session::user() : User(0, cgi("name"));
+            Event e;
             if(type == Comment::Track)
-                Event::comment(Track(ref), u, cgi("msg"));
+                e = Event::comment(ref_t, u, cgi("msg"));
+                if(u != ref_t.artist()){
+                    std::string maildata =
+                        (std::string)
+                        "From: EqBeats notification <notify@eqbeats.org>\n"
+                        "Subject: " + "EqBeats comment notification\n"
+                        "Precedence: bulk\n\n" +
+                        e.source().name() + " posted a comment on " + ref_t.title() + ":\n\n" +
+                        e.message() + "\n\n"
+                        "You can view it and answer here : " + eqbeatsUrl() + ref_t.url();
+                    sendMail(Account(ref_t.artist().id()).email().c_str(), maildata.c_str());
+                }
             else if(type == Comment::User)
-                Event::comment(User(ref), u, cgi("msg"));
+                e = Event::comment(ref_u, u, cgi("msg"));
+                if(u != ref_u){
+                    std::string maildata =
+                        (std::string)
+                        "From: EqBeats notification <notify@eqbeats.org>\n"
+                        "Subject: " + "EqBeats comment notification\n"
+                        "Precedence: bulk\n\n" +
+                        e.source().name() + " posted a comment on your user page:\n\n" +
+                        e.message() + "\n\n"
+                        "You can view it and answer here : " + eqbeatsUrl() + ref_u.url();
+                    sendMail(Account(ref).email().c_str(), maildata.c_str());
+                }
             else
                 Comment::add(cgi("msg"), u, ref, type);
         }

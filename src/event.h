@@ -18,11 +18,11 @@ class Event {
         std::string message() const { return _message; }
         std::string date() const { return _date; }
 
-        static void publish(const Track &t);
-        static void favorite(const Track &t, const User &src);
-        static void comment(const Track &t, const User &src, std::string msg);
-        static void comment(const User &tgt, const User &src, std::string msg);
-        static void follow(const User &tgt, const User &src);
+        static Event publish(const Track &t);
+        static Event favorite(const Track &t, const User &src);
+        static Event comment(const Track &t, const User &src, std::string msg);
+        static Event comment(const User &tgt, const User &src, std::string msg);
+        static Event follow(const User &tgt, const User &src);
 
         static std::vector<Event> userEvents(const User &u, int limit=0);
         static std::vector<Event> trackEvents(const Track &t);
