@@ -293,12 +293,30 @@ h2 img {
 }
 
 .user .avatar {
-    float: left;
-    margin: 0 15px;
+    position: relative;
     border: 1px solid #eee;
+    width: 82px;
+    height: 82px;
+    margin: 0 15px;
+    display: block;
+    float: left;
 }
-.user a:hover .avatar {
+
+.user a.avatar:hover {
     border-color: #aaa;
+}
+
+.user a.avatar:hover:after {
+    content: "Change your avatar on gravatar.com";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    font-size: 0.7em;
+    color: white;
+    background: rgba(0,0,0,0.8);
+    display: block;
+    padding: 3px;
 }
 
 .user .item {
