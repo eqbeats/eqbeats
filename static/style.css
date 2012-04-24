@@ -289,16 +289,20 @@ h2 img {
 }
 
 .user h2 {
-    padding: 6px 0;
+    padding: 7px 0;
 }
 
 .user .avatar {
     float: left;
     margin: 0 15px;
+    border: 1px solid #eee;
+}
+.user a:hover .avatar {
+    border-color: #aaa;
 }
 
 .user .item {
-    margin: 10px 25px 15px 5px;
+    margin: 8px 25px 15px 5px;
     display: inline-block;
 }
 .user .item img {

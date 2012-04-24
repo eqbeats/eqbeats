@@ -41,9 +41,12 @@ void Html::userPage(int uid){
 
     header(user.name(), (about.empty()?"":metaDescription(strip(about))) + atomFeed(user.url() + "/atom"));
 
-    o << "<div class=\"user\">"
-         "<img src=\"http://www.gravatar.com/avatar/" << md5(toLower(user.email())) << "?d=http%3A%2F%2Feqbeats.org%2Fstatic%2Favatar.png\" class=\"avatar\" />"
-         "<h2>" << escape(user.name()) << " ";
+    o << "<div class=\"user\">";
+    if(Session::user() == user) o << "<a href=\"http://gravatar.com/emails/\" title=\"Change your avatar at gravatar.com\" target=\"_blank\">";
+    o << "<img src=\"http://www.gravatar.com/avatar/" << md5(toLower(user.email())) << "?d=http%3A%2F%2Feqbeats.org%2Fstatic%2Favatar.png\" class=\"avatar\" alt=\"\" />";
+    if(Session::user() == user) o << "</a>";
+
+    o << "<h2>" << escape(user.name()) << " ";
     if(Session::user() != user){
         bool isFollowed = Follower(Session::user()).isFollowing(user.id());
         Render::o << "<a class=\"follow" << (isFollowed?"":" disabled")
