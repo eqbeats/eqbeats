@@ -5,13 +5,14 @@
 
 #include "log.h"
 
-Event::Event(Type nType, User nSource, User nTarget, Track nTrack, std::string nMessage, std::string nDate){
+Event::Event(Type nType, User nSource, User nTarget, Track nTrack, std::string nMessage, std::string nDate, int nId){
     _type = nType;
     _target = nTarget;
     _source = nSource;
     _track = nTrack;
     _message = nMessage;
     _date = nDate;
+    _id = nId;
 }
 
 void Event::push(){
@@ -57,13 +58,13 @@ Event Event::comment(const User &tgt, const User &src, std::string msg){
 }
 
 std::vector<Event> Event::select(std::string cond, int limit){
-    DB::Result r = DB::query("SELECT type, source_id, source_name, target_id, target_name, track_id, track_title, message, date AT TIME ZONE 'UTC' FROM events" + (cond.empty()?"":" WHERE "+cond) + " ORDER BY date DESC" + (limit?" LIMIT "+number(limit):""));
+    DB::Result r = DB::query("SELECT type, source_id, source_name, target_id, target_name, track_id, track_title, message, date AT TIME ZONE 'UTC', id FROM events" + (cond.empty()?"":" WHERE "+cond) + " ORDER BY date DESC" + (limit?" LIMIT "+number(limit):""));
     std::vector<Event> events(r.size());
     for(unsigned i=0; i<r.size(); i++){
         Type t = r[i][0] == "publish"  ? Publish
              : r[i][0] == "comment"  ? Comment
              : r[i][0] == "favorite" ? Favorite : Follow;
-        events[i] = Event(t, User(number(r[i][1]),r[i][2]), User(number(r[i][3]),r[i][4]), Track(number(r[i][5]),r[i][6]), r[i][7], r[i][8]);
+        events[i] = Event(t, User(number(r[i][1]),r[i][2]), User(number(r[i][3]),r[i][4]), Track(number(r[i][5]),r[i][6]), r[i][7], r[i][8], number(r[i][9]));
     }
     return events;
 }

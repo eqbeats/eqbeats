@@ -17,6 +17,7 @@ class Event {
         Track track() const { return _track; }
         std::string message() const { return _message; }
         std::string date() const { return _date; }
+        int id() const { return _id; }
 
         static Event publish(const Track &t);
         static Event favorite(const Track &t, const User &src);
@@ -29,7 +30,7 @@ class Event {
         static std::vector<Event> userComments(const User &u);
 
     private:
-        Event(Type nType, User nSource=User(), User nTarget=User(), Track nTrack=Track(), std::string nMessage="", std::string nDate="");
+        Event(Type nType, User nSource=User(), User nTarget=User(), Track nTrack=Track(), std::string nMessage="", std::string nDate="", int nId=0);
         static std::vector<Event> select(std::string cond, int limit=0);
         void push();
         Type _type;
@@ -38,6 +39,7 @@ class Event {
         Track _track;
         std::string _message;
         std::string _date;
+        int _id;
 
 };
 

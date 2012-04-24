@@ -39,7 +39,8 @@ std::string pprintDate(std::string isoDate, bool capitalize = true){
 }
 
 void Render::Html::event(const Event &e, bool context){
-    o << "<span class=\"date\" title=\""+e.date()+" UTC\">" + pprintDate(e.date()) + "</span>"
+    o << "<li class=\"event\" name=\""+number(e.id())+"\">"
+         "<span class=\"date\" title=\""+e.date()+" UTC\">" + pprintDate(e.date()) + "</span>"
          "<img alt=\"\" src=\"";
     if(e.type() == Event::Comment) o << "/static/icons/balloon-white-left.png";
     else if(e.type() == Event::Publish) o << "/static/icons/disc-arrow.png";
@@ -75,15 +76,14 @@ void Render::Html::event(const Event &e, bool context){
     else if(e.type() == Event::Favorite)
         o << "favorited <a href=\"" + e.track().url() + "\">" + escape(e.track().title()) + "</a>"
           << (e.target()==Session::user() ? "" : " by " + escape(e.target().name())) << ".";
+    o << "</li>";
 }
 
 void Render::Html::eventStream(const std::vector<Event> &events, std::string header, bool context){
     o << "<ul class=\"events\">"
       << (header.empty()?"":"<h4><img src=\"/static/icons/fire-small.png\" alt=\"\"/>"+header+"</h4>");
     for(std::vector<Event>::const_iterator i=events.begin(); i!=events.end(); i++){
-        o << "<li class=\"event\">";
         event(*i, context);
-        o << "</li>";
     }
     if(events.size() == 0)
         o << "<li class=\"empty\">Nothing here yet.</li>";
