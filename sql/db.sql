@@ -5,7 +5,8 @@ CREATE TABLE users (
     email text not null,
     about text not null default '',
     registration timestamptz not null,
-    last_login timestamptz not null
+    last_login timestamptz not null,
+    notify bool not null default true
 );
 
 CREATE TABLE tracks (

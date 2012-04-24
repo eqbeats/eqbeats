@@ -7,18 +7,20 @@
 Account::Account(int nId){
     _id = 0;
     if(nId<=0) return;
-    DB::Result r = DB::query("SELECT name, email, about FROM Users WHERE id=" + number(nId));
+    DB::Result r = DB::query("SELECT name, email, about, notify FROM users WHERE id=" + number(nId));
     if(!r.empty()){
         _id = nId;
         _name = r[0][0];
         _email = r[0][1];
         _about = r[0][2];
+        _notify = r[0][3][0] == 't';
     }
 }
 
-Account::Account(int nId, const std::string &nName, const std::string &nEmail)
+Account::Account(int nId, const std::string &nName, const std::string &nEmail, bool nNotify)
     : User(nId, nName){
     _email = nEmail;
+    _notify = nNotify;
 }
 
 bool Account::setPassword(const std::string &nPass){
@@ -58,8 +60,8 @@ bool Account::setEmail(const std::string &nEmail){
 }
 
 void Account::commit(){
-    DB::query("UPDATE users SET name = $2, email = $3, about = $4 WHERE id = $1",
-              number(_id), _name, _email, _about);
+    DB::query("UPDATE users SET name = $2, email = $3, about = $4, notify = $5 WHERE id = $1",
+              number(_id), _name, _email, _about, _notify?"t":"f");
     DB::query("UPDATE comments SET author_name = $1 WHERE author_id = " + number(_id), _name);
 }
 
@@ -76,7 +78,7 @@ Account Account::create(const std::string &nName, const std::string &nPass, cons
         "INSERT INTO users (name, password, email, registration, last_login) "
         "VALUES ($1, crypt($2, gen_salt('bf')), $3, 'now', 'now') "
         "RETURNING id", nName, nPass, nEmail);
-    return r.empty() ? Account() : Account(number(r[0][0]), nName, nEmail);
+    return r.empty() ? Account() : Account(number(r[0][0]), nName, nEmail, true);
 }
 
 bool Account::validEmail(const std::string &nEmail){

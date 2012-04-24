@@ -43,6 +43,10 @@ void Action::accountForm(const Account &_account, const std::string &error,
                     "<td><input type=\"password\" id=\"r_newpwconf\" name=\"newpwconf\" /></td>"
                 "</tr>"
                 "<tr>"
+                    "<td><label for=\"r_notify\">Email notifications:</label></td>"
+                    "<td><input id=\"r_notify\" name=\"notify\" type=\"checkbox\" " << (_account.notify()?"checked=\"checked\" ":"") << "/></td>"
+                "</tr>"
+                "<tr>"
                     "<td><label for=\"r_about\">Description:</label><br />"
                     "<span class=\"legend\">(tags: [b]old, [u]nderline, [i]talic)</span>"
                     "<td><textarea id=\"r_about\" name=\"about\">" << escape(_account.about()) << "</textarea></td>"
@@ -99,6 +103,7 @@ void Action::account(){
         a.setPassword(cgi("newpw"));
     }
     a.setAbout(cgi("about"));
+    a.setNotify(!cgi("notify").empty());
     a.commit();
     if(newName){
         log("Renaming user: " + Session::user().name() + " -> " + a.name());
