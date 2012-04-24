@@ -29,6 +29,9 @@ void Html::faq(){
         "<div><h4>So how do I get on the list of artists? I wanna be one of the cool kids!</h4>"
         "<p><a href=\"/register\">Sign up</a> for an account. Log in, get to your user page, and upload a track, then publish it. <i>Voil&agrave;</i>, you're on the list.</p></div>"
 
+        "<h4>How do I set my avatar up?</h4>"
+        "<p>Go to <a href=\"http://gravatar.com/emails/\">Gravatar.com</a> and create an account with the same email address as here. Upload your avatar there, it will show up here, and on other gravatar-enabled sites.</p>"
+
         "<h3 id=\"youtube\">YouTube</h3>"
 
         "<h4>Why would I want to link my YouTube account to my EqBeats account?</h4>"
