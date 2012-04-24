@@ -42,9 +42,9 @@ void Html::userPage(int uid){
     header(user.name(), (about.empty()?"":metaDescription(strip(about))) + atomFeed(user.url() + "/atom"));
 
     o << "<div class=\"user\">"
-      << (Session::user() == user? "<a class=\"avatar\" href=\"http://gravatar.com/emails/\" title=\"Change your avatar at gravatar.com\" target=\"_blank\">" : "<div class=\"avatar\">")
+      << (Session::user() == user? "<a class=\"avatar\" href=\"http://gravatar.com/emails/\" target=\"_blank\">" : "<div class=\"avatar\">")
       << "<img src=\"http://www.gravatar.com/avatar/" << md5(toLower(user.email())) << "?d=http%3A%2F%2Feqbeats.org%2Fstatic%2Favatar.png\" alt=\"\" />"
-      << (Session::user() == user? "</a>" : "</div>");
+      << (Session::user() == user? "<span>Change your avatar at gravatar.com</span></a>" : "</div>");
 
     o << "<h2>" << escape(user.name()) << " ";
     if(Session::user() != user){
