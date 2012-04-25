@@ -16,7 +16,7 @@ class Art{
 
         void makeThumbs();
 
-        enum Format { Unknown, PNG, JPEG, GIF };
+        enum Format { Unknown, PNG, JPEG, GIF, TIFF };
         Format getFormat();
 
         void remove();

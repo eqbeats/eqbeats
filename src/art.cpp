@@ -30,11 +30,14 @@ Art::Format Art::getFormat(){
     // JPEG: 0xffd8
     // PNG:  0x89504e470d0a1a0a
     // GIF:  0x47494638
+    // TIFF: 0x49492a00
     if(magic[0] == 0xff && magic[1] == 0xd8) format = JPEG;
     if(magic[0] == 0x89 && magic[1] == 'P' &&
        magic[2] == 'N'  && magic[3] == 'G') format = PNG;
     if(magic[0] == 'G'  && magic[1] == 'I' &&
        magic[2] == 'F'  && magic[3] == '8') format = GIF;
+    if(magic[0] == 'I'  && magic[1] == 'I' &&
+       magic[2] == '*'  && magic[3] == 0) format = TIFF;
     fclose(f);
     return format;
 }
