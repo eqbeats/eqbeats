@@ -13,6 +13,7 @@
 #include "../../session.h"
 #include "../../number.h"
 #include "../../path.h"
+#include "../../cgi.h"
 #include "../../follower.h"
 #include "../../playlist.h"
 #include <algorithm>

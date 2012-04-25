@@ -8,6 +8,7 @@
 #include "../user.h"
 #include "../track.h"
 #include "../number.h"
+#include "../cgi.h"
 
 using namespace Render;
 using namespace std;

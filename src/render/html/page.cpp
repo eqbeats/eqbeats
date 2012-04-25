@@ -7,10 +7,11 @@
 #include "../../user.h"
 #include "../../session.h"
 #include "../../number.h"
+#include "../../cgi.h"
+#include "../../log.h"
 #include <stdio.h>
 #include <unistd.h>
 #include <string.h>
-#include "../../log.h"
 
 using namespace Render;
 

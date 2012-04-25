@@ -5,6 +5,7 @@
 #include "../user.h"
 #include "../track.h"
 #include "../path.h"
+#include "../cgi.h"
 #include <vector>
 
 using namespace Render;

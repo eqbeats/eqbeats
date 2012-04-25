@@ -1,6 +1,6 @@
 #include "path.h"
 #include "number.h"
-#include "cgi.h"
+#include <stdlib.h>
 
 using namespace std;
 
@@ -14,14 +14,6 @@ string stripSlash(const string &path){
 
 string eqbeatsDir(){
     return (string) getenv("EQBEATS_DIR");
-}
-
-string eqbeatsUrl(){
-    return "http://" + cgi.getEnvironment().getServerName();
-}
-
-string getPath(){
-    return stripSlash(cgi.getEnvironment().getPathInfo());
 }
 
 int route(const string &t, string path){

@@ -1,10 +1,10 @@
 #include "art.h"
 #include "number.h"
 #include "path.h"
-#include "log.h"
 #include <Magick++.h>
 #include <stdio.h>
 #include <unistd.h>
+#include <iostream>
 
 Art::Art(int tid){
     _tid = tid;
@@ -50,7 +50,7 @@ void Art::makeThumbs(){
     try {
         try{ i.read(filepath()); }
         catch(Magick::Warning &warn){
-            log((std::string) "ImageMagick Warning : " + warn.what());
+            std::cerr << "ImageMagick Warning : " << warn.what() << std::endl;
         }
         if(i.size().height() > 480)
             i.scale("x480");
@@ -59,7 +59,7 @@ void Art::makeThumbs(){
             i.scale("x64");
         i.write(filepath(Thumbnail));
     } catch ( Magick::Exception &err ) {
-        log((std::string) "ImageMagick Exceptions : " + err.what());
+        std::cerr << "ImageMagick Exceptions : " << err.what() << std::endl;
     }
 }
 

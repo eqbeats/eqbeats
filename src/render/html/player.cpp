@@ -6,6 +6,7 @@
 #include "../../art.h"
 #include "../../user.h"
 #include "../../path.h"
+#include "../../cgi.h"
 #include "../../number.h"
 
 using namespace Render;

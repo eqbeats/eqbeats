@@ -25,6 +25,6 @@ eqbeats.fcgi
 /tools/dumptracks
 /tools/mkcontest
 /tools/mknews
-/tools/nowplaying.json
+/tools/mkthumbs
 /tools/stats
 /tools/updatetags
