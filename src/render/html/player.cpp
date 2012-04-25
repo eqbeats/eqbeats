@@ -19,8 +19,8 @@ void Html::player(const Track &t, const string &list, bool fallback){
         "<script>"
             "registerTrack({"
                 "id: \"" << list << "-" << count << "\","
-                "mp3: \"" << t.url(Track::MP3) <<"\","
-                "vorbis: \"" << t.url(Track::Vorbis) <<"\","
+                "mp3: \"" << t.url(Track::MP3) <<"?stream\","
+                "vorbis: \"" << t.url(Track::Vorbis) <<"?stream\","
                 "list: \"" << list << "\""
             "});"
         "</script>";
@@ -28,8 +28,8 @@ void Html::player(const Track &t, const string &list, bool fallback){
     if(fallback)
         o <<"<noscript>"
                 "<audio controls>"
-                    "<source type=\"audio/ogg\" src=\"" << t.url(Track::Vorbis) << "\" />"
-                    "<source type=\"audio/mpeg\" src=\"" << t.url(Track::MP3) << "\" />"
+                    "<source type=\"audio/ogg\" src=\"" << t.url(Track::Vorbis) << "?stream\" />"
+                    "<source type=\"audio/mpeg\" src=\"" << t.url(Track::MP3) << "?stream\" />"
                 "</audio>"
             "</noscript>";
 }
