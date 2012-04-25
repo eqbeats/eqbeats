@@ -52,9 +52,11 @@ void Art::makeThumbs(){
         catch(Magick::Warning &warn){
             std::cerr << "ImageMagick Warning : " << warn.what() << std::endl;
         }
-        if(i.size().height() > 480)
-            i.scale("x480");
-        i.write(filepath(Medium));
+        if(getFormat() != GIF){
+            if(i.size().height() > 480)
+                i.scale("x480");
+            i.write(filepath(Medium));
+        }
         if(i.size().height() > 64)
             i.scale("x64");
         i.write(filepath(Thumbnail));
