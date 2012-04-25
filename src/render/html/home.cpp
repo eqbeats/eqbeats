@@ -14,8 +14,8 @@
 using namespace Render;
 
 void ticker(){
-    DB::Result news = DB::query("SELECT title, url FROM ticker WHERE 'now'-date < '7d' ORDER BY date DESC");
-    if(news.empty()) news = DB::query("SELECT title, url FROM ticker ORDER BY date DESC LIMIT 1");
+    DB::Result news = DB::query("SELECT title, url FROM ticker WHERE 'now' < expire ORDER BY expire DESC");
+    if(news.empty()) news = DB::query("SELECT title, url FROM ticker ORDER BY expire DESC LIMIT 1");
     if(news.empty()) return;
     o << "<div id=\"newsticker\">" << Html::icon("newspaper")
       << " <b>Latest news</b>: <a href=\"" << Html::escape(news[0][1]) << "\">" << Html::escape(news[0][0]) << "</a></div>";
