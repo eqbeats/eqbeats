@@ -13,8 +13,8 @@ Art::Art(int tid){
 }
 
 std::string Art::filepath(Art::Size sz) const{
-    return eqbeatsDir() + "/art/" + 
-        (sz==Medium ? "medium/" : sz==Thumbnail ? "thumb/" : "") + number(_tid);
+    return eqbeatsDir() + "/art/" +
+        (sz==Medium ? "medium/" : sz==Thumbnail ? "thumb/" : "") + number(_tid) + (sz==Full?"":".png");
 }
 
 std::string Art::url(Art::Size sz) const{
@@ -46,26 +46,18 @@ void Art::makeThumbs(){
     if(_tid<=0) return;
     Magick::Image i;
     unlink(filepath(Medium).c_str());
-    symlink(("../" + number(_tid)).c_str(), filepath(Medium).c_str());
     unlink(filepath(Thumbnail).c_str());
-    symlink(("../" + number(_tid)).c_str(), filepath(Thumbnail).c_str());
     try {
         try{ i.read(filepath()); }
         catch(Magick::Warning &warn){
             log((std::string) "ImageMagick Warning : " + warn.what());
         }
-        if(getFormat() == JPEG && i.quality() > 90)
-            i.quality(90);
-        if(i.size().height() > 480){
+        if(i.size().height() > 480)
             i.scale("x480");
-            unlink(filepath(Medium).c_str());
-            i.write(filepath(Medium));
-        }
-        if(i.size().height() > 64){
+        i.write(filepath(Medium));
+        if(i.size().height() > 64)
             i.scale("x64");
-            unlink(filepath(Thumbnail).c_str());
-            i.write(filepath(Thumbnail));
-        }
+        i.write(filepath(Thumbnail));
     } catch ( Magick::Exception &err ) {
         log((std::string) "ImageMagick Exceptions : " + err.what());
     }
