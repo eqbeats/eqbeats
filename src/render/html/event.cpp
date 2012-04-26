@@ -75,7 +75,7 @@ void Render::Html::event(const Event &e, bool context){
         o << "started following " << (e.target()==Session::user() ? "you" : "<a href=\""+e.target().url()+"\">"+escape(e.target().name())+"</a>") << ".";
     else if(e.type() == Event::Favorite)
         o << "favorited <a href=\"" + e.track().url() + "\">" + escape(e.track().title()) + "</a>"
-          << (e.target()==Session::user() ? "" : " by " + escape(e.target().name())) << ".";
+          << (e.target()==Session::user() ? "" : " by <a href=\""+e.target().url()+"\">"+escape(e.target().name())+"</a>") << ".";
     o << "</li>";
 }
 
