@@ -48,8 +48,8 @@ void Action::favorite(int tid, bool add){
         Http::redirect("/login?redirect=" + t.url() + "/" + (add?"":"un") + "favorite");
     else{
         if(add){
-            Follower(Session::user()).addToFavorites(tid);
-            Event::favorite(t, Session::user());
+            if(Follower(Session::user()).addToFavorites(tid))
+                Event::favorite(t, Session::user());
         }
         else
             Follower(Session::user()).removeFromFavorites(tid);

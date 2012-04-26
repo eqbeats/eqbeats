@@ -60,10 +60,11 @@ bool Follower::isFavorite(int tid) const{
     return favHelper("track", tid, _id);
 }
 
-void Follower::addToFavorites(int tid){
-    if(isFavorite(tid)) return;
+bool Follower::addToFavorites(int tid){
+    if(isFavorite(tid)) return false;
     DB::query("INSERT INTO favorites (user_id, type, ref) "
         "VALUES (" + number(_id) + ", 'track', " + number(tid) + ")");
+    return true;
 }
 
 void Follower::removeFromFavorites(int tid){

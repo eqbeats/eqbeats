@@ -9,7 +9,7 @@ class Follower: public User{
         Follower(const User &u): User(u) {}
 
         bool isFavorite(int tid) const;
-        void addToFavorites(int tid);
+        bool addToFavorites(int tid);
         void removeFromFavorites(int tid);
 
         std::vector<std::string> followers() const; // email addresses
