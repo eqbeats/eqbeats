@@ -27,6 +27,12 @@ string toLower(string str){
     return str;
 }
 
+void avatar(const Account &u){
+    o << (Session::user() == u? "<a class=\"avatar\" href=\"http://gravatar.com/emails/\" target=\"_blank\">" : "<div class=\"avatar\">")
+      << "<img src=\"http://www.gravatar.com/avatar/" << md5(toLower(u.email())) << "?d=http%3A%2F%2Feqbeats.org%2Fstatic%2Favatar.png\" alt=\"\" />"
+      << (Session::user() == u? "<span>Change your avatar at gravatar.com</span></a>" : "</div>");
+}
+
 void userList(const vector<User> &users){
     if(users.empty()) o << "<div class=\"empty\">Nobody here yet.</div>";
     o << "<ul>";
@@ -42,11 +48,8 @@ void Html::userPage(int uid){
 
     header(user.name(), (about.empty()?"":metaDescription(strip(about))) + atomFeed(user.url() + "/atom"));
 
-    o << "<div class=\"user\">"
-      << (Session::user() == user? "<a class=\"avatar\" href=\"http://gravatar.com/emails/\" target=\"_blank\">" : "<div class=\"avatar\">")
-      << "<img src=\"http://www.gravatar.com/avatar/" << md5(toLower(user.email())) << "?d=http%3A%2F%2Feqbeats.org%2Fstatic%2Favatar.png\" alt=\"\" />"
-      << (Session::user() == user? "<span>Change your avatar at gravatar.com</span></a>" : "</div>");
-
+    o << "<div class=\"user\">";
+    avatar(user);
     o << "<h2>" << escape(user.name()) << " ";
     if(Session::user() != user){
         bool isFollowed = Follower(Session::user()).isFollowing(user.id());
@@ -125,16 +128,30 @@ void Html::favorites(int uid){
     Html::tracksPage(Html::escape(u.name())+" - Favorite tracks", Track::favorites(uid));
 }
 
+void accountList(const vector<Account> &users){
+    if(users.empty()) o << "<div class=\"empty\">Nobody here yet.</div>";
+    o << "<ul class=\"userlist\">";
+    for(vector<Account>::const_iterator i=users.begin(); i!=users.end(); i++){
+        o << "<li>";
+        avatar(*i);
+        o << "<a class=\"name\" href=\"" << i->url() << "\">" << Html::escape(i->name()) << "</a>"
+             "<div class=\"about\">" << Html::format(i->about()) << "</div>"
+             "<div style=\"clear:both;\"></div>"
+             "</li>";
+    }
+    o << "</ul>";
+}
+
 void Html::artistsPage(unsigned n){
     header("Artists");
     o << "<h2>Artists</h2>";
     searchForm("/users/search");
     int p = number(cgi("p"));
     if(p < 1) p = 1;
-    std::vector<User> users = User::listArtists(n+1, n*(p-1));
+    std::vector<Account> users = Account::listArtists(n+1, n*(p-1));
     bool lastPage = users.size() < n+1;
     if(!lastPage) users.pop_back();
-    userList(users);
+    accountList(users);
     if(p != 1) o << "<a href=\"?p=" << p-1 << "\">&laquo; Previous page</a>";
     if(p != 1 && !lastPage) o << " - ";
     if(!lastPage) o << "<a href=\"?p=" << p+1 << "\">Next page &raquo;</a>";
@@ -142,13 +159,13 @@ void Html::artistsPage(unsigned n){
 }
 
 void Html::userSearch(const std::string &q){
-    vector<User> res = User::search(q);
+    vector<Account> res = Account::search(q);
     header("User search");
     o << "<h2>User search</h2>";
     searchForm("/users/search", q);
     if(res.empty())
         o << "No result.";
     else
-        userList(res);
+        accountList(res);
     footer();
 }

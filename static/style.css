@@ -292,7 +292,7 @@ h2 img {
     padding: 7px 0;
 }
 
-.user .avatar {
+.avatar {
     position: relative;
     border: 1px solid #eee;
     width: 80px;
@@ -301,7 +301,7 @@ h2 img {
     display: block;
     float: left;
 }
-.user .avatar span {
+.avatar span {
     display: none;
     position: absolute;
     bottom: 0;
@@ -310,10 +310,10 @@ h2 img {
     background: rgba(0,0,0,0.6);
     padding: 3px;
 }
-.user a.avatar:hover span {
+a.avatar:hover span {
     display: block;
 }
-.user a.avatar:hover {
+a.avatar:hover {
     text-decoration: none;
     border-color: #777;
 }
@@ -329,6 +329,40 @@ h2 img {
 }
 .user .notes {
     margin-top: 7px;
+}
+
+.userlist {
+    margin: 0;
+    padding: 0;
+}
+.userlist li {
+    list-style-type: none;
+    padding: 0;
+    margin: 12px;
+}
+.userlist .avatar {
+    margin: 0;
+}
+.userlist .name, .userlist .about {
+    margin-left: 90px;
+}
+.userlist a.name {
+    display: block;
+    font-size: 1.15em;
+    font-weight: 100;
+    padding: 2px 4px;
+    height: 16px;
+}
+.userlist .about {
+    font-size: 0.7em;
+    color: #444;
+    margin-top: 5px;
+    height: 45px;
+    padding: 5px;
+    overflow: hidden;
+}
+.userlist .about a {
+    color: #888;
 }
 
 .newplaylist{

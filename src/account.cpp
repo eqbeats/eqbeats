@@ -17,9 +17,10 @@ Account::Account(int nId){
     }
 }
 
-Account::Account(int nId, const std::string &nName, const std::string &nEmail, bool nNotify)
+Account::Account(int nId, const std::string &nName, const std::string &nEmail, const std::string &nAbout, bool nNotify)
     : User(nId, nName){
     _email = nEmail;
+    _about = nAbout;
     _notify = nNotify;
 }
 
@@ -78,7 +79,7 @@ Account Account::create(const std::string &nName, const std::string &nPass, cons
         "INSERT INTO users (name, password, email, registration, last_login) "
         "VALUES ($1, crypt($2, gen_salt('bf')), $3, 'now', 'now') "
         "RETURNING id", nName, nPass, nEmail);
-    return r.empty() ? Account() : Account(number(r[0][0]), nName, nEmail, true);
+    return r.empty() ? Account() : Account(number(r[0][0]), nName, nEmail, std::string(), true);
 }
 
 bool Account::validEmail(const std::string &nEmail){
@@ -88,4 +89,23 @@ bool Account::validEmail(const std::string &nEmail){
 bool Account::checkPassword(const std::string &pw){
     return DB::query("SELECT EXISTS (SELECT 1 FROM users WHERE id = " + number(_id) +
                      " AND password = crypt($1, password))", pw)[0][0] == "t";
+}
+
+std::vector<Account> Account::select(const std::string &q, const std::string &param){
+    std::string sql = "SELECT id, name, email, about FROM users " + q;
+    DB::Result r = param.empty() ? DB::query(sql) : DB::query(sql, param);
+    std::vector<Account> users(r.size());
+    for(unsigned i=0; i<r.size(); i++)
+        users[i] = Account(number(r[i][0]), r[i][1], r[i][2], r[i][3], false);
+    return users;
+}
+
+std::vector<Account> Account::listArtists(unsigned int n, unsigned int begin){
+    return select("WHERE EXISTS ( SELECT 1 FROM tracks WHERE user_id = users.id AND visible = 't' ) "
+        "ORDER BY lower(name) ASC LIMIT "+number(n)+" OFFSET "+number(begin));
+}
+
+std::vector<Account> Account::search(const std::string &q){
+    if(q.empty()) return std::vector<Account>();
+    return select("WHERE name ILIKE $1 ORDER BY registration DESC", "%"+q+"%");
 }

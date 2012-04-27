@@ -8,7 +8,6 @@ class Account: public User{
     public:
         Account(){}
         Account(int nId);
-        //Account(const User &user);
 
         std::string email() const { return _email; }
         std::string about() const { return _about; }
@@ -27,8 +26,12 @@ class Account: public User{
         static bool validEmail(const std::string &nEmail);
         bool checkPassword(const std::string &pw);
 
+        static std::vector<Account> select(const std::string &p, const std::string &param=std::string());
+        static std::vector<Account> listArtists(unsigned int n, unsigned int begin=0);
+        static std::vector<Account> search(const std::string &q);
+
     private:
-        Account(int nId, const std::string &nName, const std::string &nEmail, bool nNotify);
+        Account(int nId, const std::string &nName, const std::string &nEmail, const std::string &nAbout, bool nNotify);
         std::string _email;
         std::string _about;
         bool _notify;
