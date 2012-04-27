@@ -15,16 +15,16 @@ using namespace Render;
 using namespace std;
 
 void Html::trackListEntry(const Track t, std::string list, std::string extraButtons){
-        Art art(t.id());
-        o << "<li"<< (t.visible()?"":" class=\"hidden\"") << " onclick=\"toggle(this.getElementsByClassName('player')[0]);\">";
-        o << extraButtons;
-        if(art) o << "<img class=\"cover\" alt=\"\" src=\"" << art.url(Art::Thumbnail) << "\" />";
-        o << "<div class=\"title\"><a href=\"" << t.url() << "\" title=\""<< escape(t.title()) <<"\">" << escape(t.title()) << "</a></div>"
-             " <div class=\"by\">by <a href=\"" << t.artist().url() << "\">"
-                    << escape(t.artist().name()) << "</a></div>";
-        o << "<div style=\"clear:both;\"></div>";
-        player(t, list, false);
-        o << "</li>";
+    Art art(t.id());
+    o << "<li"<< (t.visible()?"":" class=\"hidden\"") << " onclick=\"toggle(this.getElementsByClassName('player')[0]);\">";
+    o << extraButtons;
+    if(art) o << "<img class=\"cover\" alt=\"\" src=\"" << art.url(Art::Thumbnail) << "\" />";
+    o << "<div class=\"title\"><a href=\"" << t.url() << "\" title=\""<< escape(t.title()) <<"\">" << escape(t.title()) << "</a></div>"
+         " <div class=\"by\">by <a href=\"" << t.artist().url() << "\">"
+                << escape(t.artist().name()) << "</a></div>";
+    o << "<div style=\"clear:both;\"></div>";
+    player(t, list, false);
+    o << "</li>";
 }
 void Html::trackList(const vector<Track> &tracks, const std::string &list){
     if(tracks.empty()){ o << "<div class=\"empty tracklist\">Nothing here yet.</div>"; return; }
