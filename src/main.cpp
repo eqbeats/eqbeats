@@ -93,7 +93,7 @@ int main(int argc, char** argv){
         else if(path == "/tracks/featured/json")
             Json::tracks(Track::featured(50));
         else if(path == "/artists/json")
-            Json::users(User::listArtists(200));
+            Json::users(User::listArtists(300));
         else if(path == "/users/search/json")
             Json::users(User::search(cgi("q")));
         // Feeds
@@ -201,7 +201,7 @@ int main(int argc, char** argv){
         else if(path == "/users/search")
             Html::userSearch(cgi("q"));
         else if(path == "/artists")
-            Html::artistsPage();
+            Html::artistsPage(20);
         // Actions
         else if(path == "/register")
             Action::registration();

@@ -8,7 +8,7 @@ namespace Html {
 
 void userPage(int uid);
 void userSearch(const std::string &q);
-void artistsPage();
+void artistsPage(unsigned n);
 void favorites(int uid);
 
 }

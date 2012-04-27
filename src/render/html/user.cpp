@@ -17,6 +17,7 @@
 #include "../../event.h"
 #include "../../playlist.h"
 #include "../../md5.h"
+#include "../../cgi.h"
 
 using namespace std;
 using namespace Render;
@@ -124,11 +125,19 @@ void Html::favorites(int uid){
     Html::tracksPage(Html::escape(u.name())+" - Favorite tracks", Track::favorites(uid));
 }
 
-void Html::artistsPage(){
+void Html::artistsPage(unsigned n){
     header("Artists");
     o << "<h2>Artists</h2>";
     searchForm("/users/search");
-    userList(User::listArtists(200));
+    int p = number(cgi("p"));
+    if(p < 1) p = 1;
+    std::vector<User> users = User::listArtists(n+1, n*(p-1));
+    bool lastPage = users.size() < n+1;
+    if(!lastPage) users.pop_back();
+    userList(users);
+    if(p != 1) o << "<a href=\"?p=" << p-1 << "\">&laquo; Previous page</a>";
+    if(p != 1 && !lastPage) o << " - ";
+    if(!lastPage) o << "<a href=\"?p=" << p+1 << "\">Next page &raquo;</a>";
     footer();
 }
 
