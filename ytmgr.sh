@@ -9,7 +9,7 @@ case "$1" in
         echo "ytmgr : Already running."
         exit 0
     fi
-    python tools/ytmgr.py &
+    python tools/ytmgr.py 2>> /tmp/ytmgr.err &
     echo "ytmgr : Started."
     ;;
   stop)
