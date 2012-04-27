@@ -31,7 +31,7 @@ std::string ircName(std::string name){
 void logStatus(){
     User u = Session::user();
     std::string path = getPath();
-    std::string redir = path=="/"||path.empty() ? "" : "?redirect=" + path;
+    std::string redir = path=="/"||path.empty() ? "" : "?redirect=" + Html::escape(path);
     o << (u ?
         "Hi <b><a href=\"" + u.url() + "\">" + Html::escape(u.name()) + "</a></b>. <a href=\"/logout" + redir +"\">Logout</a>" :
         "<a href=\"/login" + redir + "\">Login</a>");

@@ -5,6 +5,7 @@
 #include "../render/html/page.h"
 #include "../render/http.h"
 #include "../render/render.h"
+#include "../render/html/escape.h"
 
 using namespace Render;
 
@@ -25,7 +26,7 @@ void loginForm(const std::string &error=std::string()){
                 "</tr>"
             "</table>"
             "<input type=\"submit\" value=\"Login\" />"
-            "<input type=\"hidden\" name=\"redirect\" value=\"" << cgi("redirect") << "\" />"
+            "<input type=\"hidden\" name=\"redirect\" value=\"" << Html::escape(cgi("redirect")) << "\" />"
         "</form>"
         "<a href=\"/register\">Register</a> &middot; <a href=\"/account/reset\">Lost your passord?</a>";
     Html::footer();
