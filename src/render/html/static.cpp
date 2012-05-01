@@ -63,7 +63,7 @@ void Html::faq(){
 
         "<div><h4>I've got a question/problem/idea!</h4>"
         "<p>What are you waiting for? Drop us a line at contact@eqbeats.org.</p>"
-        "<p>Or <a href=\"http://iris.ponychat.net/?nick=pony_......&channels=eqbeats&prompt=1\">come chat with us</a> in <tt>#eqbeats</tt> on <tt>irc.ponychat.net</tt>. Don't be shy, we're friendly!</p></div>"
+        "<p>Or <a href=\"http://ponychat.net/webchat?nick=pony_......&autojoin=eqbeats\">come chat with us</a> in <tt>#eqbeats</tt> on <tt>irc.ponychat.net</tt>. Don't be shy, we're friendly!</p></div>"
 
         "</div>";
     footer();
