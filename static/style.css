@@ -182,9 +182,6 @@ div.legend {
 .description {
     margin: 0 10px;
 }
-.description ul li {
-    color: #000;
-}
 .description p {
     margin: 5px;
 }
@@ -452,6 +449,14 @@ button {
     font-size: 0.7em;
     margin: 5px 10px;
     float:right;
+}
+
+.description ul li {
+    color: #000;
+}
+
+.description ul li.inactive {
+    color: #888;
 }
 
 /** Lists *********************************************************************/
