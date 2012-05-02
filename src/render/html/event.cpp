@@ -47,9 +47,10 @@ void Render::Html::event(const Event &e, bool context){
     else if(e.type() == Event::Follow) o << "/static/icons/plus.png";
     else if(e.type() == Event::Favorite) o << "/static/icons/star.png";
     o << "\"/>";
-    if(!e.source()) o << escape(e.source().name());
+    std::string name = e.source().name();
+    if(!e.source()) o << escape(name.empty()?"Anonymous":name);
     else if(Session::user() == e.source()) o << "You";
-    else o << "<a href=\"" << e.source().url() << "\">" << escape(e.source().name()) << "</a>";
+    else o << "<a href=\"" << e.source().url() << "\">" << escape(name) << "</a>";
     o << " ";
     if(e.type() == Event::Comment){
         if(e.track())
