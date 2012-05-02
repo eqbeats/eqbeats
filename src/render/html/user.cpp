@@ -10,7 +10,7 @@
 #include "../render.h"
 #include "../../session.h"
 #include "../../track.h"
-#include "../../comment.h"
+//#include "../../comment.h"
 #include "../../number.h"
 #include "../../account.h"
 #include "../../follower.h"

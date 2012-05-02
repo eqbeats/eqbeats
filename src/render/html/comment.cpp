@@ -32,11 +32,13 @@ void Html::commentForm(const string &action, bool quick){
     o << "<form class=\"postcomment\" action=\"" << action << "\" method=\"post\">" ;
     if(quick)
         o << (Session::user()?"":"<input type=\"text\" name=\"name\" placeholder=\"Name\"/>")
+          << "<input class=\"honeypot\" type=\"text\" name=\"url\" placeholder=\"If you can see this, don't fill it in\"/>"
           << "<input type=\"text\" name=\"msg\" placeholder=\"Leave a note\"/>"
              "<input type=\"submit\" value=\"Post\" onclick=\"this.form.submit();this.disabled=true;return false;\" />";
     else{
         o << (Session::user() ? "" : "Name : <input type=\"text\" name=\"name\" /><br />")
-          << "<textarea name=\"msg\"></textarea><br />"
+          << "<input class=\"honeypot\" type=\"text\" name=\"url\" placeholder=\"If you can see this, don't fill it in\"/>"
+             "<textarea name=\"msg\"></textarea><br />"
              "<input type=\"submit\" value=\"Post a comment\" onclick=\"this.form.submit();this.disabled=true;return false;\" />";
     }
     o << "</form>";

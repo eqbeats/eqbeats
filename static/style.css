@@ -219,6 +219,13 @@ a.danger {
     margin: 15px;
 }
 
+input.honeypot {
+    display: none;
+    padding: 0;
+    border: none;
+    height: 0px;
+}
+
 .comment .by {
     margin-top: 8px;
     font-size: 0.9em;
