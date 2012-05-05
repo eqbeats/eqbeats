@@ -147,6 +147,8 @@ int main(int argc, char** argv){
             Action::setFlags(id);
         else if((id = route("track", "tags", path)))
             Action::setTags(id);
+        else if((id = route("track", "license", path)))
+            Action::setLicense(id);
         else if((id = route("track", "youtube_upload", path)))
             Action::youtubeUpload(id);
         else if((id = route("track",path)))
@@ -209,6 +211,8 @@ int main(int argc, char** argv){
             Action::account();
         else if(path == "/account/reset")
             Action::passwordReset();
+        else if(path == "/account/license")
+            Action::setLicense();
         else if(path == "/login")
             Action::login();
         else if(path == "/logout")

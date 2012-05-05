@@ -31,6 +31,9 @@ void setFlags(int tid);
 void reportTrack(int tid);
 void setTags(int tid);
 
+// license.cpp
+void setLicense(int tid=0);
+
 // upload.cpp
 void uploadTrack(int tid);
 void newTrack();

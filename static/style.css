@@ -559,7 +559,7 @@ form input, select {
     vertical-align: middle;
     width: 250px;
 }
-input[type="checkbox"] {
+input[type="checkbox"], input[type="radio"] {
     margin: 0 5px;
     padding: 0;
     width: auto;

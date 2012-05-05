@@ -8,6 +8,7 @@
 #include "repl.h"
 #include "path.h"
 #include "playlist.h"
+#include "account.h"
 
 Repl hitsd;
 
@@ -59,10 +60,12 @@ string Track::url(Format f) const{
 
 Track Track::create(int nArtistId, const string &nTitle){
     Track t;
+    Account u(nArtistId);
+    if(!u) return t;
     DB::Result r = DB::query(
-        "INSERT INTO tracks (user_id, title, date) VALUES "
-        "("+number(nArtistId)+", $1, 'now') "
-        "RETURNING id, date", nTitle);
+        "INSERT INTO tracks (user_id, title, date, license) VALUES "
+        "("+number(nArtistId)+", $1, 'now', $2) "
+        "RETURNING id, date", nTitle, u.license());
     if(r.empty()) return t;
     return Track(number(r[0][0]), nTitle, nArtistId, User(nArtistId).name(), false, r[0][1]);
 }
@@ -126,7 +129,7 @@ vector<Track> Track::featured(int n){
 }
 
 vector<Track> Track::favorites(int uid){
-    return select("favorites", 
+    return select("favorites",
         "favorites.type = 'track'"
         " AND favorites.ref = tracks.id "
         " AND favorites.user_id = " + number(uid),
@@ -184,7 +187,7 @@ ExtendedTrack::ExtendedTrack(int id){
 
     DB::Result r = DB::query(
         "SELECT tracks.title, tracks.user_id, users.name, tracks.visible, tracks.date,"
-        " tracks.notes, tracks.airable, array_to_string(tracks.tags, ',') FROM tracks, users "
+        " tracks.notes, tracks.airable, tracks.license, array_to_string(tracks.tags, ',') FROM tracks, users "
         "WHERE tracks.id = " + number(id) + " AND tracks.user_id = users.id");
     if(!r.empty()){
         _id = id;
@@ -196,8 +199,9 @@ ExtendedTrack::ExtendedTrack(int id){
         // Ext
         _notes = r[0][5];
         _airable = r[0][6][0] == 't';
+        _license = r[0][7];
         // Tags
-        string tstr = r[0][7];
+        string tstr = r[0][8];
         string buf;
         for(string::const_iterator i=tstr.begin(); i!=tstr.end(); i++){
             if(*i == ','){
@@ -222,6 +226,12 @@ void ExtendedTrack::setNotes(const string &nNotes){
     if(_notes == nNotes) return;
     DB::query("UPDATE tracks SET notes = $1 WHERE id = " + number(_id), nNotes);
     _notes = nNotes;
+}
+
+void ExtendedTrack::setLicense(const string &nLicense){
+    if(_license == nLicense) return;
+    DB::query("UPDATE tracks SET license = $1 WHERE id = " + number(_id), nLicense);
+    _license = nLicense;
 }
 
 void ExtendedTrack::setTags(const string &nTags){

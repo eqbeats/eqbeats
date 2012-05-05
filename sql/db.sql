@@ -7,6 +7,7 @@ CREATE TABLE users (
     registration timestamptz not null,
     last_login timestamptz not null,
     notify bool not null default true
+    license text not null default 'Copyright',
 );
 
 CREATE TABLE tracks (
@@ -14,7 +15,7 @@ CREATE TABLE tracks (
     user_id integer not null REFERENCES users(id),
     title text not null,
     date timestamptz not null,
-    license text not null,
+    license text not null default 'Copyright',
     hits integer not null default 0,
     visible boolean not null default 'f',
     notes text not null default '',

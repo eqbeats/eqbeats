@@ -51,6 +51,10 @@ void Action::accountForm(const Account &_account, const std::string &error,
                     "<span class=\"legend\">(tags: [b]old, [u]nderline, [i]talic)</span>"
                     "<td><textarea id=\"r_about\" name=\"about\">" << escape(_account.about()) << "</textarea></td>"
                 "</tr>"
+                "<tr>"
+                    "<td><label for=\"r_license\">Default license:</label></td>"
+                    "<td><b>" << escape(_account.license()) << "</b> <a href=\"/account/license\">(change)</a></td>"
+                "</tr>"
             "</table>"
             "<input type=\"submit\" value=\"Update\" />"
         "</form>";

@@ -133,8 +133,12 @@ void Html::trackPage(int tid){
                  "<input type=\"submit\" value=\"Rename\" />"
              "</form>"
              "</div>"
-        // Reupload
+        // License
              "<div class=\"column\">"
+             "<div>"
+                "<b>License:</b> " << escape(t.license()) << " <a href=\"" << t.url() << "/license\">(change)</a>"
+             "</div>"
+        // Reupload
              "<h4>" << icon("drive-upload") << " Re-upload</h4>";
         uploadForm(t.url()+"/upload");
         // Art
