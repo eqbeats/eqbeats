@@ -17,6 +17,7 @@ art/
 reports
 hits.dat
 hitsd.sock
+feature.queue
 
 eqbeats.fcgi
 /tools/CMakeFiles
@@ -28,3 +29,4 @@ eqbeats.fcgi
 /tools/mkthumbs
 /tools/stats
 /tools/updatetags
+/tools/fqueue

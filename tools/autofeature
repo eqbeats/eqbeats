@@ -2,7 +2,7 @@
 
 QUEUE="$EQBEATS_DIR/feature.queue"
 
-tid=$(head -n 1 "$QUEUE")
+tid=$(head -n 1 "$QUEUE" | cut -d ' ' -f 1)
 [ -z "$tid" ] && exit 1
 
 feature "$tid"
