@@ -23,9 +23,13 @@ int main(int argc, char **argv){
         return 1;
     }
 
-    r = DB::query("SELECT title FROM tracks WHERE id=$1", number(tid));
+    r = DB::query("SELECT title, visible FROM tracks WHERE id=$1", number(tid));
     if(r.empty()){
         cerr << tid << ": track not found" << endl;
+        return 1;
+    }
+    else if(r[0][1] == "f"){
+        cerr << tid << ": track not published" << endl;
         return 1;
     }
 
