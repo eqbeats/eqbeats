@@ -897,6 +897,20 @@ a.qq-upload-file, a.qq-upload-file:hover {
     border-bottom : 1px solid #fafafa;
 }
 
+/** Licenses ******************************************************************/
+
+.licenses td {
+    padding: 10px 5px;
+    vertical-align: top;
+}
+.licenses div {
+    font-size: 0.9em;
+    padding: 7px 0;
+}
+.licenses div input[type="radio"] {
+    margin: 0 0 0 10px;
+}
+
 /** Fake YouTube **************************************************************/
 
 .ytsidebar {
