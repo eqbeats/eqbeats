@@ -246,6 +246,15 @@ input.honeypot {
     margin: 0;
 }
 
+.license {
+    font-size: 0.8em;
+    color: #888;
+    margin: 10px 25px 0px;
+}
+.license a {
+    color: #444;
+}
+
 .track h4, .playlist h4 {
     margin: 10px;
 }

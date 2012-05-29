@@ -22,7 +22,7 @@ void licenseForm(const ExtendedTrack &t){
                 "<td>" << CHOICE("Copyright", "lc") << "</td>"
                 "<td>"
                     "<b><label for=\"lc\">Copyright</label></b>"
-                    "<div>Default license. Most restrictive. If you don't plan on selling your music, we recommand that you use the Creative Commons license below.</div>"
+                    "<div>Default license. Most restrictive.</div>"
                 "</td>"
             "</tr>";
     o <<    "<tr>"
@@ -31,7 +31,7 @@ void licenseForm(const ExtendedTrack &t){
                     "<b><label for=\"lnc\">Creative Commons: Attribution-NonCommercial (CC BY-NC)</label></b>"
                     "<div>"
                         "&ldquo;This license lets others remix, tweak, and build upon your work non-commercially, and although their new works must also acknowledge you and be non-commercial, they don’t have to license their derivative works on the same terms.&rdquo;<br />"
-                        "<a href=\"http://creativecommons.org/licenses/\">More about the Creative Commons licenses.</a><br /><br />"
+                        "<a href=\"http://creativecommons.org/licenses/\">More about Creative Commons licenses.</a><br /><br />"
                         "Other CC licenses: ";
     o <<                CHOICE ("CC BY", "lby") << " <label for=\"lby\">BY</label> ";
     o <<                CHOICE ("CC BY-SA", "lsa") << " <label for=\"lsa\">BY-SA</label> ";
