@@ -78,15 +78,18 @@ class ExtendedTrack: public Track {
         std::string notes() const { return _notes; }
         bool airable() const { return _airable; }
         std::vector<std::string> tags() const { return _tags; }
+        std::string license() const { return _license; }
 
         void setAirable(bool);
         void setNotes(const std::string &nNotes);
+        void setLicense(const std::string &nLicense);
         void setTags(const std::string &nTags);
 
     private:
         std::string _notes;
         bool _airable;
         std::vector<std::string> _tags;
+        std::string _license;
 
 };
 

@@ -109,6 +109,12 @@ void Html::trackPage(int tid){
         o << "</div>";
     }
 
+    // License
+    o << "<div class=\"license\">"
+      << (t.license() == "Copyright" ? "Copyright &copy; " + escape(t.artist().name()) : "License: " + escape(t.license()))
+      << (edition ? " <a href=\"" + t.url() + "/license\">(change)</a>" : "")
+      << "</div>";
+
     // Notes
     if(!t.notes().empty())
         o << "<div class=\"notes\">" << format(t.notes()) << "</div>";
@@ -133,8 +139,8 @@ void Html::trackPage(int tid){
                  "<input type=\"submit\" value=\"Rename\" />"
              "</form>"
              "</div>"
-        // Reupload
              "<div class=\"column\">"
+        // Reupload
              "<h4>" << icon("drive-upload") << " Re-upload</h4>";
         uploadForm(t.url()+"/upload");
         // Art

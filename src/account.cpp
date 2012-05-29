@@ -7,13 +7,14 @@
 Account::Account(int nId){
     _id = 0;
     if(nId<=0) return;
-    DB::Result r = DB::query("SELECT name, email, about, notify FROM users WHERE id=" + number(nId));
+    DB::Result r = DB::query("SELECT name, email, about, notify, license FROM users WHERE id=" + number(nId));
     if(!r.empty()){
         _id = nId;
         _name = r[0][0];
         _email = r[0][1];
         _about = r[0][2];
         _notify = r[0][3][0] == 't';
+        _license = r[0][4];
     }
 }
 
@@ -44,6 +45,16 @@ void Account::setAbout(const std::string &nAbout){
     _about = nAbout;
 }
 
+void Account::setLicense(const std::string &nLicense, bool def, bool retroactive){
+    if(_id <= 0) return;
+    if(_license != nLicense && def){
+        DB::query("UPDATE users SET license = $1 WHERE id = " + number(_id), nLicense);
+        _license = nLicense;
+    }
+    if(retroactive)
+        DB::query("UPDATE tracks SET license = $1 WHERE user_id = " + number(_id), nLicense);
+}
+
 std::string strToLower(std::string str){
     for(std::string::iterator i=str.begin(); i!=str.end(); i++)
         *i = std::tolower(*i);
@@ -61,6 +72,7 @@ bool Account::setEmail(const std::string &nEmail){
 }
 
 void Account::commit(){
+    if(_id <= 0) return;
     DB::query("UPDATE users SET name = $2, email = $3, about = $4, notify = $5 WHERE id = $1",
               number(_id), _name, _email, _about, _notify?"t":"f");
     DB::query("UPDATE comments SET author_name = $1 WHERE author_id = " + number(_id), _name);
