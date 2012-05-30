@@ -16,6 +16,7 @@
 #include <taglib/mpegfile.h>
 #include <taglib/tag.h>
 #include <sys/stat.h>
+#include <unistd.h>
 
 using namespace Render;
 using namespace Json;
@@ -32,45 +33,52 @@ void Action::uploadTrack(int id){
 
     cgicc::file_iterator qqfile = cgi.getFile("qqfile");
     bool js = cgi("js") != "no";
+    std::string upfilename = (qqfile != cgi.getFiles().end() ? qqfile->getFilename() : cgi("qqfile"));
 
     if(js) Http::header("text/html"); // Opera
 
     Track t(id);
-    if(t && t.artist() != u){
+    if((t && t.artist() != u) || upfilename.empty()){
         if(js) o << "{" << field("success","false",true) << "}";
-        else Http::redirect(u ? u.url() : "/");
+        else Http::redirect(t ? t.url() : u ? u.url() : "/");
         return;
     }
 
+    std::string::size_type ext_idx = upfilename.rfind('.');
+    std::string ext = (ext_idx == std::string::npos ? std::string() : upfilename.substr(ext_idx));
+
     std::string dir = eqbeatsDir() + "/tmp";
     char *tmpFile = tempnam(dir.c_str(), "eqb");
-    std::ofstream out(tmpFile, std::ios_base::binary);
-    std::string upfilename;
+    if(!ext.empty()){
+        tmpFile = (char*) realloc(tmpFile, strlen(tmpFile) + ext.size() + 1);
+        strcat(tmpFile, ext.c_str());
+    }
 
+    std::ofstream out(tmpFile, std::ios_base::binary);
     if(qqfile != cgi.getFiles().end())
         qqfile->writeToStream(out);
-    else if(js) {
+    else if(js)
         out << cgi.getEnvironment().getPostData();
-        upfilename = cgi("qqfile");
-    }
     out.close();
 
     if(id == -1){
         std::string title = getTitle(tmpFile);
         if(title.empty())
-            title = upfilename.substr(0, upfilename.rfind('.'));
+            title = upfilename.substr(0, ext_idx);
         t = Track::create(u.id(), title.empty()? "Untitled":title);
     }
-
-    std::string filename = eqbeatsDir() + "/tracks/"+number(t.id())+".mp3";
-    rename(tmpFile, filename.c_str());
-    free(tmpFile);
 
     log("Track uploaded: " + t.title() + " (" + number(t.id()) + ")");
 
     Media m(t);
-    m.updateTags(Track::MP3);
-    m.convertToVorbis();
+    if(fork() == 0){
+        freopen("/dev/null","r",stdin);
+        execlp("transcode.sh", "transcode.sh", number(m.id()).c_str(), tmpFile, u.name().c_str(), t.title().c_str(), NULL);
+        free(tmpFile);
+    }
+    else
+        sleep(1);
+
     if(js)
         o << "{"+field("success","true")+field("track",number(t.id()))+field("title",jstring(t.title()),true)+"}";
     else Http::redirect(t.url());

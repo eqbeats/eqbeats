@@ -68,20 +68,26 @@ void Html::trackPage(int tid){
 
       << (art?"<img class=\"art\" alt=\"\" src=\"" + art.url(Art::Medium) + "\" />":"");
 
-    player(t);
+    std::string mstatus = m.status();
+    if(m.status().empty())
+        player(t);
+    else
+        o << "<div class=\"status\">Status: " << mstatus << "</div>";
 
     // Toolbar
-    o << "<div class=\"toolbar\">"
-         "<span>" << icon("drive-download") << " Download : "
-         "<a href=\"" << t.url(Track::Vorbis) << "\">OGG Vorbis</a> ";
-    if(m.extension().empty() || m.extension() == ".mp3")
-         o << "<a href=\"" << t.url(Track::MP3) << "\">Original MP3</a> ";
-    else{
-         o << "<a href=\"" << t.url(Track::MP3) << "\">MP3</a> "
-              "<a href=\"" << t.url(Track::Original) << "\">Original (" << escape(m.extension()) << ")</a> ";
+    o << "<div class=\"toolbar\">";
+    if(mstatus.empty()){
+        o << "<span>" << icon("drive-download") << " Download : "
+             "<a href=\"" << t.url(Track::Vorbis) << "\">OGG Vorbis</a> ";
+        if(m.extension().empty() || m.extension() == ".mp3")
+             o << "<a href=\"" << t.url(Track::MP3) << "\">Original MP3</a> ";
+        else{
+             o << "<a href=\"" << t.url(Track::MP3) << "\">MP3</a> "
+                  "<a href=\"" << t.url(Track::Original) << "\">Original (" << escape(m.extension()) << ")</a> ";
+        }
+        if (art) o << "<a href=\"" + art.url() + "\" target=\"_blank\">Art</a>";
+        o << "</span> ";
     }
-    if (art) o << "<a href=\"" + art.url() + "\" target=\"_blank\">Art</a>";
-    o << "</span> ";
     o << "<span>" << icon("balloon-white-left") << " Share : <a href=\"#embedcode\" onclick=\"document.getElementById('embedcode').style.display='block';return false;\">Embed</a></span>";
     if(edition){
         if(hits)

@@ -295,6 +295,11 @@ h2 img {
     font-size: 0.4em;
 }
 
+.status {
+    font-weight: bold;
+    padding: 20px;
+}
+
 /** User page *****************************************************************/
 
 .user {

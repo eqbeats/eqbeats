@@ -2,7 +2,7 @@
 
 cd /home/eqbeats/eqbeats
 make || return 1
-install -m775 eqbeats.fcgi failsafe hitsd.sh ytmgr.sh /srv/eqbeats/
+install -m775 eqbeats.fcgi failsafe transcode.sh hitsd.sh ytmgr.sh /srv/eqbeats/
 
 cd tools
 find . -maxdepth 1 -type f -executable -exec install -m775 '{}' /srv/eqbeats/tools/ \;

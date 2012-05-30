@@ -12,7 +12,7 @@ class Media: public Track{
         std::string filePath(Format f) const;
         std::string mimetype(Format f=Original) const;
 
-        void convertToVorbis();
+        std::string status();
 
         void updateTags() { updateTags(MP3); updateTags(Vorbis); }
         void updateTags(Format format);

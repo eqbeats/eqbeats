@@ -45,25 +45,6 @@ std::string Media::mimetype(Format f) const{
     return "application/octet-stream";
 }
 
-void Media::convertToVorbis(){
-    pid_t child = fork();
-    if(child == 0){
-        freopen("/dev/null","r",stdin);
-        std::string logfile = eqbeatsDir() + "/ffmpeg.log";
-        freopen(logfile.c_str(),"a",stdout);
-        freopen(logfile.c_str(),"a",stderr);
-        string base = eqbeatsDir() + "/tracks/" + number(id()) + ".";
-        string mp3 = base + "mp3";
-        string vorbis = base + "ogg";
-        execlp("ffmpeg", "ffmpeg", "-loglevel", "quiet", "-y", "-i", mp3.c_str(), "-acodec", "libvorbis", vorbis.c_str(), NULL);
-    }
-    else if(child > 0){
-        int stat;
-        waitpid(child, &stat, 0);
-        log("ffmpeg: exited with " + number(stat));
-    }
-}
-
 void Media::updateTags(Format format){
     if(format == MP3){
         TagLib::MPEG::File mp3(filePath(MP3).c_str());
@@ -86,4 +67,13 @@ void Media::unlink(){
     ::unlink(filePath(MP3).c_str());
     ::unlink(filePath(Vorbis).c_str());
     ::unlink(filePath(Original).c_str());
+}
+
+std::string Media::status(){
+    bool mp3 = (access(filePath(MP3).c_str(), R_OK) == 0),
+         ogg = (access(filePath(Vorbis).c_str(), R_OK) == 0);
+    if(access(filePath(Original).c_str(), R_OK) == 0) return std::string();
+    if(ogg && !mp3) return "Transcoding into Vorbis."; // do that first
+    if(mp3) return "Transcoding into MP3.";
+    return "Couldn't transcode.";
 }
