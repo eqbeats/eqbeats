@@ -54,7 +54,7 @@ void Track::setVisible(bool v){
 }
 
 string Track::url(Format f) const{
-    string format = f==Vorbis? "vorbis" : "mp3";
+    string format = f==Vorbis? "vorbis" : f==MP3 ? "mp3" : "original";
     return (string) "/track/" + number(_id) + "/" + format;
 }
 

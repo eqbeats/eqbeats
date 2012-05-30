@@ -26,7 +26,7 @@ class Track{
         std::string url() const { return Track::url(_id); }
         static std::string url(int id);
 
-        enum Format { Vorbis, MP3 };
+        enum Format { Vorbis, MP3, Original };
         std::string url(Format f) const;
         std::string filePath(Format f) const;
 

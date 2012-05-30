@@ -3,6 +3,7 @@
 #include "html/page.h"
 #include "../number.h"
 #include "../user.h"
+#include "../media.h"
 #include <string>
 #include <unistd.h>
 
@@ -12,9 +13,10 @@ using namespace std;
 void Http::downloadTrack(int tid, Track::Format f){
     Track t(tid);
     if(!t) return Html::notFound("Track");
-    string ext = f == Track::Vorbis ? ".ogg" : ".mp3";
-    string mime = f == Track::Vorbis ? "ogg" : "mpeg";
-    Http::download("/downloads/tracks/"+number(tid)+ext, t.artist().name()+" - "+t.title()+ext, "audio/"+mime, true);
+    Media m(t);
+    Http::download(
+        "/downloads/tracks/"+number(tid)+(f==Track::Original?".orig":"")+m.extension(f),
+        t.artist().name()+" - "+t.title()+m.extension(f), m.mimetype(f), true);
 }
 
 void Http::trackArt(int tid, Art::Size sz){

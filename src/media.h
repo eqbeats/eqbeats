@@ -6,9 +6,11 @@
 class Media: public Track{
 
     public:
-        Media(const Track &t): Track(t) {}
+        Media(const Track &t);
 
+        std::string extension(Format f=Original) const;
         std::string filePath(Format f) const;
+        std::string mimetype(Format f=Original) const;
 
         void convertToVorbis();
 
@@ -16,6 +18,9 @@ class Media: public Track{
         void updateTags(Format format);
 
         void unlink();
+
+    private:
+        std::string ext;
 
 };
 

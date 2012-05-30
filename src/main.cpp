@@ -63,6 +63,8 @@ int main(int argc, char** argv){
             Http::redirect("http://youtu.be/gvdf5n-zI14");
         }
         // Static
+        else if((id = route("track", "original", path)))
+            Http::downloadTrack(id, Track::Original);
         else if((id = route("track", "vorbis", path)))
             Http::downloadTrack(id, Track::Vorbis);
         else if((id = route("track", "mp3", path)))

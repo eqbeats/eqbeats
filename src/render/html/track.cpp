@@ -10,6 +10,7 @@
 #include "../../art.h"
 #include "../../comment.h"
 #include "../../track.h"
+#include "../../media.h"
 #include "../../session.h"
 #include "../../number.h"
 #include "../../path.h"
@@ -26,6 +27,7 @@ using namespace Render;
 void Html::trackPage(int tid){
     ExtendedTrack t(tid);
     if(!t) return notFound("Track");
+    Media m(t);
     bool edition = Session::user().id() == t.artist().id();
     Art art(tid);
     unsigned hits = edition ? t.getHits() : t.hit();
@@ -71,8 +73,13 @@ void Html::trackPage(int tid){
     // Toolbar
     o << "<div class=\"toolbar\">"
          "<span>" << icon("drive-download") << " Download : "
-         "<a href=\"" << t.url(Track::Vorbis) << "\">OGG Vorbis</a> "
-         "<a href=\"" << t.url(Track::MP3) << "\">MP3</a> ";
+         "<a href=\"" << t.url(Track::Vorbis) << "\">OGG Vorbis</a> ";
+    if(m.extension().empty() || m.extension() == ".mp3")
+         o << "<a href=\"" << t.url(Track::MP3) << "\">Original MP3</a> ";
+    else{
+         o << "<a href=\"" << t.url(Track::MP3) << "\">MP3</a> "
+              "<a href=\"" << t.url(Track::Original) << "\">Original (" << escape(m.extension()) << ")</a> ";
+    }
     if (art) o << "<a href=\"" + art.url() + "\" target=\"_blank\">Art</a>";
     o << "</span> ";
     o << "<span>" << icon("balloon-white-left") << " Share : <a href=\"#embedcode\" onclick=\"document.getElementById('embedcode').style.display='block';return false;\">Embed</a></span>";

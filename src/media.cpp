@@ -9,10 +9,40 @@
 #include <taglib/mpegfile.h>
 #include <taglib/vorbisfile.h>
 #include <unistd.h>
+#include <string.h>
+#include <dirent.h>
+
+Media::Media(const Track &t): Track(t){
+    std::string path = eqbeatsDir() + "/tracks";
+    DIR *dirp = opendir(path.c_str());
+    struct dirent *e;
+    std::string name = number(t.id()) + ".orig.";
+    while((e = readdir(dirp)) != NULL){
+        if(strncmp(e->d_name, name.c_str(), name.size()) == 0){
+            ext = e->d_name + (name.size() - 1);
+            break;
+        }
+    }
+    closedir(dirp);
+}
+
+std::string Media::extension(Format f) const{
+    return f == Vorbis ? ".ogg" : f == MP3 ? ".mp3" : ext;
+}
 
 std::string Media::filePath(Format f) const{
-    string format = f==Vorbis? "ogg" : "mp3";
-    return eqbeatsDir() + "/tracks/" + number(id()) + "." + format;
+    return eqbeatsDir() + "/tracks/" + number(id()) + (f == Original ? ".orig" : "") + extension(f);
+}
+
+#define FORMAT(e,m) if(extension() == (e)) return (m);
+
+std::string Media::mimetype(Format f) const{
+    if(f == Track::Vorbis) return "audio/ogg";
+    if(f == Track::MP3) return "audio/mpeg";
+    FORMAT(".aiff", "audio/aiff")
+    FORMAT(".flac", "audio/flac")
+    FORMAT(".wav", "audio/wav")
+    return "application/octet-stream";
 }
 
 void Media::convertToVorbis(){
@@ -55,4 +85,5 @@ void Media::updateTags(Format format){
 void Media::unlink(){
     ::unlink(filePath(MP3).c_str());
     ::unlink(filePath(Vorbis).c_str());
+    ::unlink(filePath(Original).c_str());
 }
