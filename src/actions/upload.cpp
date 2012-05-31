@@ -45,14 +45,12 @@ void Action::uploadTrack(int id){
     }
 
     std::string::size_type ext_idx = upfilename.rfind('.');
-    std::string ext = (ext_idx == std::string::npos ? std::string() : upfilename.substr(ext_idx));
+    std::string ext = (ext_idx == std::string::npos ? ".derp" : upfilename.substr(ext_idx));
 
     std::string dir = eqbeatsDir() + "/tmp";
     char *tmpFile = tempnam(dir.c_str(), "eqb");
-    if(!ext.empty()){
-        tmpFile = (char*) realloc(tmpFile, strlen(tmpFile) + ext.size() + 1);
-        strcat(tmpFile, ext.c_str());
-    }
+    tmpFile = (char*) realloc(tmpFile, strlen(tmpFile) + ext.size() + 1);
+    strcat(tmpFile, ext.c_str());
 
     std::ofstream out(tmpFile, std::ios_base::binary);
     if(qqfile != cgi.getFiles().end())
@@ -77,7 +75,7 @@ void Action::uploadTrack(int id){
         free(tmpFile);
     }
     else
-        sleep(1);
+        sleep(2);
 
     if(js)
         o << "{"+field("success","true")+field("track",number(t.id()))+field("title",jstring(t.title()),true)+"}";
