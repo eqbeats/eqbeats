@@ -12,103 +12,89 @@
             <img src="/static/icons/star.png" alt="Remove from favorites" />
         </a>
         {{/IS_FAV}}
-    if(Session::user() && t.visible()){
-        vector<Playlist> playlists = Playlist::forUser(Session::user().id());
-        if(!playlists.empty()){
-            o << "<span id=\"addplaylist\">"
-                 "<img src=\"/static/icons/playlist-add.png\" alt=\"Playlists\" title=\"Playlists\">"
-                 "<form action=\"/track/"+number(tid)+"/playlist\" method=\"post\">"
-                 "<select name=\"playlist\">";
-            for(vector<Playlist>::iterator p = playlists.begin(); p != playlists.end(); p++)
-                o << "<option value=\""+number(p->id())+"\">" + escape(p->name()) + "</option>";
-            o << "<input type=\"submit\" value=\"Add to this playlist\"/></form>"
-                 "</span>";
-        }
-    }
-    o << "</h2>";
-    char date[200];
-    strcpy(date, t.date().c_str());
-    struct tm tm;
-    strptime(date, "%Y-%m-%d", &tm);
-    strftime(date, 200, "%B %-d, %Y", &tm);
-    o << "<h4>by <a href=\"" << t.artist().url() <<  "\">" << escape(t.artist().name()) << "</a> <span class=\"date\">on " << date << "</span></h4>"
+        {{#IS_VISIBLE}}{{#LOGGED_USER}}{{#HAS_PLAYLISTS}}
+            <span id="addplaylist">
+                <img src="/static/icons/playlist-add.png" alt="Playlists" title="Playlists">
+                <form action="/track/{{TID}}/playlist" method="post">
+                    <select name="playlist">
+                    {{#PLAYLISTS}}
+                        <option value="{{PID}}">{{NAME}}</option>
+                    {{/PLAYLISTS}}
+                    </select>
+                <input type="submit" value="Add to this playlist"/>
+                </form>
+            </span>
+        </h2>
+        <h4>by <a href="/user/{{ARTIST_ID}}">{{ARTIST_NAME}}</a> <span class="date">on {{DATE}}</span></h4>"
 
-      << (art?"<img class=\"art\" alt=\"\" src=\"" + art.url(Art::Medium) + "\" />":"");
+        {{#HAS_ART}} <img class="art" alt="" src="/track/{{TID}}/art/medium" /> {{/HAS_ART}} 
 
-    std::string mstatus = m.status();
-    if(m.status().empty())
-        player(t);
-    else
-        o << "<div class=\"status\">Status: " << mstatus << "</div>";
+        {{#NO_STATUS}} {{>PLAYER}} {{/NO_STATUS}}
+        {{#HAS_STATUS}} <div class="status">Status: {{STATUS}}</div> {{/HAS_STATUS}}
 
-    // Toolbar
-    o << "<div class=\"toolbar\">";
-    if(mstatus.empty()){
-        o << "<span>" << icon("drive-download") << " Download : "
-             "<a href=\"" << t.url(Track::Vorbis) << "\">OGG Vorbis</a> ";
-        if(m.extension().empty() || m.extension() == ".mp3")
-             o << "<a href=\"" << t.url(Track::MP3) << "\">Original MP3</a> ";
-        else{
-             o << "<a href=\"" << t.url(Track::MP3) << "\">MP3</a> "
-                  "<a href=\"" << t.url(Track::Original) << "\">Original (" << escape(m.extension()) << ")</a> ";
-        }
-        if (art) o << "<a href=\"" + art.url() + "\" target=\"_blank\">Art</a>";
-        o << "</span> ";
-    }
-    o << "<span>" << icon("balloon-white-left") << " Share : <a href=\"#embedcode\" onclick=\"document.getElementById('embedcode').style.display='block';return false;\">Embed</a></span>";
-    if(edition){
-        if(hits)
-            o << " <span>" << icon("edit-number") << " Hits : " << hits << "</span>";
-        o << " <span>" << icon("star") << " Favourites : " << t.favoritesCount() << "</span>";
-    }
-    else
-        o << " <form action=\"" << t.url() << "/report\" method=\"post\">"
-                "<button type=\"submit\" class=\"report\">" << icon("flag") << "<span> Report</span></button>"
-             "</form>";
-    o << "</div>"
-    // Embed
-         "<textarea id=\"embedcode\" style=\"display:none;\">" << Html::embedTrackCode(t) << "</textarea>";
+        <div class=\"toolbar\">";
+            {{#NO_STATUS}}
+            <span><img alt="" src="/static/icons/drive-download.png" /> Download :
+                <a href="/track/{{TID}}/vorbis">OGG Vorbis</a>
+                {{#MP3_SOURCE}} <a href="/track/{{TID}}/mp3">Original MP3</a> {{/MP3_SOURCE}}
+                {{#OTHER_SOURCE}}
+                <a href="/track/{{TID}}/mp3">MP3</a>
+                <a href="/track/{{TID}}/original">Original (.{{EXTENSION}})</a>
+                {{/OTHER_SOURCE}}
+                <a href="/track/{{TID}}/art" target="_blank">Art</a>
+            </span>
+            {{/NO_STATUS}}
+            <span><img alt="" src="/static/icons/balloon-white-left.png" /> Share : <a href="#embedcode" onclick="document.getElementById('embedcode').style.display='block';return false;">Embed</a></span>
 
-    // Tags
-    if(!t.tags().empty() || edition){
-        o << "<div class=\"toolbar tags\">" << icon("tag") << " Tags:";
-        vector<string> ts = t.tags();
-        if(edition){
-            o << " <form action=\"" << t.url() << "/tags\" method=\"post\">"
-                    "<input name=\"tags\" value=\"";
-            for(vector<string>::const_iterator i=ts.begin(); i!=ts.end(); i++){
-                if(i != ts.begin()) o << ", ";
-                o << escape(*i);
-            }
-            o <<    "\" /> <input type=\"submit\" value=\"Update\" /> <span class=\"legend\">(comma-separated, e.g. instrumental, electronic)</span></form>";
-        }
-        else{
-            for(vector<string>::const_iterator i=ts.begin(); i!=ts.end(); i++)
-                o << " <a href=\"/tracks/tag/" << escape(*i) << "\">" << escape(*i) << "</a>";
-        }
-        o << "</div>";
-    }
+            {{#IS_OWNER}}
+            {{#HAS_HITS}} <span><img alt="" src="/static/icons/edit-number.png" /> Hits : {{HITCOUNT}}</span>{{/HAS_HITS}}
+            <span><img alt="" src="/static/icons/star.png" /> Favourites : {{FAVCOUNT}}</span>
+            {{/IS_OWNER}}
+            {{#IS_NOT_OWNER}}
+            <form action="/track/{{TID}}/report" method="post">
+                <button type="submit" class="report"><img alt="" src="/static/icon/flag.png" /><span> Report</span></button>
+            </form>
+            {{/IS_NOT_OWNER}}
+        </div>
+        <textarea id="embedcode" style="display:none;">{{<EMBED}}</textarea>
 
-    // License
-    o << "<div class=\"license\">"
-      << (t.license() == "Copyright" ? "Copyright &copy; " + escape(t.artist().name()) : "License: " + escape(t.license()))
-      << (edition ? " <a href=\"" + t.url() + "/license\">(change)</a>" : "")
-      << "</div>";
+        {{#IS_OWNER}}
+        <div class="toolbar tags"><img alt="" src="/static/icons/tag.png" /> Tags:
+            <form action="/track/{{TID}}/tags" method="post">
+                <input name="tags" value="{{#TAGS}}{{TAG}}, {{/TAGS}}" />
+                <input type="submit" value="Update" />
+                <span class="legend">(comma-separated, e.g. instrumental, electronic)</span>
+            </form>
+        </div>
+        {{/IS_OWNER}}
+        {{#IS_NOT_OWNER}} {{#HAS_TAGS}}
+        <div class="toolbar tags"><img alt="" src="/static/icons/tag.png" /> Tags:
+            {{#TAGS}}
+                <a href="/tracks/tag/{{TAG}}">{{TAG}}</a>
+            {{/TAGS}}
+        </div>
+        {{/HAS_TAGS}} {{/IS_NOT_OWNER}}
 
-    // Notes
-    if(!t.notes().empty())
-        o << "<div class=\"notes\">" << format(t.notes()) << "</div>";
+        <div class="license">
+            {{#COPYRIGHT}} Copyright &copy; {{ARTIST_NAME}} {{/COPYRIGHT}}
+            {{#OTHER_LICENSE}} License: {{LICENSE}} {{/OTHER_LICENSE}}
 
-    if(edition){
-        o << "<div class=\"edit\">"
-             "<h3>" << icon("pencil") << " Edit</h3>";
-        // Publishing
-        if(!t.visible())
-            o << "<form class=\"publish\" action=\"" << t.url() << "/publish\" method=\"post\">"
-                     << icon("disc-arrow") <<
-                     " This track is not yet published."
-                     " <input type=\"submit\" value=\"Publish\"/>"
-                     "<input type=\"hidden\" name=\"tid\" value=\"" << number(t.id()) << "\"/>"
+            {{#IS_OWNER}} <a href="/tracks{{ID}}/license">(change)</a> {{/IS_OWNER}}
+        </div>
+
+        {{#HAS_NOTES}}
+        <div class="notes">{{NOTES}}</div>
+        {{/HAS_NOTES}}
+
+        {{#IS_OWNER}}
+        <div class="edit">
+             <h3><img src="/static/icon/pencil.png" alt="" /> Edit</h3>
+             {{#IS_HIDDEN}} {{! ou IS_NOT_VISIBLE ?}}
+             <form class="publish" action="/track/{{TID}}/publish" method="post">
+                     <img src="/static/icons/disc-arrow.png" alt="" />
+                     This track is not yet published.
+                     <input type="submit" value="Publish"/>
+                     <input type="hidden" name="tid" value="{{TID}}"/>
                  "</form>";
         // Rename
         o << "<div class=\"rename\">"
@@ -172,6 +158,7 @@
              "<a class=\"delete\" href=\"" << t.url() << "/delete\">Delete track</a>"
              "<div style=\"clear:both;\"></div>"
              "</div>";
+        {{/IS_OWNER}}
     }
 
     // Events
