@@ -10,7 +10,6 @@
 #include "render/html/user.h"
 #include "render/html/page.h"
 #include "render/html/news.h"
-#include "render/html/static.h"
 #include "render/html/home.h"
 #include "render/html/contest.h"
 #include "render/html/playlist.h"
@@ -62,7 +61,7 @@ int main(int argc, char** argv){
         path = getPath();
 
         ctemplate::TemplateDictionary dict("eqbeats");
-        std::string tpl;
+        std::string tpl, title;
         std::string mime="text/html";
 
         // Nope
@@ -234,19 +233,31 @@ int main(int argc, char** argv){
             Action::youtubeOauthCallback();
         // Static
         else if(path == "/quickstart")
-            Html::quickStart();
+            title = "Thanks", tpl = "quickstart.tpl";
         else if(path == "/faq")
-            Html::faq();
+            title = "FAQ", tpl = "faq.tpl";
         else if(path == "/credits")
-            Html::credits();
+            title = "Credits", tpl = "credits.tpl";
         else if(path == "/api")
-            Html::apiDoc();
+            title = "API", tpl = "api.tpl";
         else if(path == "")
             Html::home();
         else
             Html::notFound();
 
         if(!tpl.empty()){
+            ctemplate::TemplateDictionary *header = dict.AddIncludeDictionary("HEADER"),
+                                          *footer = dict.AddIncludeDictionary("FOOTER");
+            header->SetFilename("header.tpl");
+            header->SetValueAndShowSection("TITLE", title, "HAS_TITLE");
+            if(Session::user()){
+                ctemplate::TemplateDictionary *u = header->AddSectionDictionary("LOGGED_USER");
+                u->SetValue("URL", Session::user().url());
+                u->SetValue("NAME", Session::user().name());
+            }
+            else
+                header->ShowSection("LOGGED_OUT");
+            footer->SetFilename("footer.tpl");
             std::string out;
             cache.ExpandWithData(tpl, ctemplate::STRIP_BLANK_LINES, &dict, NULL, &out);
             Http::header(mime, 200);
