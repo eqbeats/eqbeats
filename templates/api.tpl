@@ -1,4 +1,3 @@
-{{>HEADER}}
 <div id="api">
     <h2>API</h2>
 
@@ -19,8 +18,7 @@
         <tr><td><tt>playlists</tt></td><td>Array of <a href="#playlist">Playlist objects</a> (id, name, author and link only).</td></tr>
         <tr><td><tt>link</tt></td><td>Permalink to the user's page.</td></tr>
     </table>
-    <pre>
-{
+    <pre>{
     "id": 123,
     "name": "Foo Bar",
     "description": "Just some dude making [b]music[/b].",
@@ -28,8 +26,7 @@
     "tracks": [{"id": 456, ...}, ...],
     "playlists": [{"id": 789, ...}, ...],
     "link": "http://eqbeats.org/user/123"
-}
-    </pre>
+}</pre>
 
     <h3 id="track">Track object</h3>
     <table>
@@ -41,8 +38,7 @@
         <tr><td><tt>link</tt></td><td>Permalink to the track's page.</td></tr>
         <tr><td><tt>download</tt></td><td>Permalinks to the downloadable / streamable audio files.</td></tr>
     </table>
-    <pre>
-{
+    <pre>{
     "id": 456,
     "title": "Baz Quux",
     "description": "A track about bazing while you quux.",
@@ -51,8 +47,7 @@
     "link": "http://eqbeats.org/track/456",
     "download": {"mp3":"http://eqbeats.org/track/456/mp3",
                  "vorbis":"http://eqbeats.org/track/456/vorbis"}
-}
-    </pre>
+}</pre>
 
     <h3 id="playlist">Playlist object</h3>
     <table>
@@ -80,4 +75,3 @@
         <tr><td><tt>/playlist/<var>{id}</var>/json</tt></td><td>One <a href="#playlist">playlist object</a>.</td></tr>
     </table>
 </div>
-{{>FOOTER}}

@@ -245,21 +245,19 @@ int main(int argc, char** argv){
         else
             Html::notFound();
 
-        if(!tpl.empty()){
-            ctemplate::TemplateDictionary *header = dict.AddIncludeDictionary("HEADER"),
-                                          *footer = dict.AddIncludeDictionary("FOOTER");
-            header->SetFilename("header.tpl");
-            header->SetValueAndShowSection("TITLE", title, "HAS_TITLE");
+        if(!tpl.empty() && mime=="text/html"){
+            ctemplate::TemplateDictionary *body = dict.AddIncludeDictionary("BODY");
+            body->SetFilename(tpl);
+            dict.SetValueAndShowSection("TITLE", title, "HAS_TITLE");
             if(Session::user()){
-                ctemplate::TemplateDictionary *u = header->AddSectionDictionary("LOGGED_USER");
+                ctemplate::TemplateDictionary *u = dict.AddSectionDictionary("LOGGED_USER");
                 u->SetValue("URL", Session::user().url());
                 u->SetValue("NAME", Session::user().name());
             }
             else
-                header->ShowSection("LOGGED_OUT");
-            footer->SetFilename("footer.tpl");
+                dict.ShowSection("LOGGED_OUT");
             std::string out;
-            cache.ExpandWithData(tpl, ctemplate::STRIP_BLANK_LINES, &dict, NULL, &out);
+            cache.ExpandWithData("page.tpl", ctemplate::STRIP_BLANK_LINES, &dict, NULL, &out);
             Http::header(mime, 200);
             Render::o << out;
         }

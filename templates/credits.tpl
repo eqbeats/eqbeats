@@ -1,4 +1,3 @@
-{{>HEADER}}
 <h2>Credits</h2>
 <div class="credits">
     <h4>Staff</h4>
@@ -19,4 +18,3 @@
        <li><a href="http://p.yusukekamiyamane.com/">Yusuke Kamiyamane</a> - Fugue icon set</li>
     </ul>
 </div>
-{{>FOOTER}}

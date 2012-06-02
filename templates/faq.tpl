@@ -1,5 +1,3 @@
-{{>HEADER}}
-
 <h2>Frequently Asked Questions</h2>
 <div class="faq">
 
@@ -54,5 +52,3 @@ As of today (April 19 2012), Firefox will only play OGG, Chrome can play either 
 <p>Or <a href="http://ponychat.net/webchat?nick=pony_......&autojoin=eqbeats">come chat with us</a> in <tt>#eqbeats</tt> on <tt>irc.ponychat.net</tt>. Don't be shy, we're friendly!</p>
 
 </div>
-
-{{>FOOTER}}
