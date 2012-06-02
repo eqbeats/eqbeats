@@ -12,7 +12,7 @@ add_executable ( eqbeats.fcgi
 include_directories ( /usr/include/ImageMagick )
 
 target_link_libraries ( eqbeats.fcgi
-    cgicc fcgi fcgi++ pq pcrecpp tag Magick++ MagickCore nettle
+    cgicc fcgi fcgi++ pq pcrecpp tag Magick++ MagickCore nettle ctemplate
 )
 
 add_custom_command (

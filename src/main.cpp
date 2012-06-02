@@ -26,6 +26,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <sys/wait.h>
+#include <ctemplate/template.h>
 
 using namespace cgicc;
 using namespace Render;
@@ -49,6 +50,9 @@ int main(int argc, char** argv){
     FCGX_Init();
     FCGX_InitRequest(&request, 0, 0);
 
+    ctemplate::TemplateCache cache;
+    cache.SetTemplateRootDirectory(eqbeatsDir() + "/templates");
+
     std::string path;
     int id;
     while(FCGX_Accept_r(&request) == 0){
@@ -56,6 +60,10 @@ int main(int argc, char** argv){
         o.attach(&request);
         cgi = Cgicc(&o);
         path = getPath();
+
+        ctemplate::TemplateDictionary dict("eqbeats");
+        std::string tpl;
+        std::string mime="text/html";
 
         // Nope
         if (cgi.getElementByValue("PHPE9568F34-D428-11d2-A769-00AA001ACF42") != cgi.getElements().end() ||
@@ -237,6 +245,14 @@ int main(int argc, char** argv){
             Html::home();
         else
             Html::notFound();
+
+        if(!tpl.empty()){
+            std::string out;
+            cache.ExpandWithData(tpl, ctemplate::STRIP_BLANK_LINES, &dict, NULL, &out);
+            Http::header(mime, 200);
+            Render::o << out;
+        }
+
         Session::destroy();
         }
 
