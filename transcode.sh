@@ -7,7 +7,7 @@ fi
 
 BASE="$EQBEATS_DIR/tracks/$1"
 rm -f "$BASE.*"
-ffmpeg -loglevel quiet -y -i "$2" -acodec libvorbis "$BASE.ogg" 2>&1 >> "$EQBEATS_DIR/ffmpeg.log"
+ffmpeg -loglevel quiet -y -i "$2" -acodec libvorbis -b:a 128kbps "$BASE.ogg" 2>&1 >> "$EQBEATS_DIR/ffmpeg.log"
 
 [ $? -ne 0 ] && exit 1
 
@@ -16,7 +16,7 @@ then
     mv "$2" "$BASE.mp3"
     ln -s "$1.mp3" "$BASE.orig.mp3"
 else
-    ffmpeg -loglevel quiet -y -i "$2" -acodec libmp3lame "$BASE.mp3" 2>&1 >> "$EQBEATS_DIR/ffmpeg.log"
+    ffmpeg -loglevel quiet -y -i "$2" -acodec libmp3lame -q:a 0 "$BASE.mp3" 2>&1 >> "$EQBEATS_DIR/ffmpeg.log"
     mv "$2" "$BASE.orig.${2##*.}"
 fi
 
