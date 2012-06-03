@@ -59,12 +59,12 @@ void Action::uploadTrack(int id){
         t = Track::create(u.id(), title.empty()? "Untitled":title);
     }
 
-    log("Track uploaded: " + t.title() + " (" + number(t.id()) + ")");
+    log("Track uploaded: " + t.title() + " (" + number(t.id()) + ", " + tmpFile + ")");
 
     Media m(t);
     if(fork() == 0){
         freopen("/dev/null","r",stdin);
-        execlp("transcode.sh", "transcode.sh", number(m.id()).c_str(), tmpFile, u.name().c_str(), t.title().c_str(), NULL);
+        execlp("transcode.sh", "transcode.sh", number(m.id()).c_str(), tmpFile, NULL);
         free(tmpFile);
     }
     else

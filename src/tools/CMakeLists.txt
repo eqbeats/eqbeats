@@ -13,7 +13,7 @@ target_link_libraries ( stats pq )
 add_executable ( dumptracks dumptracks.cpp ../db.cpp )
 target_link_libraries ( dumptracks pq )
 
-add_executable ( updatetags updatetags.cpp ../db.cpp )
+add_executable ( updatetags updatetags.cpp ../db.cpp ../number.cpp )
 target_link_libraries ( updatetags pq tag )
 
 add_executable ( fqueue fqueue.cpp ../db.cpp ../number.cpp ../path.cpp )
