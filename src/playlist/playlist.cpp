@@ -1,7 +1,7 @@
-#include "db.h"
-#include "number.h"
 #include "playlist.h"
-#include "session.h"
+#include <core/db.h>
+#include <misc/number.h>
+#include <session/session.h>
 
 using namespace std;
 

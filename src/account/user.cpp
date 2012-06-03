@@ -1,8 +1,9 @@
-#include <sstream>
 #include "user.h"
-#include "number.h"
-#include "track.h"
-#include "db.h"
+#include <core/db.h>
+#include <track/track.h>
+#include <misc/number.h>
+
+#include <sstream>
 
 User::User(int nId){
     _id = 0;

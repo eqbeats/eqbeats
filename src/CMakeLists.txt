@@ -3,11 +3,18 @@ cmake_minimum_required ( VERSION 2.8 )
 project ( eqbeats )
 
 add_executable ( eqbeats.fcgi
-    main.cpp path.cpp timer.cpp number.cpp db.cpp news.cpp comment.cpp track.cpp media.cpp user.cpp account.cpp session.cpp art.cpp mail.cpp contest.cpp log.cpp follower.cpp repl.cpp event.cpp playlist.cpp md5.cpp render.cpp http.cpp
-    actions/registration.cpp actions/login.cpp actions/account.cpp actions/favorite.cpp actions/upload.cpp actions/track.cpp actions/comment.cpp actions/art.cpp actions/contest.cpp actions/password.cpp actions/playlist.cpp actions/youtube.cpp actions/license.cpp
+    account/account.cpp account/user.cpp
+    core/db.cpp core/path.cpp
+    ipc/repl.cpp
+    misc/number.cpp
+    playlist/playlist.cpp
+    render/http.cpp render/render.cpp
+    session/session.cpp
+    track/track.cpp
+    main.cpp
 )
 
-include_directories ( /usr/include/ImageMagick )
+include_directories ( /usr/include/ImageMagick . )
 
 target_link_libraries ( eqbeats.fcgi
     cgicc fcgi fcgi++ pq pcrecpp tag Magick++ MagickCore nettle ctemplate

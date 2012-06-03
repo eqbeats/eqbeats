@@ -1,10 +1,10 @@
-#include "../db.h"
-#include "../number.h"
-#include "../path.h"
+#include <core/db.h>
+#include <core/path.h>
+#include <misc/number.h>
+#include <iostream>
 #include <taglib/mpegfile.h>
 #include <taglib/vorbisfile.h>
 #include <taglib/taglib.h>
-#include <iostream>
 
 using namespace std;
 using namespace TagLib;

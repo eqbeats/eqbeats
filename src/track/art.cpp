@@ -1,10 +1,10 @@
-#include "art.h"
-#include "number.h"
-#include "path.h"
+#include <core/path.h>
+#include <misc/number.h>
+#include <track/art.h>
+#include <iostream>
 #include <Magick++.h>
 #include <stdio.h>
 #include <unistd.h>
-#include <iostream>
 
 Art::Art(int tid){
     _tid = tid;

@@ -1,5 +1,6 @@
 #include "path.h"
-#include "number.h"
+#include <misc/number.h>
+
 #include <stdlib.h>
 
 using namespace std;

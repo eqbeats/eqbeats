@@ -1,8 +1,9 @@
 #include "session.h"
-#include "number.h"
-#include "db.h"
-#include "user.h"
-#include "cgi.h"
+#include <account/user.h>
+#include <core/cgi.h>
+#include <core/db.h>
+#include <misc/number.h>
+
 #include <cgicc/CgiEnvironment.h>
 #include <cgicc/HTTPCookie.h>
 #include <stdio.h>

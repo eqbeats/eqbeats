@@ -1,14 +1,15 @@
-#include <string.h>
-#include <sstream>
 #include "track.h"
-#include "user.h"
-#include "number.h"
-#include "db.h"
 #include "art.h"
-#include "repl.h"
-#include "path.h"
-#include "playlist.h"
-#include "account.h"
+#include <account/account.h>
+#include <account/user.h>
+#include <core/db.h>
+#include <core/path.h>
+#include <ipc/repl.h>
+#include <misc/number.h>
+#include <playlist/playlist.h>
+
+#include <sstream>
+#include <string.h>
 
 Repl hitsd;
 

@@ -1,24 +1,16 @@
-#include "session.h"
-#include "timer.h"
-#include "actions/actions.h"
-#include "account.h"
-#include "path.h"
-#include "db.h"
-#include "track.h"
-#include "number.h"
-#include "render.h"
-#include "cgi.h"
-#include "render.h"
-#include "http.h"
-#include <time.h>
-#include <stdio.h>
-#include <unistd.h>
-#include <sys/wait.h>
+#include <account/user.h>
+#include <core/cgi.h>
+#include <core/db.h>
+#include <render/http.h>
+#include <render/render.h>
+#include <session/session.h>
+
 #include <ctemplate/template.h>
+#include <stdio.h>
+#include <sys/wait.h>
+#include <unistd.h>
 
 using namespace cgicc;
-using namespace Action;
-
 Cgicc cgi;
 
 int main(int argc, char** argv){
@@ -44,7 +36,7 @@ int main(int argc, char** argv){
     std::string path;
     int id;
     while(FCGX_Accept_r(&request) == 0){
-        resetTimer();
+        //resetTimer();
         o.attach(&request);
         cgi = Cgicc(&o);
         path = getPath();

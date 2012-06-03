@@ -1,5 +1,5 @@
-#include "../number.h"
-#include "../art.h"
+#include <misc/number.h>
+#include <track/art.h>
 #include <iostream>
 
 int main(int argc, char **argv){

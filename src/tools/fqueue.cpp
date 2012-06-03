@@ -1,9 +1,9 @@
-#include "../db.h"
-#include "../number.h"
-#include "../path.h"
-#include <string>
+#include <core/db.h>
+#include <core/path.h>
+#include <misc/number.h>
 #include <iostream>
 #include <fstream>
+#include <string>
 
 using namespace std;
 

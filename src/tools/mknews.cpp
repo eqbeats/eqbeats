@@ -1,5 +1,5 @@
-#include "../db.h"
-#include "../number.h"
+#include <core/db.h>
+#include <misc/number.h>
 #include <iostream>
 
 using namespace std;

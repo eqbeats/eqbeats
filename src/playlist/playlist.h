@@ -1,8 +1,8 @@
 #ifndef PLAYLIST_H
 #define PLAYLIST_H
 
-#include "track.h"
-#include "user.h"
+#include <track/track.h>
+#include <account/user.h>
 
 class Playlist {
 

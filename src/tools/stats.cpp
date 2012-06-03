@@ -1,4 +1,4 @@
-#include "../db.h"
+#include <core/db.h>
 #include <iostream>
 
 std::string show(const std::string &q){
