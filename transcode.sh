@@ -7,7 +7,7 @@ fi
 
 BASE="$EQBEATS_DIR/tracks/$1"
 rm -f "$BASE.*"
-ffmpeg -loglevel quiet -y -i "$2" -acodec libvorbis -b:a 128kbps "$BASE.ogg" 2>&1 >> "$EQBEATS_DIR/ffmpeg.log"
+ffmpeg -loglevel quiet -y -i "$2" -acodec libvorbis -b:a 128k "$BASE.ogg" 2>&1 >> "$EQBEATS_DIR/ffmpeg.log"
 
 [ $? -ne 0 ] && exit 1
 
