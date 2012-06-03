@@ -1,11 +1,11 @@
 #include <account/user.h>
 #include <core/cgi.h>
 #include <core/db.h>
+#include <core/template.h>
 #include <render/http.h>
 #include <render/render.h>
 #include <session/session.h>
 
-#include <ctemplate/template.h>
 #include <stdio.h>
 #include <sys/wait.h>
 #include <unistd.h>
@@ -45,7 +45,7 @@ int main(int argc, char** argv){
         cgi = Cgicc(&o);
         path = getPath();
 
-        ctemplate::TemplateDictionary dict("eqbeats");
+        Dict dict("eqbeats");
         std::string tpl, title;
         std::string mime="text/html";
 
@@ -72,16 +72,10 @@ int main(int argc, char** argv){
 
         // Render
         if(!tpl.empty() && mime=="text/html"){
-            ctemplate::TemplateDictionary *body = dict.AddIncludeDictionary("BODY");
+            Dict *body = dict.AddIncludeDictionary("BODY");
             body->SetFilename(tpl);
             dict.SetValueAndShowSection("TITLE", title, "HAS_TITLE");
-            if(Session::user()){
-                ctemplate::TemplateDictionary *u = dict.AddSectionDictionary("LOGGED_USER");
-                u->SetValue("URL", Session::user().url());
-                u->SetValue("NAME", Session::user().name());
-            }
-            else
-                dict.ShowSection("LOGGED_OUT");
+            Session::fill(&dict);
             std::string out;
             cache.ExpandWithData("page.tpl", ctemplate::STRIP_BLANK_LINES, &dict, NULL, &out);
             o << Http::header(mime, 200) << out;

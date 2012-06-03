@@ -61,3 +61,14 @@ void Session::logout(){
     DB::query("DELETE FROM sessions WHERE sid = $1", sid);
     Session::destroy();
 }
+
+void Session::fill(Dict *d){
+    if(u){
+        Dict *s = d->AddSectionDictionary("LOGGED_USER");
+        s->SetIntValue("UID", u.id());
+        s->SetValue("NAME", u.name());
+        s->SetValue("URL", u.url());
+    }
+    else
+        d->ShowSection("LOGGED_OUT");
+}

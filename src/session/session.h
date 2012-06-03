@@ -1,7 +1,7 @@
 #ifndef SESSION_H
 #define SESSION_H
 
-#include <string>
+#include <core/template.h>
 
 class User;
 
@@ -25,6 +25,8 @@ std::string login(int id, const std::string &host);
 void logout();
 
 std::string randomString();
+
+void fill(Dict *d);
 
 }
 
