@@ -1,7 +1,7 @@
 #!/bin/bash
 
-if [[ "$#" -ne 4 ]]; then
-    echo "Usage: $0 ID INPUT ARTIST TITLE" >&2
+if [[ "$#" -ne 2 ]]; then
+    echo "Usage: $0 ID INPUT" >&2
     exit 1
 fi
 
@@ -20,5 +20,4 @@ else
     mv "$2" "$BASE.orig.${2##*.}"
 fi
 
-id3v2 -a "$3" -t "$4" "$BASE.ogg"
-id3v2 -a "$3" -t "$4" "$BASE.mp3"
+updatetags "$1"
