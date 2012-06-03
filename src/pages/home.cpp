@@ -1,0 +1,1 @@
+PATH("") tpl = "home.tpl";
