@@ -17,16 +17,12 @@ string eqbeatsDir(){
     return (string) getenv("EQBEATS_DIR");
 }
 
-int route(const string &t, string path){
+int route(const string &t, string path, string &sub){
     path = stripSlash(path);
-    if(path.substr(0,t.size()+2) != "/" + t + "/") return 0;
-    return number(path.substr(t.size()+2));
-}
-
-int route(const string &t, const string &act, string path){
-    path = stripSlash(path);
-    if(path.substr(0,t.size()+2) != "/" + t + "/") return 0;
-    int i = path.find_last_of('/', path.size() - act.size());
-    if(path.substr(i+1) != act) return 0;
-    return number(path.substr(t.size()+2, i-t.size()-2));
+    if(path.size() <= t.size()+2) return 0;
+    if(path.substr(0, t.size()+2) != "/" + t + "/") return 0;
+    size_t i = path.find_first_of('/', t.size()+2);
+    if(i == string::npos) sub = "";
+    else sub = path.substr(i+1);
+    return number(path.substr(t.size()+2, i == string::npos ? i : i-t.size()-2));
 }
