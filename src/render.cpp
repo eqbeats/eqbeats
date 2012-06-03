@@ -2,10 +2,6 @@
 #include <iostream>
 #include <cstdlib>
 
-using namespace Render;
-
-FCgiIO Render::o;
-
 FCgiIO::FCgiIO()
   : std::ostream(&fOutBuf),
     fErr(&fErrBuf)

@@ -1,26 +1,15 @@
 #include "session.h"
 #include "timer.h"
-#include "render/json.h"
-#include "render/oembed.h"
-#include "render/feed.h"
-#include "render/download.h"
-#include "render/http.h"
-#include "render/html/track.h"
-#include "render/html/player.h"
-#include "render/html/user.h"
-#include "render/html/page.h"
-#include "render/html/news.h"
-#include "render/html/home.h"
-#include "render/html/contest.h"
-#include "render/html/playlist.h"
 #include "actions/actions.h"
 #include "account.h"
 #include "path.h"
 #include "db.h"
 #include "track.h"
 #include "number.h"
-#include "render/render.h"
+#include "render.h"
 #include "cgi.h"
+#include "render.h"
+#include "http.h"
 #include <time.h>
 #include <stdio.h>
 #include <unistd.h>
@@ -28,7 +17,6 @@
 #include <ctemplate/template.h>
 
 using namespace cgicc;
-using namespace Render;
 using namespace Action;
 
 Cgicc cgi;
@@ -48,6 +36,7 @@ int main(int argc, char** argv){
     FCGX_Request request;
     FCGX_Init();
     FCGX_InitRequest(&request, 0, 0);
+    FCgiIO o;
 
     ctemplate::TemplateCache cache;
     cache.SetTemplateRootDirectory(eqbeatsDir() + "/templates");
@@ -68,169 +57,100 @@ int main(int argc, char** argv){
         if (cgi.getElementByValue("PHPE9568F34-D428-11d2-A769-00AA001ACF42") != cgi.getElements().end() ||
             cgi.getElementByValue("PHPE9568F35-D428-11d2-A769-00AA001ACF42") != cgi.getElements().end() ||
             cgi.getElementByValue("PHPE9568F36-D428-11d2-A769-00AA001ACF42") != cgi.getElements().end()){
-            Http::redirect("http://youtu.be/gvdf5n-zI14");
+            //Http::redirect("http://youtu.be/gvdf5n-zI14");
         }
         // Static
-        else if((id = route("track", "original", path)))
-            Http::downloadTrack(id, Track::Original);
-        else if((id = route("track", "vorbis", path)))
-            Http::downloadTrack(id, Track::Vorbis);
-        else if((id = route("track", "mp3", path)))
-            Http::downloadTrack(id, Track::MP3);
-        else if((id = route("track", "art", path)))
-            Http::trackArt(id);
-        else if((id = route("track", "art/medium", path)))
-            Http::trackArt(id, Art::Medium);
-        else if((id = route("track", "art/thumb", path)))
-            Http::trackArt(id, Art::Thumbnail);
+        else if((id = route("track", "original", path)));
+        else if((id = route("track", "vorbis", path)));
+        else if((id = route("track", "mp3", path)));
+        else if((id = route("track", "art", path)));
+        else if((id = route("track", "art/medium", path)));
+        else if((id = route("track", "art/thumb", path)));
         // Json
-        else if((id = route("track", "json", path)))
-            Json::track(id);
-        else if((id = route("user", "json", path)))
-            Json::artist(id);
-        else if((id = route("user", "favorites/json", path)))
-            Json::favorites(id);
-        else if((id = route("playlist", "json", path)))
-            Json::playlist(id);
-        else if(path == "/tracks/search/json")
-            Json::tracks(Track::search(cgi("q")));
-        else if(path == "/tracks/search/exact/json")
-            Json::tracks(Track::exactSearch(cgi("artist"),cgi("track")));
-        else if(path == "/tracks/latest/json")
-            Json::tracks(Track::latest(50));
-        else if(path == "/tracks/random/json")
-            Json::tracks(Track::random(50));
-        else if(path == "/tracks/featured/json")
-            Json::tracks(Track::featured(50));
-        else if(path == "/artists/json")
-            Json::users(User::listArtists(300));
-        else if(path == "/users/search/json")
-            Json::users(User::search(cgi("q")));
+        else if((id = route("track", "json", path)));
+        else if((id = route("user", "json", path)));
+        else if((id = route("user", "favorites/json", path)));
+        else if((id = route("playlist", "json", path)));
+        else if(path == "/tracks/search/json");
+        else if(path == "/tracks/search/exact/json");
+        else if(path == "/tracks/latest/json");
+        else if(path == "/tracks/random/json");
+        else if(path == "/tracks/featured/json");
+        else if(path == "/artists/json");
+        else if(path == "/users/search/json");
         // Feeds
-        else if(path == "/tracks/latest/atom")
-            Feed::latest(200);
-        else if(path == "/tracks/featured/atom")
-            Feed::featured(50);
-        else if((id = route("user", "atom", path)))
-            Feed::user(id);
+        else if(path == "/tracks/latest/atom");
+        else if(path == "/tracks/featured/atom");
+        else if((id = route("user", "atom", path)));
         // oEmbed
-        else if(path == "/oembed")
-            oEmbed(cgi("url"), cgi("format")=="xml", number(cgi("maxwidth")));
+        else if(path == "/oembed");
+            //oEmbed(cgi("url"), cgi("format")=="xml", number(cgi("maxwidth")));
 
         else{
         Session::start();
         // User
-        if((id = route("user", path)))
-            Html::userPage(id);
-        else if((id = route("user", "comment", path)))
-            Action::postComment(Comment::User, id);
-        else if((id = route("user", "follow", path)))
-            Action::follow(id, true);
-        else if((id = route("user", "unfollow", path)))
-            Action::follow(id, false);
-        else if((id = route("user", "favorites", path)))
-            Html::favorites(id);
+        if((id = route("user", path)));
+        else if((id = route("user", "comment", path)));
+        else if((id = route("user", "follow", path)));
+        else if((id = route("user", "unfollow", path)));
+        else if((id = route("user", "favorites", path)));
         // Track
-        else if((id = route("track", "embed", path)))
-            Html::embedTrack(id);
-        else if((id = route("track", "delete", path)))
-            Action::deleteTrack(id);
-        else if((id = route("track", "rename", path)))
-            Action::renameTrack(id);
-        else if((id = route("track", "notes", path)))
-            Action::updateNotes(id);
-        else if((id = route("track", "upload", path)))
-            Action::uploadTrack(id);
-        else if((id = route("track", "art/upload", path)))
-            Action::uploadArt(id);
-        else if((id = route("track", "publish", path)))
-            Action::publishTrack(id);
-        else if((id = route("track", "comment", path)))
-            Action::postComment(Comment::Track, id);
-        else if((id = route("track", "favorite", path)))
-            Action::favorite(id, true);
-        else if((id = route("track", "unfavorite", path)))
-            Action::favorite(id, false);
-        else if((id = route("track", "report", path)))
-            Action::reportTrack(id);
-        else if((id = route("track", "flags", path)))
-            Action::setFlags(id);
-        else if((id = route("track", "tags", path)))
-            Action::setTags(id);
-        else if((id = route("track", "license", path)))
-            Action::setLicense(id);
-        else if((id = route("track", "youtube_upload", path)))
-            Action::youtubeUpload(id);
-        else if((id = route("track",path)))
-            Html::trackPage(id);
-        else if(path == "/track/new")
-            Action::newTrack();
+        else if((id = route("track", "embed", path)));
+        else if((id = route("track", "delete", path)));
+        else if((id = route("track", "rename", path)));
+        else if((id = route("track", "notes", path)));
+        else if((id = route("track", "upload", path)));
+        else if((id = route("track", "art/upload", path)));
+        else if((id = route("track", "publish", path)));
+        else if((id = route("track", "comment", path)));
+        else if((id = route("track", "favorite", path)));
+        else if((id = route("track", "unfavorite", path)));
+        else if((id = route("track", "report", path)));
+        else if((id = route("track", "flags", path)));
+        else if((id = route("track", "tags", path)));
+        else if((id = route("track", "license", path)));
+        else if((id = route("track", "youtube_upload", path)));
+        else if((id = route("track",path)));
+        else if(path == "/track/new");
         // Tracks
-        else if(path == "/tracks")
-            Http::redirect("/");
-        else if(path == "/tracks/search")
-            Html::trackSearch(cgi("q"));
-        else if(path == "/tracks/latest")
-            Html::latestTracks(15);
-        else if(path == "/tracks/random")
-            Html::tracksPage("Random tracks", Track::random(15));
-        else if(path == "/tracks/featured")
-            Html::tracksPage("Featured tracks", Track::featured(15));
+        else if(path == "/tracks");
+            //Http::redirect("/");
+        else if(path == "/tracks/search");
+        else if(path == "/tracks/latest");
+        else if(path == "/tracks/random");
+        else if(path == "/tracks/featured");
         else if(path.substr(0,12) == "/tracks/tag/"){
-            std::string tag = path.substr(12);
-            Html::tracksPage(tag, Track::byTag(tag));
+            //std::string tag = path.substr(12);
+            //Html::tracksPage(tag, Track::byTag(tag));
         }
         // News
-        else if((id = route("news", path)))
-            Html::newsPage(id);
-        else if((id = route("news", "comment", path)))
-            Action::postComment(Comment::News, id);
-        else if(path == "/news")
-            Html::latestNews(20);
+        else if((id = route("news", path)));
+        else if((id = route("news", "comment", path)));
+        else if(path == "/news");
         // Contests
-        else if((id = route("contest", path)))
-            Html::contest(id);
-        else if((id = route("contest", "submit", path)))
-            Action::contestSubmission(id);
-        else if((id = route("contest", "vote", path)))
-            Action::vote(id);
+        else if((id = route("contest", path)));
+        else if((id = route("contest", "submit", path)));
+        else if((id = route("contest", "vote", path)));
         // Playlists
-        else if((id = route("playlist", path)))
-            Html::playlistPage(id);
-        else if((id = route("track", "playlist", path)))
-            Action::playlistAdd(id);
-        else if((id = route("playlist", "remove", path)))
-            Action::playlistRemove(id);
-        else if((id = route("playlist", "move", path)))
-            Action::playlistMove(id);
-        else if((id = route("playlist", "delete", path)))
-            Action::deletePlaylist(id);
-        else if((id = route("playlist", "edit", path)))
-            Action::editPlaylist(id);
-        else if(path == "/playlist/new")
-            Action::createPlaylist();
+        else if((id = route("playlist", path)));
+        else if((id = route("track", "playlist", path)));
+        else if((id = route("playlist", "remove", path)));
+        else if((id = route("playlist", "move", path)));
+        else if((id = route("playlist", "delete", path)));
+        else if((id = route("playlist", "edit", path)));
+        else if(path == "/playlist/new");
         // Users
-        else if(path == "/users/search")
-            Html::userSearch(cgi("q"));
-        else if(path == "/artists")
-            Html::artistsPage(20);
+        else if(path == "/users/search");
+        else if(path == "/artists");
         // Actions
-        else if(path == "/register")
-            Action::registration();
-        else if(path == "/account")
-            Action::account();
-        else if(path == "/account/reset")
-            Action::passwordReset();
-        else if(path == "/account/license")
-            Action::setLicense();
-        else if(path == "/login")
-            Action::login();
-        else if(path == "/logout")
-            Action::logout();
-        else if(path == "/oauth/yt/unlink")
-            Action::youtubeUnlink();
-        else if(path == "/oauth/yt")
-            Action::youtubeOauthCallback();
+        else if(path == "/register");
+        else if(path == "/account");
+        else if(path == "/account/reset");
+        else if(path == "/account/license");
+        else if(path == "/login");
+        else if(path == "/logout");
+        else if(path == "/oauth/yt/unlink");
+        else if(path == "/oauth/yt");
         // Static
         else if(path == "/quickstart")
             title = "Thanks", tpl = "quickstart.tpl";
@@ -240,10 +160,9 @@ int main(int argc, char** argv){
             title = "Credits", tpl = "credits.tpl";
         else if(path == "/api")
             title = "API", tpl = "api.tpl";
-        else if(path == "")
-            Html::home();
+        else if(path == "");
         else
-            Html::notFound();
+            ;//Html::notFound();
 
         if(!tpl.empty() && mime=="text/html"){
             ctemplate::TemplateDictionary *body = dict.AddIncludeDictionary("BODY");
@@ -258,8 +177,7 @@ int main(int argc, char** argv){
                 dict.ShowSection("LOGGED_OUT");
             std::string out;
             cache.ExpandWithData("page.tpl", ctemplate::STRIP_BLANK_LINES, &dict, NULL, &out);
-            Http::header(mime, 200);
-            Render::o << out;
+            o << Http::header(mime, 200) << out;
         }
 
         Session::destroy();

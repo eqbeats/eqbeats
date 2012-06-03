@@ -1,6 +1,4 @@
 #include "actions.h"
-#include "../render/html/page.h"
-#include "../render/http.h"
 #include "../path.h"
 #include "../news.h"
 #include "../track.h"
@@ -10,8 +8,6 @@
 #include "../event.h"
 #include "../mail.h"
 
-using namespace Render;
-
 void Action::postComment(Comment::Type type, int ref){
     Track ref_t;
     Account ref_u;
@@ -20,9 +16,9 @@ void Action::postComment(Comment::Type type, int ref){
     else if(type == Comment::User) ref_u = Account(ref);
     else if(type == Comment::News) ref_n = News(ref);
 
-    if(type == Comment::Track && !ref_t) Html::notFound("Track");
-    else if(type == Comment::User && !ref_u) Html::notFound("User");
-    else if(type == Comment::News && !ref_n) Html::notFound("News");
+    if(type == Comment::Track && !ref_t);
+    else if(type == Comment::User && !ref_u);
+    else if(type == Comment::News && !ref_n);
 
     else {
         if(!cgi("msg").empty() && cgi("url").empty() && cgi.getEnvironment().getRequestMethod() == "POST"){
@@ -62,10 +58,10 @@ void Action::postComment(Comment::Type type, int ref){
             else
                 Comment::add(cgi("msg"), u, ref, type);
         }
-        Http::redirect(
+        /*Http::redirect(
             type == Comment::Track ? ref_t.url() + "#comments" :
             type == Comment::User  ? ref_u.url() + "#comments" :
             type == Comment::News  ? ref_n.url() + "#comments" : "/"
-        );
+        );*/
     }
 }

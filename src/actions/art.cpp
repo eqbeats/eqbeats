@@ -6,9 +6,6 @@
 #include "../number.h"
 #include "../path.h"
 #include "../cgi.h"
-#include "../render/http.h"
-
-using namespace Render;
 
 void Action::uploadArt(int tid){
     cgicc::file_iterator file = cgi.getFile("file");
@@ -20,5 +17,5 @@ void Action::uploadArt(int tid){
         Art art(tid);
         art.makeThumbs();
     }
-    Http::redirect(Track::url(tid));
+    //redirect(Track::url(tid));
 }

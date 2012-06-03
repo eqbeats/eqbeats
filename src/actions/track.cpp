@@ -1,10 +1,6 @@
 #include <stdio.h>
 #include <algorithm>
 #include "actions.h"
-#include "../render/render.h"
-#include "../render/html/page.h"
-#include "../render/html/escape.h"
-#include "../render/http.h"
 #include "../art.h"
 #include "../session.h"
 #include "../number.h"
@@ -18,7 +14,6 @@
 #include "../event.h"
 
 using namespace std;
-using namespace Render;
 
 std::string filter(const std::string &str){
     std::string buf;
@@ -30,7 +25,7 @@ std::string filter(const std::string &str){
 
 void Action::publishTrack(int tid){
     if(tid != number(cgi("tid")))
-        return Http::redirect(Track::url(tid));
+        return; // Http::redirect(Track::url(tid));
     User u = Session::user();
     Track t(tid);
     if(u == t.artist() && t && !t.visible() && u &&
@@ -52,7 +47,7 @@ void Action::publishTrack(int tid){
         for(std::vector<std::string>::const_iterator i = emails.begin(); i!=emails.end(); i++)
             sendMail(i->c_str(), maildata.c_str());
     }
-    return Http::redirect(t.url());
+    return; // Http::redirect(t.url());
 }
 
 void Action::updateNotes(int tid){
@@ -61,7 +56,7 @@ void Action::updateNotes(int tid){
     if(u==t.artist() && u &&
        cgi.getEnvironment().getRequestMethod() == "POST" )
         t.setNotes(cgi("notes"));
-    return Http::redirect(t.url());
+    return; // Http::redirect(t.url());
 }
 
 void Action::renameTrack(int tid){
@@ -73,33 +68,23 @@ void Action::renameTrack(int tid){
         t.setTitle(cgi("title"));
         Media(t).updateTags();
     }
-    return Http::redirect(t.url());
-}
-
-void deletionForm(const Track &t){
-    Html::header("Track deletion");
-    o << "<form method=\"post\">"
-            "Do you really want to delete <b>" << Html::escape(t.title()) << "</b> ? "
-            "<input type=\"submit\" value=\"Delete\" name=\"confirm\" />"
-        "</form>"
-        "<a class=\"danger\" href=\"" << t.url() << "\">Cancel</a>";
-    Html::footer();
+    return; // Http::redirect(t.url());
 }
 
 void Action::deleteTrack(int tid){
     User u = Session::user();
     Track t(tid);
     if(u!=t.artist() || !u)
-        Http::redirect(t.url());
+        ;//Http::redirect(t.url());
     else if(cgi.getEnvironment().getRequestMethod()!="POST" || cgi("confirm")!="Delete")
-        deletionForm(t);
+        ;//deletionForm(t);
     else{
         log("Deleting track: " + t.title() + " (" + number(t.id()) + ")");
         Art art(tid);
         if(art) art.remove();
         Media(t).unlink();
         t.remove();
-        Http::redirect(u.url());
+        //Http::redirect(u.url());
     }
 }
 
@@ -108,23 +93,23 @@ void Action::setFlags(int tid){
     ExtendedTrack t(tid);
     if(u==t.artist() && t && cgi.getEnvironment().getRequestMethod()=="POST")
         t.setAirable(cgi.queryCheckbox("airable"));
-    Http::redirect(t.url());
+    //Http::redirect(t.url());
 }
 
 void Action::reportTrack(int tid){
-    if(cgi.getEnvironment().getRequestMethod() != "POST") return Http::redirect(Track::url(tid));
+    if(cgi.getEnvironment().getRequestMethod() != "POST") return; // Http::redirect(Track::url(tid));
     Track t(tid);
-    if(!t) return Html::notFound("Track");
+    if(!t) return; //Html::notFound("Track");
     std::string path = eqbeatsDir() + "/reports";
     std::ofstream f(path.c_str(), std::ios_base::app);
     f << t.artist().id() << " " << t.artist().name() << " - " << t.id() << " " << t.title() << std::endl;
     f.close();
-    Http::redirect(t.url());
+    //Http::redirect(t.url());
 }
 
 void Action::setTags(int tid){
     ExtendedTrack t(tid);
     if(Session::user()=t.artist() && t && cgi.getEnvironment().getRequestMethod() == "POST")
         t.setTags(cgi("tags"));
-    Http::redirect(t.url());
+    //Http::redirect(t.url());
 }

@@ -5,10 +5,8 @@
 #include <string>
 #include <map>
 
-#include "fcgio.h"
-#include "cgicc/CgiInput.h"
-
-namespace Render {
+#include <fcgio.h>
+#include <cgicc/CgiInput.h>
 
 class FCgiIO : public cgicc::CgiInput, public std::ostream {
 
@@ -30,9 +28,5 @@ class FCgiIO : public cgicc::CgiInput, public std::ostream {
         std::map<std::string, std::string> 	fEnv;
 
 };
-
-extern FCgiIO o;
-
-}
 
 #endif // RENDER_H

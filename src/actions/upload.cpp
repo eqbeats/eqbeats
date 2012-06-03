@@ -1,8 +1,4 @@
 #include "actions.h"
-#include "../render/render.h"
-#include "../render/html/page.h"
-#include "../render/http.h"
-#include "../render/json.h"
 #include "../session.h"
 #include "../number.h"
 #include "../path.h"
@@ -18,9 +14,6 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
-using namespace Render;
-using namespace Json;
-
 std::string getTitle(const char *filename){
     TagLib::MPEG::File f(filename);
     TagLib::Tag *t = f.tag();
@@ -29,18 +22,18 @@ std::string getTitle(const char *filename){
 
 void Action::uploadTrack(int id){
     User u = Session::user();
-    if(!u) return Http::redirect(Track::url(id));
+    if(!u) return; // Http::redirect(Track::url(id));
 
     cgicc::file_iterator qqfile = cgi.getFile("qqfile");
     bool js = cgi("js") != "no";
     std::string upfilename = (qqfile != cgi.getFiles().end() ? qqfile->getFilename() : cgi("qqfile"));
 
-    if(js) Http::header("text/html"); // Opera
+    if(js); // Http::header("text/html"); // Opera
 
     Track t(id);
     if((t && t.artist() != u) || upfilename.empty()){
-        if(js) o << "{" << field("success","false",true) << "}";
-        else Http::redirect(t ? t.url() : u ? u.url() : "/");
+        if(js); // o << "{" << field("success","false",true) << "}";
+        else; // Http::redirect(t ? t.url() : u ? u.url() : "/");
         return;
     }
 
@@ -77,9 +70,9 @@ void Action::uploadTrack(int id){
     else
         sleep(2);
 
-    if(js)
+    /*if(js)
         o << "{"+field("success","true")+field("track",number(t.id()))+field("title",jstring(t.title()),true)+"}";
-    else Http::redirect(t.url());
+    else Http::redirect(t.url());*/
 }
 
 void Action::newTrack(){

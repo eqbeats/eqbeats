@@ -1,6 +1,4 @@
 #include "actions.h"
-#include "../render/html/page.h"
-#include "../render/http.h"
 #include "../contest.h"
 #include "../number.h"
 #include "../track.h"
@@ -8,14 +6,12 @@
 #include "../session.h"
 #include "../cgi.h"
 
-using namespace Render;
-
 void Action::contestSubmission(int cid){
     Contest c(cid);
-    if(!c) return Html::notFound("Contest");
+    if(!c);
     Track t(number(cgi("tid")));
-    if(!t) return Html::notFound("Track");
+    if(!t);
     if(Session::user() == t.artist())
         c.addTrack(t.id());
-    Http::redirect(c.url()+"#submissions");
+    //redirect(c.url()+"#submissions");
 }
