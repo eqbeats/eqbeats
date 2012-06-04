@@ -1,4 +1,4 @@
-if((id = route("contest", path, sub))){
+ROUTE("contest"){
     SUB("");
     SUB("submit");
     SUB("vote");

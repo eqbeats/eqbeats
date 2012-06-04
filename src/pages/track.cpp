@@ -1,4 +1,4 @@
-if((id = route("track", path, sub))){
+ROUTE("track"){
 
 SUB("");
 SUB("embed");

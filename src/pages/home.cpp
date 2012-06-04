@@ -1,1 +1,4 @@
-PATH("") tpl = "home.tpl";
+PATH(""){
+    HTML("");
+    tpl = "home.tpl";
+}

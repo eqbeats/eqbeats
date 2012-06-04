@@ -10,8 +10,16 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
-#define PATH(p) if(path == "/" p)
+#define PATH(p) if(path == p)
+#define ROUTE(t) if((id = route(t, path, sub)))
 #define SUB(s) if(sub == s)
+
+#define HTML(t) \
+    { mime = "text/html"; \
+      rootDict->SetValueAndShowSection("TITLE", t, "HAS_TITLE"); \
+      dict = rootDict->AddIncludeDictionary("BODY"); }
+
+#define LOGGED if(!Session::user()) redir = "/login?redir=" + path; else
 
 using namespace cgicc;
 Cgicc cgi;
@@ -45,15 +53,15 @@ int main(int argc, char** argv){
         cgi = Cgicc(&o);
         path = getPath();
 
-        Dict dict("eqbeats");
-        std::string tpl, title;
-        std::string mime="text/html";
+        Dict *rootDict = new Dict("eqbeats");
+        Dict *dict = rootDict;
+        std::string tpl, redir, mime = "application/octet-stream";
 
         // Nope
         if (cgi.getElementByValue("PHPE9568F34-D428-11d2-A769-00AA001ACF42") != cgi.getElements().end() ||
             cgi.getElementByValue("PHPE9568F35-D428-11d2-A769-00AA001ACF42") != cgi.getElements().end() ||
             cgi.getElementByValue("PHPE9568F36-D428-11d2-A769-00AA001ACF42") != cgi.getElements().end()){
-            //Http::redirect("http://youtu.be/gvdf5n-zI14");
+            redir = "http://youtu.be/gvdf5n-zI14";
         }
 
         Session::start();
@@ -71,18 +79,25 @@ int main(int argc, char** argv){
         #include "pages/home.cpp"
 
         // Render
-        if(!tpl.empty() && mime=="text/html"){
-            Dict *body = dict.AddIncludeDictionary("BODY");
-            body->SetFilename(tpl);
-            dict.SetValueAndShowSection("TITLE", title, "HAS_TITLE");
-            Session::fill(&dict);
+        if(!redir.empty())
+            o << Http::redirect(redir);
+
+        else if(!tpl.empty()){
             std::string out;
-            cache.ExpandWithData("page.tpl", ctemplate::STRIP_BLANK_LINES, &dict, NULL, &out);
+            if(mime == "text/html"){
+                dict->SetFilename(tpl);
+                Session::fill(rootDict);
+                cache.ExpandWithData("page.tpl", ctemplate::STRIP_BLANK_LINES, rootDict, NULL, &out);
+            }
+            else
+                cache.ExpandWithData(tpl, ctemplate::STRIP_BLANK_LINES, rootDict, NULL, &out);
             o << Http::header(mime, 200) << out;
         }
 
+
         Session::destroy();
         FCGX_Finish_r(&request);
+        delete rootDict;
         while(waitpid(-1, NULL, WNOHANG) > 0); // wait for zombies
     }
 

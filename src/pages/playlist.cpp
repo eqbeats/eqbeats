@@ -1,4 +1,4 @@
-if((id = route("playlist", path, sub))){
+ROUTE("playlist"){
     SUB("");
     SUB("remove");
     SUB("move");
@@ -6,4 +6,4 @@ if((id = route("playlist", path, sub))){
     SUB("edit");
     SUB("json");
 }
-PATH("playlist/new");
+PATH("/playlist/new");

@@ -1,4 +1,4 @@
-if((id = route("user", path, sub))){
+ROUTE("user"){
     SUB("");
     SUB("comment");
     SUB("follow");

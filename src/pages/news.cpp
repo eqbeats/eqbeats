@@ -1,5 +1,4 @@
-if((id = route("news", path, sub))){
+ROUTE("news"){
     SUB("");
     SUB("comment");
 }
-PATH("news");
