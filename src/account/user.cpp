@@ -5,77 +5,30 @@
 
 #include <sstream>
 
-User::User(int nId){
-    _id = 0;
-    if(nId<=0) return;
-    DB::Result r = DB::query("SELECT name FROM users WHERE id=" + number(nId));
+User::User(int uid){
+    id = 0;
+    if(uid<=0) return;
+    DB::Result r = DB::query("SELECT name FROM users WHERE id = " + number(uid));
     if(!r.empty()){
-        _id = nId;
-        _name = r[0][0];
+        id = uid;
+        name = r[0][0];
     }
 }
 
-User::User(const std::string &nName){
-    _id = 0;
-    if(nName.empty()) return;
-    DB::Result r = DB::query("SELECT id FROM users WHERE name=$1", nName);
-    if(!r.empty()){
-        _id = number(r[0][0]);
-        _name = nName;
-    }
-}
-
-std::string User::url(int id){
-    std::stringstream s;
-    s << "/user/" << id;
-    return s.str();
-}
-
-std::vector<User> User::select(const std::string &q, const std::string &param){
-    std::string sql = "SELECT users.id, users.name " + q;
-    DB::Result r = param.empty() ? DB::query(sql) : DB::query(sql, param);
-    std::vector<User> users(r.size());
-    for(unsigned i=0; i<r.size(); i++)
-        users[i] = User(number(r[i][0]), r[i][1]);
-    return users;
-}
-
-std::vector<User> listHelper(bool artists, unsigned int n, unsigned int begin){
-    return User::select("FROM users " +
-        (std::string) (artists? "WHERE EXISTS ( SELECT 1 FROM tracks WHERE user_id = users.id AND visible = 't' ) " : "") +
-        "ORDER BY lower(name) ASC LIMIT "+number(n)+" OFFSET "+number(begin));
-}
-
-std::vector<User> User::list(unsigned int n, unsigned int begin){
-    return listHelper(false, n, begin);
-}
-
-std::vector<User> User::listArtists(unsigned int n, unsigned int begin){
-    return listHelper(true, n, begin);
-}
-
-std::vector<User> User::search(const std::string &q){
-    if(q.empty()) return std::vector<User>();
-    return select("FROM users WHERE name ILIKE $1 ORDER BY registration DESC", "%"+q+"%");
-}
-
-User User::withEmail(const std::string &email){
+User::User(const std::string &email){
+    id = 0;
     DB::Result r = DB::query("SELECT id, name FROM users WHERE email = $1", email);
-    if(r.empty()) return User();
-    return User(number(r[0][0]), r[0][1]);
+    if(!r.empty()){
+        id = number(r[0][0]);
+        name = r[0][1];
+    }
 }
 
-std::vector<Track> User::tracks(bool all){
-    if(_id<=0) return std::vector<Track>();
-    return Track::select(0, "tracks.user_id = " + number(_id), "tracks.date DESC", all);
-}
-
-bool User::hasYoutube() const {
-    DB::Result r = DB::query("SELECT 1 FROM youtube_refresh_tokens WHERE user_id = "+number(_id));
-    return r.size() > 0;
+std::string User::url() const{
+    return "/user/" + number(id);
 }
 
 void User::fill(Dict *d) const{
-    d->SetIntValue("UID", _id);
-    d->SetValue("USERNAME", _name);
+    d->SetIntValue("UID", id);
+    d->SetValue("USERNAME", name);
 }

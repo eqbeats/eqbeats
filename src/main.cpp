@@ -92,7 +92,7 @@ int main(int argc, char** argv){
                 dict->SetFilename(tpl);
                 // Session
                 Dict *s = Session::fill(rootDict);
-                if(s) s->SetValue("IRC_NICK", ircNick(Session::user().name()));
+                if(s) s->SetValue("IRC_NICK", ircNick(Session::user().name));
                 // Misc
                 rootDict->SetValueAndShowSection("REDIRECT", path, "HAS_REDIRECT");
                 rootDict->SetFormattedValue("GENERATION_TIME", "%lu µS", usecs());

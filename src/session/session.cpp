@@ -38,8 +38,8 @@ void Session::destroy(){
 std::string Session::login(const User &_user){
     u = _user;
     sid = randomString();
-    DB::query("INSERT INTO sessions (user_id, sid, host, date) VALUES ($1, $2, $3, 'now')", number(u.id()), sid, cgi.getEnvironment().getRemoteAddr());
-    DB::query("UPDATE users SET last_login = 'now' WHERE id = " + number(u.id()));
+    DB::query("INSERT INTO sessions (user_id, sid, host, date) VALUES ($1, $2, $3, 'now')", number(u.id), sid, cgi.getEnvironment().getRemoteAddr());
+    DB::query("UPDATE users SET last_login = 'now' WHERE id = " + number(u.id));
     return sid;
 }
 
