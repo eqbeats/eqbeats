@@ -87,10 +87,11 @@ int main(int argc, char** argv){
         if(!redir.empty())
             o << Http::redirect(redir);
 
-        else if(!tpl.empty()){
+        else{
             std::string out;
+            if(tpl.empty()) HTML("404 Not Found");
             if(mime == "text/html"){
-                dict->SetFilename(tpl);
+                dict->SetFilename(tpl.empty() ? "404.tpl" : tpl);
                 // Session
                 Dict *s = Session::fill(rootDict);
                 if(s) s->SetValue("IRC_NICK", ircNick(Session::user().name));
@@ -102,7 +103,7 @@ int main(int argc, char** argv){
             }
             else
                 cache.ExpandWithData(tpl, ctemplate::STRIP_BLANK_LINES, rootDict, NULL, &out);
-            o << Http::header(mime, 200) << out;
+            o << Http::header(mime, tpl.empty() ? 404 : 200) << out;
         }
 
 
