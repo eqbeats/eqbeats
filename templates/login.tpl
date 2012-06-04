@@ -1,8 +1,8 @@
 <h2>Login</h2>
 
-{{#ERROR}}<div class="error">{{ERROR}}</div>{{/ERROR}}
+{{#HAS_ERROR}}<div class="error">{{ERROR}}</div>{{/HAS_ERROR}}
 
-<form action="/login" method="post">
+<form method="post">
     <table>
         <tr>
             <td><label for="r_email">Email:</label></td>
@@ -14,7 +14,6 @@
         </tr>
     </table>
     <input type="submit" value="Login" />
-    <input type="hidden" name="redirect" value="{{REDIR}}" />
 </form>
 
 <a href="/register">Register</a> &middot; <a href="/account/reset">Lost your passord?</a>

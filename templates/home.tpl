@@ -10,7 +10,7 @@
         {{/NEWS}}
     ];
 </script>
-<script src="/static/ticker.js></script>
+<script src="/static/ticker.js"></script>
 
 <div class="search">
     <img src="{{ICON}}/magnifier.png" alt="" />

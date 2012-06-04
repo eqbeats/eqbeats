@@ -74,3 +74,8 @@ bool User::hasYoutube() const {
     DB::Result r = DB::query("SELECT 1 FROM youtube_refresh_tokens WHERE user_id = "+number(_id));
     return r.size() > 0;
 }
+
+void User::fill(Dict *d) const{
+    d->SetIntValue("UID", _id);
+    d->SetValue("USERNAME", _name);
+}

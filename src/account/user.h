@@ -1,8 +1,7 @@
 #ifndef USER_H
 #define USER_H
 
-#include <string>
-#include <vector>
+#include <core/template.h>
 
 class Track;
 
@@ -32,6 +31,8 @@ class User{
         static User withEmail(const std::string &email);
 
         std::vector<Track> tracks(bool all=false);
+
+        void fill(Dict*) const;
 
     protected:
         std::string _name;

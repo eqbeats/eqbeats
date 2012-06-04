@@ -63,12 +63,8 @@ void Session::logout(){
 }
 
 void Session::fill(Dict *d){
-    if(u){
-        Dict *s = d->AddSectionDictionary("LOGGED_USER");
-        s->SetIntValue("UID", u.id());
-        s->SetValue("NAME", u.name());
-        s->SetValue("URL", u.url());
-    }
+    if(u)
+        u.fill(d->AddSectionDictionary("LOGGED_USER"));
     else
         d->ShowSection("LOGGED_OUT");
 }

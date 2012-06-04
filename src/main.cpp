@@ -66,17 +66,19 @@ int main(int argc, char** argv){
 
         Session::start();
 
-        #include "pages/oembed.cpp"
-        #include "pages/user.cpp"
-        #include "pages/track.cpp"
-        #include "pages/tracks.cpp"
-        #include "pages/news.cpp"
-        #include "pages/contest.cpp"
-        #include "pages/playlist.cpp"
-        #include "pages/users.cpp"
-        #include "pages/account.cpp"
+        #include "pages/session.cpp"
         #include "pages/static.cpp"
         #include "pages/home.cpp"
+
+        //#include "pages/oembed.cpp"
+        //#include "pages/user.cpp"
+        //#include "pages/track.cpp"
+        //#include "pages/tracks.cpp"
+        //#include "pages/news.cpp"
+        //#include "pages/contest.cpp"
+        //#include "pages/playlist.cpp"
+        //#include "pages/users.cpp"
+        //#include "pages/account.cpp"
 
         // Render
         if(!redir.empty())

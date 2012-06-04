@@ -15,7 +15,7 @@
                 <h1><a href="/">Equestrian Beats</a></h1>
                 <div id="logstatus">
                     {{#LOGGED_USER}}
-                    Hi <b><a href="{{URL}}">{{NAME}}</a></b>. <a href="/logout{{#HAS_REDIR}}?redirect={{REDIR}}{{/HAS_REDIR}}">Logout</a>
+                    Hi <b><a href="/user/{{UID}}">{{USERNAME}}</a></b>. <a href="/logout{{#HAS_REDIR}}?redirect={{REDIR}}{{/HAS_REDIR}}">Logout</a>
                     {{/LOGGED_USER}}
                     {{#LOGGED_OUT}}
                     <a href="/login{{#HAS_REDIR}}?redirect={{REDIR}}{{/HAS_REDIR}}">Login</a>
