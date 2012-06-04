@@ -6,7 +6,7 @@ add_executable ( eqbeats.fcgi
     account/user.cpp
     core/db.cpp core/path.cpp
     misc/hash.cpp misc/number.cpp misc/timer.cpp
-    render/http.cpp render/render.cpp
+    render/fcgiio.cpp render/http.cpp
     session/session.cpp session/login.cpp
     text/date.cpp text/irc.cpp
     track/track.cpp

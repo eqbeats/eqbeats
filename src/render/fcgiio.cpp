@@ -1,4 +1,4 @@
-#include "render.h"
+#include "fcgiio.h"
 #include <iostream>
 #include <cstdlib>
 

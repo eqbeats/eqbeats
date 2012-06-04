@@ -1,5 +1,5 @@
-#ifndef RENDER_H
-#define RENDER_H
+#ifndef RENDER_FCGIIO_H
+#define RENDER_FCGIIO_H
 
 #include <ostream>
 #include <string>
@@ -29,4 +29,4 @@ class FCgiIO : public cgicc::CgiInput, public std::ostream {
 
 };
 
-#endif // RENDER_H
+#endif // RENDER_FCGIIO_H
