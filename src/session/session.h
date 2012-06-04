@@ -24,7 +24,7 @@ namespace Session{
 
     void logout();
 
-    void fill(Dict*);
+    Dict* fill(Dict*);
 
 }
 

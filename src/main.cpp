@@ -2,8 +2,10 @@
 #include <core/cgi.h>
 #include <core/db.h>
 #include <core/template.h>
+#include <misc/timer.h>
 #include <render/http.h>
 #include <render/render.h>
+#include <text/text.h>
 #include <session/session.h>
 
 #include <stdio.h>
@@ -48,7 +50,7 @@ int main(int argc, char** argv){
     int id;
 
     while(FCGX_Accept_r(&request) == 0){
-        //resetTimer();
+        resetTimer();
         o.attach(&request);
         cgi = Cgicc(&o);
         path = getPath();
@@ -88,7 +90,13 @@ int main(int argc, char** argv){
             std::string out;
             if(mime == "text/html"){
                 dict->SetFilename(tpl);
-                Session::fill(rootDict);
+                // Session
+                Dict *s = Session::fill(rootDict);
+                if(s) s->SetValue("IRC_NICK", ircNick(Session::user().name()));
+                // Misc
+                rootDict->SetValueAndShowSection("REDIRECT", path, "HAS_REDIRECT");
+                rootDict->SetFormattedValue("GENERATION_TIME", "%lu µS", usecs());
+                rootDict->SetFormattedValue("PID", "%d", getpid());
                 cache.ExpandWithData("page.tpl", ctemplate::STRIP_BLANK_LINES, rootDict, NULL, &out);
             }
             else

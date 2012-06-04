@@ -12,7 +12,7 @@
             <img src="/static/icons/star.png" alt="Remove from favorites" />
         </a>
         {{/IS_FAV}}
-        {{#IS_VISIBLE}}{{#LOGGED_USER}}{{#HAS_PLAYLISTS}}
+        {{#IS_VISIBLE}}{{#HAS_PLAYLISTS}}
         <span id="addplaylist">
             <img src="/static/icons/playlist-add.png" alt="Playlists" title="Playlists">
             <form action="/track/{{TID}}/playlist" method="post">
@@ -24,7 +24,7 @@
             <input type="submit" value="Add to this playlist"/>
             </form>
         </span>
-        {{/IS_VISIBLE}}{{/LOGGED_USER}}{{/HAS_PLAYLISTS}}
+        {{/HAS_PLAYLISTS}}{{/IS_VISIBLE}}
     </h2>
     <h4>by <a href="/user/{{ARTIST_ID}}">{{ARTIST_NAME}}</a> <span class="date">on {{DATE}}</span></h4>
 

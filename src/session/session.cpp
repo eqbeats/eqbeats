@@ -56,9 +56,13 @@ void Session::logout(){
 
 // Dict
 
-void Session::fill(Dict *d){
-    if(u)
-        u.fill(d->AddSectionDictionary("LOGGED_USER"));
+Dict* Session::fill(Dict *d){
+    if(u){
+        Dict *s = d->AddSectionDictionary("LOGGED_USER");
+        u.fill(s);
+        return s;
+    }
     else
         d->ShowSection("LOGGED_OUT");
+    return 0;
 }

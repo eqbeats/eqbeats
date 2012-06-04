@@ -1,8 +1,8 @@
-#ifndef TIMER_H
-#define TIMER_H
+#ifndef MISC_TIMER_H
+#define MISC_TIMER_H
 
 void resetTimer();
 
 long int usecs();
 
-#endif // TIMER_H
+#endif // MISC_TIMER_H

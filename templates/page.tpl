@@ -15,10 +15,11 @@
                 <h1><a href="/">Equestrian Beats</a></h1>
                 <div id="logstatus">
                     {{#LOGGED_USER}}
-                    Hi <b><a href="/user/{{UID}}">{{USERNAME}}</a></b>. <a href="/logout{{#HAS_REDIR}}?redirect={{REDIR}}{{/HAS_REDIR}}">Logout</a>
+                    Hi <b><a href="/user/{{UID}}">{{USERNAME}}</a></b>.
+                    <a href="/logout{{#HAS_REDIRECT}}?redirect={{REDIRECT}}{{/HAS_REDIRECT}}">Logout</a>
                     {{/LOGGED_USER}}
                     {{#LOGGED_OUT}}
-                    <a href="/login{{#HAS_REDIR}}?redirect={{REDIR}}{{/HAS_REDIR}}">Login</a>
+                    <a href="/login{{#HAS_REDIRECT}}?redirect={{REDIRECT}}{{/HAS_REDIRECT}}">Login</a>
                     {{/LOGGED_OUT}}
                 </div>
                 <div id="navbar">
@@ -27,7 +28,7 @@
                     <img alt="-" src="/static/icons/cm-nav.png"/>
                     <a href="/news">News</a>
                     <a href="/faq">FAQ</a>
-                    <a title="#eqbeats on irc.ponychat.net" href="http://ponychat.net/webchat?nick={{#LOGGED_USER}}{{IRCNICK}}{{/LOGGED_USER}}{{#LOGGED_OUT}}pony_.....{{/LOGGED_OUT}}&autojoin=eqbeats">Chat</a>
+                    <a title="#eqbeats on irc.ponychat.net" href="http://ponychat.net/webchat?nick={{#LOGGED_USER}}{{IRC_NICK}}{{/LOGGED_USER}}{{#LOGGED_OUT}}pony_.....{{/LOGGED_OUT}}&autojoin=eqbeats">Chat</a>
                 </div>
                 <div style="clear:both;"></div>
             </div>
@@ -37,7 +38,7 @@
             <div id="footer">
                 Contact: &#99;&#111;&#110;&#116;&#97;&#99;&#116;&#64;&#101;&#113;&#98;&#101;&#97;&#116;&#115;&#46;&#111;&#114;&#103;{{! contact@eqbeats.org}}
                 <br /><a href="/credits">Credits</a>
-                <!--Generated in {{USECS}} µS by {{PID}}.-->
+                <!--Generated in {{GENERATION_TIME}} by {{PID}}.-->
             </div>
         </div>
         <script>document.body.className = 'js';</script>
