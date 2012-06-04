@@ -7,25 +7,24 @@ class User;
 
 namespace Session{
 
-    // Reads the sid cookie.
     void start();
-    // Resets the cached user.
     void destroy();
 
     // Logged user.
     User user();
 
-    // Returns the sid. Doesn't set the cookie.
+    // Login. Return the sid or an empty string.
+    std::string login(const User&);
     std::string login(const std::string &email, const std::string &pw);
-    // Trusted login.
-    std::string login(int id, const std::string &host);
+
+    // Return true if the login is successful.
+    // The sid is set if the user wasn't already logged.
+    // Return false and fill the dictionary otherwise.
+    bool login(Dict *d, std::string *sid);
 
     void logout();
 
     void fill(Dict*);
-    bool login(Dict *d, std::string *sid);
-
-    std::string randomString();
 
 }
 
