@@ -18,7 +18,7 @@
             <form action="/track/{{TID}}/playlist" method="post">
                 <select name="playlist">
                 {{#PLAYLISTS}}
-                    <option value="{{PID}}">{{NAME}}</option>
+                    <option value="{{PLAYLIST_ID}}">{{NAME}}</option>
                 {{/PLAYLISTS}}
                 </select>
             <input type="submit" value="Add to this playlist"/>
@@ -26,7 +26,7 @@
         </span>
         {{/HAS_PLAYLISTS}}{{/IS_VISIBLE}}
     </h2>
-    <h4>by <a href="/user/{{ARTIST_ID}}">{{ARTIST_NAME}}</a> <span class="date">on {{DATE}}</span></h4>
+    <h4>by <a href="/user/{{UID}}">{{USERNAME}}</a> <span class="date">on {{DATE}}</span></h4>
 
     {{#HAS_ART}}<img class="art" alt="" src="/track/{{TID}}/art/medium" />{{/HAS_ART}}
 
@@ -53,7 +53,7 @@
         {{/IS_OWNER}}
         {{#IS_NOT_OWNER}}
         <form action="/track/{{TID}}/report" method="post">
-            <button type="submit" class="report"><img alt="" src="/static/icon/flag.png" /><span> Report</span></button>
+            <button type="submit" class="report"><img alt="" src="/static/icons/flag.png" /><span> Report</span></button>
         </form>
         {{/IS_NOT_OWNER}}
     </div>
@@ -89,7 +89,7 @@
 
     {{#IS_OWNER}}
     <div class="edit">
-         <h3><img src="/static/icon/pencil.png" alt="" /> Edit</h3>
+         <h3><img src="/static/icons/pencil.png" alt="" /> Edit</h3>
          {{#IS_HIDDEN}}
          <form class="publish" action="/track/{{TID}}/publish" method="post">
             <img src="/static/icons/disc-arrow.png" alt="" />
@@ -102,7 +102,7 @@
         <div class="rename">
             <h4><img alt="" src="/static/icons/rename.png" /> Rename</h4>
             <form method="post" action="/track/{{TID}}/rename">
-                <b>{{ARTIST_NAME}}</b> -
+                <b>{{USERNAME}}</b> -
                 <input type="text" name="title" value="{{TITLE}}" />
                 <input type="submit" value="Rename" />
             </form>
@@ -162,7 +162,7 @@
     </div>
     {{/IS_OWNER}}
 
-    {{<EVENTS}}
-    {{<COMMENT_FORM}}
+    {{>EVENTS}}
+    {{>COMMENT_FORM}}
 </div>
 

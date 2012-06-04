@@ -2,15 +2,16 @@
 #include <account/user.h>
 #include <core/db.h>
 #include <misc/number.h>
+#include <session/session.h>
 
 Track::Track(int tid){
 
     id = 0;
-    if(tid<=0) return;
+    if(tid <= 0) return;
 
     DB::Result r = DB::query(
         "SELECT tracks.title, tracks.user_id, users.name, tracks.visible, tracks.date FROM tracks, users "
-        "WHERE tracks.id = " + number(id) + " AND tracks.user_id = users.id");
+        "WHERE tracks.id = " + number(tid) + " AND tracks.user_id = users.id");
 
     if(!r.empty()){
         id = tid;
@@ -24,4 +25,13 @@ Track::Track(int tid){
 
 std::string Track::url() const{
     return (std::string) "/track/" + number(id);
+}
+
+void Track::fill(Dict *d) const{
+    d->SetIntValue("TID", id);
+    d->SetValue("TITLE", title);
+    d->ShowSection(visible ? "IS_VISIBLE" : "IS_HIDDEN");
+    d->SetValue("DATE", date);
+    d->ShowSection(artist == Session::user() ? "IS_OWNER" : "IS_NOT_OWNER");
+    artist.fill(d);
 }

@@ -6,22 +6,23 @@
 #include <render/http.h>
 #include <render/render.h>
 #include <text/text.h>
+#include <track/track.h>
 #include <session/session.h>
 
 #include <stdio.h>
 #include <sys/wait.h>
 #include <unistd.h>
 
-#define PATH(p) if(path == p)
-#define ROUTE(t) if((id = route(t, path, sub)))
-#define SUB(s) if(sub == s)
+#define PATH(p) if(path == (p))
+#define ROUTE(t) if((id = route((t), path, sub)))
+#define SUB(s) if(sub == (s))
 
 #define HTML(t) \
     { mime = "text/html"; \
-      rootDict->SetValueAndShowSection("TITLE", t, "HAS_TITLE"); \
+      rootDict->SetValueAndShowSection("TITLE", (t), "HAS_TITLE"); \
       dict = rootDict->AddIncludeDictionary("BODY"); }
 
-#define LOGGED if(!Session::user()) redir = "/login?redir=" + path; else
+#define LOGGED if(!Session::user()) redir = "/login?redirect=" + path; else
 
 using namespace cgicc;
 Cgicc cgi;
@@ -68,13 +69,13 @@ int main(int argc, char** argv){
 
         Session::start();
 
+        #include "pages/home.cpp"
         #include "pages/session.cpp"
         #include "pages/static.cpp"
-        #include "pages/home.cpp"
+        #include "pages/track.cpp"
 
         //#include "pages/oembed.cpp"
         //#include "pages/user.cpp"
-        //#include "pages/track.cpp"
         //#include "pages/tracks.cpp"
         //#include "pages/news.cpp"
         //#include "pages/contest.cpp"

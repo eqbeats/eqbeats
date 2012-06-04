@@ -1,6 +1,14 @@
 ROUTE("track"){
 
-SUB("");
+Track t(id);
+if(t){
+
+SUB(""){
+    HTML(t.title);
+    tpl = "track.tpl";
+    t.fill(dict);
+}
+
 SUB("embed");
 SUB("delete");
 SUB("rename");
@@ -27,4 +35,5 @@ SUB("art/medium");
 SUB("art/thumb");
 SUB("json");
 
+}
 }
