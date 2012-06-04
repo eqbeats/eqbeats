@@ -8,7 +8,7 @@ add_executable ( eqbeats.fcgi
     misc/hash.cpp misc/number.cpp misc/timer.cpp
     render/http.cpp render/render.cpp
     session/session.cpp session/login.cpp
-    text/irc.cpp
+    text/date.cpp text/irc.cpp
     track/track.cpp
     main.cpp
 )

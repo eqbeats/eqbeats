@@ -3,6 +3,7 @@
 #include <core/db.h>
 #include <misc/number.h>
 #include <session/session.h>
+#include <text/text.h>
 
 Track::Track(int tid){
 
@@ -32,6 +33,7 @@ void Track::fill(Dict *d) const{
     d->SetValue("TITLE", title);
     d->ShowSection(visible ? "IS_VISIBLE" : "IS_HIDDEN");
     d->SetValue("DATE", date);
+    d->SetValue("DAY", day(date));
     d->ShowSection(artist == Session::user() ? "IS_OWNER" : "IS_NOT_OWNER");
     artist.fill(d);
 }

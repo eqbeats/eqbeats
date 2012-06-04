@@ -26,7 +26,7 @@
         </span>
         {{/HAS_PLAYLISTS}}{{/IS_VISIBLE}}
     </h2>
-    <h4>by <a href="/user/{{UID}}">{{USERNAME}}</a> <span class="date">on {{DATE}}</span></h4>
+    <h4>by <a href="/user/{{UID}}">{{USERNAME}}</a> <span class="date">on {{DAY}}</span></h4>
 
     {{#HAS_ART}}<img class="art" alt="" src="/track/{{TID}}/art/medium" />{{/HAS_ART}}
 
