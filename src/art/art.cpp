@@ -1,6 +1,6 @@
+#include "art.h"
 #include <core/path.h>
 #include <misc/number.h>
-#include <track/art.h>
 #include <iostream>
 #include <Magick++.h>
 #include <stdio.h>

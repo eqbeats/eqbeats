@@ -11,9 +11,9 @@ static/awstats
 *.log
 *.sw?
 pid
-tmp/
-tracks/
-art/
+/tmp/
+/tracks/
+/art/
 reports
 hits.dat
 hitsd.sock

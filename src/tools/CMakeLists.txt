@@ -4,7 +4,7 @@ target_link_libraries ( mknews pq )
 add_executable ( mkcontest mkcontest.cpp ../core/db.cpp ../misc/number.cpp )
 target_link_libraries ( mkcontest pq )
 
-add_executable ( mkthumbs mkthumbs.cpp ../misc/number.cpp ../track/art.cpp ../core/path.cpp )
+add_executable ( mkthumbs mkthumbs.cpp ../misc/number.cpp ../art/art.cpp ../core/path.cpp )
 target_link_libraries ( mkthumbs Magick++ MagickCore )
 
 add_executable ( stats stats.cpp ../core/db.cpp )

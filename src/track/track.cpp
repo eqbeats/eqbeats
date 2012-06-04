@@ -1,5 +1,5 @@
 #include "track.h"
-#include "art.h"
+#include <art/art.h>
 #include <account/account.h>
 #include <account/user.h>
 #include <core/db.h>
