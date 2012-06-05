@@ -9,7 +9,6 @@ SUB(""){
     t.fill(dict);
 }
 
-SUB("embed");
 SUB("delete");
 SUB("rename");
 SUB("notes");
@@ -36,4 +35,15 @@ SUB("art/thumb");
 SUB("json");
 
 }
+
+SUB("embed"){
+    if(t){
+        t.fill(dict);
+        t.player(dict, true);
+    }
+    dict->ShowSection(t ? "FOUND" : "NOT_FOUND");
+    mime = "text/html";
+    tpl = "player-embed.tpl";
+}
+
 }

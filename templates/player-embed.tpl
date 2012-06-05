@@ -11,18 +11,18 @@
     <body>
         <div id="player-embed">
 
-            {{#TRACK}}
-            <a href="{{URL}}" target="_blank" class="pic">
-                {{#HAS_COVER}}<img src="{{THUMB_URL}}" class="cover" alt="Cover" />{{/HAS_COVER}}
-                {{#NO_COVER}<img src="/static/logo.png" class="logo" alt="Equestrian Beats" />{{/NO_COVER}}
+            {{#FOUND}}
+            <a href="/track/{{TID}}" target="_blank" class="pic">
+                {{#HAS_COVER}}<img src="/track/{{TID}}/art/thumb" class="cover" alt="Cover" />{{/HAS_COVER}}
+                {{#NO_COVER}}<img src="/static/logo.png" class="logo" alt="Equestrian Beats" />{{/NO_COVER}}
             </a>
-            <h3><a href="{{URL}}" target="_blank" title="{{TITLE}}">{{TITLE}}</a></h3>
-            {{#ARTIST}}<h4>by <a href="{{URL}}" target="_blank" title="{{ARTIST_NAME}}">{{ARTIST_NAME}}</a></h4>{{/ARTIST}}
-            {{/TRACK}}
+            <h3><a href="/track/{{TID}}" target="_blank" title="{{TITLE}}">{{TITLE}}</a></h3>
+            <h4>by <a href="/user/{{UID}}" target="_blank" title="{{USERNAME}}">{{USERNAME}}</a></h4>
             {{>PLAYER}}
+            {{/FOUND}}
 
             {{#NOT_FOUND}}
-            <a href="{{EQBEATS_URL}}" target="_blank" class="pic">
+            <a href="/" target="_blank" class="pic">
                 <img src="/static/logo.png" class="logo" alt="Equestrian Beats" />
             </a>
             <h3 style="margin-bottom:10px;">Track not found</h3>

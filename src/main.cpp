@@ -59,6 +59,7 @@ int main(int argc, char** argv){
         Dict *rootDict = new Dict("eqbeats");
         Dict *dict = rootDict;
         std::string tpl, redir, mime = "application/octet-stream";
+        int code = 200;
 
         // Nope
         if (cgi.getElementByValue("PHPE9568F34-D428-11d2-A769-00AA001ACF42") != cgi.getElements().end() ||
@@ -89,9 +90,13 @@ int main(int argc, char** argv){
 
         else{
             std::string out;
-            if(tpl.empty()) HTML("404 Not Found");
-            if(mime == "text/html"){
-                dict->SetFilename(tpl.empty() ? "404.tpl" : tpl);
+            if(tpl.empty()){
+                HTML("404 Not Found");
+                code = 404;
+                tpl = "404.tpl";
+            }
+            if(dict != rootDict && mime == "text/html"){
+                dict->SetFilename(tpl);
                 // Session
                 Dict *s = Session::fill(rootDict);
                 if(s) s->SetValue("IRC_NICK", ircNick(Session::user().name));
@@ -103,7 +108,7 @@ int main(int argc, char** argv){
             }
             else
                 cache.ExpandWithData(tpl, ctemplate::STRIP_BLANK_LINES, rootDict, NULL, &out);
-            o << Http::header(mime, tpl.empty() ? 404 : 200) << out;
+            o << Http::header(mime, code) << out;
         }
 
 

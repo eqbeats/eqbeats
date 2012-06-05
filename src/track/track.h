@@ -19,6 +19,7 @@ class Track{
         std::string url() const;
 
         void fill(Dict *d) const;
+        Dict* player(Dict *d, bool fallback=false) const;
 
         operator bool() const { return id > 0; }
         bool operator==(const Track &t) { return t.id == id; }
