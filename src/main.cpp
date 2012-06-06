@@ -59,7 +59,7 @@ int main(int argc, char** argv){
 
         Dict *rootDict = new Dict("eqbeats");
         Dict *dict = rootDict;
-        std::string tpl, redir, mime = "application/octet-stream";
+        std::string tpl, redir, mime = "text/html";
         int code = 200;
 
         // Nope
@@ -89,14 +89,14 @@ int main(int argc, char** argv){
         if(!redir.empty())
             o << Http::redirect(redir);
 
-        else{
+        else if(code == 200){
             std::string out;
-            if(tpl.empty()){
+            if(tpl.empty() && mime == "text/html"){ // Defaults
                 HTML("404 Not Found");
                 code = 404;
                 tpl = "404.tpl";
             }
-            if(dict != rootDict && mime == "text/html"){
+            if(dict != rootDict && mime == "text/html"){ // HTML macro called
                 dict->SetFilename(tpl);
                 // Session
                 Dict *s = Session::fill(rootDict);
@@ -107,7 +107,7 @@ int main(int argc, char** argv){
                 rootDict->SetFormattedValue("PID", "%d", getpid());
                 cache.ExpandWithData("page.tpl", ctemplate::STRIP_BLANK_LINES, rootDict, NULL, &out);
             }
-            else
+            else if(!tpl.empty())
                 cache.ExpandWithData(tpl, ctemplate::STRIP_BLANK_LINES, rootDict, NULL, &out);
             o << Http::header(mime, code) << out;
         }
