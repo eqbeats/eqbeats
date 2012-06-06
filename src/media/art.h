@@ -1,7 +1,7 @@
-#ifndef ART_H
-#define ART_H
+#ifndef MEDIA_ART_H
+#define MEDIA_ART_H
 
-#include <string>
+#include "file.h"
 
 class Art{
 
@@ -13,6 +13,8 @@ class Art{
 
         std::string filepath(Size sz=Full) const;
         std::string url(Size sz=Full) const;
+
+        File thumbnail() const;
 
         void makeThumbs();
 
@@ -28,4 +30,4 @@ class Art{
 
 };
 
-#endif // ART_H
+#endif // MEDIA_ART_H

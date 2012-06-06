@@ -29,9 +29,17 @@ SUB("playlist");
 SUB("original");
 SUB("vorbis");
 SUB("mp3");
+
 SUB("art");
 SUB("art/medium");
-SUB("art/thumb");
+SUB("art/thumb"){
+    Art art(id);
+    if(art){
+        o << Http::download(art.thumbnail());
+        code = 0;
+    }
+}
+
 SUB("json");
 
 }

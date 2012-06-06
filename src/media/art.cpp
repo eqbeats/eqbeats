@@ -72,3 +72,7 @@ void Art::remove(){
     unlink(filepath(Medium).c_str());
     unlink(filepath(Thumbnail).c_str());
 }
+
+File Art::thumbnail() const{
+    return File("art/thumb/" + number(_tid) + ".png", "thumbnail.png");
+}
