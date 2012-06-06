@@ -1,6 +1,6 @@
 #include "list.h"
 #include <core/db.h>
-#include <misc/number.h>
+#include <text/text.h>
 
 #include <algorithm>
 #include <stdio.h>

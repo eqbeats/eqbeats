@@ -1,6 +1,6 @@
 #include "contest.h"
 #include "db.h"
-#include "number.h"
+#include <text/text.h>
 #include "track.h"
 #include "cgi.h"
 #include "session.h"

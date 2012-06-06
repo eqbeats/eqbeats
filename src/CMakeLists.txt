@@ -5,10 +5,10 @@ project ( eqbeats )
 add_executable ( eqbeats.fcgi
     account/user.cpp
     core/db.cpp core/path.cpp
-    misc/hash.cpp misc/number.cpp misc/timer.cpp
+    misc/hash.cpp misc/timer.cpp
     render/fcgiio.cpp render/http.cpp
     session/session.cpp session/login.cpp
-    text/date.cpp text/irc.cpp
+    text/date.cpp text/irc.cpp text/number.cpp
     track/list.cpp track/track.cpp
     main.cpp
 )

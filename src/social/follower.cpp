@@ -1,6 +1,6 @@
 #include "follower.h"
 #include "db.h"
-#include "number.h"
+#include <text/text.h>
 
 bool favHelper(const std::string &t, int ref, int id){
     DB::Result r = DB::query(

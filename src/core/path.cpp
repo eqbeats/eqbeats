@@ -1,5 +1,5 @@
 #include "path.h"
-#include <misc/number.h>
+#include <text/text.h>
 
 #include <stdlib.h>
 

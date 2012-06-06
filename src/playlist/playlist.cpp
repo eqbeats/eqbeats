@@ -1,6 +1,6 @@
 #include "playlist.h"
 #include <core/db.h>
-#include <misc/number.h>
+#include <text/text.h>
 #include <session/session.h>
 
 using namespace std;

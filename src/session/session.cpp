@@ -3,7 +3,7 @@
 #include <core/cgi.h>
 #include <core/db.h>
 #include <misc/hash.h>
-#include <misc/number.h>
+#include <text/text.h>
 
 #include <cgicc/CgiEnvironment.h>
 #include <cgicc/HTTPCookie.h>

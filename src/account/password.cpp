@@ -3,7 +3,7 @@
 #include "../session.h"
 #include "../account.h"
 #include "../db.h"
-#include "../number.h"
+#include <text/text.h>
 #include "../path.h"
 #include "../mail.h"
 

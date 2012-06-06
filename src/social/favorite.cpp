@@ -1,7 +1,7 @@
 #include "actions.h"
 #include "../session.h"
 #include "../track.h"
-#include "../number.h"
+#include <text/text.h>
 #include "../path.h"
 #include "../follower.h"
 #include "../contest.h"

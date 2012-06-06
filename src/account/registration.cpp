@@ -2,7 +2,7 @@
 #include "../account.h"
 #include "../session.h"
 #include "../log.h"
-#include "../number.h"
+#include <text/text.h>
 #include "../cgi.h"
 
 void Action::registration(){

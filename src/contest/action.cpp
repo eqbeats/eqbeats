@@ -1,6 +1,6 @@
 #include "actions.h"
 #include "../contest.h"
-#include "../number.h"
+#include <text/text.h>
 #include "../track.h"
 #include "../user.h"
 #include "../session.h"

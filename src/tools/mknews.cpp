@@ -1,5 +1,5 @@
 #include <core/db.h>
-#include <misc/number.h>
+#include <text/text.h>
 #include <iostream>
 
 using namespace std;

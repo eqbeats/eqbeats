@@ -2,7 +2,7 @@
 #include "track.h"
 #include "comment.h"
 #include "db.h"
-#include "number.h"
+#include <text/text.h>
 
 Comment::Type stot(const std::string &in){
     if(in == "news") return Comment::News;

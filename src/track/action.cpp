@@ -3,7 +3,7 @@
 #include "actions.h"
 #include "../art.h"
 #include "../session.h"
-#include "../number.h"
+#include <text/text.h>
 #include "../follower.h"
 #include "../path.h"
 #include "../log.h"

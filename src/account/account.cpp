@@ -1,6 +1,6 @@
 #include "account.h"
 #include <core/db.h>
-#include <misc/number.h>
+#include <text/text.h>
 
 #include <pcrecpp.h>
 #include <stdio.h>

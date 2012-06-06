@@ -1,6 +1,6 @@
 #include "actions.h"
 #include "../cgi.h"
-#include "../number.h"
+#include <text/text.h>
 #include "../playlist.h"
 #include "../log.h"
 #include "../session.h"

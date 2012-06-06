@@ -1,7 +1,7 @@
 #include "track.h"
 #include <account/user.h>
 #include <core/db.h>
-#include <misc/number.h>
+#include <text/text.h>
 #include <session/session.h>
 #include <text/text.h>
 

@@ -3,7 +3,7 @@
 #include "../track.h"
 #include "../session.h"
 #include "../path.h"
-#include "../number.h"
+#include <text/text.h>
 #include "../cgi.h"
 #include "../db.h"
 #include "../art.h"

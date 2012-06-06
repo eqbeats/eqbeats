@@ -1,7 +1,7 @@
 #include "user.h"
 #include <core/db.h>
 #include <track/track.h>
-#include <misc/number.h>
+#include <text/text.h>
 
 #include <sstream>
 

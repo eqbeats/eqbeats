@@ -1,6 +1,6 @@
 #include "news.h"
 #include "db.h"
-#include "number.h"
+#include <text/text.h>
 
 News::News(int nId){
     _id = 0;

@@ -1,6 +1,6 @@
 #include <core/db.h>
 #include <core/path.h>
-#include <misc/number.h>
+#include <text/text.h>
 #include <iostream>
 #include <fstream>
 #include <string>

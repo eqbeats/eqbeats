@@ -1,6 +1,6 @@
 #include "actions.h"
 #include "../session.h"
-#include "../number.h"
+#include <text/text.h>
 #include "../path.h"
 #include "../log.h"
 #include "../track.h"
