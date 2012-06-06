@@ -7,6 +7,7 @@
 #include <render/http.h>
 #include <text/text.h>
 #include <track/track.h>
+#include <track/list.h>
 #include <session/session.h>
 
 #include <stdio.h>
