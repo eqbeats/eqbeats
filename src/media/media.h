@@ -25,4 +25,3 @@ class Media: public Track{
 };
 
 #endif // MEDIA_H
-
