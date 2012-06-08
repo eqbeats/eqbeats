@@ -13,8 +13,8 @@
 
             {{#FOUND}}
             <a href="/track/{{TID}}" target="_blank" class="pic">
-                {{#HAS_COVER}}<img src="/track/{{TID}}/art/thumb" class="cover" alt="Cover" />{{/HAS_COVER}}
-                {{#NO_COVER}}<img src="/static/logo.png" class="logo" alt="Equestrian Beats" />{{/NO_COVER}}
+                {{#HAS_ART}}<img src="/track/{{TID}}/art/thumb" class="cover" alt="Cover" />{{/HAS_ART}}
+                {{#NO_ART}}<img src="/static/logo.png" class="logo" alt="Equestrian Beats" />{{/NO_ART}}
             </a>
             <h3><a href="/track/{{TID}}" target="_blank" title="{{TITLE}}">{{TITLE}}</a></h3>
             <h4>by <a href="/user/{{UID}}" target="_blank" title="{{USERNAME}}">{{USERNAME}}</a></h4>

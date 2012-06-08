@@ -1,6 +1,5 @@
 #include "list.h"
 #include <core/db.h>
-#include <media/art.h>
 #include <text/text.h>
 
 #include <algorithm>
@@ -38,8 +37,6 @@ Dict* TrackList::fill(Dict *d, std::string section){
     for(const_iterator i=begin(); i!=end(); i++){
         Dict *track_d = list_d->AddSectionDictionary("TRACK");
         i->fill(track_d);
-        Art art(i->id);
-        if(art) track_d->ShowSection("HAS_COVER");
         Dict *player_d = i->player(track_d);
         player_d->SetValue("LIST", section);
         player_d->SetIntValue("COUNT", n++);

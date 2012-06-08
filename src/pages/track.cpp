@@ -24,23 +24,20 @@ SUB("tags");
 SUB("license");
 SUB("youtube_upload");
 SUB("playlist");
+SUB("json");
 
-// Static
 SUB("original");
 SUB("vorbis");
 SUB("mp3");
 
-SUB("art");
-SUB("art/medium");
-SUB("art/thumb"){
+if(sub.substr(0,3) == "art"){
     Art art(id);
     if(art){
-        o << Http::download(art.thumbnail());
-        code = 0;
+        SUB("art")        { code = 0; o << Http::download(art.full());      }
+        SUB("art/medium") { code = 0; o << Http::download(art.medium());    }
+        SUB("art/thumb")  { code = 0; o << Http::download(art.thumbnail()); }
     }
 }
-
-SUB("json");
 
 }
 

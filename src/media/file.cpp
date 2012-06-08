@@ -3,10 +3,10 @@
 #define IFEXT(e, mime) if(ext == e) return mime;
 
 std::string File::mimetype() const{
-    size_t extPos = _path.rfind('.');
+    size_t extPos = _filename.rfind('.');
     std::string ext;
     if(extPos != std::string::npos)
-        ext = _path.substr(extPos);
+        ext = _filename.substr(extPos);
 
     IFEXT(".mp3", "audio/mpeg")
     IFEXT(".ogg", "audio/ogg")

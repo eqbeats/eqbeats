@@ -1,6 +1,7 @@
 #include "track.h"
 #include <account/user.h>
 #include <core/db.h>
+#include <media/art.h>
 #include <text/text.h>
 #include <session/session.h>
 #include <text/text.h>
@@ -36,6 +37,7 @@ void Track::fill(Dict *d) const{
     d->SetValue("DAY", day(date));
     d->ShowSection(artist == Session::user() ? "IS_OWNER" : "IS_NOT_OWNER");
     artist.fill(d);
+    d->ShowSection(Art(id) ? "HAS_ART" : "NO_ART");
 }
 
 Dict* Track::player(Dict *d, bool fallback) const{
