@@ -1,15 +1,11 @@
-#include "text.h"
-#include <string.h>
+#include "modifiers.h"
 
-std::string ircNick(std::string name){
-    const char* accepted = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789|-[]{}\\`^_";
-    name = name.substr(0, 20);
-    std::string newname;
-    for(std::string::iterator i = name.begin(); i != name.end(); i++){
-        if((*i & 0b10000000) == 0 || (*i & 0b01000000) != 0){
-            if(!strchr(accepted, *i)) newname += '_';
-            else newname += *i;
-        }
+const char* accepted = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789|-[]{}\\`^_";
+
+void IrcEscape::Modify(const char *in, size_t inlen, const ctemplate::PerExpandData*, ctemplate::ExpandEmitter *out, const std::string&) const{
+    size_t max = inlen > 20 ? 20 : inlen;
+    for(size_t i=0; i<max; i++){
+        if((in[i] & 0b10000000) == 0 || (in[i] & 0b01000000) != 0)
+            out->Emit(strchr(accepted, in[i]) ? in[i] : '_');
     }
-    return newname;
 }

@@ -6,6 +6,7 @@
 #include <misc/timer.h>
 #include <render/fcgiio.h>
 #include <render/http.h>
+#include <text/modifiers.h>
 #include <text/text.h>
 #include <track/track.h>
 #include <track/list.h>
@@ -46,6 +47,7 @@ int main(int argc, char** argv){
     FCGX_InitRequest(&request, 0, 0);
     FCgiIO o;
 
+    ctemplate::AddModifier("x-irc", new IrcEscape);
     ctemplate::TemplateCache cache;
     cache.SetTemplateRootDirectory(eqbeatsDir() + "/templates");
 
@@ -99,10 +101,7 @@ int main(int argc, char** argv){
             }
             if(dict != rootDict && mime == "text/html"){ // HTML macro called
                 dict->SetFilename(tpl);
-                // Session
-                Dict *s = Session::fill(rootDict);
-                if(s) s->SetValue("IRC_NICK", ircNick(Session::user().name));
-                // Misc
+                Session::fill(rootDict);
                 rootDict->SetValueAndShowSection("REDIRECT", path, "HAS_REDIRECT");
                 rootDict->SetFormattedValue("GENERATION_TIME", "%lu µS", usecs());
                 rootDict->SetFormattedValue("PID", "%d", getpid());

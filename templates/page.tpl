@@ -28,7 +28,7 @@
                     <img alt="-" src="/static/icons/cm-nav.png"/>
                     <a href="/news">News</a>
                     <a href="/faq">FAQ</a>
-                    <a title="#eqbeats on irc.ponychat.net" href="http://ponychat.net/webchat?nick={{#LOGGED_USER}}{{IRC_NICK}}{{/LOGGED_USER}}{{#LOGGED_OUT}}pony_.....{{/LOGGED_OUT}}&autojoin=eqbeats">Chat</a>
+                    <a title="#eqbeats on irc.ponychat.net" href="http://ponychat.net/webchat?nick={{#LOGGED_USER}}{{USERNAME:x-irc}}{{/LOGGED_USER}}{{#LOGGED_OUT}}pony_.....{{/LOGGED_OUT}}&autojoin=eqbeats">Chat</a>
                 </div>
                 <div style="clear:both;"></div>
             </div>
