@@ -83,7 +83,7 @@
         {{#IS_OWNER}}<a href="/tracks{{ID}}/license">(change)</a>{{/IS_OWNER}}
     </div>
 
-    {{#HAS_NOTES}}<div class="notes">{{NOTES}}</div>{{/HAS_NOTES}}
+    {{#HAS_NOTES}}<div class="notes">{{NOTES:x-format}}</div>{{/HAS_NOTES}}
 
     {{#IS_OWNER}}
     <div class="edit">
