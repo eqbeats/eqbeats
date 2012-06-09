@@ -6,12 +6,14 @@
 #include <stdio.h>
 
 #define FIELDS "tracks.id, tracks.title, tracks.user_id, users.name, tracks.date, tracks.visible"
+#define TABLES "users, tracks"
 #define JOIN "tracks.user_id = users.id"
+#define JOIN_VISIBLE JOIN " AND tracks.visible='t'"
 
-TrackList::TrackList(const char *query_fmt){
+TrackList::TrackList(const std::string &query_fmt, bool all){
     // Query
-    char *query = (char*) malloc(strlen(query_fmt) + strlen(FIELDS) + strlen(JOIN) + 1);
-    sprintf(query, query_fmt, FIELDS, JOIN);
+    char *query = (char*) malloc(query_fmt.size() + strlen(FIELDS) + strlen(TABLES) + strlen(JOIN_VISIBLE));
+    sprintf(query, query_fmt.c_str(), FIELDS, TABLES, all?JOIN:JOIN_VISIBLE);
     DB::Result r = DB::query(query);
     free(query);
     // Read
@@ -42,4 +44,22 @@ Dict* TrackList::fill(Dict *d, std::string section){
         player_d->SetIntValue("COUNT", n++);
     }
     return list_d;
+}
+
+
+TrackList Tracks::latest(int n){
+    return TrackList(
+        "SELECT %s FROM %s WHERE %s ORDER BY date desc LIMIT " + number(n));
+}
+
+TrackList Tracks::featured(int n){
+    return TrackList(
+        "SELECT %s FROM %s, featured_tracks "
+        "WHERE %s AND featured_tracks.track_id = tracks.id "
+        "ORDER BY featured_tracks.date DESC LIMIT " + number(n));
+}
+
+TrackList Tracks::random(int n){
+    return TrackList(
+        "SELECT %s FROM %s WHERE %s ORDER BY random() LIMIT " + number(n));
 }

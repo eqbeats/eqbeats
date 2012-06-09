@@ -1,6 +1,7 @@
 PATH(""){
     HTML("");
     tpl = "home.tpl";
-    TrackList latest("SELECT %s FROM users, tracks WHERE %s AND visible='t' ORDER BY tracks.date DESC");
-    latest.fill(dict, "LATEST_TRACKS");
+    Tracks::latest(7).fill(dict, "LATEST_TRACKS");
+    Tracks::featured(7).fill(dict, "FEATURED_TRACKS");
+    Tracks::random(3).fill(dict, "RANDOM_TRACKS");
 }
