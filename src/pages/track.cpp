@@ -11,6 +11,12 @@ SUB(""){
     Audio(&t).fill(dict);
 }
 
+SUB("json"){
+    JSON();
+    tpl = "track-json.tpl";
+    t.fill(dict);
+}
+
 SUB("delete");
 SUB("rename");
 SUB("notes");
@@ -26,7 +32,6 @@ SUB("tags");
 SUB("license");
 SUB("youtube_upload");
 SUB("playlist");
-SUB("json");
 
 SUB("original") { code = 0; o << Http::download(Audio(&t).original()); }
 SUB("vorbis")   { code = 0; o << Http::download(Audio(&t).vorbis());   }

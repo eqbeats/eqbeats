@@ -1,3 +1,3 @@
-{{#JSONP}}{{FUN}}({{/JSONP}}
+{{#JSONP}}{{FUNCTION}}({{/JSONP}}
 {{>JSON}}
 {{#JSONP}});{{/JSONP}}

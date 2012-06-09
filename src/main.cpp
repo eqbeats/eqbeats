@@ -25,6 +25,9 @@
     { mime = "text/html"; \
       rootDict->SetValueAndShowSection("TITLE", (t), "HAS_TITLE"); \
       dict = rootDict->AddIncludeDictionary("BODY"); }
+#define JSON()\
+    { mime = "application/json"; \
+      dict = rootDict->AddIncludeDictionary("JSON"); }
 
 #define LOGGED if(!Session::user()) redir = "/login?redirect=" + path; else
 
@@ -108,6 +111,14 @@ int main(int argc, char** argv){
                 rootDict->SetFormattedValue("GENERATION_TIME", "%lu µS", usecs());
                 rootDict->SetFormattedValue("PID", "%d", getpid());
                 cache.ExpandWithData("page.tpl", ctemplate::STRIP_BLANK_LINES, rootDict, NULL, &out);
+            }
+            else if(dict != rootDict && mime == "application/json"){ // JSON macro
+                if(!cgi("jsonp").empty()){
+                    mime = "text/javascript";
+                    rootDict->SetValueAndShowSection("FUNCTION", cgi("jsonp"), "JSONP");
+                }
+                dict->SetFilename(tpl);
+                cache.ExpandWithData("jsonp.tpl", ctemplate::STRIP_BLANK_LINES, rootDict, NULL, &out);
             }
             else if(!tpl.empty())
                 cache.ExpandWithData(tpl, ctemplate::STRIP_BLANK_LINES, rootDict, NULL, &out);
