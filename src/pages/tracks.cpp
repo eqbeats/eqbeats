@@ -1,6 +1,8 @@
 PATH("/track/new");
 PATH("/tracks") redir = "/";
 
+// Pages
+
 PATH("/tracks/search"){
     std::string q = cgi("q");
     HTML(q);
@@ -8,8 +10,14 @@ PATH("/tracks/search"){
     dict->SetValue("TITLE", q);
     TrackList::search(q).fill(dict, "TRACKLIST");
 }
-PATH("/tracks/search/json");
-PATH("/tracks/search/exact/json");
+
+if(path.substr(0,12) == "/tracks/tag/"){
+    std::string tag = path.substr(12);
+    HTML(tag);
+    tpl = "tracklist-page.tpl";
+    dict->SetValue("TITLE", tag);
+    TrackList::tag(tag).fill(dict, "TRACKLIST");
+}
 
 PATH("/tracks/latest"){
     HTML("Latest tracks");
@@ -40,9 +48,33 @@ PATH("/tracks/featured"){
     Tracks::featured(15).fill(dict, "TRACKLIST");
 }
 
-PATH("/tracks/latest/json");
-PATH("/tracks/random/json");
-PATH("/tracks/featured/json");
+// JSON
+
+PATH("/tracks/search/exact/json");
+
+TrackList json_tracks;
+bool is_json_array = false;
+PATH("/tracks/search/json")
+    is_json_array = true, json_tracks = TrackList::search(cgi("q"));
+PATH("/tracks/latest/json")
+    is_json_array = true, json_tracks = Tracks::latest(50);
+PATH("/tracks/random/json")
+    is_json_array = true, json_tracks = Tracks::random(50);
+PATH("/tracks/featured/json")
+    is_json_array = true, json_tracks = Tracks::featured(50);
+if(is_json_array){
+    JSON();
+    tpl = "array-json.tpl";
+    Dict *item, *data;
+    for(TrackList::const_iterator i=json_tracks.begin(); i!=json_tracks.end(); i++){
+        item = dict->AddSectionDictionary("ITEM");
+        data = item->AddIncludeDictionary("DATA");
+        data->SetFilename("track-json.tpl");
+        i->fill(data);
+    }
+}
+
+// Feeds
 
 PATH("/tracks/latest/atom"){
     mime = "application/atom+xml";
@@ -70,12 +102,4 @@ PATH("/tracks/featured/atom"){
     // Entries
     for(TrackList::const_iterator i=l.begin(); i!=l.end(); i++)
         i->fill(dict->AddSectionDictionary("TRACK"));
-}
-
-if(path.substr(0,12) == "/tracks/tag/"){
-    std::string tag = path.substr(12);
-    HTML(tag);
-    tpl = "tracklist-page.tpl";
-    dict->SetValue("TITLE", tag);
-    TrackList::tag(tag).fill(dict, "TRACKLIST");
 }

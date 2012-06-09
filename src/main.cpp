@@ -118,7 +118,7 @@ int main(int argc, char** argv){
                     rootDict->SetValueAndShowSection("FUNCTION", cgi("jsonp"), "JSONP");
                 }
                 dict->SetFilename(tpl);
-                cache.ExpandWithData("jsonp.tpl", ctemplate::STRIP_BLANK_LINES, rootDict, NULL, &out);
+                cache.ExpandWithData("jsonp.tpl", ctemplate::STRIP_WHITESPACE, rootDict, NULL, &out);
             }
             else if(!tpl.empty())
                 cache.ExpandWithData(tpl, ctemplate::STRIP_BLANK_LINES, rootDict, NULL, &out);
