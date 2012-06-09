@@ -3,6 +3,7 @@
 #include <text/text.h>
 
 #include <algorithm>
+#include <sstream>
 #include <stdio.h>
 
 #define FIELDS "tracks.id, tracks.title, tracks.user_id, users.name, tracks.date, tracks.visible"
@@ -49,10 +50,26 @@ Dict* TrackList::fill(Dict *d, std::string section){
 
 // Prepared queries
 
+TrackList TrackList::search(const std::string &q){
+    TrackList list;
+    if(q.empty()) return list;
+    std::vector<std::string> p;
+    std::istringstream in(q);
+    std::string buf;
+    std::string sql;
+    while(in){
+        in >> buf;
+        p.push_back("%"+buf+"%");
+        sql += " AND (tracks.title ILIKE $" + number(p.size()) + " OR users.name ILIKE $" + number(p.size()) + ")";
+    }
+    list.extract(DB::query("SELECT "FIELDS" FROM "TABLES" WHERE "JOIN_VISIBLE + sql, p));
+    return list;
+}
+
 TrackList TrackList::tag(const std::string &t){
     TrackList list;
     list.extract(DB::query(
-        "SELECT " FIELDS " FROM " TABLES " WHERE " JOIN_VISIBLE " AND $1 = ANY(tracks.tags) ORDER BY tracks.date DESC", t));
+        "SELECT "FIELDS" FROM "TABLES" WHERE "JOIN_VISIBLE" AND $1 = ANY(tracks.tags) ORDER BY tracks.date DESC", t));
     return list;
 }
 

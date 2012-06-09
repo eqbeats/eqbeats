@@ -14,7 +14,7 @@
 <script src="/static/ticker.js"></script>
 {{/DYNAMIC_TICKER}}
 
-<div class="search">
+<div class="search" style="text-align:center;">
     <form action="/tracks/search">
         <img src="/static/icons/magnifier.png" alt="" />
         Search for tracks:

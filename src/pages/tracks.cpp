@@ -1,7 +1,13 @@
 PATH("/track/new");
 PATH("/tracks") redir = "/";
 
-PATH("/tracks/search");
+PATH("/tracks/search"){
+    std::string q = cgi("q");
+    HTML(q);
+    tpl = "tracklist-page.tpl";
+    dict->SetValue("TITLE", q);
+    TrackList::search(q).fill(dict, "TRACKLIST");
+}
 PATH("/tracks/search/json");
 PATH("/tracks/search/exact/json");
 

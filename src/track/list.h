@@ -13,6 +13,7 @@ class TrackList : public std::vector<Track> {
         TrackList(){}
         TrackList(const std::string &query_fmt, bool all=false);
 
+        static TrackList search(const std::string &q);
         static TrackList tag(const std::string&);
 
         Dict* fill(Dict*, std::string section);
