@@ -50,12 +50,12 @@ PATH("/tracks/featured"){
 
 // JSON
 
-PATH("/tracks/search/exact/json");
-
 TrackList json_tracks;
 bool is_json_array = false;
 PATH("/tracks/search/json")
     is_json_array = true, json_tracks = TrackList::search(cgi("q"));
+PATH("/tracks/search/exact/json")
+    is_json_array = true, json_tracks = TrackList::exactSearch(cgi("artist"), cgi("track"));
 PATH("/tracks/latest/json")
     is_json_array = true, json_tracks = Tracks::latest(50);
 PATH("/tracks/random/json")

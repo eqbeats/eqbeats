@@ -14,6 +14,7 @@ class TrackList : public std::vector<Track> {
         TrackList(const std::string &query_fmt, bool all=false);
 
         static TrackList search(const std::string &q);
+        static TrackList exactSearch(const std::string &artist, const std::string &title);
         static TrackList tag(const std::string&);
 
         Dict* fill(Dict*, std::string section);

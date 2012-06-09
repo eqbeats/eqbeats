@@ -66,6 +66,14 @@ TrackList TrackList::search(const std::string &q){
     return list;
 }
 
+TrackList TrackList::exactSearch(const std::string &artist, const std::string &title){
+    TrackList list;
+    if(artist.empty() || title.empty()) return list;
+    list.extract(DB::query(
+        "SELECT "FIELDS" FROM "TABLES" WHERE "JOIN_VISIBLE" AND users.name = $1 AND tracks.title = $2", artist, title));
+    return list;
+}
+
 TrackList TrackList::tag(const std::string &t){
     TrackList list;
     list.extract(DB::query(
