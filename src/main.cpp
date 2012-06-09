@@ -63,6 +63,7 @@ int main(int argc, char** argv){
 
         Dict *rootDict = new Dict("eqbeats");
         Dict *dict = rootDict;
+        dict->SetGlobalValue("EQBEATS_URL", eqbeatsUrl());
         std::string tpl, redir, mime = "text/html";
         int code = 200;
 
@@ -79,10 +80,10 @@ int main(int argc, char** argv){
         #include "pages/session.cpp"
         #include "pages/static.cpp"
         #include "pages/track.cpp"
+        #include "pages/tracks.cpp"
 
         //#include "pages/oembed.cpp"
         //#include "pages/user.cpp"
-        //#include "pages/tracks.cpp"
         //#include "pages/news.cpp"
         //#include "pages/contest.cpp"
         //#include "pages/playlist.cpp"
