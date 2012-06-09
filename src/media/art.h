@@ -23,7 +23,6 @@ class Art{
         std::string filepath(Size sz=Full) const;
 
         int _tid;
-        // optionally store a file name
 
 };
 

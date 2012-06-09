@@ -24,3 +24,12 @@ std::string File::mimetype() const{
 
     return "application/octet-stream";
 }
+
+File File::setBaseName(const std::string &name){
+    size_t extPos = _filename.rfind(".");
+    if(extPos == std::string::npos)
+        _filename = name;
+    else
+        _filename = name + _filename.substr(extPos);
+    return *this;
+}

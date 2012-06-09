@@ -13,6 +13,8 @@ class File{
         std::string filename() const { return _filename; }
         std::string mimetype() const;
 
+        File setBaseName(const std::string &name);
+
     private:
         std::string _path;
         std::string _filename;

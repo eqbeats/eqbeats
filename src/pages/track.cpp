@@ -33,11 +33,12 @@ SUB("vorbis")   { code = 0; o << Http::download(Audio(&t).vorbis());   }
 SUB("mp3")      { code = 0; o << Http::download(Audio(&t).mp3());      }
 
 if(sub.substr(0,3) == "art"){
+    std::string base = t.artist.name + " - " + t.title;
     Art art(id);
     if(art){
-        SUB("art")        { code = 0; o << Http::download(art.full());      }
-        SUB("art/medium") { code = 0; o << Http::download(art.medium());    }
-        SUB("art/thumb")  { code = 0; o << Http::download(art.thumbnail()); }
+        SUB("art")        { code = 0; o << Http::download(art.full().setBaseName(base)); }
+        SUB("art/medium") { code = 0; o << Http::download(art.medium().setBaseName(base + ".medium")); }
+        SUB("art/thumb")  { code = 0; o << Http::download(art.thumbnail().setBaseName(base + ".thumb")); }
     }
 }
 
