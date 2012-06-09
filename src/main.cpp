@@ -3,6 +3,7 @@
 #include <core/db.h>
 #include <core/template.h>
 #include <media/art.h>
+#include <media/audio.h>
 #include <misc/timer.h>
 #include <render/fcgiio.h>
 #include <render/http.h>

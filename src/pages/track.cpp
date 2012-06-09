@@ -7,6 +7,8 @@ SUB(""){
     HTML(t.title);
     tpl = "track.tpl";
     t.fill(dict);
+    t.player(dict, true);
+    Audio(&t).fill(dict);
 }
 
 SUB("delete");
@@ -26,9 +28,9 @@ SUB("youtube_upload");
 SUB("playlist");
 SUB("json");
 
-SUB("original");
-SUB("vorbis");
-SUB("mp3");
+SUB("original") { code = 0; o << Http::download(Audio(&t).original()); }
+SUB("vorbis")   { code = 0; o << Http::download(Audio(&t).vorbis());   }
+SUB("mp3")      { code = 0; o << Http::download(Audio(&t).mp3());      }
 
 if(sub.substr(0,3) == "art"){
     Art art(id);
