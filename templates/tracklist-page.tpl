@@ -1,4 +1,7 @@
-<h2>{{TITLE}}</h2>
+<h2>
+    {{TITLE}}
+    {{#HAS_FEED}}<a class="feed" title="Feed" href="{{FEED_URL}}"><span>(Feed)</span></a>{{/HAS_FEED}}
+</h2>
 
 {{>TRACKLIST}}
 

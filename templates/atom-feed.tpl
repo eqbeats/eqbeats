@@ -1,7 +1,7 @@
 {{%AUTOESCAPE context="XML"}}
 <?xml version="1.0" encoding="UTF-8" ?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-    <id>{{EQBEATS_URL}}{{FEED_LINK}}</id>
+    <id>{{EQBEATS_URL}}{{FEED_URL}}</id>
     <title>{{WHAT}} on EqBeats</title>
     <updated>{{UPDATED}}</updated>
     {{#TRACK}}

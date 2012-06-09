@@ -1,11 +1,15 @@
 PATH("/track/new");
 PATH("/tracks") redir = "/";
+
 PATH("/tracks/search");
+PATH("/tracks/search/json");
+PATH("/tracks/search/exact/json");
 
 PATH("/tracks/latest"){
     HTML("Latest tracks");
     tpl = "tracklist-page.tpl";
     dict->SetValue("TITLE", "Latest tracks");
+    dict->SetValueAndShowSection("FEED_URL", "/tracks/latest/atom", "HAS_FEED");
     int p = number(cgi("p"));
     if(p < 1) p = 1;
     TrackList l = Tracks::latest(16, 15*(p-1));
@@ -26,11 +30,9 @@ PATH("/tracks/featured"){
     HTML("Featured tracks");
     tpl = "tracklist-page.tpl";
     dict->SetValue("TITLE", "Featured tracks");
+    dict->SetValueAndShowSection("FEED_URL", "/tracks/featured/atom", "HAS_FEED");
     Tracks::featured(15).fill(dict, "TRACKLIST");
 }
-
-PATH("/tracks/search/json");
-PATH("/tracks/search/exact/json");
 
 PATH("/tracks/latest/json");
 PATH("/tracks/random/json");
@@ -40,7 +42,7 @@ PATH("/tracks/latest/atom"){
     mime = "application/atom+xml";
     tpl = "atom-feed.tpl";
     dict->SetValue("WHAT", "Latest tracks");
-    dict->SetValue("FEED_LINK", "/tracks/latest/atom");
+    dict->SetValue("FEED_URL", "/tracks/latest/atom");
     TrackList l = Tracks::latest(50);
     if(l.empty()) dict->SetValue("UPDATED", "1970-01-01 01:00:00+00");
     else dict->SetValue("UPDATED", l[0].date);
@@ -51,7 +53,7 @@ PATH("/tracks/featured/atom"){
     mime = "application/atom+xml";
     tpl = "atom-feed.tpl";
     dict->SetValue("WHAT", "Featured tracks");
-    dict->SetValue("FEED_LINK", "/tracks/featured/atom");
+    dict->SetValue("FEED_URL", "/tracks/featured/atom");
     TrackList l = Tracks::featured(50);
     // Last updated: "today at midnight"
     time_t raw = time(NULL);

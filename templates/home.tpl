@@ -42,10 +42,7 @@
 </div>
 
 <div class="leftcol">
-    <h3>
-        <a href="/tracks/random">Random</a>
-        <a class="feed" title="Feed" href="/tracks/random/atom"><span>(Feed)</span></a>
-    </h3>
+    <h3><a href="/tracks/random">Random</a></h3>
     {{>RANDOM_TRACKS}}
     <a class="more" href="/tracks/random">More</a>
 </div>
