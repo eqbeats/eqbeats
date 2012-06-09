@@ -6,7 +6,15 @@ PATH("/tracks/latest"){
     HTML("Latest tracks");
     tpl = "tracklist-page.tpl";
     dict->SetValue("TITLE", "Latest tracks");
-    Tracks::latest(15).fill(dict, "TRACKLIST");
+    int p = number(cgi("p"));
+    if(p < 1) p = 1;
+    TrackList l = Tracks::latest(16, 15*(p-1));
+    if(p > 1)
+        dict->SetValueAndShowSection("PREV", number(p-1), "HAS_PREV");
+    if(l.size() == 16)
+        dict->SetValueAndShowSection("NEXT", number(p+1), "HAS_NEXT");
+    if(!l.empty()) l.pop_back();
+    l.fill(dict, "TRACKLIST");
 }
 PATH("/tracks/random"){
     HTML("Random tracks");

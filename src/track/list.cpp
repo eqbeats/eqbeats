@@ -47,9 +47,10 @@ Dict* TrackList::fill(Dict *d, std::string section){
 }
 
 
-TrackList Tracks::latest(int n){
+TrackList Tracks::latest(int n, int offset){
     return TrackList(
-        "SELECT %s FROM %s WHERE %s ORDER BY date desc LIMIT " + number(n));
+        "SELECT %s FROM %s WHERE %s ORDER BY date desc "
+        "LIMIT " + number(n) + " OFFSET " + number(offset));
 }
 
 TrackList Tracks::featured(int n){
