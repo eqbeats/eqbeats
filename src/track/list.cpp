@@ -11,12 +11,13 @@
 #define JOIN_VISIBLE JOIN " AND tracks.visible='t'"
 
 TrackList::TrackList(const std::string &query_fmt, bool all){
-    // Query
     char *query = (char*) malloc(query_fmt.size() + strlen(FIELDS) + strlen(TABLES) + strlen(JOIN_VISIBLE));
     sprintf(query, query_fmt.c_str(), FIELDS, TABLES, all?JOIN:JOIN_VISIBLE);
-    DB::Result r = DB::query(query);
+    extract(DB::query(query));
     free(query);
-    // Read
+}
+
+void TrackList::extract(const DB::Result &r){
     resize(r.size());
     for(unsigned i=0; i<r.size(); i++){
         at(i).id = number(r[i][0]);
@@ -46,6 +47,14 @@ Dict* TrackList::fill(Dict *d, std::string section){
     return list_d;
 }
 
+// Prepared queries
+
+TrackList TrackList::tag(const std::string &t){
+    TrackList list;
+    list.extract(DB::query(
+        "SELECT " FIELDS " FROM " TABLES " WHERE " JOIN_VISIBLE " AND $1 = ANY(tracks.tags) ORDER BY tracks.date DESC", t));
+    return list;
+}
 
 TrackList Tracks::latest(int n, int offset){
     return TrackList(

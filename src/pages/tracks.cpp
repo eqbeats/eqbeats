@@ -67,6 +67,9 @@ PATH("/tracks/featured/atom"){
 }
 
 if(path.substr(0,12) == "/tracks/tag/"){
-    //std::string tag = path.substr(12);
-    //Html::tracksPage(tag, Track::byTag(tag));
+    std::string tag = path.substr(12);
+    HTML(tag);
+    tpl = "tracklist-page.tpl";
+    dict->SetValue("TITLE", tag);
+    TrackList::tag(tag).fill(dict, "TRACKLIST");
 }
