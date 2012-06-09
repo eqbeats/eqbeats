@@ -14,6 +14,8 @@ class ExtendedTrack: public Track {
         std::vector<std::string> tags;
         std::string license;
 
+        void fill(Dict*) const;
+
 };
 
 #endif // TRACK_EXTENDED_H

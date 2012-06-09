@@ -1,6 +1,6 @@
 ROUTE("track"){
 
-Track t(id);
+ExtendedTrack t(id);
 if(t){
 
 SUB(""){

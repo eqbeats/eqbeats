@@ -1,14 +1,16 @@
 #include "extended.h"
+#include <core/db.h>
+#include <text/text.h>
 
 ExtendedTrack::ExtendedTrack(int tid){
 
-    _id = 0;
-    if(id<=0) return;
+    id = 0;
+    if(tid<=0) return;
 
     DB::Result r = DB::query(
         "SELECT tracks.title, tracks.user_id, users.name, tracks.visible, tracks.date,"
         " tracks.notes, tracks.airable, tracks.license, array_to_string(tracks.tags, ',') FROM tracks, users "
-        "WHERE tracks.id = " + number(id) + " AND tracks.user_id = users.id");
+        "WHERE tracks.id = " + number(tid) + " AND tracks.user_id = users.id");
 
     if(!r.empty()){
 
@@ -19,24 +21,40 @@ ExtendedTrack::ExtendedTrack(int tid){
         date = r[0][4];
 
         // Ext
-        _notes = r[0][5];
-        _airable = r[0][6] == "t";
-        _license = r[0][7];
+        notes = r[0][5];
+        airable = r[0][6] == "t";
+        license = r[0][7];
 
         // Tags
-        string tstr = r[0][8];
-        string buf;
-        for(string::const_iterator i=tstr.begin(); i!=tstr.end(); i++){
+        std::string tstr = r[0][8];
+        std::string buf;
+        for(std::string::const_iterator i=tstr.begin(); i!=tstr.end(); i++){
             if(*i == ','){
                 if(!buf.empty()){
-                    _tags.push_back(buf);
+                    tags.push_back(buf);
                     buf.clear();
                 }
             }
             else buf += *i;
         }
-        if(!buf.empty()) _tags.push_back(buf); // last tag
+        if(!buf.empty()) tags.push_back(buf); // last tag
 
     }
 
+}
+
+void ExtendedTrack::fill(Dict *d) const{
+    Track::fill(d);
+    d->SetValueAndShowSection("NOTES", notes, "HAS_NOTES");
+    // Tags
+    if(!tags.empty()){
+        d->ShowSection("HAS_TAGS");
+        for(std::vector<std::string>::const_iterator i=tags.begin(); i!=tags.end(); i++)
+            d->SetValueAndShowSection("TAG", *i, "TAG");
+    }
+    // License
+    if(license == "Copyright")
+        d->ShowSection("COPYRIGHT");
+    else
+        d->SetValueAndShowSection("LICENSE", license, "OTHER_LICENSE");
 }

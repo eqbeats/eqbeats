@@ -9,7 +9,7 @@
 #include <render/http.h>
 #include <text/modifiers.h>
 #include <text/text.h>
-#include <track/track.h>
+#include <track/extended.h>
 #include <track/list.h>
 #include <session/session.h>
 

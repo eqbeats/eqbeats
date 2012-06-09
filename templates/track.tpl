@@ -1,3 +1,4 @@
+{{%AUTOESCAPE context="HTML"}}
 <div class="track">
     <h2>{{TITLE}}
         {{#IS_NOT_FAV}}
@@ -48,7 +49,7 @@
         <span><img alt="" src="/static/icons/balloon-white-left.png" /> Share : <a href="#embedcode" onclick="document.getElementById('embedcode').style.display='block';return false;">Embed</a></span>
 
         {{#IS_OWNER}}
-        {{#HAS_HITS}} <span><img alt="" src="/static/icons/edit-number.png" /> Hits : {{HITCOUNT}}</span>{{/HAS_HITS}}
+        {{#HAS_HITS}}<span><img alt="" src="/static/icons/edit-number.png" /> Hits : {{HITCOUNT}}</span>{{/HAS_HITS}}
         <span><img alt="" src="/static/icons/star.png" /> Favourites : {{FAVCOUNT}}</span>
         {{/IS_OWNER}}
         {{#IS_NOT_OWNER}}
@@ -57,35 +58,32 @@
         </form>
         {{/IS_NOT_OWNER}}
     </div>
-    <textarea id="embedcode" style="display:none;">{{>EMBED}}</textarea>
+    <textarea id="embedcode" style="display:none;"
+        ><iframe width="500px" height="150px" frameborder="0" src="{{EQBEATS_URL}}/track/{{TID}}/embed"><a href="{{EQBEATS_URL}}/track/{{TID}}" target="_blank">{{TITLE}}</a> by <a href="{{EQBEATS_URL}}/user/{{UID}}" target="_blank">{{USERNAME}}</a></iframe></textarea
+    >
 
     {{#IS_OWNER}}
     <div class="toolbar tags"><img alt="" src="/static/icons/tag.png" /> Tags:
         <form action="/track/{{TID}}/tags" method="post">
-            <input name="tags" value="{{#TAGS}}{{TAG}}, {{/TAGS}}" />
+            <input name="tags" value="{{#TAGS}}{{TAG}}{{#TAGS_separator}}, {{/TAGS_separator}}{{/TAGS}}" />
             <input type="submit" value="Update" />
             <span class="legend">(comma-separated, e.g. instrumental, electronic)</span>
         </form>
     </div>
     {{/IS_OWNER}}
-    {{#IS_NOT_OWNER}} {{#HAS_TAGS}}
+    {{#IS_NOT_OWNER}}{{#HAS_TAGS}}
     <div class="toolbar tags"><img alt="" src="/static/icons/tag.png" /> Tags:
-        {{#TAGS}}
-            <a href="/tracks/tag/{{TAG}}">{{TAG}}</a>
-        {{/TAGS}}
+        {{#TAG}}<a href="/tracks/tag/{{TAG}}">{{TAG}}</a>{{/TAG}}
     </div>
-    {{/HAS_TAGS}} {{/IS_NOT_OWNER}}
+    {{/HAS_TAGS}}{{/IS_NOT_OWNER}}
 
     <div class="license">
-        {{#COPYRIGHT}} Copyright &copy; {{ARTIST_NAME}} {{/COPYRIGHT}}
+        {{#COPYRIGHT}} Copyright &copy; {{USERNAME}} {{/COPYRIGHT}}
         {{#OTHER_LICENSE}} License: {{LICENSE}} {{/OTHER_LICENSE}}
-
-        {{#IS_OWNER}} <a href="/tracks{{ID}}/license">(change)</a> {{/IS_OWNER}}
+        {{#IS_OWNER}}<a href="/tracks{{ID}}/license">(change)</a>{{/IS_OWNER}}
     </div>
 
-    {{#HAS_NOTES}}
-    <div class="notes">{{NOTES}}</div>
-    {{/HAS_NOTES}}
+    {{#HAS_NOTES}}<div class="notes">{{NOTES}}</div>{{/HAS_NOTES}}
 
     {{#IS_OWNER}}
     <div class="edit">
