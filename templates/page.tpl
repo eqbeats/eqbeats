@@ -3,7 +3,7 @@
 <html>
     <head>
         <title>{{#HAS_TITLE}}{{TITLE}} - {{/HAS_TITLE}}Equestrian Beats</title>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <link rel="stylesheet" type="text/css" href="/static/style.css" />
         <link rel="shortcut icon" href="/static/favicon.ico" id="favicon-link" />
         <script type="text/javascript" src="/static/sm2.js"></script>
@@ -33,7 +33,7 @@
                     <img alt="-" src="/static/icons/cm-nav.png"/>
                     <a href="/news">News</a>
                     <a href="/faq">FAQ</a>
-                    <a title="#eqbeats on irc.ponychat.net" href="http://ponychat.net/webchat?nick={{#LOGGED_USER}}{{USERNAME:x-irc}}{{/LOGGED_USER}}{{#LOGGED_OUT}}pony_.....{{/LOGGED_OUT}}&autojoin=eqbeats">Chat</a>
+                    <a title="#eqbeats on irc.ponychat.net" href="http://ponychat.net/webchat?nick={{#LOGGED_USER}}{{USERNAME:x-irc}}{{/LOGGED_USER}}{{#LOGGED_OUT}}pony_.....{{/LOGGED_OUT}}&amp;autojoin=eqbeats">Chat</a>
                 </div>
                 <div style="clear:both;"></div>
             </div>
@@ -46,6 +46,6 @@
                 <!--Generated in {{GENERATION_TIME}} by {{PID}}.-->
             </div>
         </div>
-        <script>document.body.className = 'js';</script>
+        <script type="text/javascript">document.body.className = 'js';</script>
     </body>
 </html>
