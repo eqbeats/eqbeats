@@ -23,7 +23,8 @@ PATH("/tracks/latest"){
     HTML("Latest tracks");
     tpl = "tracklist-page.tpl";
     dict->SetValue("TITLE", "Latest tracks");
-    dict->SetValueAndShowSection("FEED_URL", "/tracks/latest/atom", "HAS_FEED");
+    rootDict->SetValueAndShowSection("FEED_URL", "/tracks/latest/atom", "FEED");
+    dict->SetValueAndShowSection("FEED_URL", "/tracks/latest/atom", "FEED");
     int p = number(cgi("p"));
     if(p < 1) p = 1;
     TrackList l = Tracks::latest(16, 15*(p-1));
@@ -44,7 +45,8 @@ PATH("/tracks/featured"){
     HTML("Featured tracks");
     tpl = "tracklist-page.tpl";
     dict->SetValue("TITLE", "Featured tracks");
-    dict->SetValueAndShowSection("FEED_URL", "/tracks/featured/atom", "HAS_FEED");
+    rootDict->SetValueAndShowSection("FEED_URL", "/tracks/featured/atom", "FEED");
+    dict->SetValueAndShowSection("FEED_URL", "/tracks/featured/atom", "FEED");
     Tracks::featured(15).fill(dict, "TRACKLIST");
 }
 

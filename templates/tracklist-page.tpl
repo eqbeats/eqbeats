@@ -1,7 +1,7 @@
 {{%AUTOESCAPE context="HTML"}}
 <h2>
     {{TITLE}}
-    {{#HAS_FEED}}<a class="feed" title="Feed" href="{{FEED_URL}}"><span>(Feed)</span></a>{{/HAS_FEED}}
+    {{#FEED}}<a class="feed" title="Feed" href="{{FEED_URL}}"><span>(Feed)</span></a>{{/FEED}}
 </h2>
 
 <div class="search">
