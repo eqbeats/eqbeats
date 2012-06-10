@@ -3,17 +3,17 @@
 {{>AVATAR}}
 
 <h2>
-    {{NAME}}
-    {{#FOLLOWED}}<a class="follow disabled" href="{URL}/unfollow"><span>Stop following</span></a>{{/FOLLOWED}
-    {{#NOT_FOLLOWED}}<a class="follow" href="{URL}/follow"><span>Follow</span></a>{{/NOT_FOLLOWED}
+    {{USERNAME}}
+    {{#FOLLOWED}}<a class="follow disabled" href="/user/{{UID}}/unfollow"><span>Stop following</span></a>{{/FOLLOWED}}
+    {{#NOT_FOLLOWED}}<a class="follow" href="/user/{{UID}}/follow"><span>Follow</span></a>{{/NOT_FOLLOWED}}
 </h2>
 
-<div class="item"><img src="{{ICON}}/mail.png" alt="" /> Email: {{EMAIL}}</div>
-{{#EDITION}}<div class="item"><img src="{{ICON}}/card-pencil.png" alt="" /> <a href="/account">Edit</a></div>{{/EDITION}}
-<div class="item"><img src="{{ICON}}/star.png" alt="" /> <a href="{URL}/favorites">Favorite tracks</a></div>
+<div class="item"><img src="/static/icons/mail.png" alt="" /> Email: {{EMAIL:x-email}}</div>
+{{#IS_SELF}}<div class="item"><img src="/static/icons/card-pencil.png" alt="" /> <a href="/account">Edit</a></div>{{/IS_SELF}}
+<div class="item"><img src="/static/icons/star.png" alt="" /> <a href="/user/{{UID}}/favorites">Favorite tracks</a></div>
 <div style="clear:both;"></div>
 
-{{#HAS_ABOUT}}<div class="notes">{{ABOUT}}</div>{{/HAS_ABOUT}}
+{{#HAS_ABOUT}}<div class="notes">{{ABOUT:x-format}}</div>{{/HAS_ABOUT}}
 
 </div>
 
@@ -23,17 +23,17 @@
 </div>
 
 {{#SHOW_TRACKS}}
-<h3><img src="{{ICON}}/disc.png" alt="" /> Tracks {{>FEED_ICON}}</h3>
+<h3><img src="/static/icons/disc.png" alt="" /> Tracks {{>FEED_ICON}}</h3>
 {{>TRACK_LIST}}
 {{/SHOW_TRACKS}}
 {{>UPLOAD_FORM}}
 
-{{#EDITION}}
+{{#IS_SELF}}
 <form class="newplaylist" action="/playlist/new" method="POST">
     <input type="text" name="name" placeholder="Name" />
     <input type="submit" value="New playlist" />
 </form>
-{{/EDITION}}
+{{/IS_SELF}}
 <h3>Playlists</h3>
 {{#NO_PLAYLIST}}<div class="playlists empty">Nothing here yet.</div>{{/NO_PLAYLIST}}
 {{#HAS_PLAYLISTS}}
@@ -46,12 +46,13 @@
         </div>
         {{#HAS_DESCRIPTION}}
         <div class="description">{{DESCRIPTION}}</div>
+        {{/HAS_DESCRIPTION}}
     </li>
 {{/PLAYLIST}}
 </ul>
 {{/HAS_PLAYLISTS}}
 
-{{#EDITION}}
-<h3><img src="{{ICON}}/plus-circle.png" alt="" /> Artists you follow</h3>
+{{#IS_SELF}}
+<h3><img src="/static/icons/plus-circle.png" alt="" /> Artists you follow</h3>
 {{>USER_LIST}}
-{{/EDITION}}
+{{/IS_SELF}}

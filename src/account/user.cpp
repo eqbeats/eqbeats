@@ -1,5 +1,6 @@
 #include "user.h"
 #include <core/db.h>
+#include <session/session.h>
 #include <track/track.h>
 #include <text/text.h>
 
@@ -31,4 +32,6 @@ std::string User::url() const{
 void User::fill(Dict *d) const{
     d->SetIntValue("UID", id);
     d->SetValue("USERNAME", name);
+    if(Session::user() == *this)
+        d->ShowSection("IS_SELF");
 }

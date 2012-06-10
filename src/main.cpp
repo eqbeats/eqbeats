@@ -1,4 +1,4 @@
-#include <account/user.h>
+#include <account/account.h>
 #include <core/cgi.h>
 #include <core/db.h>
 #include <core/template.h>
@@ -52,6 +52,7 @@ int main(int argc, char** argv){
     FCgiIO o;
 
     ctemplate::AddModifier("x-irc", new IrcEscape);
+    ctemplate::AddModifier("x-email", new EmailEscape);
     ctemplate::AddXssSafeModifier("x-format", new Formatter);
     ctemplate::TemplateCache cache;
     cache.SetTemplateRootDirectory(eqbeatsDir() + "/templates");
@@ -86,8 +87,8 @@ int main(int argc, char** argv){
         #include "pages/static.cpp"
         #include "pages/track.cpp"
         #include "pages/tracks.cpp"
+        #include "pages/user.cpp"
 
-        //#include "pages/user.cpp"
         //#include "pages/news.cpp"
         //#include "pages/contest.cpp"
         //#include "pages/playlist.cpp"
