@@ -331,7 +331,7 @@ h2 img {
 a.avatar:hover span {
     display: block;
 }
-a.avatar:hover {
+a.avatar:hover[href] {
     text-decoration: none;
     border-color: #777;
 }

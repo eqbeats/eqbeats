@@ -1,10 +1,7 @@
 #include "user.h"
 #include <core/db.h>
 #include <session/session.h>
-#include <track/track.h>
 #include <text/text.h>
-
-#include <sstream>
 
 User::User(int uid){
     id = 0;

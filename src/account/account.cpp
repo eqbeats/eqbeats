@@ -1,9 +1,8 @@
 #include "account.h"
 #include <core/db.h>
+#include <misc/hash.h>
+#include <session/session.h>
 #include <text/text.h>
-
-#include <pcrecpp.h>
-#include <stdio.h>
 
 Account::Account(int uid){
     id = 0;
@@ -24,4 +23,10 @@ void Account::fill(Dict* d) const{
     d->SetValue("EMAIL", email);
     d->SetValueAndShowSection("ABOUT", about, "HAS_ABOUT");
     d->SetValue("LICENSE", license);
+    // Avatar
+    Dict *a = d->AddIncludeDictionary("AVATAR");
+    a->SetFilename("avatar.tpl");
+    a->SetValue("EMAIL_MD5", md5(email));
+    if(Session::user() == *this)
+        a->ShowSection("SELF");
 }
