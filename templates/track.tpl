@@ -58,9 +58,7 @@
         </form>
         {{/IS_NOT_OWNER}}
     </div>
-    <textarea id="embedcode" style="display:none;"
-        ><iframe width="500px" height="150px" frameborder="0" src="{{EQBEATS_URL}}/track/{{TID}}/embed"><a href="{{EQBEATS_URL}}/track/{{TID}}" target="_blank">{{TITLE}}</a> by <a href="{{EQBEATS_URL}}/user/{{UID}}" target="_blank">{{USERNAME}}</a></iframe></textarea
-    >
+    <textarea id="embedcode" style="display:none;">{{>EMBED_CODE:html_escape}}</textarea>
 
     {{#IS_OWNER}}
     <div class="toolbar tags"><img alt="" src="/static/icons/tag.png" /> Tags:

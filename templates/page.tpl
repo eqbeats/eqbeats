@@ -8,6 +8,10 @@
         <link rel="shortcut icon" href="/static/favicon.ico" id="favicon-link" />
         <script type="text/javascript" src="/static/sm2.js"></script>
         <script type="text/javascript" src="/static/player.js"></script>
+        {{#HAS_OEMBED}}
+        <link rel="alternate" type="application/json+oembed" href="http://eqbeats.org/oembed?format=json&amp;url={{EQBEATS_URL:u}}/track/{{TID}}">
+        <link rel="alternate" type="application/xml+oembed" href="http://eqbeats.org/oembed?format=xml&amp;url={{EQBEATS_URL:u}}/track/{{TID}}">
+        {{/HAS_OEMBED}}
     </head>
     <body>
         <div id="main">

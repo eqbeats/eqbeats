@@ -53,8 +53,6 @@ void ExtendedTrack::fill(Dict *d) const{
             d->SetValueAndShowSection("TAG", *i, "TAG");
     }
     // License
-    if(license == "Copyright")
-        d->ShowSection("COPYRIGHT");
-    else
-        d->SetValueAndShowSection("LICENSE", license, "OTHER_LICENSE");
+    d->SetValue("LICENSE", license);
+    d->ShowSection(license == "Copyright" ? "COPYRIGHT" : "OTHER_LICENSE");
 }

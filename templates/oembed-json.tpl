@@ -1,13 +1,14 @@
+{{%AUTOESCAPE context="JSON"}}
 {
     "version": "1.0",
     "provider_name": "Equestrian Beats",
     "provider_url": "{{EQBEATS_URL}}",
     "type": "video",
-    "url": "{{EQBEATS_URL}}{{TRACK_URL}}",
+    "url": "{{EQBEATS_URL}}/track/{{TID}}",
     "width": {{WIDTH}},
     "height": 150,
-    "html": "{{EMBED}}",
+    "html": "{{>EMBED_CODE:json_escape}}",
     "title": "{{TITLE}}",
-    "author_name": "{{AUTHOR_NAME}}",
-    "author_url": "{{EQBEATS_URL}}{AUTHOR_URL}}"
+    "author_name": "{{USERNAME}}",
+    "author_url": "{{EQBEATS_URL}}/user/{{UID}}"
 }

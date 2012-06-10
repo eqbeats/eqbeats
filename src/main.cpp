@@ -81,12 +81,12 @@ int main(int argc, char** argv){
         Session::start();
 
         #include "pages/home.cpp"
+        #include "pages/oembed.cpp"
         #include "pages/session.cpp"
         #include "pages/static.cpp"
         #include "pages/track.cpp"
         #include "pages/tracks.cpp"
 
-        //#include "pages/oembed.cpp"
         //#include "pages/user.cpp"
         //#include "pages/news.cpp"
         //#include "pages/contest.cpp"

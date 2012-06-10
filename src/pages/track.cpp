@@ -6,9 +6,14 @@ if(t){
 SUB(""){
     HTML(t.title);
     tpl = "track.tpl";
+    rootDict->SetValueAndShowSection("TID", number(t.id), "HAS_OEMBED");
     t.fill(dict);
     t.player(dict, true);
     Audio(&t).fill(dict);
+    Dict *embed = dict->AddIncludeDictionary("EMBED_CODE");
+    embed->SetFilename("embed-code.tpl");
+    embed->SetIntValue("WIDTH", 150);
+    t.Track::fill(embed);
 }
 
 SUB("json"){

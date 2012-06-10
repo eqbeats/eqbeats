@@ -2,10 +2,12 @@
 {
     "id": {{TID}},
     "title": "{{TITLE}}",
-    {{#HAS_DESCRIPTION}}
-    "description": "{{DESCRIPTION}}",
-    "html_description": "{{HTML_DESCRIPTION}}",
-    {{/HAS_DESCRIPTION}}
+    {{#HAS_NOTES}}
+    "description": "{{NOTES}}",
+    "html_description": "{{NOTES:x-format:json_escape}}",
+    {{/HAS_NOTES}}
+    {{#HAS_TAGS}}"tags": [{{#TAG}}"{{TAG}}"{{#TAG_separator}},{{/TAG_separator}}{{/TAG}}],{{/HAS_TAGS}}
+    "license": "{{LICENSE}}",
     "artist": {
         "id": {{UID}},
         "name": "{{USERNAME}}",
