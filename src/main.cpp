@@ -1,4 +1,5 @@
 #include <account/account.h>
+#include <account/list.h>
 #include <core/cgi.h>
 #include <core/db.h>
 #include <core/template.h>
@@ -88,11 +89,11 @@ int main(int argc, char** argv){
         #include "pages/track.cpp"
         #include "pages/tracks.cpp"
         #include "pages/user.cpp"
+        #include "pages/users.cpp"
 
         //#include "pages/news.cpp"
         //#include "pages/contest.cpp"
         //#include "pages/playlist.cpp"
-        //#include "pages/users.cpp"
         //#include "pages/account.cpp"
 
         // Render

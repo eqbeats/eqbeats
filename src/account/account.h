@@ -7,6 +7,7 @@ class Account: public User {
 
     public:
 
+        Account(){}
         Account(int nId);
 
         std::string email;

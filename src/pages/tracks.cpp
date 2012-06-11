@@ -52,6 +52,7 @@ PATH("/tracks/featured"){
 
 // JSON
 
+{
 TrackList json_tracks;
 bool is_json_array = false;
 PATH("/tracks/search/json")
@@ -74,6 +75,7 @@ if(is_json_array){
         data->SetFilename("track-json.tpl");
         i->fill(data);
     }
+}
 }
 
 // Feeds
