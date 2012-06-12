@@ -49,12 +49,12 @@
         <span><img alt="" src="/static/icons/balloon-white-left.png" /> Share : <a href="#embedcode" onclick="document.getElementById('embedcode').style.display='block';return false;">Embed</a></span>
 
         {{#IS_OWNER}}
-        {{#HAS_HITS}}<span><img alt="" src="/static/icons/edit-number.png" /> Hits : {{HITCOUNT}}</span>{{/HAS_HITS}}
+        {{#HAS_HITS}}<span><img alt="" src="/static/icons/edit-number.png" /> Hits : {{HIT_COUNT}}</span>{{/HAS_HITS}}
         <span><img alt="" src="/static/icons/star.png" /> Favourites : {{FAVCOUNT}}</span>
         {{/IS_OWNER}}
         {{#IS_NOT_OWNER}}
         <form action="/track/{{TID}}/report" method="post">
-            <button type="submit" class="report"><img alt="" src="/static/icons/flag.png" /><span> Report</span></button>
+            <button type="submit" class="report"><img alt="" src="/static/icons/flag.png" /> <span>Report</span></button>
         </form>
         {{/IS_NOT_OWNER}}
     </div>
@@ -63,7 +63,7 @@
     {{#IS_OWNER}}
     <div class="toolbar tags"><img alt="" src="/static/icons/tag.png" /> Tags:
         <form action="/track/{{TID}}/tags" method="post">
-            <input name="tags" value="{{#TAGS}}{{TAG}}{{#TAGS_separator}}, {{/TAGS_separator}}{{/TAGS}}" />
+            <input name="tags" value="{{#TAG}}{{TAG}}{{#TAG_separator}}, {{/TAG_separator}}{{/TAG}}" />
             <input type="submit" value="Update" />
             <span class="legend">(comma-separated, e.g. instrumental, electronic)</span>
         </form>
@@ -78,16 +78,16 @@
     <div class="license">
         {{#COPYRIGHT}} Copyright &copy; {{USERNAME}} {{/COPYRIGHT}}
         {{#OTHER_LICENSE}} License: {{LICENSE}} {{/OTHER_LICENSE}}
-        {{#IS_OWNER}}<a href="/tracks{{ID}}/license">(change)</a>{{/IS_OWNER}}
+        {{#IS_OWNER}}<a href="/track/{{TID}}/license">(change)</a>{{/IS_OWNER}}
     </div>
 
     {{#HAS_NOTES}}<div class="notes">{{NOTES:x-format}}</div>{{/HAS_NOTES}}
 
     {{#IS_OWNER}}
     <div class="edit">
-         <h3><img src="/static/icons/pencil.png" alt="" /> Edit</h3>
-         {{#IS_HIDDEN}}
-         <form class="publish" action="/track/{{TID}}/publish" method="post">
+        <h3><img src="/static/icons/pencil.png" alt="" /> Edit</h3>
+        {{#IS_HIDDEN}}
+        <form class="publish" action="/track/{{TID}}/publish" method="post">
             <img src="/static/icons/disc-arrow.png" alt="" />
             This track is not yet published.
             <input type="submit" value="Publish"/>
@@ -118,7 +118,7 @@
 
             <h4><img src="/static/icons/balloon-sound.png"> Broadcast</h4>
             <form action="/track/{{TID}}/flags" method="post">
-                <input type="checkbox" name="airable" {{#IS_AIRABLE}} checked="checked" {{/IS_AIRABLE}} />
+                <input type="checkbox" name="airable" {{#IS_AIRABLE}}checked="checked"{{/IS_AIRABLE}} />
                 Celestia Radio<br />
                 <input type="submit" value="Update" />
             </form>
@@ -148,7 +148,7 @@
         <div class="column">
             <h4><img src="/static/icons/card-pencil.png" /> Notes</h4>
             <form action="/track/{{TID}}/notes" method="post">
-                <textarea name="notes">{{NOTES}}</textarea><br />
+                <textarea name="notes">{{#HAS_NOTES}}{{NOTES:pre_escape}}{{/HAS_NOTES}}</textarea><br />
                 <div class="legend">(tags: [b]old, [u]nderline, [i]talic)</div>
                 <input type="submit" value="Update description" />
             </form>

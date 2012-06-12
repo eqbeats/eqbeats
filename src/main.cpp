@@ -60,12 +60,14 @@ int main(int argc, char** argv){
 
     std::string path, sub;
     int id;
+    bool post;
 
     while(FCGX_Accept_r(&request) == 0){
         resetTimer();
         o.attach(&request);
         cgi = Cgicc(&o);
         path = getPath();
+        post = cgi.getEnvironment().getRequestMethod() == "POST";
 
         Dict *rootDict = new Dict("eqbeats");
         Dict *dict = rootDict;
