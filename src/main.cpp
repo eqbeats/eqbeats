@@ -4,12 +4,12 @@
 #include <core/db.h>
 #include <core/template.h>
 #include <media/art.h>
-#include <media/audio.h>
 #include <misc/timer.h>
 #include <render/fcgiio.h>
 #include <render/http.h>
 #include <text/modifiers.h>
 #include <text/text.h>
+#include <track/audio.h>
 #include <track/extended.h>
 #include <track/list.h>
 #include <session/session.h>

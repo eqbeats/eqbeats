@@ -1,8 +1,8 @@
 #ifndef MEDIA_AUDIO_H
 #define MEDIA_AUDIO_H
 
-#include "file.h"
-#include <track/track.h>
+#include "track.h"
+#include <media/file.h>
 
 class Audio{
 
