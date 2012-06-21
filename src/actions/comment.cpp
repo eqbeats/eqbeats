@@ -68,17 +68,20 @@ void Action::postComment(Comment::Type type, int ref){
             }
             else
                 Comment::add(cgi("msg"), u, ref, type);
-            // Debug
-            fstream commentLog((eqbeatsDir() + "/comments.log").c_str(), fstream::out|fstream::app);
-            vector<cgicc::FormEntry> entries = cgi.getElements();
-            time_t now = time(NULL);
-            struct tm *utc = gmtime(&now);
-            char timestamp[256];
-            strftime(timestamp, 256, " [%F %T %Z]", utc);
-            commentLog << "-- " << getPath() << timestamp << endl;
-            for(vector<cgicc::FormEntry>::const_iterator i=entries.begin(); i!=entries.end(); i++)
-                commentLog << i->getName() << ": " << i->getValue() << endl;
         }
+
+        // Debug
+        fstream commentLog((eqbeatsDir() + "/comments.log").c_str(), fstream::out|fstream::app);
+        vector<cgicc::FormEntry> entries = cgi.getElements();
+        time_t now = time(NULL);
+        struct tm *utc = gmtime(&now);
+        char timestamp[256];
+        strftime(timestamp, 256, " [%F %T %Z]", utc);
+        commentLog << "-- " << getPath() << timestamp << endl;
+        if(bot) commentLog << "### BOT DETECTED--BRRRZZ ###" << endl;
+        for(vector<cgicc::FormEntry>::const_iterator i=entries.begin(); i!=entries.end(); i++)
+            commentLog << i->getName() << ": " << i->getValue() << endl;
+
         Http::redirect(
             type == Comment::Track ? ref_t.url() + "#comments" :
             type == Comment::User  ? ref_u.url() + "#comments" :
