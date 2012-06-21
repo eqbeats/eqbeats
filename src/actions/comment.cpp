@@ -79,6 +79,7 @@ void Action::postComment(Comment::Type type, int ref){
         strftime(timestamp, 256, " [%F %T %Z]", utc);
         commentLog << "-- " << getPath() << timestamp << endl;
         if(bot) commentLog << "### BOT DETECTED--BRRRZZ ###" << endl;
+        commentLog << "Host: " << cgi.getEnvironment().getRemoteAddr() << endl;
         for(vector<cgicc::FormEntry>::const_iterator i=entries.begin(); i!=entries.end(); i++)
             commentLog << i->getName() << ": " << i->getValue() << endl;
 
