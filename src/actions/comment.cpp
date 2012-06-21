@@ -22,12 +22,17 @@ void Action::postComment(Comment::Type type, int ref){
     else if(type == Comment::User) ref_u = Account(ref);
     else if(type == Comment::News) ref_n = News(ref);
 
+    bool bot = true;
+    cgicc::form_iterator url = cgi.getElement("url");
+    if(url != cgi.getElements().end())
+        bot = !url->getValue().empty();
+
     if(type == Comment::Track && !ref_t) Html::notFound("Track");
     else if(type == Comment::User && !ref_u) Html::notFound("User");
     else if(type == Comment::News && !ref_n) Html::notFound("News");
 
     else {
-        if(!cgi("msg").empty() && cgi("url").empty() && cgi.getEnvironment().getRequestMethod() == "POST"){
+        if(!cgi("msg").empty() && !bot && cgi.getEnvironment().getRequestMethod() == "POST"){
             User u = Session::user() ? Session::user() : User(0, cgi("name"));
             Event e;
             if(type == Comment::Track){
