@@ -26,6 +26,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <sys/wait.h>
+#include <Magick++.h>
 
 using namespace cgicc;
 using namespace Render;
@@ -44,6 +45,8 @@ int main(int argc, char** argv){
 
     std::string logfile = eqbeatsDir()+"/eqbeats.log";
     freopen(logfile.c_str(),"a",stderr);
+
+    Magick::InitializeMagick(NULL);
 
     FCGX_Request request;
     FCGX_Init();
