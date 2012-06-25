@@ -1,9 +1,10 @@
 #!/bin/bash
 
-PROGNAME="eqbeats dev server"
-BINARY="eqbeats.fcgi"
-SERVCOUNT=1
-PORT=9004
+PROGNAME='eqbeats fcgi server'
+BINARY='eqbeats.fcgi'
+SOCKET='eqbeats.sock'
+SERVCOUNT=${EQBEATS_COUNT:=1}
+
 cd $EQBEATS_DIR
 
 case "$1" in
@@ -12,8 +13,9 @@ case "$1" in
     if [[ $SERVRUNNING -ge $SERVCOUNT ]]; then
       echo "$PROGNAME : Already running"
     else
-      spawn-fcgi -F $SERVCOUNT -P pid -f ./$BINARY -a 127.0.0.1 -p $PORT > /dev/null
-      echo "$PROGNAME : Started."
+      spawn-fcgi -F $SERVCOUNT -P pid -f ./$BINARY -s $SOCKET -M 0775 > /dev/null
+      chgrp http eqbeats.sock
+      echo "$PROGNAME : Started $SERVCOUNT."
     fi
     ;;
 
