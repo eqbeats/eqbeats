@@ -6,8 +6,8 @@ CREATE TABLE users (
     about text not null default '',
     registration timestamptz not null,
     last_login timestamptz not null,
-    notify bool not null default true
-    license text not null default 'Copyright',
+    notify bool not null default true,
+    license text not null default 'Copyright'
 );
 
 CREATE TABLE tracks (
