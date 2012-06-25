@@ -107,7 +107,7 @@ int main(int argc, char** argv){
             if(tpl.empty() && mime == "text/html"){ // Defaults
                 HTML("404 Not Found");
                 code = 404;
-                tpl = "404.tpl";
+                tpl = "html/404.tpl";
             }
             if(dict != rootDict && mime == "text/html"){ // HTML macro called
                 dict->SetFilename(tpl);
@@ -115,7 +115,7 @@ int main(int argc, char** argv){
                 rootDict->SetValueAndShowSection("REDIRECT", path, "HAS_REDIRECT");
                 rootDict->SetFormattedValue("GENERATION_TIME", "%lu µS", usecs());
                 rootDict->SetFormattedValue("PID", "%d", getpid());
-                cache.ExpandWithData("page.tpl", ctemplate::STRIP_BLANK_LINES, rootDict, NULL, &out);
+                cache.ExpandWithData("html/page.tpl", ctemplate::STRIP_BLANK_LINES, rootDict, NULL, &out);
             }
             else if(dict != rootDict && mime == "application/json"){ // JSON macro
                 if(!cgi("jsonp").empty()){
@@ -123,7 +123,7 @@ int main(int argc, char** argv){
                     rootDict->SetValueAndShowSection("FUNCTION", cgi("jsonp"), "JSONP");
                 }
                 dict->SetFilename(tpl);
-                cache.ExpandWithData("jsonp.tpl", ctemplate::STRIP_WHITESPACE, rootDict, NULL, &out);
+                cache.ExpandWithData("json/jsonp.tpl", ctemplate::STRIP_WHITESPACE, rootDict, NULL, &out);
             }
             else if(!tpl.empty())
                 cache.ExpandWithData(tpl, ctemplate::STRIP_BLANK_LINES, rootDict, NULL, &out);

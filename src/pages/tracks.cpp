@@ -6,7 +6,7 @@ PATH("/tracks") redir = "/";
 PATH("/tracks/search"){
     std::string q = cgi("q");
     HTML(q);
-    tpl = "tracklist-page.tpl";
+    tpl = "html/tracklist-page.tpl";
     dict->SetValue("TITLE", q);
     TrackList::search(q).fill(dict, "TRACKLIST");
 }
@@ -14,14 +14,14 @@ PATH("/tracks/search"){
 if(path.substr(0,12) == "/tracks/tag/"){
     std::string tag = path.substr(12);
     HTML(tag);
-    tpl = "tracklist-page.tpl";
+    tpl = "html/tracklist-page.tpl";
     dict->SetValue("TITLE", tag);
     TrackList::tag(tag).fill(dict, "TRACKLIST");
 }
 
 PATH("/tracks/latest"){
     HTML("Latest tracks");
-    tpl = "tracklist-page.tpl";
+    tpl = "html/tracklist-page.tpl";
     dict->SetValue("TITLE", "Latest tracks");
     rootDict->SetValueAndShowSection("FEED_URL", "/tracks/latest/atom", "FEED");
     dict->SetValueAndShowSection("FEED_URL", "/tracks/latest/atom", "FEED");
@@ -37,13 +37,13 @@ PATH("/tracks/latest"){
 }
 PATH("/tracks/random"){
     HTML("Random tracks");
-    tpl = "tracklist-page.tpl";
+    tpl = "html/tracklist-page.tpl";
     dict->SetValue("TITLE", "Random tracks");
     Tracks::random(15).fill(dict, "TRACKLIST");
 }
 PATH("/tracks/featured"){
     HTML("Featured tracks");
-    tpl = "tracklist-page.tpl";
+    tpl = "html/tracklist-page.tpl";
     dict->SetValue("TITLE", "Featured tracks");
     rootDict->SetValueAndShowSection("FEED_URL", "/tracks/featured/atom", "FEED");
     dict->SetValueAndShowSection("FEED_URL", "/tracks/featured/atom", "FEED");
@@ -67,12 +67,12 @@ PATH("/tracks/featured/json")
     is_json_array = true, json_tracks = Tracks::featured(50);
 if(is_json_array){
     JSON();
-    tpl = "array-json.tpl";
+    tpl = "json/array.tpl";
     Dict *item, *data;
     for(TrackList::const_iterator i=json_tracks.begin(); i!=json_tracks.end(); i++){
         item = dict->AddSectionDictionary("ITEM");
         data = item->AddIncludeDictionary("DATA");
-        data->SetFilename("track-json.tpl");
+        data->SetFilename("json/track.tpl");
         i->fill(data);
     }
 }

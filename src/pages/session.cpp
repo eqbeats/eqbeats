@@ -2,7 +2,7 @@ PATH("/login"){
 
     // Default page
     HTML("Login");
-    tpl = "login.tpl";
+    tpl = "html/login.tpl";
 
     // Redirect if logged
     std::string sid;

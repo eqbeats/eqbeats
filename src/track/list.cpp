@@ -31,7 +31,7 @@ void TrackList::extract(const DB::Result &r){
 
 Dict* TrackList::fill(Dict *d, std::string section){
     Dict *list_d = d->AddIncludeDictionary(section);
-    list_d->SetFilename("tracklist.tpl");
+    list_d->SetFilename("html/tracklist.tpl");
     if(empty()){
         list_d->ShowSection("EMPTY");
         return list_d;

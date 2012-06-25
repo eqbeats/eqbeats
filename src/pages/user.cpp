@@ -5,7 +5,7 @@ if(u){
 
 SUB(""){
     HTML(u.name);
-    tpl = "user.tpl";
+    tpl = "html/user.tpl";
     u.fill(dict);
 }
 

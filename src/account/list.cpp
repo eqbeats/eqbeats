@@ -15,7 +15,7 @@ AccountList::AccountList(const DB::Result &r){
 
 Dict* AccountList::fill(Dict *d, const std::string &marker){
     Dict *list_d = d->AddIncludeDictionary(marker);
-    list_d->SetFilename("userlist.tpl");
+    list_d->SetFilename("html/userlist.tpl");
     if(empty()){
         list_d->ShowSection("EMPTY");
         return list_d;

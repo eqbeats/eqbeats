@@ -1,19 +1,19 @@
 PATH("/quickstart"){
     HTML("Thanks");
-    tpl = "quickstart.tpl";
+    tpl = "html/quickstart.tpl";
 }
 
 PATH("/faq"){
     HTML("FAQ");
-    tpl = "faq.tpl";
+    tpl = "html/faq.tpl";
 }
 
 PATH("/credits"){
     HTML("Credits");
-    tpl = "credits.tpl";
+    tpl = "html/credits.tpl";
 }
 
 PATH("/api"){
     HTML("API");
-    tpl = "api.tpl";
+    tpl = "html/api.tpl";
 }

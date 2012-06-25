@@ -7,7 +7,7 @@ if(t){
 
 SUB(""){
     HTML(t.title);
-    tpl = "track.tpl";
+    tpl = "html/track.tpl";
     rootDict->SetValueAndShowSection("TID", number(t.id), "HAS_OEMBED");
     t.fill(dict);
     t.player(dict, true);
@@ -20,7 +20,7 @@ SUB(""){
 
 SUB("json"){
     JSON();
-    tpl = "track-json.tpl";
+    tpl = "json/track.tpl";
     t.fill(dict);
 }
 
@@ -97,7 +97,7 @@ SUB("embed"){
     }
     dict->ShowSection(t ? "FOUND" : "NOT_FOUND");
     mime = "text/html";
-    tpl = "player-embed.tpl";
+    tpl = "html/player-embed.tpl";
 }
 
 }

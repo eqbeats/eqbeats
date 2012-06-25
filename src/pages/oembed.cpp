@@ -10,18 +10,18 @@ PATH("/oembed"){
             if(t){
                 if(cgi("format") == "xml"){
                     mime = "text/xml";
-                    tpl = "oembed-xml.tpl";
+                    tpl = "oembed/xml.tpl";
                 }
                 else{
                     JSON();
-                    tpl = "oembed-json.tpl";
+                    tpl = "oembed/json.tpl";
                 }
                 t.fill(dict);
                 int width = number(cgi("maxwidth"));
                 if(width <= 0) width = 150;
                 dict->SetIntValue("WIDTH", width);
                 Dict *embed = dict->AddIncludeDictionary("EMBED_CODE");
-                embed->SetFilename("embed-code.tpl");
+                embed->SetFilename("html/embed-code.tpl");
                 embed->SetIntValue("WIDTH", width);
                 t.Track::fill(embed);
             }
