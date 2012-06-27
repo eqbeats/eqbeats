@@ -38,15 +38,15 @@ int main(int argc, char **argv){
         std::string mp3path = (string) dir + "/tracks/" + (*i)[0] + ".mp3";
         MPEG::File mp3(mp3path.c_str());
         Tag *tag = mp3.tag();
-        tag->setTitle((*i)[1]);
-        tag->setArtist((*i)[2]);
+        tag->setTitle(TagLib::String((*i)[1], TagLib::String::UTF8));
+        tag->setArtist(TagLib::String((*i)[2], TagLib::String::UTF8));
         mp3.save(MPEG::File::ID3v1 | MPEG::File::ID3v2);
         // Vorbis
         std::string oggpath = (string) dir + "/tracks/" + (*i)[0] + ".ogg";
         Ogg::Vorbis::File ogg(oggpath.c_str());
         Tag *oggtag = ogg.tag();
-        oggtag->setTitle((*i)[1]);
-        oggtag->setArtist((*i)[2]);
+        oggtag->setTitle(TagLib::String((*i)[1], TagLib::String::UTF8));
+        oggtag->setArtist(TagLib::String((*i)[2], TagLib::String::UTF8));
         ogg.save();
     }
 
