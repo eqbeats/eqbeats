@@ -4,8 +4,10 @@
 #include <core/template.h>
 class Document;
 
-void accountPages(Document*);
-void usersPages(Document*);
-void loginPages(Document*);
+namespace Pages {
+    void account(Document*);
+    void users(Document*);
+    void login(Document*);
+}
 
 #endif // ACCOUNT_PAGES_H

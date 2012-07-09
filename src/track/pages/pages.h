@@ -4,8 +4,10 @@
 #include <core/template.h>
 class Document;
 
-void trackPages(Document*);
-void tracksPages(Document*);
-void oembedPage(Document*);
+namespace Pages {
+    void track(Document*);
+    void tracks(Document*);
+    void oembed(Document*);
+}
 
 #endif // TRACK_PAGES_H

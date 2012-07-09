@@ -1,10 +1,12 @@
 #include "pages.h"
-#include "list.h"
+#include "../list.h"
 #include <core/cgi.h>
 #include <render/document.h>
 #include <text/text.h>
 
-void usersPages(Document *doc){
+namespace Pages {
+
+void users(Document *doc){
 
     if(path == "/users/search"){
         std::string q = cgi("q");
@@ -45,5 +47,7 @@ void usersPages(Document *doc){
             i->fill(data);
         }
     }
+
+}
 
 }

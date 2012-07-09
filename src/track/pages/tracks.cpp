@@ -1,10 +1,12 @@
 #include "pages.h"
-#include "list.h"
+#include "../list.h"
 #include <core/cgi.h>
 #include <render/document.h>
 #include <text/text.h>
 
-void tracksPages(Document *doc){
+namespace Pages {
+
+void tracks(Document *doc){
 
     if(path == "/tracks")
         doc->redirect("/");
@@ -102,5 +104,7 @@ void tracksPages(Document *doc){
         for(TrackList::const_iterator i=l.begin(); i!=l.end(); i++)
             i->fill(doc->dict()->AddSectionDictionary("TRACK"));
     }
+
+}
 
 }

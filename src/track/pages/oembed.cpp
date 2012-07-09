@@ -1,10 +1,12 @@
 #include "pages.h"
-#include "track.h"
+#include "../track.h"
 #include <core/cgi.h>
 #include <render/document.h>
 #include <text/text.h>
 
-void oembedPage(Document *doc){
+namespace Pages {
+
+void oembed(Document *doc){
     if(path != "/oembed") return;
 
     std::string url = cgi("url");
@@ -31,4 +33,6 @@ void oembedPage(Document *doc){
             }
         }
     }
+}
+
 }

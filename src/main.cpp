@@ -1,4 +1,4 @@
-#include <account/pages.h>
+#include <account/pages/pages.h>
 #include <core/cgi.h>
 #include <core/db.h>
 #include <misc/timer.h>
@@ -6,7 +6,7 @@
 #include <render/document.h>
 #include <render/fcgiio.h>
 #include <text/modifiers.h>
-#include <track/pages.h>
+#include <track/pages/pages.h>
 #include <session/session.h>
 
 #include <stdio.h>
@@ -40,9 +40,9 @@ int main(int argc, char** argv){
     cache.SetTemplateRootDirectory(eqbeatsDir() + "/templates");
 
     void (*callbacks[])(Document*) = {
-        staticPages, homePage,
-        trackPages, tracksPages, oembedPage,
-        accountPages, loginPages, usersPages,
+        Pages::statics, Pages::home,
+        Pages::track, Pages::tracks, Pages::oembed,
+        Pages::account, Pages::login, Pages::users,
         0
     };
 

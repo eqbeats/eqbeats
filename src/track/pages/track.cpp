@@ -1,6 +1,6 @@
 #include "pages.h"
-#include "audio.h"
-#include "extended.h"
+#include "../audio.h"
+#include "../extended.h"
 #include <core/cgi.h>
 #include <core/db.h>
 #include <media/art.h>
@@ -8,7 +8,9 @@
 #include <render/document.h>
 #include <text/text.h>
 
-void trackPages(Document *doc){
+namespace Pages {
+
+void track(Document *doc){
     std::string sub;
     int tid = route("track", path, sub);
     ExtendedTrack t(tid);
@@ -93,5 +95,7 @@ void trackPages(Document *doc){
             else if(sub == "art/thumb")  doc->download(art.thumbnail().setBaseName(base + ".thumb"));
         }
     }
+
+}
 
 }
