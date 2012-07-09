@@ -4,7 +4,7 @@ project ( eqbeats )
 
 add_executable ( eqbeats.fcgi
     account/account.cpp account/list.cpp account/user.cpp
-    core/db.cpp core/path.cpp
+    core/db.cpp core/path.cpp core/template.cpp
     media/art.cpp media/file.cpp
     misc/hash.cpp misc/timer.cpp
     render/fcgiio.cpp render/http.cpp

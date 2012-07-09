@@ -55,7 +55,6 @@ int main(int argc, char** argv){
     ctemplate::AddModifier("x-irc", new IrcEscape);
     ctemplate::AddModifier("x-email", new EmailEscape);
     ctemplate::AddXssSafeModifier("x-format", new Formatter);
-    ctemplate::TemplateCache cache;
     cache.SetTemplateRootDirectory(eqbeatsDir() + "/templates");
 
     std::string path, sub;
