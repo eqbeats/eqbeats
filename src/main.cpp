@@ -1,18 +1,11 @@
-#include <account/account.h>
-#include <account/list.h>
 #include <core/cgi.h>
 #include <core/db.h>
-#include <media/art.h>
 #include <misc/timer.h>
 #include <pages/pages.h>
 #include <render/document.h>
 #include <render/fcgiio.h>
-#include <render/http.h>
 #include <text/modifiers.h>
-#include <text/text.h>
-#include <track/audio.h>
-#include <track/extended.h>
-#include <track/list.h>
+#include <track/pages.h>
 #include <session/session.h>
 
 #include <stdio.h>
@@ -45,7 +38,7 @@ int main(int argc, char** argv){
     ctemplate::AddXssSafeModifier("x-format", new Formatter);
     cache.SetTemplateRootDirectory(eqbeatsDir() + "/templates");
 
-    void (*callbacks[])(Document*) = { staticPages, homePage, 0 };
+    void (*callbacks[])(Document*) = { staticPages, homePage, trackPages, 0 };
 
     while(FCGX_Accept_r(&request) == 0){
         resetTimer();

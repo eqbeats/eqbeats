@@ -2,6 +2,7 @@
 #define RENDER_DOCUMENT_H
 
 #include <core/template.h>
+#include <media/file.h>
 
 class Document {
 
@@ -14,6 +15,7 @@ class Document {
         Dict* dict(){ return _dict; }
 
         void redirect(const std::string &r);
+        void download(const File &f);
         void setTemplate(const std::string &tpl, const std::string &mime, int code=200);
         void setHtml(const std::string &tpl, const std::string &title="", int code=200);
         void setJson(const std::string &tpl, int code=200);
@@ -28,6 +30,7 @@ class Document {
         std::string _redir;
         int _code;
         Dict *_rootDict, *_dict;
+        File dw;
 
 };
 

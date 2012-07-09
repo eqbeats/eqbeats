@@ -22,8 +22,14 @@ void Document::redirect(const std::string &r){
     _redir = r;
 }
 
+void Document::download(const File &f){
+    _redir.clear();
+    dw = f;
+}
+
 void Document::setTemplate(const std::string &tpl, const std::string &mime, int code){
     _redir.clear();
+    if(dw) dw = File();
     _code = code;
     _mime = mime;
     _tpl = tpl;
@@ -44,11 +50,14 @@ std::string Document::generate(){
     if(!_redir.empty())
         return Http::redirect(_redir);
 
+    else if(dw)
+        return Http::download(dw);
+
     std::string out;
     if(_tpl.empty())
         setHtml("html/404.tpl", "404 Not Found", 404);
 
-    if(_mime == "text/html"){
+    if(_mime == "text/html" && _rootDict != _dict){
         _dict->SetFilename(_tpl);
         Session::fill(_rootDict);
         _rootDict->SetValueAndShowSection("REDIRECT", path, "HAS_REDIRECT");
@@ -57,7 +66,7 @@ std::string Document::generate(){
         cache.ExpandWithData("html/page.tpl", ctemplate::STRIP_BLANK_LINES, _rootDict, NULL, &out);
     }
 
-    else if(_mime == "application/json"){
+    else if(_mime == "application/json" && _rootDict != _dict){
         if(!cgi("jsonp").empty()){
             _mime = "text/javascript";
             _rootDict->SetValueAndShowSection("FUNCTION", cgi("jsonp"), "JSONP");

@@ -6,6 +6,7 @@
 class File{
 
     public:
+        File(){}
         File(const std::string &nPath, const std::string &nFilename)
             { _path = nPath; _filename = nFilename; }
 
@@ -15,9 +16,12 @@ class File{
 
         File setBaseName(const std::string &name);
 
+        operator bool() const { return !_path.empty(); }
+
     private:
         std::string _path;
         std::string _filename;
+
 };
 
 #endif // MEDIA_FILE_H
