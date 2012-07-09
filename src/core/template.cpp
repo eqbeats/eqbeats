@@ -53,7 +53,7 @@ std::string Document::generate(){
     if(_mime == "text/html"){
         _dict->SetFilename(_tpl);
         Session::fill(_rootDict);
-        _rootDict->SetValueAndShowSection("REDIRECT", getPath(), "HAS_REDIRECT");
+        _rootDict->SetValueAndShowSection("REDIRECT", path, "HAS_REDIRECT");
         _rootDict->SetFormattedValue("GENERATION_TIME", "%lu µS", usecs());
         _rootDict->SetFormattedValue("PID", "%d", getpid());
         cache.ExpandWithData("html/page.tpl", ctemplate::STRIP_BLANK_LINES, _rootDict, NULL, &out);

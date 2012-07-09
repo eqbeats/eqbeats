@@ -20,6 +20,7 @@
 
 using namespace cgicc;
 Cgicc cgi;
+std::string path;
 
 int main(int argc, char** argv){
     DB::connect();
@@ -47,7 +48,7 @@ int main(int argc, char** argv){
         resetTimer();
         o.attach(&request);
         cgi = Cgicc(&o);
-        std::string path = getPath();
+        path = stripSlash(cgi.getEnvironment().getPathInfo());
         Document doc;
 
         // Nope

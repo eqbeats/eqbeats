@@ -5,8 +5,8 @@
 #include "path.h"
 
 extern cgicc::Cgicc cgi; // defined in main.cpp
+extern std::string path; // same
 
 #define eqbeatsUrl() ("http://" + cgi.getEnvironment().getServerName())
-#define getPath() stripSlash(cgi.getEnvironment().getPathInfo())
 
 #endif // CGI_H
