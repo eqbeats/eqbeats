@@ -4,10 +4,10 @@
 #include <core/db.h>
 #include <media/art.h>
 #include <misc/timer.h>
+#include <pages/pages.h>
 #include <render/document.h>
 #include <render/fcgiio.h>
 #include <render/http.h>
-#include <render/static.h>
 #include <text/modifiers.h>
 #include <text/text.h>
 #include <track/audio.h>
@@ -45,7 +45,7 @@ int main(int argc, char** argv){
     ctemplate::AddXssSafeModifier("x-format", new Formatter);
     cache.SetTemplateRootDirectory(eqbeatsDir() + "/templates");
 
-    void (*callbacks[])(Document*) = { staticPages, 0 };
+    void (*callbacks[])(Document*) = { staticPages, homePage, 0 };
 
     while(FCGX_Accept_r(&request) == 0){
         resetTimer();

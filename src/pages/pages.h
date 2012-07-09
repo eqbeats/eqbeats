@@ -1,10 +1,11 @@
-#ifndef STATIC_H
-#define STATIC_H
+#ifndef PAGES_H
+#define PAGES_H
 
 #include <core/template.h>
 
 class Document;
 
 void staticPages(Document*);
+void homePage(Document*);
 
-#endif // STATIC_H
+#endif // PAGES_H
