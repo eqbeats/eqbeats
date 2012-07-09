@@ -11,7 +11,7 @@ add_executable ( eqbeats.fcgi
     render/document.cpp render/fcgiio.cpp render/http.cpp
     session/session.cpp session/login.cpp
     text/date.cpp text/email.cpp text/format.cpp text/irc.cpp text/number.cpp text/string.cpp
-    track/audio.cpp track/extended.cpp track/list.cpp track/pages.cpp track/track.cpp
+    track/audio.cpp track/extended.cpp track/list.cpp track/oembed.cpp track/pages.cpp track/track.cpp track/tracks.cpp
     main.cpp
 )
 

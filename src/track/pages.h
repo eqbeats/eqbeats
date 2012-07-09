@@ -5,5 +5,7 @@
 class Document;
 
 void trackPages(Document*);
+void tracksPages(Document*);
+void oembedPage(Document*);
 
 #endif // TRACK_PAGES_H

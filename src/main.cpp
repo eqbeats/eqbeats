@@ -38,7 +38,11 @@ int main(int argc, char** argv){
     ctemplate::AddXssSafeModifier("x-format", new Formatter);
     cache.SetTemplateRootDirectory(eqbeatsDir() + "/templates");
 
-    void (*callbacks[])(Document*) = { staticPages, homePage, trackPages, 0 };
+    void (*callbacks[])(Document*) = {
+        staticPages, homePage,
+        trackPages, tracksPages, oembedPage,
+        0
+    };
 
     while(FCGX_Accept_r(&request) == 0){
         resetTimer();
