@@ -2,9 +2,9 @@
 #include <account/list.h>
 #include <core/cgi.h>
 #include <core/db.h>
-#include <core/template.h>
 #include <media/art.h>
 #include <misc/timer.h>
+#include <render/document.h>
 #include <render/fcgiio.h>
 #include <render/http.h>
 #include <render/static.h>
@@ -19,9 +19,9 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
-using namespace cgicc;
-Cgicc cgi;
+cgicc::Cgicc cgi;
 std::string path;
+ctemplate::TemplateCache cache;
 
 int main(int argc, char** argv){
     DB::connect();
@@ -50,7 +50,7 @@ int main(int argc, char** argv){
     while(FCGX_Accept_r(&request) == 0){
         resetTimer();
         o.attach(&request);
-        cgi = Cgicc(&o);
+        cgi = cgicc::Cgicc(&o);
         path = stripSlash(cgi.getEnvironment().getPathInfo());
         Document doc;
 

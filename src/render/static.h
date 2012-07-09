@@ -3,6 +3,8 @@
 
 #include <core/template.h>
 
+class Document;
+
 void staticPages(Document*);
 
 #endif // STATIC_H

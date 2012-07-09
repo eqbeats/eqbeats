@@ -1,4 +1,5 @@
 #include "static.h"
+#include "document.h"
 #include <core/cgi.h>
 
 void staticPages(Document *doc){

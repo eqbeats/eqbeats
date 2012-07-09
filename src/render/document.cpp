@@ -1,12 +1,10 @@
-#include "template.h"
-#include "cgi.h"
+#include "document.h"
+#include "http.h"
+#include <core/cgi.h>
 #include <misc/timer.h>
-#include <render/http.h>
 #include <session/session.h>
 
 #include <unistd.h>
-
-ctemplate::TemplateCache cache;
 
 Document::Document(){
     _code = 200;
