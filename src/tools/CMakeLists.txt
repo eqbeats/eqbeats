@@ -1,9 +1,3 @@
-add_executable ( mknews mknews.cpp ../core/db.cpp ../text/number.cpp )
-target_link_libraries ( mknews pq )
-
-add_executable ( mkcontest mkcontest.cpp ../core/db.cpp ../text/number.cpp )
-target_link_libraries ( mkcontest pq )
-
 add_executable ( mkthumbs mkthumbs.cpp ../text/number.cpp ../media/art.cpp ../core/path.cpp )
 target_link_libraries ( mkthumbs Magick++ MagickCore )
 
