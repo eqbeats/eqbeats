@@ -7,6 +7,7 @@
 #include <misc/timer.h>
 #include <render/fcgiio.h>
 #include <render/http.h>
+#include <render/static.h>
 #include <text/modifiers.h>
 #include <text/text.h>
 #include <track/audio.h>
@@ -59,6 +60,8 @@ int main(int argc, char** argv){
         }
 
         Session::start();
+
+        staticPages(&doc);
         o << doc.generate();
 
         Session::destroy();
