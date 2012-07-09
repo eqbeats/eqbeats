@@ -18,20 +18,6 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
-#define PATH(p) if(path == (p))
-#define ROUTE(t) if((id = route((t), path, sub)))
-#define SUB(s) if(sub == (s))
-
-#define HTML(t) \
-    { mime = "text/html"; \
-      rootDict->SetValueAndShowSection("TITLE", (t), "HAS_TITLE"); \
-      dict = rootDict->AddIncludeDictionary("BODY"); }
-#define JSON()\
-    { mime = "application/json"; \
-      dict = rootDict->AddIncludeDictionary("JSON"); }
-
-#define LOGGED if(!Session::user()) redir = "/login?redirect=" + path; else
-
 using namespace cgicc;
 Cgicc cgi;
 
@@ -57,82 +43,25 @@ int main(int argc, char** argv){
     ctemplate::AddXssSafeModifier("x-format", new Formatter);
     cache.SetTemplateRootDirectory(eqbeatsDir() + "/templates");
 
-    std::string path, sub;
-    int id;
-    bool post;
-
     while(FCGX_Accept_r(&request) == 0){
         resetTimer();
         o.attach(&request);
         cgi = Cgicc(&o);
-        path = getPath();
-        post = cgi.getEnvironment().getRequestMethod() == "POST";
-
-        Dict *rootDict = new Dict("eqbeats");
-        Dict *dict = rootDict;
-        dict->SetGlobalValue("EQBEATS_URL", eqbeatsUrl());
-        std::string tpl, redir, mime = "text/html";
-        int code = 200;
+        std::string path = getPath();
+        Document doc;
 
         // Nope
         if (cgi.getElementByValue("PHPE9568F34-D428-11d2-A769-00AA001ACF42") != cgi.getElements().end() ||
             cgi.getElementByValue("PHPE9568F35-D428-11d2-A769-00AA001ACF42") != cgi.getElements().end() ||
             cgi.getElementByValue("PHPE9568F36-D428-11d2-A769-00AA001ACF42") != cgi.getElements().end()){
-            redir = "http://youtu.be/gvdf5n-zI14";
+            doc.redirect("http://youtu.be/gvdf5n-zI14");
         }
 
         Session::start();
-
-        #include "pages/home.cpp"
-        #include "pages/oembed.cpp"
-        #include "pages/session.cpp"
-        #include "pages/static.cpp"
-        #include "pages/track.cpp"
-        #include "pages/tracks.cpp"
-        #include "pages/user.cpp"
-        #include "pages/users.cpp"
-
-        //#include "pages/news.cpp"
-        //#include "pages/contest.cpp"
-        //#include "pages/playlist.cpp"
-        //#include "pages/account.cpp"
-
-        // Render
-        if(!redir.empty())
-            o << Http::redirect(redir);
-
-        else if(code == 200){
-            std::string out;
-            if(tpl.empty() && mime == "text/html"){ // Defaults
-                HTML("404 Not Found");
-                code = 404;
-                tpl = "html/404.tpl";
-            }
-            if(dict != rootDict && mime == "text/html"){ // HTML macro called
-                dict->SetFilename(tpl);
-                Session::fill(rootDict);
-                rootDict->SetValueAndShowSection("REDIRECT", path, "HAS_REDIRECT");
-                rootDict->SetFormattedValue("GENERATION_TIME", "%lu µS", usecs());
-                rootDict->SetFormattedValue("PID", "%d", getpid());
-                cache.ExpandWithData("html/page.tpl", ctemplate::STRIP_BLANK_LINES, rootDict, NULL, &out);
-            }
-            else if(dict != rootDict && mime == "application/json"){ // JSON macro
-                if(!cgi("jsonp").empty()){
-                    mime = "text/javascript";
-                    rootDict->SetValueAndShowSection("FUNCTION", cgi("jsonp"), "JSONP");
-                }
-                dict->SetFilename(tpl);
-                cache.ExpandWithData("json/jsonp.tpl", ctemplate::STRIP_WHITESPACE, rootDict, NULL, &out);
-            }
-            else if(!tpl.empty())
-                cache.ExpandWithData(tpl, ctemplate::STRIP_BLANK_LINES, rootDict, NULL, &out);
-            o << Http::header(mime, code) << out;
-        }
-
+        o << doc.generate();
 
         Session::destroy();
         FCGX_Finish_r(&request);
-        delete rootDict;
         while(waitpid(-1, NULL, WNOHANG) > 0); // wait for zombies
     }
 
