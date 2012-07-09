@@ -20,6 +20,8 @@ class Document {
         void setHtml(const std::string &tpl, const std::string &title="", int code=200);
         void setJson(const std::string &tpl, int code=200);
 
+        void addHttp(const std::string &fields){ _http += fields; }
+
         std::string generate();
 
         operator bool() const { return !_redir.empty() || !_tpl.empty(); }
@@ -31,6 +33,7 @@ class Document {
         int _code;
         Dict *_rootDict, *_dict;
         File dw;
+        std::string _http;
 
 };
 

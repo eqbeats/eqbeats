@@ -1,3 +1,4 @@
+#include <account/pages.h>
 #include <core/cgi.h>
 #include <core/db.h>
 #include <misc/timer.h>
@@ -41,6 +42,7 @@ int main(int argc, char** argv){
     void (*callbacks[])(Document*) = {
         staticPages, homePage,
         trackPages, tracksPages, oembedPage,
+        accountPages, loginPages, usersPages,
         0
     };
 

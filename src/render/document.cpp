@@ -48,10 +48,10 @@ void Document::setHtml(const std::string &tpl, const std::string &title, int cod
 
 std::string Document::generate(){
     if(!_redir.empty())
-        return Http::redirect(_redir);
+        return _http + Http::redirect(_redir);
 
     else if(dw)
-        return Http::download(dw);
+        return _http + Http::download(dw);
 
     std::string out;
     if(_tpl.empty())
@@ -78,5 +78,5 @@ std::string Document::generate(){
     else
         cache.ExpandWithData(_tpl, ctemplate::STRIP_BLANK_LINES, _rootDict, NULL, &out);
 
-    return Http::header(_mime, _code) + out;
+    return _http + Http::header(_mime, _code) + out;
 }
