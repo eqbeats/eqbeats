@@ -45,6 +45,8 @@ int main(int argc, char** argv){
     ctemplate::AddXssSafeModifier("x-format", new Formatter);
     cache.SetTemplateRootDirectory(eqbeatsDir() + "/templates");
 
+    void (*callbacks[])(Document*) = { staticPages, 0 };
+
     while(FCGX_Accept_r(&request) == 0){
         resetTimer();
         o.attach(&request);
@@ -61,7 +63,9 @@ int main(int argc, char** argv){
 
         Session::start();
 
-        staticPages(&doc);
+        for(int i=0; !doc && callbacks[i]; i++)
+            callbacks[i](&doc);
+
         o << doc.generate();
 
         Session::destroy();

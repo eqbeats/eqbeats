@@ -24,6 +24,8 @@ class Document {
 
         std::string generate();
 
+        operator bool() const { return !_redir.empty() || !_tpl.empty(); }
+
     private:
         std::string _tpl;
         std::string _mime;
