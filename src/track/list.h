@@ -20,6 +20,7 @@ class TrackList : public std::vector<Track> {
         Dict* fill(Dict*, std::string section);
 
     private:
+
         void extract(const DB::Result &r);
 
 };

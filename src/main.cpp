@@ -4,6 +4,7 @@
 #include <core/db.h>
 #include <misc/timer.h>
 #include <pages/pages.h>
+#include <playlist/pages/pages.h>
 #include <render/document.h>
 #include <render/fcgiio.h>
 #include <text/modifiers.h>
@@ -43,6 +44,7 @@ int main(int argc, char** argv){
         Pages::statics, Pages::home,
         Pages::track, Pages::tracks, Pages::oembed, Pages::trackActions, Pages::trackUpload, Pages::art,
         Pages::account, Pages::login, Pages::user, Pages::users, Pages::registration, Pages::passwordReset,
+        Pages::playlist, Pages::playlistActions,
         0
     };
 

@@ -1,29 +1,30 @@
+{{%AUTOESCAPE context="HTML"}}
 <div class="playlist">
 
-    <h2>{{NAME}}</h2>
-    {{#AUTHOR}}by <a href="{{URL}}">{{NAME}}</a></h4>
+    <h2>{{PLAYLIST_NAME}}</h2>
+    <h4>by <a href="/user/{{UID}}">{{USERNAME}}</a></h4>
 
     {{#HAS_DESCRIPTION}}
-    <div class="notes">{{DESCRIPTION}}</div>
+    <div class="notes">{{DESCRIPTION:x-format}}</div>
     {{/HAS_DESCRIPTION}}
 
-    {{>TRACKLIST}}
+    {{>TRACK_LIST}}
 
-    {{#EDITION}}
+    {{#IS_OWNER}}
     <div class="edit">
-        <h3><img src="{{ICON}}/pencil.png" /> Edit</h3>
-        <form method="post" action="{{URL}}/edit">
+        <h3><img src="/static/icons/pencil.png" /> Edit</h3>
+        <form method="post" action="/playlist/{{PLAYLIST_ID}}/edit">
             <table>
                 <tr>
-                    <td><img src="{{ICON}}/rename.png"> Name:</td>
-                    <td><input type="text" name="name" value="{{NAME}}" /></td>
+                    <td><img src="/static/icons/rename.png"> Name:</td>
+                    <td><input type="text" name="name" value="{{PLAYLIST_NAME}}" /></td>
                 </tr>
                 <tr>
                     <td>
-                        <img src="{{ICON}}/card_pencil.png"> Notes:
-                        <div class=\"legend\">(tags: [b]old, [u]nderline, [i]talic)</div>
+                        <img src="/static/icons/card_pencil.png"> Notes:
+                        <div class="legend">(tags: [b]old, [u]nderline, [i]talic)</div>
                     </td>
-                    <td><textarea name="desc">{{DESCRIPTION}}</textarea></td>
+                    <td><textarea name="desc">{{#HAS_DESCRIPTION}}{{DESCRIPTION}}{{/HAS_DESCRIPTION}}</textarea></td>
                 </tr>
                 <tr>
                     <td></td>
@@ -31,9 +32,9 @@
                 </tr>
             </table>
         </form>
-        <a class="delete" href="{{URL}}/delete">Delete playlist</a>
+        <a class="delete" href="/playlist/{{PLAYLIST_ID}}/delete">Delete playlist</a>
         <div style="clear:both;"></div>
     </div>
-    {{/EDITION}}
+    {{/IS_OWNER}}
 
 </div>

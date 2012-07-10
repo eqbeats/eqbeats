@@ -1,8 +1,9 @@
 #ifndef PLAYLIST_H
 #define PLAYLIST_H
 
-#include <track/track.h>
 #include <account/user.h>
+#include <render/template.h>
+#include <track/list.h>
 
 class Playlist {
 
@@ -18,18 +19,17 @@ class Playlist {
         std::string description() const { return _description; }
         std::string url() const;
 
-        std::vector<Track> tracks();
+        TrackList tracks();
 
-        static Playlist create(const std::string &nName, const std::string &nDesc=std::string());
-        void setMeta(const std::string &nName, const std::string &nDesc);
         void add(unsigned tid);
         void remove(unsigned pos);
         void swap(unsigned i, unsigned j);
-        void drop();
 
         static void removeTrack(int tid);
 
         static std::vector<Playlist> forUser(const User &u);
+
+        void fill(Dict *d) const;
 
     private:
         Playlist(int nid, User nauthor, int nlength, std::string nname, std::string ndescription)

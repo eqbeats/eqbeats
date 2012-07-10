@@ -1,7 +1,7 @@
 #include "playlist.h"
+#include <account/session.h>
 #include <core/db.h>
 #include <text/text.h>
-#include <session/session.h>
 
 using namespace std;
 
@@ -20,32 +20,13 @@ std::string Playlist::url() const{
     return "/playlist/" + number(_id);
 }
 
-vector<Track> Playlist::tracks(){ return Track::byPlaylist(_id); }
-
-Playlist Playlist::create(const std::string &nName, const std::string &nDesc){
-    Playlist p;
-    User u = Session::user();
-    DB::Result r = DB::query(
-        "INSERT INTO playlists (user_id, name, description, track_ids) VALUES "
-        "("+number(u.id())+", $1, $2, ARRAY[]::int[]) RETURNING id", nName, nDesc);
-    if(r.empty()) return p;
-    p._id = number(r[0][0]);
-    p._author = u;
-    p._name = nName;
-    p._description = nDesc;
-    p._length = 0;
-    return p;
-}
-
-void Playlist::drop(){
-    if(!_id) return;
-    DB::query("DELETE FROM playlists WHERE id = " + number(_id));
-    _id = 0;
-}
-
-void Playlist::setMeta(const std::string &nName, const std::string &nDesc){
-    if(nName == _name && nDesc == _description) return;
-    DB::query("UPDATE playlists SET name = $1, description = $2 WHERE id = " + number(_id), (nName.empty() ? _name : nName), nDesc);
+TrackList Playlist::tracks(){
+    return TrackList(
+        "WITH playlist AS "
+            "(SELECT unnest AS track_id, row_number() OVER () AS pos "
+             "FROM unnest(coalesce((select track_ids FROM playlists where id = " + number(_id) + ")))) "
+        "SELECT %s FROM %s, playlist WHERE %s AND tracks.id = playlist.track_id ORDER BY playlist.pos"
+    );
 }
 
 void Playlist::add(unsigned tid){
@@ -96,9 +77,19 @@ void Playlist::removeTrack(int tid){
 }
 
 std::vector<Playlist> Playlist::forUser(const User &u){
-    DB::Result r = DB::query("SELECT id, name, array_length(track_ids, 1), description FROM playlists WHERE user_id = " + number(u.id()) + " ORDER BY name ASC");
+    DB::Result r = DB::query("SELECT id, name, array_length(track_ids, 1), description FROM playlists WHERE user_id = " + number(u.id) + " ORDER BY name ASC");
     std::vector<Playlist> playlists(r.size());
     for(unsigned i=0; i < r.size(); i++)
         playlists[i] = Playlist(number(r[i][0]), u, number(r[i][2]), r[i][1], r[i][3]);
     return playlists;
+}
+
+void Playlist::fill(Dict *d) const{
+    d->SetIntValue("PLAYLIST_ID", _id);
+    d->SetIntValue("TRACK_COUNT", _length);
+    d->SetValue("PLAYLIST_NAME", _name);
+    d->SetValueAndShowSection("DESCRIPTION", _description, "HAS_DESCRIPTION");
+    _author.fill(d);
+    if(_author == Session::user())
+        d->ShowSection("IS_OWNER");
 }

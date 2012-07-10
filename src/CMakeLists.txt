@@ -9,6 +9,7 @@ add_executable ( eqbeats.fcgi
     log/log.cpp
     misc/hash.cpp misc/mail.cpp misc/repl.cpp misc/timer.cpp
     pages/pages.cpp pages/user.cpp
+    playlist/playlist.cpp playlist/pages/actions.cpp playlist/pages/playlist.cpp
     render/document.cpp render/fcgiio.cpp render/file.cpp render/http.cpp
     text/date.cpp text/email.cpp text/format.cpp text/irc.cpp text/number.cpp text/string.cpp
     track/audio.cpp track/art.cpp track/extended.cpp track/list.cpp track/track.cpp
