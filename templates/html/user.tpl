@@ -1,3 +1,4 @@
+{{%AUTOESCAPE context="HTML"}}
 <div class="user">
 
 {{>AVATAR}}
@@ -27,7 +28,7 @@
 {{>UPLOADER}}
 
 {{#IS_SELF}}
-<form class="newplaylist" action="/playlist/new" method="POST">
+<form class="newplaylist" action="/playlist/new" method="post">
     <input type="text" name="name" placeholder="Name" />
     <input type="submit" value="New playlist" />
 </form>
@@ -39,11 +40,11 @@
 {{#PLAYLIST}}
     <li>
         <div class="title">
-            <a href="{{URL}}">{{NAME}}</a>
+            <a href="/playlist/{{PLAYLIST_ID}}">{{PLAYLIST_NAME}}</a>
             <span class="count">{{TRACK_COUNT}}</span>
         </div>
         {{#HAS_DESCRIPTION}}
-        <div class="description">{{DESCRIPTION}}</div>
+        <div class="description">{{DESCRIPTION:x-format}}</div>
         {{/HAS_DESCRIPTION}}
     </li>
 {{/PLAYLIST}}

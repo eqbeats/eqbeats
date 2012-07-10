@@ -36,7 +36,7 @@ int main(int argc, char** argv){
     FCgiIO o;
 
     ctemplate::AddModifier("x-irc", new IrcEscape);
-    ctemplate::AddModifier("x-email", new EmailEscape);
+    ctemplate::AddXssSafeModifier("x-email", new EmailEscape);
     ctemplate::AddXssSafeModifier("x-format", new Formatter);
     cache.SetTemplateRootDirectory(eqbeatsDir() + "/templates");
 

@@ -2,6 +2,7 @@
 #include <account/account.h>
 #include <account/session.h>
 #include <core/cgi.h>
+#include <playlist/playlist.h>
 #include <text/text.h>
 #include <track/list.h>
 
@@ -22,6 +23,13 @@ void Pages::user(Document *doc){
         Dict *uploader = doc->dict()->AddIncludeDictionary("UPLOADER");
         uploader->SetFilename("html/uploader.tpl");
         uploader->SetValue("ACTION", "/track/new");
+
+        std::vector<Playlist> playlists = Playlist::forUser(u);
+        doc->dict()->ShowSection(playlists.empty() ? "NO_PLAYLIST" : "HAS_PLAYLISTS");
+        for(std::vector<Playlist>::const_iterator i=playlists.begin(); i!=playlists.end(); i++){
+            Dict *playlistDict = doc->dict()->AddSectionDictionary("PLAYLIST");
+            i->fill(playlistDict);
+        }
 
     }
 
