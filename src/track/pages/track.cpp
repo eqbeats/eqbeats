@@ -1,6 +1,7 @@
 #include "pages.h"
 #include "../audio.h"
 #include "../extended.h"
+#include <account/session.h>
 #include <core/cgi.h>
 #include <text/text.h>
 
@@ -23,20 +24,28 @@ void Pages::track(Document *doc){
     // Access
 
     if(sub == ""){
+
         ExtendedTrack t(tid);
         if(!t) return;
+
         doc->setHtml("html/track.tpl", t.title);
         doc->rootDict()->SetValueAndShowSection("TID", number(t.id), "HAS_OEMBED");
         t.fill(doc->dict());
         t.player(doc->dict(), true);
         Audio(&t).fill(doc->dict());
+
         Dict *embed = doc->dict()->AddIncludeDictionary("EMBED_CODE");
         embed->SetFilename("html/embed-code.tpl");
         embed->SetIntValue("WIDTH", 150);
         t.Track::fill(embed);
+
         Dict *uploader = doc->dict()->AddIncludeDictionary("UPLOADER");
         uploader->SetFilename("html/uploader.tpl");
         uploader->SetValue("ACTION", t.url() + "/upload");
+
+        int hits = t.artist == Session::user() ? t.getHits() : t.hit();
+        if(hits) doc->dict()->SetValueAndShowSection("HIT_COUNT", number(hits), "HAS_HITS");
+
     }
 
     else if(sub == "json"){

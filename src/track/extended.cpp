@@ -1,6 +1,8 @@
 #include "extended.h"
 #include <core/db.h>
+#include <core/path.h>
 #include <text/text.h>
+#include <misc/repl.h>
 
 ExtendedTrack::ExtendedTrack(int tid){
 
@@ -56,4 +58,25 @@ void ExtendedTrack::fill(Dict *d) const{
     // License
     d->SetValue("LICENSE", license);
     d->ShowSection(license == "Copyright" ? "COPYRIGHT" : "OTHER_LICENSE");
+}
+
+// Hits
+
+Repl hitsd;
+
+void initHitsd(){
+    if(!hitsd){
+        std::string path = eqbeatsDir() + "/hitsd.sock";
+        hitsd = Repl(path.c_str());
+    }
+}
+
+int ExtendedTrack::getHits(){
+    initHitsd();
+    return number(hitsd.exec("get " + number(id)));
+}
+
+int ExtendedTrack::hit(){
+    initHitsd();
+    return number(hitsd.exec("increment " + number(id)));
 }
