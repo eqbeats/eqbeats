@@ -1,6 +1,6 @@
 <h2>Login</h2>
 
-{{#HAS_ERROR}}<div class="error">{{ERROR}}</div>{{/HAS_ERROR}}
+{{#ERROR}}<div class="error">{{ERROR}}</div>{{/ERROR}}
 
 <form method="post">
     <table>
