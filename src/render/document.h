@@ -1,8 +1,8 @@
 #ifndef RENDER_DOCUMENT_H
 #define RENDER_DOCUMENT_H
 
-#include <core/template.h>
-#include <media/file.h>
+#include <render/template.h>
+#include "file.h"
 
 class Document {
 

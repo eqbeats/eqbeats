@@ -1,7 +1,7 @@
 #ifndef SESSION_H
 #define SESSION_H
 
-#include <core/template.h>
+#include <render/template.h>
 #include "user.h"
 
 namespace Session{

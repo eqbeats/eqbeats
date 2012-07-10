@@ -1,7 +1,7 @@
 #include "track.h"
+#include "art.h"
 #include <account/session.h>
 #include <core/db.h>
-#include <media/art.h>
 #include <text/text.h>
 #include <text/text.h>
 

@@ -1,7 +1,7 @@
 #ifndef USER_H
 #define USER_H
 
-#include <core/template.h>
+#include <render/template.h>
 
 class User{
 

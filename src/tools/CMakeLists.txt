@@ -1,4 +1,4 @@
-add_executable ( mkthumbs mkthumbs.cpp ../text/number.cpp ../media/art.cpp ../core/path.cpp )
+add_executable ( mkthumbs mkthumbs.cpp ../text/number.cpp ../track/art.cpp ../core/path.cpp )
 target_link_libraries ( mkthumbs Magick++ MagickCore )
 
 add_executable ( stats stats.cpp ../core/db.cpp )
