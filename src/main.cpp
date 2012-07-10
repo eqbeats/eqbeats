@@ -1,4 +1,5 @@
 #include <account/pages/pages.h>
+#include <account/session.h>
 #include <core/cgi.h>
 #include <core/db.h>
 #include <misc/timer.h>
@@ -7,7 +8,6 @@
 #include <render/fcgiio.h>
 #include <text/modifiers.h>
 #include <track/pages/pages.h>
-#include <session/session.h>
 
 #include <stdio.h>
 #include <sys/wait.h>
@@ -61,6 +61,7 @@ int main(int argc, char** argv){
         }
 
         Session::start();
+        Session::fill(doc.rootDict());
 
         for(int i=0; !doc && callbacks[i]; i++)
             callbacks[i](&doc);

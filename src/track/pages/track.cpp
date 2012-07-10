@@ -1,10 +1,10 @@
 #include "pages.h"
 #include "../audio.h"
 #include "../extended.h"
+#include <account/session.h>
 #include <core/cgi.h>
 #include <core/db.h>
 #include <media/art.h>
-#include <session/session.h>
 #include <render/document.h>
 #include <text/text.h>
 

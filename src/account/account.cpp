@@ -1,7 +1,7 @@
 #include "account.h"
+#include "session.h"
 #include <core/db.h>
 #include <misc/hash.h>
-#include <session/session.h>
 #include <text/text.h>
 
 Account::Account(int uid){

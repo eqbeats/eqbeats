@@ -2,7 +2,6 @@
 #include "http.h"
 #include <core/cgi.h>
 #include <misc/timer.h>
-#include <session/session.h>
 
 #include <unistd.h>
 
@@ -59,7 +58,6 @@ std::string Document::generate(){
 
     if(_mime == "text/html" && _rootDict != _dict){
         _dict->SetFilename(_tpl);
-        Session::fill(_rootDict);
         _rootDict->SetValueAndShowSection("REDIRECT", path, "HAS_REDIRECT");
         _rootDict->SetFormattedValue("GENERATION_TIME", "%lu µS", usecs());
         _rootDict->SetFormattedValue("PID", "%d", getpid());

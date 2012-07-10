@@ -1,6 +1,6 @@
 #include "user.h"
+#include "session.h"
 #include <core/db.h>
-#include <session/session.h>
 #include <text/text.h>
 
 User::User(int uid){
