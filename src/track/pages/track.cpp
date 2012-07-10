@@ -31,7 +31,7 @@ void Pages::track(Document *doc){
         t.player(doc->dict(), true);
         Audio(&t).fill(doc->dict());
         Dict *embed = doc->dict()->AddIncludeDictionary("EMBED_CODE");
-        embed->SetFilename("embed-code.tpl");
+        embed->SetFilename("html/embed-code.tpl");
         embed->SetIntValue("WIDTH", 150);
         t.Track::fill(embed);
         Dict *uploader = doc->dict()->AddIncludeDictionary("UPLOADER");
