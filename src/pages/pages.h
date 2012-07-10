@@ -6,6 +6,7 @@
 namespace Pages {
     void statics(Document*);
     void home(Document*);
+    void user(Document*);
 }
 
 #endif // PAGES_H

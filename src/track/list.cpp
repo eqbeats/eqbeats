@@ -83,7 +83,7 @@ TrackList TrackList::tag(const std::string &t){
 
 TrackList Tracks::latest(int n, int offset){
     return TrackList(
-        "SELECT %s FROM %s WHERE %s ORDER BY date desc "
+        "SELECT %s FROM %s WHERE %s ORDER BY date DESC "
         "LIMIT " + number(n) + " OFFSET " + number(offset));
 }
 
@@ -97,4 +97,9 @@ TrackList Tracks::featured(int n){
 TrackList Tracks::random(int n){
     return TrackList(
         "SELECT %s FROM %s WHERE %s ORDER BY random() LIMIT " + number(n));
+}
+
+TrackList Tracks::byUser(int uid, bool all){
+    return TrackList(
+        "SELECT %s FROM %s WHERE %s AND users.id = " + number(uid) + " ORDER BY date DESC", all);
 }

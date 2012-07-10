@@ -30,6 +30,8 @@ namespace Tracks{
     TrackList featured(int n);
     TrackList random(int n);
 
+    TrackList byUser(int uid, bool all=false);
+
 }
 
 #endif // TRACK_LIST_H
