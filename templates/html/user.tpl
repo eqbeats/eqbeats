@@ -22,11 +22,9 @@
     {{>EVENTS}}
 </div>
 
-{{#SHOW_TRACKS}}
 <h3><img src="/static/icons/disc.png" alt="" /> Tracks {{>FEED_ICON}}</h3>
 {{>TRACK_LIST}}
-{{/SHOW_TRACKS}}
-{{>UPLOAD_FORM}}
+{{>UPLOADER}}
 
 {{#IS_SELF}}
 <form class="newplaylist" action="/playlist/new" method="POST">

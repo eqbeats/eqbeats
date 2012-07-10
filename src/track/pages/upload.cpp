@@ -1,39 +1,41 @@
-#include "actions.h"
-#include "../session.h"
-#include <text/text.h>
-#include "../path.h"
-#include "../log.h"
+#include "pages.h"
 #include "../track.h"
-#include "../user.h"
-#include "../cgi.h"
-#include "../media.h"
-#include <string.h>
-#include <fstream>
+#include <account/account.h>
+#include <account/session.h>
+#include <core/cgi.h>
+#include <core/db.h>
+#include <log/log.h>
+#include <text/text.h>
+
 #include <taglib/mpegfile.h>
 #include <taglib/tag.h>
-#include <sys/stat.h>
 #include <unistd.h>
 
-std::string getTitle(const char *filename){
-    TagLib::MPEG::File f(filename);
-    TagLib::Tag *t = f.tag();
-    return t? t->title().to8Bit(): "";
-}
+void Pages::trackUpload(Document *doc){
 
-void Action::uploadTrack(int id){
+    std::string sub;
+    int tid = route("track", path, sub);
+
+    if(path != "/track/new" && !(tid && sub == "upload"))
+        return;
+
+    Track t(tid);
+    if(tid && !t)
+        return; // track not found
+
     User u = Session::user();
-    if(!u) return; // Http::redirect(Track::url(id));
+    if(!u) return doc->redirect(t ? t.url() : "/");
 
     cgicc::file_iterator qqfile = cgi.getFile("qqfile");
     bool js = cgi("js") != "no";
     std::string upfilename = (qqfile != cgi.getFiles().end() ? qqfile->getFilename() : cgi("qqfile"));
 
-    if(js); // Http::header("text/html"); // Opera
+    if(js)
+        doc->setTemplate("json/upload.tpl", "text/html"); // Opera
 
-    Track t(id);
-    if((t && t.artist() != u) || upfilename.empty()){
-        if(js); // o << "{" << field("success","false",true) << "}";
-        else; // Http::redirect(t ? t.url() : u ? u.url() : "/");
+    if((t && t.artist != u) || upfilename.empty()){
+        if(js) doc->dict()->SetValue("SUCCESS", "false");
+        else doc->redirect(t ? t.url() : u ? u.url() : "/");
         return;
     }
 
@@ -52,29 +54,49 @@ void Action::uploadTrack(int id){
         out << cgi.getEnvironment().getPostData();
     out.close();
 
-    if(id == -1){
-        std::string title = getTitle(tmpFile);
+    if(!tid){
+        TagLib::MPEG::File f(tmpFile);
+        TagLib::Tag *tag = f.tag();
+        std::string title = tag ? tag->title().to8Bit(): "";
         if(title.empty())
             title = upfilename.substr(0, ext_idx);
-        t = Track::create(u.id(), title.empty()? "Untitled":title);
+        if(title.empty())
+            title = "Untitled";
+        // Create
+        Account a(u.id);
+        DB::Result r = DB::query(
+            "INSERT INTO tracks (user_id, title, date, license) VALUES "
+            "(" + number(a.id) + ", $1, 'now', $2) "
+            "RETURNING id", title, a.license
+        );
+        if(r.empty()){
+            if(js) doc->dict()->SetValue("SUCCESS", "false");
+            else doc->redirect(u.url());
+            return;
+        }
+        t.id = number(r[0][0]);
+        t.title = title;
+        // Other fields left blank.
     }
 
-    log("Track uploaded: " + t.title() + " (" + number(t.id()) + ", " + tmpFile + ")");
+    log("Track uploaded: " + t.title + " (" + number(t.id) + ", " + tmpFile + ")");
 
-    Media m(t);
     if(fork() == 0){
         freopen("/dev/null","r",stdin);
-        execlp("transcode.sh", "transcode.sh", number(m.id()).c_str(), tmpFile, NULL);
-        free(tmpFile);
+        execlp("transcode.sh", "transcode.sh", number(t.id).c_str(), tmpFile, NULL);
     }
     else
         sleep(2);
 
-    /*if(js)
-        o << "{"+field("success","true")+field("track",number(t.id()))+field("title",jstring(t.title()),true)+"}";
-    else Http::redirect(t.url());*/
-}
+    free(tmpFile);
 
-void Action::newTrack(){
-    uploadTrack(-1);
+    if(js){
+        doc->dict()->SetValue("SUCCESS", "true");
+        Dict *trackDict = doc->dict()->AddSectionDictionary("TRACK");
+        trackDict->SetIntValue("TID", t.id);
+        trackDict->SetValue("TITLE", t.title);
+    }
+    else
+        doc->redirect(t.url());
+
 }

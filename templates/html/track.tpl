@@ -108,7 +108,7 @@
         <div class="column">
 
             <h4><img src="/static/icons/drive-upload.png" alt="" /> Re-upload</h4>
-            {{>UPLOAD_FORM}}
+            {{>UPLOADER}}
 
             <h4><img src="/static/icons/picture.png" alt="" /> Art</h4>
             <form action="/track/{{TID}}/art/upload" method="post" enctype="multipart/form-data">

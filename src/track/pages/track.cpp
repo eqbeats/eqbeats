@@ -34,6 +34,9 @@ void Pages::track(Document *doc){
         embed->SetFilename("embed-code.tpl");
         embed->SetIntValue("WIDTH", 150);
         t.Track::fill(embed);
+        Dict *uploader = doc->dict()->AddIncludeDictionary("UPLOADER");
+        uploader->SetFilename("html/uploader.tpl");
+        uploader->SetValue("ACTION", t.url() + "/upload");
     }
 
     else if(sub == "json"){
