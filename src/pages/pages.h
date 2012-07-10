@@ -1,8 +1,7 @@
 #ifndef PAGES_H
 #define PAGES_H
 
-#include <core/template.h>
-class Document;
+#include <render/document.h>
 
 namespace Pages {
     void statics(Document*);

@@ -1,7 +1,6 @@
 #include "pages.h"
 #include "../list.h"
 #include <core/cgi.h>
-#include <render/document.h>
 #include <text/text.h>
 
 namespace Pages {

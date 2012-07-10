@@ -1,8 +1,7 @@
 #ifndef ACCOUNT_PAGES_H
 #define ACCOUNT_PAGES_H
 
-#include <core/template.h>
-class Document;
+#include <render/document.h>
 
 namespace Pages {
     void account(Document*);

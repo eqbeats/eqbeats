@@ -5,7 +5,6 @@
 #include <core/cgi.h>
 #include <core/db.h>
 #include <media/art.h>
-#include <render/document.h>
 #include <text/text.h>
 
 namespace Pages {

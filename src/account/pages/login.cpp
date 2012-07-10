@@ -1,7 +1,6 @@
 #include "pages.h"
 #include "../session.h"
 #include <core/cgi.h>
-#include <render/document.h>
 
 namespace Pages {
 

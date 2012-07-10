@@ -1,6 +1,5 @@
 #include "pages.h"
 #include <core/cgi.h>
-#include <render/document.h>
 #include <track/list.h>
 
 namespace Pages {

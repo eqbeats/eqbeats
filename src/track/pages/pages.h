@@ -1,8 +1,7 @@
 #ifndef TRACK_PAGES_H
 #define TRACK_PAGES_H
 
-#include <core/template.h>
-class Document;
+#include <render/document.h>
 
 namespace Pages {
     void track(Document*);
