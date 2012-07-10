@@ -1,6 +1,5 @@
 #include "log.h"
-#include "session.h"
-#include "user.h"
+#include <account/session.h>
 #include <iostream>
 #include <unistd.h>
 
@@ -16,6 +15,6 @@ void log(const std::string &msg){
          << " " << getpid() << ": "
          << msg;
     if(Session::user())
-        cerr << " [user: " << Session::user().id() << "]";
+        cerr << " [user: " << Session::user().id << "]";
     cerr << std::endl;
 }

@@ -2,6 +2,7 @@
 #include "../session.h"
 #include <core/cgi.h>
 #include <core/db.h>
+#include <log/log.h>
 #include <text/text.h>
 
 void form(Document *doc, const char *err=""){
@@ -49,7 +50,7 @@ void Pages::registration(Document *doc){
             return form(doc, "Erm, something went wrong. Please try again.");
 
         User u = User(number(r[0][0]), name);
-        //log("New user: " + u.name + " (" + number(u.id) + ")");
+        log("New user: " + u.name + " (" + number(u.id) + ")");
         doc->addHttp("Set-Cookie: sid=" + Session::login(u) + ";Max-Age=2592000\n"); // 30 days
         doc->redirect("/quickstart");
 
