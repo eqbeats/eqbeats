@@ -28,7 +28,7 @@
         </tr>
         <tr>
             <td><label for="r_oldpw">Old password:</label></td>
-            <td><input type="password" id="r_oldpw" name="oldpw" value="{{OLD_PW}}" /></td>
+            <td><input type="password" id="r_oldpw" name="oldpw" value="{{OLD_PASSWORD}}" /></td>
         </tr>
         <tr>
             <td><label for="r_newpw">New password:</label></td>

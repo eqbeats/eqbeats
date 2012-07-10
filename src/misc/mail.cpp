@@ -1,6 +1,6 @@
 #include "mail.h"
+#include <core/path.h>
 #include <text/text.h>
-#include "path.h"
 #include <time.h>
 #include <unistd.h>
 #include <sys/wait.h>

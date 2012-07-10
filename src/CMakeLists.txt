@@ -4,11 +4,11 @@ project ( eqbeats )
 
 add_executable ( eqbeats.fcgi
     account/account.cpp account/list.cpp account/user.cpp account/session.cpp
-    account/pages/account.cpp account/pages/login.cpp account/pages/registration.cpp account/pages/user.cpp account/pages/users.cpp
+    account/pages/account.cpp account/pages/login.cpp account/pages/registration.cpp account/pages/user.cpp account/pages/users.cpp account/pages/password.cpp
     core/db.cpp core/path.cpp
     log/log.cpp
     media/art.cpp media/file.cpp
-    misc/hash.cpp misc/timer.cpp
+    misc/hash.cpp misc/mail.cpp misc/timer.cpp
     pages/pages.cpp
     render/document.cpp render/fcgiio.cpp render/http.cpp
     text/date.cpp text/email.cpp text/format.cpp text/irc.cpp text/number.cpp text/string.cpp
