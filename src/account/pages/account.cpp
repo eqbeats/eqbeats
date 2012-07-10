@@ -52,7 +52,7 @@ void Pages::account(Document *doc){
 
         // Everything has been checked. Committing.
 
-        DB::query("UPDATE users SET password = crypt($1, gen_salf('bf')) WHERE id = " + number(a.id), newpw);
+        DB::query("UPDATE users SET password = crypt($1, gen_salt('bf')) WHERE id = " + number(a.id), newpw);
     }
 
 
@@ -63,12 +63,15 @@ void Pages::account(Document *doc){
 
     if(a.name != cgi("name")){ // The name has changed.
         log("Renaming user: " + a.name + " -> " + cgi("name"));
-        Session::user().name = name;
+        Session::destroy();
+        Session::start();
         //std::vector<Track> tracks = a.tracks(true);
         //for(std::vector<Track>::iterator i=tracks.begin(); i!=tracks.end(); i++)
             //Media(*i).updateTags();
     }
 
-    doc->redirect("/account");
+    doc->setHtml("html/account.tpl", "Your account");
+    doc->dict()->SetValueAndShowSection("MESSAGE", "Changes applied.", "MESSAGE");
+    Account(a.id).fill(doc->dict());
 
 }

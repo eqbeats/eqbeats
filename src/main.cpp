@@ -61,11 +61,11 @@ int main(int argc, char** argv){
         }
 
         Session::start();
-        Session::fill(doc.rootDict());
 
         for(int i=0; !doc && callbacks[i]; i++)
             callbacks[i](&doc);
 
+        Session::fill(doc.rootDict());
         o << doc.generate();
 
         Session::destroy();

@@ -26,8 +26,7 @@ void Pages::users(Document *doc){
         l.fill(doc->dict(), "USERLIST");
     }
 
-// JSON
-
+    // JSON
     AccountList json_users;
     bool is_json_array = false;
     if(path == "/users/search/json")
