@@ -1,19 +1,10 @@
-#include <stdio.h>
-#include <algorithm>
-#include "actions.h"
-#include "../art.h"
-#include "../session.h"
+#include "pages.h"
+#include "../audio.h"
+#include <account/session.h>
+#include <core/cgi.h>
+#include <core/db.h>
+#include <log/log.h>
 #include <text/text.h>
-#include "../follower.h"
-#include "../path.h"
-#include "../log.h"
-#include "../track.h"
-#include "../mail.h"
-#include "../cgi.h"
-#include "../media.h"
-#include "../event.h"
-
-using namespace std;
 
 std::string filter(const std::string &str){
     std::string buf;
@@ -23,93 +14,109 @@ std::string filter(const std::string &str){
     return buf;
 }
 
-void Action::publishTrack(int tid){
-    if(tid != number(cgi("tid")))
-        return; // Http::redirect(Track::url(tid));
-    User u = Session::user();
-    Track t(tid);
-    if(u == t.artist() && t && !t.visible() && u &&
-        cgi.getEnvironment().getRequestMethod() == "POST"){
-        t.setVisible(true);
-        t.bump();
-        Event::publish(t);
-        // Mail
-        std::vector<std::string> emails = Follower(u).followers();
-        std::string maildata =
-            "From: EqBeats notification <notify@eqbeats.org>\n"
-            "Message-ID: notify-t" + number(t.id()) + "\n"
-            "Subject: " + filter("EqBeats notification: " + u.name() + " - " + t.title()) + "\n"
-            "Precedence: bulk\n\n" +
-            u.name() + " just published a new track : " + t.title() + "\n"
-            "Listen to it here : " + eqbeatsUrl() + t.url() + "\n\n"
-            "You're receiving this email because you're following " + u.name() + " on EqBeats.\n"
-            "If you don't want to receive these notifications anymore, go to " + eqbeatsUrl() + u.url() + " and click \"Stop following\".";
-        for(std::vector<std::string>::const_iterator i = emails.begin(); i!=emails.end(); i++)
-            sendMail(i->c_str(), maildata.c_str());
+void Pages::trackActions(Document *doc){
+    std::string sub;
+    int tid = route("track", path, sub);
+    if(!tid) return;
+    bool post = cgi.getEnvironment().getRequestMethod() == "POST";
+
+    if(sub == "rename"){
+        Track t(tid);
+        if(!t) return;
+        if(post && t.artist == Session::user()){
+            std::string title = cgi("title");
+            if(!title.empty() && title != t.title){
+                DB::query("UPDATE tracks SET title = $1 WHERE id = " + number(t.id), title);
+                t.title = title;
+                Audio(&t).updateTags();
+            }
+        }
+        doc->redirect(t.url());
     }
-    return; // Http::redirect(t.url());
-}
 
-void Action::updateNotes(int tid){
-    User u = Session::user();
-    ExtendedTrack t(tid);
-    if(u==t.artist() && u &&
-       cgi.getEnvironment().getRequestMethod() == "POST" )
-        t.setNotes(cgi("notes"));
-    return; // Http::redirect(t.url());
-}
-
-void Action::renameTrack(int tid){
-    User u = Session::user();
-    Track t(tid);
-    if(u==t.artist() && u && !cgi("title").empty() &&
-       cgi.getEnvironment().getRequestMethod() == "POST" ){
-        log("Renaming track: " + t.title() + " -> " + cgi("title") + " (" + number(t.id()) + ")");
-        t.setTitle(cgi("title"));
-        Media(t).updateTags();
+    else if(sub == "tags"){
+        Track t(tid);
+        if(!t) return;
+        if(post && t.artist == Session::user())
+            DB::query("UPDATE tracks SET tags = regexp_split_to_array(lower($1), E' *, *') WHERE id = " + number(t.id), cgi("tags"));
+        doc->redirect(t.url());
     }
-    return; // Http::redirect(t.url());
-}
 
-void Action::deleteTrack(int tid){
-    User u = Session::user();
-    Track t(tid);
-    if(u!=t.artist() || !u)
-        ;//Http::redirect(t.url());
-    else if(cgi.getEnvironment().getRequestMethod()!="POST" || cgi("confirm")!="Delete")
-        ;//deletionForm(t);
-    else{
-        log("Deleting track: " + t.title() + " (" + number(t.id()) + ")");
-        Art art(tid);
-        if(art) art.remove();
-        Media(t).unlink();
-        t.remove();
-        //Http::redirect(u.url());
+    else if(sub == "notes"){
+        Track t(tid);
+        if(!t) return;
+        if(post && t.artist == Session::user())
+            DB::query("UPDATE tracks SET notes = $1 WHERE id = " + number(t.id), cgi("notes"));
+        doc->redirect(t.url());
     }
-}
 
-void Action::setFlags(int tid){
-    User u = Session::user();
-    ExtendedTrack t(tid);
-    if(u==t.artist() && t && cgi.getEnvironment().getRequestMethod()=="POST")
-        t.setAirable(cgi.queryCheckbox("airable"));
-    //Http::redirect(t.url());
-}
+    else if(sub == "flags"){
+        Track t(tid);
+        if(!t) return;
+        if(post && t.artist == Session::user())
+            DB::query("UPDATE tracks SET airable = $1 WHERE id = " + number(t.id), cgi.queryCheckbox("airable") ? "t" : "f");
+        doc->redirect(t.url());
+    }
 
-void Action::reportTrack(int tid){
-    if(cgi.getEnvironment().getRequestMethod() != "POST") return; // Http::redirect(Track::url(tid));
-    Track t(tid);
-    if(!t) return; //Html::notFound("Track");
-    std::string path = eqbeatsDir() + "/reports";
-    std::ofstream f(path.c_str(), std::ios_base::app);
-    f << t.artist().id() << " " << t.artist().name() << " - " << t.id() << " " << t.title() << std::endl;
-    f.close();
-    //Http::redirect(t.url());
-}
+    else if(sub == "report"){
+        Track t(tid);
+        if(!t) return;
+        if(post){
+            std::string path = eqbeatsDir() + "/reports";
+            std::ofstream f(path.c_str(), std::ios_base::app);
+            f << t.artist.id << " " << t.artist.name << " - " << t.id << " " << t.title << std::endl;
+            f.close();
+        }
+        doc->redirect(t.url());
+    }
 
-void Action::setTags(int tid){
-    ExtendedTrack t(tid);
-    if(Session::user()=t.artist() && t && cgi.getEnvironment().getRequestMethod() == "POST")
-        t.setTags(cgi("tags"));
-    //Http::redirect(t.url());
+    else if(sub == "delete"){
+        Track t(tid);
+        if(!t) return;
+        if(t.artist != Session::user())
+            doc->redirect(t.url());
+        else if(!post || cgi("confirm") != "Delete"){
+            doc->setHtml("html/delete.tpl", "Track deletion");
+            doc->dict()->SetValue("WHAT", t.title);
+        }
+        else{
+            log("Deleting track: " + t.title + " (" + number(t.id) + ")");
+            //Art art(tid);
+            //if(art) art.remove();
+            //Media(t).unlink();
+            //t.remove();
+            doc->redirect(Session::user().url());
+        }
+    }
+
+    else if(sub == "publish"){
+        Track t(tid);
+        if(!t) return;
+        if(tid != number(cgi("tid")))
+            return doc->redirect(t.url());
+
+        if(Session::user() == t.artist && !t.visible && post){
+
+            DB::query("UPDATE tracks SET visible = 't', date = 'now' WHERE id = " + number(t.id));
+            //Event::publish(t);
+
+            // Mail
+            /*std::vector<std::string> emails = Follower(u).followers();
+            std::string maildata =
+                "From: EqBeats notification <notify@eqbeats.org>\n"
+                "Message-ID: notify-t" + number(t.id()) + "\n"
+                "Subject: " + filter("EqBeats notification: " + u.name() + " - " + t.title()) + "\n"
+                "Precedence: bulk\n\n" +
+                u.name() + " just published a new track : " + t.title() + "\n"
+                "Listen to it here : " + eqbeatsUrl() + t.url() + "\n\n"
+                "You're receiving this email because you're following " + u.name() + " on EqBeats.\n"
+                "If you don't want to receive these notifications anymore, go to " + eqbeatsUrl() + u.url() + " and click \"Stop following\".";
+            for(std::vector<std::string>::const_iterator i = emails.begin(); i!=emails.end(); i++)
+                sendMail(i->c_str(), maildata.c_str());*/
+
+        }
+        doc->redirect(t.url());
+
+    }
+
 }
