@@ -42,7 +42,7 @@ int main(int argc, char** argv){
     void (*callbacks[])(Document*) = {
         Pages::statics, Pages::home,
         Pages::track, Pages::tracks, Pages::oembed,
-        Pages::account, Pages::login, Pages::users,
+        Pages::account, Pages::login, Pages::users, Pages::registration,
         0
     };
 

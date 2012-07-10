@@ -9,6 +9,9 @@ bool drop(const std::string &sub, std::string &str);
 // date.cpp
 std::string day(const std::string &date);
 
+// email.cpp
+bool validEmail(const std::string &email);
+
 // number.cpp
 bool isNumber(const std::string &str);
 std::string number(int n);
