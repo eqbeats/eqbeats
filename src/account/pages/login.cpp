@@ -2,9 +2,7 @@
 #include "../session.h"
 #include <core/cgi.h>
 
-namespace Pages {
-
-void login(Document *doc){
+void Pages::login(Document *doc){
 
     if(path == "/login"){
         std::string sid;
@@ -21,7 +19,5 @@ void login(Document *doc){
         doc->addHttp("Set-Cookie: sid=\n");
         doc->redirect(cgi("redirect").empty() ? "/" : cgi("redirect"));
     }
-
-}
 
 }

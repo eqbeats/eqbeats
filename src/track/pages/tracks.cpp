@@ -3,9 +3,7 @@
 #include <core/cgi.h>
 #include <text/text.h>
 
-namespace Pages {
-
-void tracks(Document *doc){
+void Pages::tracks(Document *doc){
 
     if(path == "/tracks")
         doc->redirect("/");
@@ -103,7 +101,5 @@ void tracks(Document *doc){
         for(TrackList::const_iterator i=l.begin(); i!=l.end(); i++)
             i->fill(doc->dict()->AddSectionDictionary("TRACK"));
     }
-
-}
 
 }

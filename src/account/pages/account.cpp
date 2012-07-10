@@ -2,9 +2,7 @@
 #include "../account.h"
 #include <core/cgi.h>
 
-namespace Pages {
-
-void account(Document *doc){
+void Pages::account(Document *doc){
 
     std::string sub;
     int uid = route("user", path, sub);
@@ -16,7 +14,5 @@ void account(Document *doc){
         doc->setHtml("html/user.tpl", u.name);
         u.fill(doc->dict());
     }
-
-}
 
 }

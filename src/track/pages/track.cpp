@@ -7,9 +7,7 @@
 #include <media/art.h>
 #include <text/text.h>
 
-namespace Pages {
-
-void track(Document *doc){
+void Pages::track(Document *doc){
     std::string sub;
     int tid = route("track", path, sub);
     ExtendedTrack t(tid);
@@ -94,7 +92,5 @@ void track(Document *doc){
             else if(sub == "art/thumb")  doc->download(art.thumbnail().setBaseName(base + ".thumb"));
         }
     }
-
-}
 
 }

@@ -3,9 +3,7 @@
 #include <core/cgi.h>
 #include <text/text.h>
 
-namespace Pages {
-
-void oembed(Document *doc){
+void Pages::oembed(Document *doc){
     if(path != "/oembed") return;
 
     std::string url = cgi("url");
@@ -32,6 +30,4 @@ void oembed(Document *doc){
             }
         }
     }
-}
-
 }

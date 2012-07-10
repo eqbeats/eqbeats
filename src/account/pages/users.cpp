@@ -3,9 +3,7 @@
 #include <core/cgi.h>
 #include <text/text.h>
 
-namespace Pages {
-
-void users(Document *doc){
+void Pages::users(Document *doc){
 
     if(path == "/users/search"){
         std::string q = cgi("q");
@@ -46,7 +44,5 @@ void users(Document *doc){
             i->fill(data);
         }
     }
-
-}
 
 }
