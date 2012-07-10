@@ -1,5 +1,4 @@
 #include "session.h"
-#include <account/user.h>
 #include <core/cgi.h>
 #include <core/db.h>
 #include <misc/hash.h>

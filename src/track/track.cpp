@@ -1,6 +1,5 @@
 #include "track.h"
 #include <account/session.h>
-#include <account/user.h>
 #include <core/db.h>
 #include <media/art.h>
 #include <text/text.h>

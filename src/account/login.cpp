@@ -1,5 +1,4 @@
 #include "session.h"
-#include <account/user.h>
 #include <core/cgi.h>
 
 #define ERROR(e) { \

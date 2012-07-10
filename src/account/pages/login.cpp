@@ -1,6 +1,5 @@
 #include "pages.h"
 #include "../session.h"
-#include "../user.h"
 #include <core/cgi.h>
 #include <render/document.h>
 

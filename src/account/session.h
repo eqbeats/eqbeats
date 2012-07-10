@@ -2,8 +2,7 @@
 #define SESSION_H
 
 #include <core/template.h>
-
-class User;
+#include "user.h"
 
 namespace Session{
 
