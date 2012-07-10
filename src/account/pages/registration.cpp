@@ -5,7 +5,7 @@
 #include <log/log.h>
 #include <text/text.h>
 
-void form(Document *doc, const char *err=""){
+static void form(Document *doc, const char *err=""){
     doc->setHtml("html/registration.tpl", "Register");
     doc->dict()->SetValueAndShowSection("ERROR", err, "ERROR");
 }

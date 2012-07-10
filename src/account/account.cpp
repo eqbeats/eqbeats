@@ -23,6 +23,7 @@ void Account::fill(Dict* d) const{
     d->SetValue("EMAIL", email);
     d->SetValueAndShowSection("ABOUT", about, "HAS_ABOUT");
     d->SetValue("LICENSE", license);
+    if(notify) d->ShowSection("NOTIFY");
     // Avatar
     Dict *a = d->AddIncludeDictionary("AVATAR");
     a->SetFilename("html/avatar.tpl");

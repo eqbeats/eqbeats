@@ -5,6 +5,7 @@
 
 namespace Pages {
     void account(Document*);
+    void user(Document*);
     void users(Document*);
     void login(Document*);
     void registration(Document*);

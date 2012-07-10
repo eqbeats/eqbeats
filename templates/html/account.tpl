@@ -7,11 +7,24 @@
     <table>
         <tr>
             <td><label for="r_name">Display name:</label></td>
-            <td><input id="r_name" name="name" value="{{NAME}}" maxlength="200" /></td>
+            <td><input id="r_name" name="name" value="{{USERNAME}}" maxlength="200" /></td>
         </tr>
         <tr>
             <td><label for="r_email">Email:</label></td>
             <td><input id="r_email" name="email" value="{{EMAIL}}" /></td>
+        </tr>
+        <tr>
+            <td><label for="r_notify">Email notifications:</label></td>
+            <td><input id="r_notify" name="notify" type="checkbox" {{#NOTIFY}}checked="checked"{{/NOTIFY}} /></td>
+        </tr>
+        <tr>
+            <td><label for="r_about">Description:</label><br />
+            <span class="legend">(tags: [b]old, [u]nderline, [i]talic)</span>
+            <td><textarea id="r_about" name="about">{{#HAS_ABOUT}}{{ABOUT}}{{/HAS_ABOUT}}</textarea></td>
+        </tr>
+        <tr>
+            <td><label for="r_license">Default license:</label></td>
+            <td><b>{{LICENSE}}</b> <a href="/account/license">(change)</a></td>
         </tr>
         <tr>
             <td><label for="r_oldpw">Old password:</label></td>
@@ -24,19 +37,6 @@
         <tr>
             <td><label for="r_newpwconf">Confirm new password:</label></td>
             <td><input type="password" id="r_newpwconf" name="newpwconf" /></td>
-        </tr>
-        <tr>
-            <td><label for="r_notify">Email notifications:</label></td>
-            <td><input id="r_notify" name="notify" type="checkbox" {{#NOTIFY}}checked="checked"{{/NOTIFY}} /></td>
-        </tr>
-        <tr>
-            <td><label for="r_about">Description:</label><br />
-            <span class="legend">(tags: [b]old, [u]nderline, [i]talic)</span>
-            <td><textarea id="r_about" name="about">{{ABOUT}}</textarea></td>
-        </tr>
-        <tr>
-            <td><label for="r_license">Default license:</label></td>
-            <td><b>{{LICENSE}}</b> <a href="/account/license">(change)</a></td>
         </tr>
     </table>
     <input type="submit" value="Update" />
