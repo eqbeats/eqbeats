@@ -81,6 +81,12 @@
     {{#HAS_NOTES}}<div class="notes">{{NOTES:x-format}}</div>{{/HAS_NOTES}}
 
     {{>EVENTS}}
+    <form class="postcomment" action="/track/{{TID}}/comment" method="post">
+        {{#LOGGED_OUT}}Name : <input type="text" name="name" /><br />{{/LOGGED_OUT}}
+        <input class="honeypot" type="text" name="url" placeholder="If you can see this, don't fill it in." />
+        <textarea name="msg"></textarea><br />
+        <input type="submit" value="Post a comment" onclick="this.form.submit();this.disabled=true;return false;" />
+    </form>
 
     {{#IS_SELF}}
     <div class="edit">

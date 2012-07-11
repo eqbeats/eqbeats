@@ -31,12 +31,12 @@
         {{#TRACK}}posted a comment{{/TRACK}}
         {{#ON_USER}}said{{/ON_USER}}
         on
-        {{#TRACK}}<a href="/track/{{TID}}">{{TITLE}}</a> by {{#TARGET}}<a href="/user/{{UID}}">{{USERNAME}}</a>{{/TARGET}}{{/TRACK}}
+        {{#TRACK}}<a href="/track/{{TID}}">{{TITLE}}</a> by {{#TARGET}}<a href="/user/{{UID}}">{{USERNAME}}</a>{{/TARGET}}:{{/TRACK}}
         {{#ON_USER}}{{#TARGET}}
-        {{#IS_SELF}}your profile page{{/IS_SELF}}
-        {{#NOT_SELF}}<a href="/user/{{UID}}">{{USERNAME}}'s profile</a>{{/NOT_SELF}}
+        {{#IS_SELF}}your profile page:{{/IS_SELF}}
+        {{#NOT_SELF}}<a href="/user/{{UID}}">{{USERNAME}}'s profile</a>:{{/NOT_SELF}}
         {{/TARGET}}{{/ON_USER}}
-        :<p class="comment">{{MESSAGE:x-format}}</p>
+        <p class="comment">{{MESSAGE:x-format}}</p>
         {{/COMMENT}}
 
         {{#FOLLOW}}
