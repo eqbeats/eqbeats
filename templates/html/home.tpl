@@ -1,12 +1,14 @@
+{{#LATEST_NEWS}}
 <div id="newsticker">
     <img src="/static/icons/newspaper.png" />
-    <b>Latest news</b>: {{#LATEST_NEWS}}<a href="/news/{{NEWS_ID}}">{{NEWS_TITLE}}</a>{{/LATEST_NEWS}}
+    <b>Latest news</b>: <a href="{{NEWS_URL}}">{{NEWS_TITLE}}</a>
 </div>
+{{/LATEST_NEWS}}
 {{#DYNAMIC_TICKER}}
 <script>
     var news = [
         {{#NEWS}}
-        { title: "{{NEWS_TITLE}}", url: "/news/{{NEWS_ID}}" }
+        { title: "{{NEWS_TITLE}}", url: "{{NEWS_URL}}" }
         {{#NEWS_separator}}, {{/NEWS_separator}}
         {{/NEWS}}
     ];
