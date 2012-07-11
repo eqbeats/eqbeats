@@ -34,7 +34,6 @@ void Track::fill(Dict *d) const{
     d->ShowSection(visible ? "IS_VISIBLE" : "IS_HIDDEN");
     d->SetValue("DATE", date);
     d->SetValue("DAY", day(date));
-    d->ShowSection(artist == Session::user() ? "IS_OWNER" : "IS_NOT_OWNER");
     artist.fill(d);
     d->ShowSection(Art(id) ? "HAS_ART" : "NO_ART");
 }

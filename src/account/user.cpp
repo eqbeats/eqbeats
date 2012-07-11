@@ -28,6 +28,5 @@ std::string User::url() const{
 void User::fill(Dict *d) const{
     d->SetIntValue("UID", id);
     d->SetValue("USERNAME", name);
-    if(Session::user() == *this)
-        d->ShowSection("IS_SELF");
+    d->ShowSection(Session::user() == *this ? "IS_SELF" : "NOT_SELF");
 }

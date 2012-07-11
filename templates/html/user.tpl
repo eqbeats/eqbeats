@@ -25,7 +25,7 @@
 
 <h3><img src="/static/icons/disc.png" alt="" /> Tracks {{>FEED_ICON}}</h3>
 {{>TRACK_LIST}}
-{{>UPLOADER}}
+{{#IS_SELF}}{{>UPLOADER}}{{/IS_SELF}}
 
 {{#IS_SELF}}
 <form class="newplaylist" action="/playlist/new" method="post">

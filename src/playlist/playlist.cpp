@@ -90,6 +90,4 @@ void Playlist::fill(Dict *d) const{
     d->SetValue("PLAYLIST_NAME", _name);
     d->SetValueAndShowSection("DESCRIPTION", _description, "HAS_DESCRIPTION");
     _author.fill(d);
-    if(_author == Session::user())
-        d->ShowSection("IS_OWNER");
 }

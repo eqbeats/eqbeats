@@ -10,7 +10,7 @@
 
     {{>TRACK_LIST}}
 
-    {{#IS_OWNER}}
+    {{#IS_SELF}}
     <div class="edit">
         <h3><img src="/static/icons/pencil.png" /> Edit</h3>
         <form method="post" action="/playlist/{{PLAYLIST_ID}}/edit">
@@ -21,7 +21,7 @@
                 </tr>
                 <tr>
                     <td>
-                        <img src="/static/icons/card_pencil.png"> Notes:
+                        <img src="/static/icons/card-pencil.png"> Notes:
                         <div class="legend">(tags: [b]old, [u]nderline, [i]talic)</div>
                     </td>
                     <td><textarea name="desc">{{#HAS_DESCRIPTION}}{{DESCRIPTION}}{{/HAS_DESCRIPTION}}</textarea></td>
@@ -35,6 +35,6 @@
         <a class="delete" href="/playlist/{{PLAYLIST_ID}}/delete">Delete playlist</a>
         <div style="clear:both;"></div>
     </div>
-    {{/IS_OWNER}}
+    {{/IS_SELF}}
 
 </div>

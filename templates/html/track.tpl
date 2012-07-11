@@ -48,19 +48,19 @@
         {{/READY}}
         <span><img alt="" src="/static/icons/balloon-white-left.png" /> Share : <a href="#embedcode" onclick="document.getElementById('embedcode').style.display='block';return false;">Embed</a></span>
 
-        {{#IS_OWNER}}
+        {{#IS_SELF}}
         {{#HAS_HITS}}<span><img alt="" src="/static/icons/edit-number.png" /> Hits : {{HIT_COUNT}}</span>{{/HAS_HITS}}
         <span><img alt="" src="/static/icons/star.png" /> Favourites : {{FAVCOUNT}}</span>
-        {{/IS_OWNER}}
-        {{#IS_NOT_OWNER}}
+        {{/IS_SELF}}
+        {{#NOT_SELF}}
         <form action="/track/{{TID}}/report" method="post">
             <button type="submit" class="report"><img alt="" src="/static/icons/flag.png" /> <span>Report</span></button>
         </form>
-        {{/IS_NOT_OWNER}}
+        {{/NOT_SELF}}
     </div>
     <textarea id="embedcode" style="display:none;">{{>EMBED_CODE:html_escape}}</textarea>
 
-    {{#IS_OWNER}}
+    {{#IS_SELF}}
     <div class="toolbar tags"><img alt="" src="/static/icons/tag.png" /> Tags:
         <form action="/track/{{TID}}/tags" method="post">
             <input name="tags" value="{{#TAG}}{{TAG}}{{#TAG_separator}}, {{/TAG_separator}}{{/TAG}}" />
@@ -68,22 +68,22 @@
             <span class="legend">(comma-separated, e.g. instrumental, electronic)</span>
         </form>
     </div>
-    {{/IS_OWNER}}
-    {{#IS_NOT_OWNER}}{{#HAS_TAGS}}
+    {{/IS_SELF}}
+    {{#NOT_SELF}}{{#HAS_TAGS}}
     <div class="toolbar tags"><img alt="" src="/static/icons/tag.png" /> Tags:
         {{#TAG}}<a href="/tracks/tag/{{TAG}}">{{TAG}}</a>{{/TAG}}
     </div>
-    {{/HAS_TAGS}}{{/IS_NOT_OWNER}}
+    {{/HAS_TAGS}}{{/NOT_SELF}}
 
     <div class="license">
         {{#COPYRIGHT}} Copyright &copy; {{USERNAME}} {{/COPYRIGHT}}
         {{#OTHER_LICENSE}} License: {{LICENSE}} {{/OTHER_LICENSE}}
-        {{#IS_OWNER}}<a href="/track/{{TID}}/license">(change)</a>{{/IS_OWNER}}
+        {{#IS_SELF}}<a href="/track/{{TID}}/license">(change)</a>{{/IS_SELF}}
     </div>
 
     {{#HAS_NOTES}}<div class="notes">{{NOTES:x-format}}</div>{{/HAS_NOTES}}
 
-    {{#IS_OWNER}}
+    {{#IS_SELF}}
     <div class="edit">
         <h3><img src="/static/icons/pencil.png" alt="" /> Edit</h3>
         {{#IS_HIDDEN}}
@@ -156,7 +156,7 @@
         <a class="delete" href="/track/{{TID}}/delete">Delete track</a>
         <div style="clear:both;"></div>
     </div>
-    {{/IS_OWNER}}
+    {{/IS_SELF}}
 
     {{>EVENTS}}
     {{>COMMENT_FORM}}
