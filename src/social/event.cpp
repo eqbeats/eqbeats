@@ -1,86 +1,75 @@
 #include "event.h"
-#include "db.h"
-#include "number.h"
-#include "session.h"
+#include <account/session.h>
+#include <core/db.h>
+#include <text/text.h>
 
-#include "log.h"
-
-Event::Event(Type nType, User nSource, User nTarget, Track nTrack, std::string nMessage, std::string nDate, int nId){
-    _type = nType;
-    _target = nTarget;
-    _source = nSource;
-    _track = nTrack;
-    _message = nMessage;
-    _date = nDate;
-    _id = nId;
-}
+#include <log/log.h>
 
 void Event::push(){
     DB::query((std::string)
         "INSERT INTO events (type, target_id, target_name, source_id, source_name, track_id, track_title, message, date)"
         "VALUES ("
-            "'" + (_type==Publish?"publish":_type==Comment?"comment":_type==Favorite?"favorite":"follow") + "'," +
-            number(_target.id()) + ","
-            "$1," +
-            number(_source.id()) + ","
-            "$2," +
-            number(_track.id()) + ","
-            "$3, "
+            "'" + (type==Publish?"publish":type==Comment?"comment":type==Favorite?"favorite":"follow") + "', " +
+            number(target.id) + ", $1, " +
+            number(source.id) + ", $2, " +
+            number(track.id) + ", $3, "
             "$4, 'now')",
-        _target.name(), _source.name(), _track.title(), _message);
+        target.name, source.name, track.title, message);
 
 }
 
-Event Event::publish(const Track &t){
-    Event e(Publish, t.artist(), User(), t);
-    e.push();
-    return e;
-}
-Event Event::favorite(const Track &t, const User &src){
-    Event e(Favorite, src, t.artist(), t);
-    e.push();
-    return e;
-}
-Event Event::follow(const User &u, const User &src){
-    Event e(Follow, src, u);
-    e.push();
-    return e;
-}
-Event Event::comment(const Track &t, const User &src, std::string msg){
-    Event e(Comment, src, t.artist(), t, msg);
-    e.push();
-    return e;
-}
-Event Event::comment(const User &tgt, const User &src, std::string msg){
-    Event e(Comment, src, tgt, Track(), msg);
-    e.push();
-    return e;
-}
-
-std::vector<Event> Event::select(std::string cond, int limit){
-    DB::Result r = DB::query("SELECT type, source_id, source_name, target_id, target_name, track_id, track_title, message, date AT TIME ZONE 'UTC', id FROM events" + (cond.empty()?"":" WHERE "+cond) + " ORDER BY date DESC" + (limit?" LIMIT "+number(limit):""));
-    std::vector<Event> events(r.size());
-    for(unsigned i=0; i<r.size(); i++){
-        Type t = r[i][0] == "publish"  ? Publish
-             : r[i][0] == "comment"  ? Comment
-             : r[i][0] == "favorite" ? Favorite : Follow;
-        events[i] = Event(t, User(number(r[i][1]),r[i][2]), User(number(r[i][3]),r[i][4]), Track(number(r[i][5]),r[i][6]), r[i][7], r[i][8], number(r[i][9]));
+void Event::fill(Dict *d) const{
+    source.fill(d->AddSectionDictionary("SOURCE"));
+    target.fill(d->AddSectionDictionary("TARGET"));
+    if(track){
+        Dict *trackDict = d->AddSectionDictionary("TRACK");
+        trackDict->SetIntValue("TID", track.id);
+        trackDict->SetValue("TITLE", track.title);
     }
-    return events;
+    else
+        d->ShowSection("ON_USER");
+    d->ShowSection( type == Publish ? "PUBLISH" : type == Comment ? "COMMENT"
+                  : type == Favorite ? "FAVORITE" : "FOLLOW");
+    d->SetValue("MESSAGE", message);
 }
 
-std::vector<Event> Event::userEvents(const User &u, int limit){
-    return select("(source_id = " + number(u.id()) + " OR target_id = " + number(u.id())
-        + (u == Session::user() ? " OR source_id IN (SELECT ref FROM favorites WHERE type = 'artist' AND user_id = "+number(u.id())+")":
+// EventList
+
+EventList::EventList(std::string cond, int limit){
+    DB::Result r = DB::query("SELECT type, source_id, source_name, target_id, target_name, track_id, track_title, message, date AT TIME ZONE 'UTC', id FROM events" + (cond.empty()?"":" WHERE "+cond) + " ORDER BY date DESC" + (limit?" LIMIT "+number(limit):""));
+    resize(r.size());
+    for(unsigned i=0; i<r.size(); i++){
+        at(i).type = r[i][0] == "publish"  ? Event::Publish
+                   : r[i][0] == "comment"  ? Event::Comment
+                   : r[i][0] == "favorite" ? Event::Favorite : Event::Follow;
+        at(i).source = User(number(r[i][1]), r[i][2]);
+        at(i).target = User(number(r[i][3]), r[i][4]);
+        at(i).track.id = number(r[i][5]);
+        at(i).track.title = r[i][6];
+        at(i).message = r[i][7];
+        at(i).date = r[i][8];
+        at(i).id = number(r[i][9]);
+    }
+}
+
+EventList EventList::user(const User &u, int limit){
+    return EventList("(source_id = " + number(u.id) + " OR target_id = " + number(u.id)
+        + (u == Session::user() ? " OR source_id IN (SELECT ref FROM favorites WHERE type = 'artist' AND user_id = "+number(u.id)+")":
             " AND type = 'comment'")
             + ") AND track_id NOT IN (select id FROM tracks WHERE visible = 'f')"
             , limit);
 }
 
-std::vector<Event> Event::trackEvents(const Track &t){
-    return select("track_id = " + number(t.id()));
+EventList EventList::track(const Track &t){
+    return EventList("track_id = " + number(t.id));
 }
 
-std::vector<Event> Event::userComments(const User &u){
-    return select("target_id = " + number(u.id()) + " AND type = 'comment' AND track_id = 0");
+Dict* EventList::fill(Dict *d, const std::string &section) const{
+    Dict *sub = d->AddIncludeDictionary(section);
+    sub->SetFilename("html/events.tpl");
+    if(empty())
+        sub->ShowSection("NO_EVENT");
+    for(const_iterator i=begin(); i!=end(); i++)
+        i->fill(sub->AddSectionDictionary("EVENT"));
+    return sub;
 }

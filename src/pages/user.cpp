@@ -3,6 +3,7 @@
 #include <account/session.h>
 #include <core/cgi.h>
 #include <playlist/playlist.h>
+#include <social/event.h>
 #include <text/text.h>
 #include <track/list.h>
 
@@ -30,6 +31,8 @@ void Pages::user(Document *doc){
             Dict *playlistDict = doc->dict()->AddSectionDictionary("PLAYLIST");
             i->fill(playlistDict);
         }
+
+        EventList::user(u).fill(doc->dict(), "EVENTS");
 
     }
 

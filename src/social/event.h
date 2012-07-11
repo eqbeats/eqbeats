@@ -1,46 +1,46 @@
-#ifndef EVENT_H
-#define EVENT_H
+#ifndef SOCIAL_EVENT_H
+#define SOCIAL_EVENT_H
 
-#include "track.h"
-#include "user.h"
+#include <track/track.h>
 
 class Event {
 
     public:
-        Event(){}
+        Event(){ id = 0; }
 
         enum Type { Publish=1, Comment=2, Favorite=4, Follow=8 };
-        Type type() const { return _type; }
 
-        User target() const { return _target; }
-        User source() const { return _source; }
-        Track track() const { return _track; }
-        std::string message() const { return _message; }
-        std::string date() const { return _date; }
-        int id() const { return _id; }
+        // Publish: source = author, track, no target, no message
+        // Comment: source = author, target, possible track, message = comment
+        // Favorite: source, target = artist, track, no message
+        // Follow: source = follower, target = followed, no track, no message
 
-        static Event publish(const Track &t);
-        static Event favorite(const Track &t, const User &src);
-        static Event comment(const Track &t, const User &src, std::string msg);
-        static Event comment(const User &tgt, const User &src, std::string msg);
-        static Event follow(const User &tgt, const User &src);
+        int id;
+        Type type;
+        User source, target;
+        Track track;
+        std::string message;
+        std::string date;
 
-        static std::vector<Event> userEvents(const User &u, int limit=0);
-        static std::vector<Event> trackEvents(const Track &t);
-        static std::vector<Event> userComments(const User &u);
-
-    private:
-        Event(Type nType, User nSource=User(), User nTarget=User(), Track nTrack=Track(), std::string nMessage="", std::string nDate="", int nId=0);
-        static std::vector<Event> select(std::string cond, int limit=0);
         void push();
-        Type _type;
-        User _target;
-        User _source;
-        Track _track;
-        std::string _message;
-        std::string _date;
-        int _id;
+
+        void fill(Dict*) const;
 
 };
 
-#endif // EVENT_H
+class EventList: public std::vector<Event> {
+
+    public:
+        EventList(){}
+
+        static EventList user(const User &u, int limit=0);
+        static EventList track(const Track &t);
+
+        Dict* fill(Dict*, const std::string &section) const;
+
+    private:
+        EventList(std::string cond, int limit=0);
+
+};
+
+#endif // SOCIAL_EVENT_H
