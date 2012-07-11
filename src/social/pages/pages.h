@@ -5,6 +5,7 @@
 
 namespace Pages {
     void comment(Document*);
+    void favorites(Document*);
     void socialActions(Document*);
 }
 

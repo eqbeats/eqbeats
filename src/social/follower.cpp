@@ -41,7 +41,7 @@ bool Follower::favorited(int tid){
 
 TrackList Follower::favorites(){
     return TrackList(
-        "SELECT %s FROM users, favorites WHERE favorites.type = 'track' "
+        "SELECT %s FROM %s, favorites WHERE %s AND favorites.type = 'track' "
         "AND favorites.ref = tracks.id AND favorites.user_id = " + number(id) + " "
         "ORDER BY users.name ASC");
 }
