@@ -15,6 +15,7 @@ class User{
         int id;
         std::string name;
 
+        bool self() const;
         std::string url() const;
 
         void fill(Dict*) const;

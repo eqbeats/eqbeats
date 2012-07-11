@@ -23,7 +23,7 @@ void Pages::trackActions(Document *doc){
     if(sub == "rename"){
         Track t(tid);
         if(!t) return;
-        if(post && t.artist == Session::user()){
+        if(post && t.artist.self()){
             std::string title = cgi("title");
             if(!title.empty() && title != t.title){
                 DB::query("UPDATE tracks SET title = $1 WHERE id = " + number(t.id), title);
@@ -37,7 +37,7 @@ void Pages::trackActions(Document *doc){
     else if(sub == "tags"){
         Track t(tid);
         if(!t) return;
-        if(post && t.artist == Session::user())
+        if(post && t.artist.self())
             DB::query("UPDATE tracks SET tags = regexp_split_to_array(lower($1), E' *, *') WHERE id = " + number(t.id), cgi("tags"));
         doc->redirect(t.url());
     }
@@ -45,7 +45,7 @@ void Pages::trackActions(Document *doc){
     else if(sub == "notes"){
         Track t(tid);
         if(!t) return;
-        if(post && t.artist == Session::user())
+        if(post && t.artist.self())
             DB::query("UPDATE tracks SET notes = $1 WHERE id = " + number(t.id), cgi("notes"));
         doc->redirect(t.url());
     }
@@ -53,7 +53,7 @@ void Pages::trackActions(Document *doc){
     else if(sub == "flags"){
         Track t(tid);
         if(!t) return;
-        if(post && t.artist == Session::user())
+        if(post && t.artist.self())
             DB::query("UPDATE tracks SET airable = $1 WHERE id = " + number(t.id), cgi.queryCheckbox("airable") ? "t" : "f");
         doc->redirect(t.url());
     }
@@ -73,7 +73,7 @@ void Pages::trackActions(Document *doc){
     else if(sub == "delete"){
         Track t(tid);
         if(!t) return;
-        if(t.artist != Session::user())
+        if(!t.artist.self())
             doc->redirect(t.url());
         else if(!post || cgi("confirm") != "Delete"){
             doc->setHtml("html/delete.tpl", "Track deletion");
@@ -95,7 +95,7 @@ void Pages::trackActions(Document *doc){
         if(tid != number(cgi("tid")))
             return doc->redirect(t.url());
 
-        if(Session::user() == t.artist && !t.visible && post){
+        if(t.artist.self() && !t.visible && post){
 
             DB::query("UPDATE tracks SET visible = 't', date = 'now' WHERE id = " + number(t.id));
             //Event::publish(t);

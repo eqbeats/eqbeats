@@ -30,7 +30,7 @@ void Pages::playlistActions(Document *doc){
     if(tid && sub == "playlist"){
         Playlist p(number(cgi("playlist")));
         if(!p) return;
-        if(post && Session::user() == p.author()){
+        if(post && p.author().self()){
             Track t(tid);
             if(t && t.visible)
                 p.add(tid);
@@ -44,7 +44,7 @@ void Pages::playlistActions(Document *doc){
     if(sub == "delete"){
         Playlist p(id);
         if(!p) return;
-        if(p.author() != Session::user() || !post || cgi("confirm") != "Delete")
+        if(!p.author().self() || !post || cgi("confirm") != "Delete")
             return doc->redirect(p.url());
         log("Deleting playlist: " + p.name() + " (" + number(p.id()) + ")");
         DB::query("DELETE FROM playlists WHERE id = " + number(p.id()));
@@ -55,7 +55,7 @@ void Pages::playlistActions(Document *doc){
         Playlist p(id);
         if(!p) return;
         if(post && (p.name() != cgi("name") || p.description() != cgi("desc"))
-           && p.author() == Session::user() && !cgi("name").empty())
+           && p.author().self() && !cgi("name").empty())
             DB::query("UPDATE playlists SET name = $1, description = $2 WHERE id = " + number(id), cgi("name"), cgi("desc"));
         doc->redirect(p.url());
     }
@@ -64,7 +64,7 @@ void Pages::playlistActions(Document *doc){
         Playlist p(id);
         if(!p) return;
         std::string dir = cgi("dir");
-        if(!post || Session::user() != p.author() || (dir != "up" && dir != "down"))
+        if(!post || !p.author().self() || (dir != "up" && dir != "down"))
             return doc->redirect(p.url());
         int i = number(cgi("item"));
         p.swap(i, i + (dir == "up" ? -1 : 1));
@@ -74,7 +74,7 @@ void Pages::playlistActions(Document *doc){
     else if(sub == "remove"){
         Playlist p(id);
         if(!p) return;
-        if(post && p.author() == Session::user())
+        if(post && p.author().self())
             p.remove(number(cgi("item")));
     }
 

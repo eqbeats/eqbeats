@@ -16,7 +16,7 @@ void Pages::art(Document *doc){
     // Upload
     if(sub == "art/upload"){
         cgicc::file_iterator file = cgi.getFile("file");
-        if(t.artist == Session::user() && file != cgi.getFiles().end()){
+        if(t.artist.self() && file != cgi.getFiles().end()){
             std::string filename = eqbeatsDir() + "/art/" + number(t.id);
             std::ofstream out(filename.c_str(), std::ios_base::binary);
             file->writeToStream(out);

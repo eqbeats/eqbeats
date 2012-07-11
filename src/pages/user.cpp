@@ -19,7 +19,7 @@ void Pages::user(Document *doc){
 
         doc->setHtml("html/user.tpl", u.name);
         u.fill(doc->dict());
-        Tracks::byUser(u.id, Session::user() == u).fill(doc->dict(), "TRACK_LIST");
+        Tracks::byUser(u.id, u.self()).fill(doc->dict(), "TRACK_LIST");
 
         Dict *uploader = doc->dict()->AddIncludeDictionary("UPLOADER");
         uploader->SetFilename("html/uploader.tpl");

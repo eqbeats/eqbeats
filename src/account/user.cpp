@@ -21,6 +21,10 @@ User::User(const std::string &email){
     }
 }
 
+bool User::self() const{
+    return Session::user() == *this;
+}
+
 std::string User::url() const{
     return "/user/" + number(id);
 }
@@ -28,5 +32,5 @@ std::string User::url() const{
 void User::fill(Dict *d) const{
     d->SetIntValue("UID", id);
     d->SetValue("USERNAME", name);
-    d->ShowSection(Session::user() == *this ? "IS_SELF" : "NOT_SELF");
+    d->ShowSection(self() ? "IS_SELF" : "NOT_SELF");
 }
