@@ -1,25 +1,26 @@
-#ifndef FOLLOWER_H
-#define FOLLOWER_H
+#ifndef SOCIAL_FOLLOWER_H
+#define SOCIAL_FOLLOWER_H
 
-#include "user.h"
+#include <account/list.h>
+#include <track/list.h>
 
-class Follower: public User{
+class Follower{
 
     public:
-        Follower(const User &u): User(u) {}
 
-        bool isFavorite(int tid) const;
-        bool addToFavorites(int tid);
-        void removeFromFavorites(int tid);
+        Follower(User *u): user(u) {}
 
-        std::vector<std::string> followers() const; // email addresses
-        std::vector<User> following() const;
-        void follow(int uid);
-        void unfollow(int uid);
-        bool isFollowing(int uid) const;
-        int followersCount() const;
+        bool favorited(int tid);
+        TrackList favorites();
+
+        bool following(int uid);
+        AccountList followed();
+        std::vector<std::string> followers(); // email addresses
+
+    private:
+        User *user;
 
 };
 
 
-#endif // FOLLOWER_H
+#endif // SOCIAL_FOLLOWER_H

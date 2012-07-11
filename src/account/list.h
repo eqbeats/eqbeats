@@ -11,6 +11,7 @@ class AccountList : public std::vector<Account> {
     public:
 
         AccountList(){}
+        AccountList(const std::string &query_fmt);
 
         static AccountList all(int n, int offset=0);
         static AccountList artists(int n, int offset=0);
@@ -19,7 +20,7 @@ class AccountList : public std::vector<Account> {
         Dict* fill(Dict*, const std::string &marker);
 
     private:
-        AccountList(const DB::Result &r);
+        void extract(const DB::Result &r);
 
 };
 

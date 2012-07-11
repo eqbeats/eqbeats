@@ -50,5 +50,5 @@
 
 {{#IS_SELF}}
 <h3><img src="/static/icons/plus-circle.png" alt="" /> Artists you follow</h3>
-{{>USER_LIST}}
+{{>FOLLOWED_USERS}}
 {{/IS_SELF}}

@@ -63,3 +63,16 @@ void Action::vote(int cid){
     }
     //Http::redirect(c.url()+"#submissions");
 }
+
+bool Follower::addToFavorites(int tid){
+    if(isFavorite(tid)) return false;
+    DB::query("INSERT INTO favorites (user_id, type, ref) "
+        "VALUES (" + number(_id) + ", 'track', " + number(tid) + ")");
+    return true;
+}
+
+void Follower::removeFromFavorites(int tid){
+    DB::query("DELETE FROM favorites "
+        "WHERE type = 'track' AND ref = " + number(tid) + " AND user_id = " + number(_id));
+    DB::query("DELETE FROM events WHERE type = 'favorite' AND source_id = " + number(id()) + " AND track_id = " + number(tid));
+}

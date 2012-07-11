@@ -4,6 +4,7 @@
 #include <core/cgi.h>
 #include <playlist/playlist.h>
 #include <social/event.h>
+#include <social/follower.h>
 #include <text/text.h>
 #include <track/list.h>
 
@@ -33,6 +34,7 @@ void Pages::user(Document *doc){
         }
 
         EventList::user(u).fill(doc->dict(), "EVENTS");
+        Follower(&u).followed().fill(doc->dict(), "FOLLOWED_USERS");
 
     }
 
