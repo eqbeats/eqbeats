@@ -29,7 +29,7 @@ void TrackList::extract(const DB::Result &r){
     }
 }
 
-Dict* TrackList::fill(Dict *d, std::string section){
+Dict* TrackList::fill(Dict *d, std::string section, bool buttons){
     Dict *list_d = d->AddIncludeDictionary(section);
     list_d->SetFilename("html/tracklist.tpl");
     if(empty()){
@@ -37,13 +37,18 @@ Dict* TrackList::fill(Dict *d, std::string section){
         return list_d;
     }
     std::transform(section.begin(), section.end(), section.begin(), ::tolower);
-    int n = 1;
-    for(const_iterator i=begin(); i!=end(); i++){
+    for(unsigned i=0; i<size(); i++){
         Dict *track_d = list_d->AddSectionDictionary("TRACK");
-        i->fill(track_d);
-        Dict *player_d = i->player(track_d);
+        if(buttons){
+            track_d->ShowSection("BUTTONS");
+            track_d->SetIntValue("POSITION", i);
+            track_d->ShowSection(i == 0 ? "IS_FIRST" : "NOT_FIRST");
+            track_d->ShowSection(i == size()-1 ? "IS_LAST" : "NOT_LAST");
+        }
+        at(i).fill(track_d);
+        Dict *player_d = at(i).player(track_d);
         player_d->SetValue("LIST", section);
-        player_d->SetIntValue("COUNT", n++);
+        player_d->SetIntValue("COUNT", i+1);
     }
     return list_d;
 }

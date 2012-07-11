@@ -13,7 +13,8 @@ void Pages::playlist(Document *doc){
 
         doc->setHtml("html/playlist.tpl", p.name());
         p.fill(doc->dict());
-        p.tracks().fill(doc->dict(), "TRACK_LIST");
+        Dict *list = p.tracks().fill(doc->dict(), "TRACKLIST", p.author().self());
+        list->SetIntValue("PLAYLIST_ID", p.id());
 
     }
 

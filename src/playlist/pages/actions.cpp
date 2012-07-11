@@ -44,11 +44,17 @@ void Pages::playlistActions(Document *doc){
     if(sub == "delete"){
         Playlist p(id);
         if(!p) return;
-        if(!p.author().self() || !post || cgi("confirm") != "Delete")
+        if(!p.author().self())
             return doc->redirect(p.url());
-        log("Deleting playlist: " + p.name() + " (" + number(p.id()) + ")");
-        DB::query("DELETE FROM playlists WHERE id = " + number(p.id()));
-        doc->redirect(Session::user().url());
+        if(!post || cgi("confirm") != "Delete"){
+            doc->setHtml("html/delete.tpl", "Playlist deletion");
+            doc->dict()->SetValue("WHAT", p.name());
+        }
+        else{
+            log("Deleting playlist: " + p.name() + " (" + number(p.id()) + ")");
+            DB::query("DELETE FROM playlists WHERE id = " + number(p.id()));
+            doc->redirect(Session::user().url());
+        }
     }
 
     else if(sub == "edit"){
@@ -76,6 +82,7 @@ void Pages::playlistActions(Document *doc){
         if(!p) return;
         if(post && p.author().self())
             p.remove(number(cgi("item")));
+        doc->redirect(p.url() + "#tracks");
     }
 
 }

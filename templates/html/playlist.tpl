@@ -8,7 +8,8 @@
     <div class="notes">{{DESCRIPTION:x-format}}</div>
     {{/HAS_DESCRIPTION}}
 
-    {{>TRACK_LIST}}
+    <a name="tracks"></a>
+    {{>TRACKLIST}}
 
     {{#IS_SELF}}
     <div class="edit">
@@ -21,10 +22,10 @@
                 </tr>
                 <tr>
                     <td>
-                        <img src="/static/icons/card-pencil.png"> Notes:
-                        <div class="legend">(tags: [b]old, [u]nderline, [i]talic)</div>
+                        <img src="/static/icons/card-pencil.png"> Notes:<br />
+                        <span class="legend">(tags: [b]old, [u]nderline, [i]talic)</span>
                     </td>
-                    <td><textarea name="desc">{{#HAS_DESCRIPTION}}{{DESCRIPTION}}{{/HAS_DESCRIPTION}}</textarea></td>
+                    <td><textarea name="desc">{{#HAS_DESCRIPTION}}{{DESCRIPTION:pre_escape}}{{/HAS_DESCRIPTION}}</textarea></td>
                 </tr>
                 <tr>
                     <td></td>
