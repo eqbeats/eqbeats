@@ -7,7 +7,8 @@
 bool drop(const std::string &sub, std::string &str);
 
 // date.cpp
-std::string day(const std::string &date);
+std::string formatTime(const std::string &date, const char *fmt);
+std::string fuzzyTime(const std::string &date, bool capitalize=true);
 
 // email.cpp
 bool validEmail(const std::string &email);

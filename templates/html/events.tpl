@@ -13,7 +13,7 @@
     <h4><img src="/static/icons/fire-small.png" alt="" /> Recent happenings</h4>
     {{#EVENT}}
     <li class="event" name="{{EVENT_ID}}">
-        <span class="date" title="{{UTC_DATE}} UTC">{{DATE}}</span>
+        <span class="date" title="{{UTC_DATE}} UTC">{{FUZZY_TIME}}</span>
 
         {{#PUBLISH}}
         <img src="/static/icons/disc-arrow.png" alt="" />

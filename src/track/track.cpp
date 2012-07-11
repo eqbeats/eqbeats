@@ -33,7 +33,7 @@ void Track::fill(Dict *d) const{
     d->SetValue("TITLE", title);
     d->ShowSection(visible ? "IS_VISIBLE" : "IS_HIDDEN");
     d->SetValue("DATE", date);
-    d->SetValue("DAY", day(date));
+    d->SetValue("DAY", formatTime(date, "%B %-d, %Y"));
     artist.fill(d);
     d->ShowSection(Art(id) ? "HAS_ART" : "NO_ART");
 }

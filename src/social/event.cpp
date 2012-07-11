@@ -23,6 +23,8 @@ void Event::fill(Dict *d) const{
     if(source) source.fill(src);
     else src->SetValueAndShowSection("NAME", source.name.empty() ? "Anonymous" : source.name, "GUEST");
     target.fill(d->AddSectionDictionary("TARGET"));
+    d->SetValue("UTC_DATE", formatTime(date, "%F %R"));
+    d->SetValue("FUZZY_TIME", fuzzyTime(date));
     if(track){
         Dict *trackDict = d->AddSectionDictionary("TRACK");
         trackDict->SetIntValue("TID", track.id);
