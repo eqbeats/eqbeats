@@ -31,7 +31,7 @@
                     <a href="/">Home</a>
                     <a href="/artists">Artists</a>
                     <img alt="-" src="/static/icons/cm-nav.png"/>
-                    <a href="/news">News</a>
+                    <a href="http://blog.eqbeats.org/">Blog</a>
                     <a href="/faq">FAQ</a>
                     <a title="#eqbeats on irc.ponychat.net" href="http://ponychat.net/webchat?nick={{#LOGGED_USER}}{{USERNAME:x-irc}}{{/LOGGED_USER}}{{#LOGGED_OUT}}pony_.....{{/LOGGED_OUT}}&amp;autojoin=eqbeats">Chat</a>
                 </div>
