@@ -18,9 +18,7 @@
             <img src="/static/icons/playlist-add.png" alt="Playlists" title="Playlists">
             <form action="/track/{{TID}}/playlist" method="post">
                 <select name="playlist">
-                {{#PLAYLISTS}}
-                    <option value="{{PLAYLIST_ID}}">{{NAME}}</option>
-                {{/PLAYLISTS}}
+                    {{#PLAYLIST}}<option value="{{PLAYLIST_ID}}">{{PLAYLIST_NAME}}</option>{{/PLAYLIST}}
                 </select>
             <input type="submit" value="Add to this playlist"/>
             </form>

@@ -1,6 +1,7 @@
 #include "pages.h"
 #include <account/session.h>
 #include <core/cgi.h>
+#include <core/db.h>
 #include <log/log.h>
 #include <misc/mail.h>
 #include <playlist/playlist.h>
@@ -53,6 +54,19 @@ void Pages::track(Document *doc){
         Session::fill(doc->dict());
         EventList::track(t).fill(doc->dict(), "EVENTS");
         doc->dict()->ShowSection(Follower(Session::user().id).favorited(tid) ? "IS_FAVORITE" : "NOT_FAVORITE");
+
+        if(t.artist.self()){
+            DB::Result playlists = DB::query(
+                "SELECT id, name FROM playlists WHERE user_id = " + number(Session::user().id) + " ORDER BY name ASC");
+            if(!playlists.empty()){
+                doc->dict()->ShowSection("HAS_PLAYLISTS");
+                for(DB::Result::const_iterator i=playlists.begin(); i!=playlists.end(); i++){
+                    Dict *playlist = doc->dict()->AddSectionDictionary("PLAYLIST");
+                    playlist->SetValue("PLAYLIST_ID", i->at(0));
+                    playlist->SetValue("PLAYLIST_NAME", i->at(1));
+                }
+            }
+        }
 
     }
 
