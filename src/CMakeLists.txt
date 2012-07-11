@@ -8,7 +8,7 @@ add_executable ( eqbeats.fcgi
     core/db.cpp core/path.cpp
     log/log.cpp
     misc/hash.cpp misc/mail.cpp misc/repl.cpp misc/timer.cpp
-    pages/static.cpp pages/home.cpp pages/user.cpp
+    pages/static.cpp pages/home.cpp pages/user.cpp pages/track.cpp
     playlist/playlist.cpp playlist/pages/actions.cpp playlist/pages/playlist.cpp
     render/document.cpp render/fcgiio.cpp render/file.cpp render/http.cpp
     social/event.cpp social/follower.cpp social/pages/actions.cpp social/pages/comment.cpp

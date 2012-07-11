@@ -1,18 +1,18 @@
 {{%AUTOESCAPE context="HTML"}}
 <div class="track">
     <h2>{{TITLE}}
-        {{#IS_NOT_FAV}}
+        {{#NOT_FAVORITE}}
         <a href="{{#LOGGED_OUT}}/login?redirect={{/LOGGED_OUT}}/track/{{TID}}/favorite"
            title="Add to favorites">
             <img src="/static/icons/star-empty.png" alt="Add to favorites" />
         </a>
-        {{/IS_NOT_FAV}}
-        {{#IS_FAV}}
-        <a href="/track/{{TID}}/unfavorite"
+        {{/NOT_FAVORITE}}
+        {{#IS_FAVORITE}}
+        <a href="{{#LOGGED_OUT}}/login?redirect={{/LOGGED_OUT}}/track/{{TID}}/unfavorite"
            title="Remove from favorites">
             <img src="/static/icons/star.png" alt="Remove from favorites" />
         </a>
-        {{/IS_FAV}}
+        {{/IS_FAVORITE}}
         {{#IS_VISIBLE}}{{#HAS_PLAYLISTS}}
         <span id="addplaylist">
             <img src="/static/icons/playlist-add.png" alt="Playlists" title="Playlists">
@@ -50,7 +50,6 @@
 
         {{#IS_SELF}}
         {{#HAS_HITS}}<span><img alt="" src="/static/icons/edit-number.png" /> Hits : {{HIT_COUNT}}</span>{{/HAS_HITS}}
-        <span><img alt="" src="/static/icons/star.png" /> Favourites : {{FAVCOUNT}}</span>
         {{/IS_SELF}}
         {{#NOT_SELF}}
         <form action="/track/{{TID}}/report" method="post">
@@ -82,6 +81,8 @@
     </div>
 
     {{#HAS_NOTES}}<div class="notes">{{NOTES:x-format}}</div>{{/HAS_NOTES}}
+
+    {{>EVENTS}}
 
     {{#IS_SELF}}
     <div class="edit">
@@ -158,7 +159,5 @@
     </div>
     {{/IS_SELF}}
 
-    {{>EVENTS}}
-    {{>COMMENT_FORM}}
 </div>
 
