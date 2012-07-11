@@ -46,7 +46,7 @@ int main(int argc, char** argv){
         Pages::track, Pages::tracks, Pages::oembed, Pages::trackActions, Pages::trackUpload, Pages::art,
         Pages::account, Pages::login, Pages::user, Pages::users, Pages::registration, Pages::passwordReset,
         Pages::playlist, Pages::playlistActions,
-        Pages::comment,
+        Pages::comment, Pages::socialActions,
         0
     };
 

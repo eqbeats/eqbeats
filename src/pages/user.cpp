@@ -34,7 +34,9 @@ void Pages::user(Document *doc){
         }
 
         EventList::user(u).fill(doc->dict(), "EVENTS");
-        Follower(&u).followed().fill(doc->dict(), "FOLLOWED_USERS");
+        Follower(u.id).followed().fill(doc->dict(), "FOLLOWED_USERS");
+        if(!u.self())
+            doc->dict()->ShowSection(Follower(Session::user().id).following(u.id) ? "IS_FOLLOWED" : "NOT_FOLLOWED");
 
     }
 

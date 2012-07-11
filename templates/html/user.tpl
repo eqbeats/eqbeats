@@ -5,8 +5,8 @@
 
 <h2>
     {{USERNAME}}
-    {{#FOLLOWED}}<a class="follow disabled" href="/user/{{UID}}/unfollow"><span>Stop following</span></a>{{/FOLLOWED}}
-    {{#NOT_FOLLOWED}}<a class="follow" href="/user/{{UID}}/follow"><span>Follow</span></a>{{/NOT_FOLLOWED}}
+    {{#IS_FOLLOWED}}<a class="follow" href="/user/{{UID}}/unfollow"><span>Stop following</span></a>{{/IS_FOLLOWED}}
+    {{#NOT_FOLLOWED}}<a class="follow disabled" href="/user/{{UID}}/follow"><span>Follow</span></a>{{/NOT_FOLLOWED}}
 </h2>
 
 <div class="item"><img src="/static/icons/mail.png" alt="" /> Email: {{EMAIL:x-email}}</div>

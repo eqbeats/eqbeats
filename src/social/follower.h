@@ -8,7 +8,7 @@ class Follower{
 
     public:
 
-        Follower(User *u): user(u) {}
+        Follower(int uid): id(uid) {}
 
         bool favorited(int tid);
         TrackList favorites();
@@ -18,7 +18,7 @@ class Follower{
         std::vector<std::string> followers(); // email addresses
 
     private:
-        User *user;
+        int id;
 
 };
 
