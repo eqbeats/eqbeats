@@ -19,7 +19,9 @@ void Event::push(){
 }
 
 void Event::fill(Dict *d) const{
-    source.fill(d->AddSectionDictionary("SOURCE"));
+    Dict *src = d->AddSectionDictionary("SOURCE");
+    if(source) source.fill(src);
+    else src->SetValueAndShowSection("NAME", source.name.empty() ? "Anonymous" : source.name, "GUEST");
     target.fill(d->AddSectionDictionary("TARGET"));
     if(track){
         Dict *trackDict = d->AddSectionDictionary("TRACK");
@@ -67,6 +69,7 @@ EventList EventList::track(const Track &t){
 Dict* EventList::fill(Dict *d, const std::string &section) const{
     Dict *sub = d->AddIncludeDictionary(section);
     sub->SetFilename("html/events.tpl");
+    Session::fill(sub);
     if(empty())
         sub->ShowSection("NO_EVENT");
     for(const_iterator i=begin(); i!=end(); i++)

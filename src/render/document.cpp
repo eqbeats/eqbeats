@@ -10,6 +10,7 @@ Document::Document(){
     _mime = "text/html";
     _rootDict = new Dict("eqbeats");
     _rootDict->SetGlobalValue("EQBEATS_URL", eqbeatsUrl());
+    _rootDict->SetGlobalValue("PATH", path);
     _dict = _rootDict;
 }
 

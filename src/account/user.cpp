@@ -30,6 +30,7 @@ std::string User::url() const{
 }
 
 void User::fill(Dict *d) const{
+    if(!id) return;
     d->SetIntValue("UID", id);
     d->SetValue("USERNAME", name);
     d->ShowSection(self() ? "IS_SELF" : "NOT_SELF");

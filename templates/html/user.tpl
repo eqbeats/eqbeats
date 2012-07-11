@@ -18,10 +18,7 @@
 
 </div>
 
-<div class="events_wrapper">
-    {{>COMMENT_FORM}}
-    {{>EVENTS}}
-</div>
+{{>EVENTS}}
 
 <h3><img src="/static/icons/disc.png" alt="" /> Tracks {{>FEED_ICON}}</h3>
 {{>TRACK_LIST}}

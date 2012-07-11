@@ -7,6 +7,7 @@
 #include <playlist/pages/pages.h>
 #include <render/document.h>
 #include <render/fcgiio.h>
+#include <social/pages/pages.h>
 #include <text/modifiers.h>
 #include <track/pages/pages.h>
 
@@ -45,6 +46,7 @@ int main(int argc, char** argv){
         Pages::track, Pages::tracks, Pages::oembed, Pages::trackActions, Pages::trackUpload, Pages::art,
         Pages::account, Pages::login, Pages::user, Pages::users, Pages::registration, Pages::passwordReset,
         Pages::playlist, Pages::playlistActions,
+        Pages::comment,
         0
     };
 

@@ -1,4 +1,14 @@
 {{%AUTOESCAPE context="HTML"}}
+
+<div class="events_wrapper">
+
+<form class="postcomment" action="{{PATH}}/comment" method="post">
+    {{#LOGGED_OUT}}<input type="text" name="name" placeholder="Name"/>{{/LOGGED_OUT}}
+    <input class="honeypot" type="text" name="url" placeholder="If you can see this, don't fill it in." />
+    <input type="text" name="msg" placeholder="Leave a note" />
+    <input type="submit" value="Post" onclick="this.form.submit();this.disabled=true;return false;" />
+</form>
+
 <ul class="events">
     <h4><img src="/static/icons/fire-small.png" alt="" /> Recent happenings</h4>
     {{#EVENT}}
@@ -8,8 +18,7 @@
         {{#PUBLISH}}
         <img src="/static/icons/disc-arrow.png" alt="" />
         {{#SOURCE}}<a href="/user/{{UID}}">{{USERNAME}}</a>{{/SOURCE}}
-        published {{#TRACK}}<a href="/track/{{TID}}">{{TITLE}}</a>{{/TRACK}}
-        .
+        published {{#TRACK}}<a href="/track/{{TID}}">{{TITLE}}</a>{{/TRACK}}.
         {{/PUBLISH}}
 
         {{#COMMENT}}
@@ -36,8 +45,7 @@
         {{#IS_SELF}}You{{/IS_SELF}}
         {{#NOT_SELF}}<a href="/user/{{UID}}">{{USERNAME}}</a>{{/NOT_SELF}}
         {{/SOURCE}}
-        started following {{#TARGET}}<a href="/user/{{UID}}">{{USERNAME}}</a>{{/TARGET}}
-        .
+        started following {{#TARGET}}<a href="/user/{{UID}}">{{USERNAME}}</a>{{/TARGET}}.
         {{/FOLLOW}}
 
         {{#FAVORITE}}
@@ -47,8 +55,7 @@
         {{#NOT_SELF}}<a href="/user/{{UID}}">{{USERNAME}}</a>{{/NOT_SELF}}
         {{/SOURCE}}
         favorited {{#TRACK}}<a href="/track/{{TID}}">{{TITLE}}</a>{{/TRACK}}
-        by {{#TARGET}}<a href="/user/{{UID}}">{{USERNAME}}</a>{{/TARGET}}
-        .
+        by {{#TARGET}}<a href="/user/{{UID}}">{{USERNAME}}</a>{{/TARGET}}.
         {{/FAVORITE}}
 
     </li>
@@ -57,3 +64,5 @@
     <li class="empty">Nothing here yet.</li>
     {{/NO_EVENT}}
 </ul>
+
+</div>
