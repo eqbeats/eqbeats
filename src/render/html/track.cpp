@@ -34,7 +34,7 @@ void Html::trackPage(int tid){
     string path = getPath();
 
     // Header
-    header(t.title(), (t.notes().empty()?"":metaDescription(strip(t.notes()))) +
+    header(t.title() + " - " + t.artist().name(), (t.notes().empty()?"":metaDescription(strip(t.notes()))) +
             "<link rel=\"alternate\" type=\"application/json+oembed\" href=\"" + eqbeatsUrl() + "/oembed?format=json&amp;url=http%3A//eqbeats.org" + path + "\" />"
             "<link rel=\"alternate\" type=\"text/xml+oembed\" href=\"" + eqbeatsUrl() + "/oembed?format=xml&amp;url=http%3A//eqbeats.org" + path + "\" />");
 
