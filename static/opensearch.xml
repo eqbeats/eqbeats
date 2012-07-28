@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/">
+    <ShortName>EqBeats</ShortName>
+    <Description>Search pony music with EqBeats.</Description>
+    <InputEncoding>UTF-8</InputEncoding>
+    <Url template="http://eqbeats.org/tracks/search?q={searchTerms}" rel="results" type="text/html" />
+    <Url template="http://eqbeats.org/static/opensearch.xml" rel="self" type="application/opensearchdescription+xml" />
+    <Image height="16" width="16" type="image/x-icon">http://eqbeats.org/static/favicon.ico</Image>
+</OpenSearchDescription>
