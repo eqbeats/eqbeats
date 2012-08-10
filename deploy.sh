@@ -9,7 +9,7 @@ find . -maxdepth 1 -type f -executable -exec install -m775 '{}' /srv/eqbeats/too
 
 
 cd ../static
-install -m664 *.css *.txt *.swf *.png *.jpg playing.ico 502.html /srv/eqbeats/static
+install -m664 *.css *.txt *.swf *.png *.jpg *.xml playing.ico 502.html /srv/eqbeats/static
 for f in *.js; do
     jsmin < $f > /srv/eqbeats/static/$f
 done

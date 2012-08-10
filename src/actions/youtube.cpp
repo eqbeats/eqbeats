@@ -32,14 +32,19 @@ void Action::youtubeUpload(int tid){
           << "<br/> --<br/><a href=\""<< t.url() <<"\">"<< eqbeatsUrl() << t.url() <<"</a><br/>Download: <a href=\""<<t.url(Track::MP3)<<"\">"<<eqbeatsUrl()<<t.url(Track::MP3)<<"</a></p>"
              "<div class=\"tags\">Tags :<br/>";
         std::vector<std::string> tags = t.tags();
+        int tagslen = 0;
         for(std::vector<std::string>::iterator tag=tags.begin(); tag != tags.end(); tag++){
             o << "<span class=\"tag\">" << Html::escape(*tag) << "</span> ";
+            tagslen += tag->size() + 2;
         }
         o << "</div>"
              "</div>"
              "<div class=\"ytsidebar\">"
-             "This is what your video will look like. If you have cover art, make sure you upload it before you continue."
-             "<form method=\"POST\"><input type=\"submit\" value=\"Continue\"/> &nbsp; <a class=\"danger\" href=\""<< t.url() <<"\">Cancel</a></form>"
+             "This is what your video will look like. If you have cover art, make sure you upload it before you continue.";
+        if (tagslen >= 500) {
+            o << "<div class=\"message error\">There are a lot of tags, some of them may be lost during upload</div>";
+        }
+        o << "<form method=\"POST\"><input type=\"submit\" value=\"Continue\"/> &nbsp; <a class=\"danger\" href=\""<< t.url() <<"\">Cancel</a></form>"
              "</div>"
              "<div style=\"clear: both\"></div>";
         Html::footer();

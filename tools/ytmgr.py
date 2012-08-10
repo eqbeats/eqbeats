@@ -90,10 +90,11 @@ class YoutubeManager:
 
     def mkvideo(self, tid):
         os.chdir(os.getenv("EQBEATS_DIR", "."))
-        os.makedirs("/tmp/eqrender/", exist_ok=True)
-        out = "/tmp/eqrender/" + str(tid) + ".avi"
+        eqrender ="/tmp/eqrender-" + str(os.getuid()) + "/"
+        os.makedirs(eqrender, exist_ok=True)
+        out = eqrender + str(tid) + ".avi"
         if os.access("art/"+str(tid), os.F_OK):
-            art = "/tmp/eqrender/"+str(tid)+".bmp"
+            art = eqrender + str(tid)+".bmp"
             os.spawnvp(os.P_WAIT, "convert", ("convert", "-flatten", "art/" + str(tid), art))
         else:
             art = "static/placeholder.jpg"
@@ -110,6 +111,13 @@ class YoutubeManager:
             title = (data[0] + " - " + data[1]).translate(str.maketrans("", "", "<>")).encode("utf-8")[:100]
             desc = re.sub("\[/?[bis]\]", "", data[2]).translate(str.maketrans("","","<>")) + "\n--\nhttp://eqbeats.org/track/" + str(tid) + "\nDownload: http://eqbeats.org/track/" + str(tid) + "/mp3"
             tags = (tag for tag in data[3] if not "<" in tag and not ">" in tag and not len(tag.encode("utf-8")) < 2 and not len(tag.encode("utf-8")) > 30)
+            tagstring = ""
+            for tag in tags:
+                if len(tag) + len(tagstring) + 1 > 500:
+                    break
+                else:
+                    tagstring += tag + ","
+            tagstring = tagstring[:-1]
             f = self.mkvideo(tid)
             h = hc.HTTPSConnection("uploads.gdata.youtube.com")
             boundary = ("".join(random.choice("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-_") for _ in range(15))).encode("utf-8")
@@ -127,7 +135,7 @@ xmlns:yt="http://gdata.youtube.com/schemas/2007">
     """+desc.encode("utf-8")+b"""
     </media:description>
     <media:category scheme="http://gdata.youtube.com/schemas/2007/categories.cat">Music</media:category>
-    <media:keywords>"""+(html.escape(",".join(tags))).encode("utf-8")+b"""</media:keywords>
+    <media:keywords>"""+(html.escape(tagstring)).encode("utf-8")[:500]+b"""</media:keywords>
 </media:group>"""
 #<yt:accessControl action='list' permission='denied'/>
             body += b"""</entry>
