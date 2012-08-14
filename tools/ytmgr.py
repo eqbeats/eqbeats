@@ -132,10 +132,10 @@ xmlns:yt="http://gdata.youtube.com/schemas/2007">
 <media:group>
     <media:title type="plain">"""+title+b"""</media:title>
     <media:description type="plain">
-    """+desc.encode("utf-8")+b"""
+    """+html.escape(desc).encode("utf-8")+b"""
     </media:description>
     <media:category scheme="http://gdata.youtube.com/schemas/2007/categories.cat">Music</media:category>
-    <media:keywords>"""+(html.escape(tagstring)).encode("utf-8")[:500]+b"""</media:keywords>
+    <media:keywords>"""+html.escape(tagstring).encode("utf-8")[:500]+b"""</media:keywords>
 </media:group>"""
 #<yt:accessControl action='list' permission='denied'/>
             body += b"""</entry>
