@@ -9,7 +9,7 @@
 #include "render/html/player.h"
 #include "render/html/user.h"
 #include "render/html/page.h"
-#include "render/html/news.h"
+#include "render/news.h"
 #include "render/html/static.h"
 #include "render/html/home.h"
 #include "render/html/contest.h"
@@ -178,11 +178,9 @@ int main(int argc, char** argv){
         }
         // News
         else if((id = route("news", path)))
-            Html::newsPage(id);
-        else if((id = route("news", "comment", path)))
-            Action::postComment(Comment::News, id);
+            Http::newsRedirect(id);
         else if(path == "/news")
-            Html::latestNews(20);
+            Http::redirect("http://blog.eqbeats.org/");
         // Contests
         else if((id = route("contest", path)))
             Html::contest(id);

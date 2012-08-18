@@ -21,14 +21,6 @@ class Comment {
         int trackId;
         std::string trackTitle;
 
-        static void add(const std::string &msg, ::User u, int ref, Type type);
-
-        static std::vector<Comment> forArtist(int uid);
-        static std::vector<Comment> forUser(int uid);
-        static std::vector<Comment> forTrack(int tid);
-        static std::vector<Comment> forNews(int nid);
-        static int countForNews(int nid);
-
         Comment(int nAuthorId, const std::string &nContents, const std::string &nAuthorName, Type nType, int nTrackId = 0,
                 const std::string &nTrackTitle = "")
             { authorId = nAuthorId; contents = nContents; _authorName = nAuthorName; type = nType; trackId = nTrackId;

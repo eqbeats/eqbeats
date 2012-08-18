@@ -4,7 +4,6 @@
 #include "forms.h"
 #include "track.h"
 #include "escape.h"
-#include "../../news.h"
 #include "../../number.h"
 #include "../../track.h"
 #include "../../db.h"

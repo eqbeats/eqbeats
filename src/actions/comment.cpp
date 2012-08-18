@@ -2,7 +2,6 @@
 #include "../render/html/page.h"
 #include "../render/http.h"
 #include "../path.h"
-#include "../news.h"
 #include "../track.h"
 #include "../session.h"
 #include "../user.h"
@@ -17,10 +16,8 @@ using namespace Render;
 void Action::postComment(Comment::Type type, int ref){
     Track ref_t;
     Account ref_u;
-    News ref_n;
     if(type == Comment::Track)     ref_t = Track(ref);
     else if(type == Comment::User) ref_u = Account(ref);
-    else if(type == Comment::News) ref_n = News(ref);
 
     bool bot = true;
     cgicc::form_iterator url = cgi.getElement("url");
@@ -29,7 +26,6 @@ void Action::postComment(Comment::Type type, int ref){
 
     if(type == Comment::Track && !ref_t) Html::notFound("Track");
     else if(type == Comment::User && !ref_u) Html::notFound("User");
-    else if(type == Comment::News && !ref_n) Html::notFound("News");
 
     else {
         if(!cgi("msg").empty() && !bot && cgi.getEnvironment().getRequestMethod() == "POST"){
@@ -66,8 +62,6 @@ void Action::postComment(Comment::Type type, int ref){
                     sendMail(ref_u.email().c_str(), maildata.c_str());
                 }
             }
-            else
-                Comment::add(cgi("msg"), u, ref, type);
         }
 
         // Debug
@@ -84,9 +78,7 @@ void Action::postComment(Comment::Type type, int ref){
             commentLog << i->getName() << ": " << i->getValue() << endl;
 
         Http::redirect(
-            type == Comment::Track ? ref_t.url() + "#comments" :
-            type == Comment::User  ? ref_u.url() + "#comments" :
-            type == Comment::News  ? ref_n.url() + "#comments" : "/"
+            type == Comment::Track ? ref_t.url() + "#comments" : ref_u.url() + "#comments"
         );
     }
 }
