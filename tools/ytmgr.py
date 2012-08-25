@@ -105,10 +105,11 @@ class YoutubeManager:
     def upload(self, tid):
         db = self.db()
         c = db.cursor()
-        c.execute("SELECT users.name, tracks.title, tracks.notes, tracks.tags, youtube_access_tokens.token FROM tracks, users, youtube_access_tokens WHERE tracks.id = %s and tracks.user_id = users.id and tracks.user_id = youtube_access_tokens.user_id and youtube_access_tokens.expire > 'now'", (tid,))
+        c.execute("SELECT users.name, tracks.title, tracks.notes, tracks.tags, youtube_access_tokens.token, tracks.visible FROM tracks, users, youtube_access_tokens WHERE tracks.id = %s and tracks.user_id = users.id and tracks.user_id = youtube_access_tokens.user_id and youtube_access_tokens.expire > 'now'", (tid,))
         data = c.fetchone()
         if data:
-            title = (data[0] + " - " + data[1]).translate(str.maketrans("", "", "<>")).encode("utf-8")[:100]
+            visible = data[5]
+            title = html.escape((data[0] + " - " + data[1]).translate(str.maketrans("", "", "<>"))).encode("utf-8")[:100]
             desc = re.sub("\[/?[bis]\]", "", data[2]).translate(str.maketrans("","","<>")) + "\n--\nhttp://eqbeats.org/track/" + str(tid) + "\nDownload: http://eqbeats.org/track/" + str(tid) + "/mp3"
             tags = (tag for tag in data[3] if not "<" in tag and not ">" in tag and not len(tag.encode("utf-8")) < 2 and not len(tag.encode("utf-8")) > 30)
             tagstring = ""
@@ -136,8 +137,8 @@ xmlns:yt="http://gdata.youtube.com/schemas/2007">
     </media:description>
     <media:category scheme="http://gdata.youtube.com/schemas/2007/categories.cat">Music</media:category>
     <media:keywords>"""+html.escape(tagstring).encode("utf-8")[:500]+b"""</media:keywords>
-</media:group>"""
-#<yt:accessControl action='list' permission='denied'/>
+</media:group>
+""" + (b"""<yt:accessControl action='list' permission='denied'/>""" if not visible else b"")
             body += b"""</entry>
 --"""+boundary+b"""
 Content-Type: video/avi
