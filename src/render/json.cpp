@@ -17,6 +17,7 @@ using namespace Render;
 using namespace Json;
 
 void header(){
+    o << "Access-Control-Allow-Origin: *\n";
     if(cgi("jsonp").empty())
         Http::header("application/json");
     else {
