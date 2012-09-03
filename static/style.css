@@ -509,10 +509,10 @@ ul {
     clear: both;
 }
 .js .tracklist li { cursor: pointer; }
+.js .tracklist li.empty { cursor: default; }
 
-.tracklist li:hover {
-    background-color: #f4f4f4;
-}
+.js .tracklist li:hover { background-color: #f4f4f4; }
+.js .tracklist li.empty:hover { background-color: transparent; }
 
 .tracklist .title, .tracklist .by {
     line-height: 33px;
