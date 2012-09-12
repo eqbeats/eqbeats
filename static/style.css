@@ -264,12 +264,9 @@ input.honeypot {
     color: #666;
 }
 
-h2 img {
-    margin: 0 3px;
-}
+h2 .buttons { padding-left: 4px; }
 
 #addplaylist {
-    padding-left: 4px;
     position: relative;
     vertical-align: middle;
 }
@@ -281,7 +278,7 @@ h2 img {
     position: absolute;
     margin: 0;
     left: 0;
-    padding-left: 27px;
+    padding-left: 20px;
     top: 0;
     width: 300px;
 }

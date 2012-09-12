@@ -55,7 +55,7 @@ void Pages::track(Document *doc){
         EventList::track(t).fill(doc->dict(), "EVENTS");
         doc->dict()->ShowSection(Follower(Session::user().id).favorited(tid) ? "IS_FAVORITE" : "NOT_FAVORITE");
 
-        if(t.artist.self()){
+        if(Session::user()){
             DB::Result playlists = DB::query(
                 "SELECT id, name FROM playlists WHERE user_id = " + number(Session::user().id) + " ORDER BY name ASC");
             if(!playlists.empty()){
@@ -67,7 +67,6 @@ void Pages::track(Document *doc){
                 }
             }
         }
-
     }
 
     else if(sub == "delete"){

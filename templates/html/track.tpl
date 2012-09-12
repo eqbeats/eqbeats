@@ -1,29 +1,28 @@
 {{%AUTOESCAPE context="HTML"}}
 <div class="track">
     <h2>{{TITLE}}
-        {{#NOT_FAVORITE}}
-        <a href="{{#LOGGED_OUT}}/login?redirect={{/LOGGED_OUT}}/track/{{TID}}/favorite"
-           title="Add to favorites">
-            <img src="/static/icons/star-empty.png" alt="Add to favorites" />
-        </a>
-        {{/NOT_FAVORITE}}
-        {{#IS_FAVORITE}}
-        <a href="{{#LOGGED_OUT}}/login?redirect={{/LOGGED_OUT}}/track/{{TID}}/unfavorite"
-           title="Remove from favorites">
-            <img src="/static/icons/star.png" alt="Remove from favorites" />
-        </a>
-        {{/IS_FAVORITE}}
-        {{#IS_VISIBLE}}{{#HAS_PLAYLISTS}}
-        <span id="addplaylist">
-            <img src="/static/icons/playlist-add.png" alt="Playlists" title="Playlists">
-            <form action="/track/{{TID}}/playlist" method="post">
-                <select name="playlist">
-                    {{#PLAYLIST}}<option value="{{PLAYLIST_ID}}">{{PLAYLIST_NAME}}</option>{{/PLAYLIST}}
-                </select>
-            <input type="submit" value="Add to this playlist"/>
-            </form>
+        <span class="buttons">
+            {{#NOT_FAVORITE}}
+            <a href="{{#LOGGED_OUT}}/login?redirect={{/LOGGED_OUT}}/track/{{TID}}/favorite"
+            title="Add to favorites">
+                <img src="/static/icons/star-empty.png" alt="Add to favorites" /></a>
+            {{/NOT_FAVORITE}}
+            {{#IS_FAVORITE}}
+            <a href="{{#LOGGED_OUT}}/login?redirect={{/LOGGED_OUT}}/track/{{TID}}/unfavorite"
+            title="Remove from favorites">
+                <img src="/static/icons/star.png" alt="Remove from favorites" /></a>
+            {{/IS_FAVORITE}}
+            {{#IS_VISIBLE}}{{#HAS_PLAYLISTS}}
+            <span id="addplaylist">
+                <img src="/static/icons/playlist-add.png" alt="Playlists">
+                <form action="/track/{{TID}}/playlist" method="post" title="Add to playlist">
+                    <select name="playlist">
+                        {{#PLAYLIST}}<option value="{{PLAYLIST_ID}}">{{PLAYLIST_NAME}}</option>{{/PLAYLIST}}
+                    </select><input type="submit" value="Add to this playlist"/>
+                </form>
+            </span>
+            {{/HAS_PLAYLISTS}}{{/IS_VISIBLE}}
         </span>
-        {{/HAS_PLAYLISTS}}{{/IS_VISIBLE}}
     </h2>
     <h4>by <a href="/user/{{UID}}">{{USERNAME}}</a> <span class="date">on {{DAY}}</span></h4>
 
