@@ -22,11 +22,11 @@
                 &ldquo;This license lets others remix, tweak, and build upon your work non-commercially, and although their new works must also acknowledge you and be non-commercial, they don’t have to license their derivative works on the same terms.&rdquo;<br />
                 <a href="http://creativecommons.org/licenses/">More about Creative Commons licenses.</a><br /><br />
                 Other CC licenses:
-                <input name="license" type="radio" value="CC BY" id="lby" {{#CC-BY-NC}}checked="checked"{{/CC-BY-NC}} /> <label for="lby">BY</label>
-                <input name="license" type="radio" value="CC BY-SA" id="lsa" {{#CC-BY-SA}}checked="checked"{{/CC-BY-SA}} /> <label for="lsa">BY-SA</label>
-                <input name="license" type="radio" value="CC BY-ND" id="lnd" {{#CC-BY-ND}}checked="checked"{{/CC-BY-ND}} /> <label for="lnd">BY-ND</label>
-                <input name="license" type="radio" value="CC BY-NC-SA" id="lncsa" {{#CC-BY-NC-SA}}checked="checked"{{/CC-BY-NC-SA}} /> <label for="lncsa">BY-NC-SA</label>
-                <input name="license" type="radio" value="CC BY-NC-ND" id="lncnd" {{#CC-BY-NC-ND}}checked="checked"{{/CC-BY-NC-ND}} /> <label for="lncnd">BY-NC-ND</label>
+                <input name="license" type="radio" value="CC BY" title="Attribution" id="lby" {{#CC-BY-NC}}checked="checked"{{/CC-BY-NC}} /> <label for="lby">BY</label>
+                <input name="license" type="radio" value="CC BY-SA" id="lsa" title="Attribution-ShareAlike" {{#CC-BY-SA}}checked="checked"{{/CC-BY-SA}} /> <label for="lsa">BY-SA</label>
+                <input name="license" type="radio" value="CC BY-ND" id="lnd" title="Attribution-NoDerivs" {{#CC-BY-ND}}checked="checked"{{/CC-BY-ND}} /> <label for="lnd">BY-ND</label>
+                <input name="license" type="radio" value="CC BY-NC-SA" id="lncsa" title="Attribution-NonCommercial-ShareAlike" {{#CC-BY-NC-SA}}checked="checked"{{/CC-BY-NC-SA}} /> <label for="lncsa">BY-NC-SA</label>
+                <input name="license" type="radio" value="CC BY-NC-ND" id="lncnd" title="Attribution-NonCommercial-NoDerivs" {{#CC-BY-NC-ND}}checked="checked"{{/CC-BY-NC-ND}} /> <label for="lncnd">BY-NC-ND</label>
             </div>
         </td>
     </tr>
@@ -35,7 +35,7 @@
         <td><input name="license" type="radio" value="Public domain" id="lpub" {{#PUBLIC}}checked="checked"{{/PUBLIC}} /></td>
         <td>
             <b><label for="lpub">Public Domain</label></b>
-            <div>Very permissive. Use that if you make your music for fun and don't care about what people do with it.</div>
+            <div>"No rights reserved". Use it if you make your music for fun and want everyone to make the most of it.</div>
         </td>
     </tr>
 
@@ -43,14 +43,14 @@
         <td><input name="license" type="radio" value="custom" id="lcus" {{#CUSTOM}}checked="checked" {{/CUSTOM}} /></td>
         <td>
             <b><label for="lcus">Custom:</label> </b>
-            <input name="custom-license" " << (found?"":"value=""+Html::escape(t.license())+"" ") << "/>
+            <input name="custom-license" value="{{CUSTOM}}"/>
         </td>
     </tr>
 
     {{#TRACK}}
     <tr>
         <td><input name="mkdefault" type="checkbox" id="ldef" /></td>
-        <td><label for="ldef">Make it the default license.</label></td>
+        <td><label for="ldef">Make it the default license for new tracks.</label></td>
     </tr>
     {{/TRACK}}
 
