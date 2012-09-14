@@ -22,6 +22,15 @@ void notFound(const string what){
          "</feed>";
 }
 
+string atomDate(const string date){
+    string newdate = date;
+    for(string::iterator i = newdate.begin(); i<newdate.end(); i++)
+        if(*i == ' ')
+            *i = 'T';
+    newdate += ":00";
+    return newdate;
+}
+
 void feed(const string &title, const string &link, const vector<Track> &tracks){
     Http::header("application/atom+xml");
     o << "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>"
@@ -29,11 +38,11 @@ void feed(const string &title, const string &link, const vector<Track> &tracks){
            "<title>" << title << " on EqBeats</title>"
            "<link rel=\"alternate\" href=\"" << eqbeatsUrl() << link << "\" />"
            "<id>" << eqbeatsUrl() << link << "</id>"
-           "<updated>" << (tracks.empty()? "1970-01-01 01:00:00+01:00": tracks[0].date()) << "</updated>";
+           "<updated>" << (tracks.empty()? "1970-01-01T01:00:00+01:00": atomDate(tracks[0].date())) << "</updated>";
     for(std::vector<Track>::const_iterator i=tracks.begin(); i!=tracks.end(); i++){
         o << "<entry>"
                 "<title>" << Html::escape(i->artist().name()) << " - " << Html::escape(i->title()) << "</title>"
-                "<updated>" << i->date() << "</updated>"
+                "<updated>" << atomDate(i->date()) << "</updated>"
                 "<id>" << eqbeatsUrl() << i->url() << "</id>"
                 "<author>"
                     "<name>" << Html::escape(i->artist().name()) << "</name>"
