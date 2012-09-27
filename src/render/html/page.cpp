@@ -62,7 +62,7 @@ void Html::header(const std::string &title, const std::string &head, int status)
                         << icon("cm-nav", "-") <<
                         " <a href=\"http://blog.eqbeats.org/\">News</a> "
                         "<a href=\"/faq\">FAQ</a>"
-                        "<a title=\"#eqbeats on irc.ponychat.net\" href=\"http://ponychat.net/webchat/index-2.php?autojoin=eqbeats"+(Session::user()?"&nick="+ircName(Session::user().name()):"")+"\">Chat</a>"
+                        "<a title=\"#eqbeats on irc.ponychat.net\" href=\"http://ponychat.net/webchat?autojoin=eqbeats"+(Session::user()?"&nick="+ircName(Session::user().name()):"")+"\">Chat</a>"
                     "</div>"
                     "<div style=\"clear:both;\"></div>"
                 "</div>"
