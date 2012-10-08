@@ -7,8 +7,8 @@ SERVCOUNT=${EQBEATS_COUNT:=1}
 
 cd $EQBEATS_DIR
 
-case "$1" in
-  start)
+function start()
+{
     SERVRUNNING=$(ls /proc | egrep -c "^($(cat pid 2> /dev/null | tr "\n" "|"))$")
     if [[ $SERVRUNNING -ge $SERVCOUNT ]]; then
       echo "$PROGNAME : Already running"
@@ -17,9 +17,10 @@ case "$1" in
       chgrp http eqbeats.sock
       echo "$PROGNAME : Started $SERVCOUNT."
     fi
-    ;;
+}
 
-  stop)
+function stop()
+{
     if [[ ! -a pid ]]; then
       echo "$PROGNAME : Not running."
     else
@@ -27,12 +28,19 @@ case "$1" in
       rm pid
       echo "$PROGNAME : Stopped."
     fi
-    ;;
+}
 
+case "$1" in
+  start)
+	start
+	;;
+  stop)
+	stop
+	;;
   restart)
-    $0 stop
+    stop
     sleep 0.5 # wait for the socket to close properly
-    $0 start
+    start
     ;;
 
   *)
