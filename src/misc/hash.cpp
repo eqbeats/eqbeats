@@ -22,7 +22,7 @@ std::string md5(const std::string &str){
 
 std::string randomString(){
     ulong n = ((ulong) rand() << 32) | (ulong) rand();
-    char str[16];
+    char str[17];
     sprintf(str, "%016lx", n);
     return std::string(str);
 }
