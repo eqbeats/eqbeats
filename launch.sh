@@ -18,7 +18,7 @@ function start()
       echo "$PROGNAME : Started $SERVCOUNT."
     fi
 }
-    
+
 function stop()
 {
     if [[ ! -a pid ]]; then
