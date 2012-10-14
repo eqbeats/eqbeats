@@ -37,7 +37,7 @@ void Track::fill(Dict *d) const{
     d->SetValue("DAY", formatTime(date, "%B %-d, %Y"));
     artist.fill(d);
     d->ShowSection(Art(id) ? "HAS_ART" : "NO_ART");
-    d->ShowSection(Youtube(id) ? "HAS_YOUTUBE" : "NO_YOUTUBE");
+    d->ShowSection(Youtube(artist.id) ? "HAS_YOUTUBE" : "NO_YOUTUBE");
 }
 
 Dict* Track::player(Dict *d, bool fallback) const{

@@ -20,7 +20,7 @@ void Pages::oauth(Document *doc){
             return doc->redirect("/account");
 
         doc->setHtml("html/bsod.tpl", "Linking your YouTube account");
-        if (yt.link(code)){
+        if (!code.empty() && yt.link(code)){
             doc->dict()->SetValue("TITLE", "Success");
             doc->dict()->SetValue("MESSAGE", "Your YouTube account is now linked to your EqBeats account.");
         } else {

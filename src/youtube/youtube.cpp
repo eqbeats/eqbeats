@@ -21,10 +21,10 @@ void Youtube::unlink() {
 
 bool Youtube::link(std::string & code){
     Repl ytmgr(("/tmp/ytmgr-" + number(getuid()) + ".sock").c_str());
-    return ytmgr.exec("auth " + code + " " + number(_uid)).find("OK") != 0;
+    return ytmgr.exec("auth " + code + " " + number(_uid)).find("OK") == 0;
 }
 
 bool Youtube::upload(ExtendedTrack & t){
     Repl ytmgr(("/tmp/ytmgr-" + number(getuid()) + ".sock").c_str());
-    return ytmgr.exec("upload " + number(t.id)).find("OK") != 0;
+    return ytmgr.exec("upload " + number(t.id)).find("OK") == 0;
 }
