@@ -23,8 +23,8 @@ void Pages::yt_upload(Document *doc){
             return doc->redirect(t.url());
 
         if(cgi.getEnvironment().getRequestMethod() != "POST"){
-            doc->setHtml("html/youtubea.tpl", "YouTube upload preview");
-            doc->dict()->SetValue("NAME", Session::user().name);
+            doc->setHtml("html/youtube.tpl", "YouTube upload preview");
+            doc->dict()->SetValue("ARTIST", Session::user().name);
             doc->dict()->SetValue("TRUNC_TITLE", t.title.substr(0,100));
             Art a(tid);
             if (a) {
@@ -33,8 +33,8 @@ void Pages::yt_upload(Document *doc){
             }
             else doc->dict()->ShowSection("NO_COVER");
             doc->dict()->SetValue("DESCRIPTION", t.notes);
-            doc->dict()->SetValue("URL", t.url());
-            doc->dict()->SetValue("MP3_URL", t.url() + "/mp3");
+            doc->dict()->SetValue("URL", eqbeatsUrl() + t.url());
+            doc->dict()->SetValue("MP3_URL", eqbeatsUrl() + t.url() + "/mp3");
             //doc->dict()->SetValue("MP3_URL", t.url(Track::MP3));
 
             std::vector<std::string> & tags = t.tags;

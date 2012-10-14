@@ -1,6 +1,6 @@
 <div class="ytpreview">
 
-    <h2>{{#ARTIST}}{{NAME}}{{/ARTIST}} - {{TRUNC_TITLE}}</h2>
+    <h2>{{ARTIST}} - {{TRUNC_TITLE}}</h2>
 
     <div class="ytplayer">
        {{#HAS_COVER}}<img src="{{COVER_URL}}" />{{/HAS_COVER}}
