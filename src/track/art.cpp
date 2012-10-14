@@ -18,6 +18,11 @@ std::string Art::filepath(Art::Size sz) const{
         (sz==Medium ? "medium/" : sz==Thumbnail ? "thumb/" : "") + number(_tid) + (sz==Full?"":".png");
 }
 
+std::string Art::url(Art::Size sz) const{
+    return "/track/" + number(_tid) + "/art" +
+        (sz==Medium ? "/medium" : sz==Thumbnail ? "/thumb" : "");
+}
+
 std::string getFormat(const char *filepath){
     FILE *f = fopen(filepath, "rb");
     std::string format = "";

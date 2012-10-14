@@ -18,8 +18,11 @@ class Art{
 
         operator bool(){ return _tid>0; }
 
-    private:
         enum Size { Full, Medium, Thumbnail };
+
+        std::string url(Size sz) const;
+
+    private:
         std::string filepath(Size sz=Full) const;
 
         int _tid;

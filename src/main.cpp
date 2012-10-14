@@ -10,6 +10,7 @@
 #include <social/pages/pages.h>
 #include <text/modifiers.h>
 #include <track/pages/pages.h>
+#include <youtube/pages/pages.h>
 
 #include <stdio.h>
 #include <sys/wait.h>
@@ -47,6 +48,7 @@ int main(int argc, char** argv){
         Pages::account, Pages::login, Pages::user, Pages::users, Pages::registration, Pages::passwordReset,
         Pages::playlist, Pages::playlistActions,
         Pages::comment, Pages::socialActions, Pages::favorites,
+        Pages::oauth, Pages::yt_upload,
         0
     };
 
