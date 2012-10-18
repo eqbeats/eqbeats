@@ -17,7 +17,7 @@
 
         {{#PUBLISH}}
         <img src="/static/icons/disc-arrow.png" alt="" />
-        {{#SOURCE}}<a href="/user/{{UID}}">{{USERNAME}}</a>{{/SOURCE}}
+        {{#SOURCE}}<a href="/user/{{ULINK}}">{{USERNAME}}</a>{{/SOURCE}}
         published {{#TRACK}}<a href="/track/{{TID}}">{{TITLE}}</a>{{/TRACK}}.
         {{/PUBLISH}}
 
@@ -25,16 +25,16 @@
         <img src="/static/icons/balloon-white-left.png" alt="" />
         {{#SOURCE}}
         {{#IS_SELF}}You{{/IS_SELF}}
-        {{#NOT_SELF}}<a href="/user/{{UID}}">{{USERNAME}}</a>{{/NOT_SELF}}
+        {{#NOT_SELF}}<a href="/user/{{ULINK}}">{{USERNAME}}</a>{{/NOT_SELF}}
         {{#GUEST}}{{NAME}}{{/GUEST}}
         {{/SOURCE}}
         {{#TRACK}}posted a comment{{/TRACK}}
         {{#ON_USER}}said{{/ON_USER}}
         on
-        {{#TRACK}}<a href="/track/{{TID}}">{{TITLE}}</a> by {{#TARGET}}<a href="/user/{{UID}}">{{USERNAME}}</a>{{/TARGET}}:{{/TRACK}}
+        {{#TRACK}}<a href="/track/{{TID}}">{{TITLE}}</a> by {{#TARGET}}<a href="/user/{{ULINK}}">{{USERNAME}}</a>{{/TARGET}}:{{/TRACK}}
         {{#ON_USER}}{{#TARGET}}
         {{#IS_SELF}}your profile page:{{/IS_SELF}}
-        {{#NOT_SELF}}<a href="/user/{{UID}}">{{USERNAME}}'s profile</a>:{{/NOT_SELF}}
+        {{#NOT_SELF}}<a href="/user/{{ULINK}}">{{USERNAME}}'s profile</a>:{{/NOT_SELF}}
         {{/TARGET}}{{/ON_USER}}
         <p class="comment">{{MESSAGE:x-format}}</p>
         {{/COMMENT}}
@@ -43,19 +43,19 @@
         <img src="/static/icons/plus.png" alt="" />
         {{#SOURCE}}
         {{#IS_SELF}}You{{/IS_SELF}}
-        {{#NOT_SELF}}<a href="/user/{{UID}}">{{USERNAME}}</a>{{/NOT_SELF}}
+        {{#NOT_SELF}}<a href="/user/{{ULINK}}">{{USERNAME}}</a>{{/NOT_SELF}}
         {{/SOURCE}}
-        started following {{#TARGET}}<a href="/user/{{UID}}">{{USERNAME}}</a>{{/TARGET}}.
+        started following {{#TARGET}}<a href="/user/{{ULINK}}">{{USERNAME}}</a>{{/TARGET}}.
         {{/FOLLOW}}
 
         {{#FAVORITE}}
         <img src="/static/icons/star.png" alt="" />
         {{#SOURCE}}
         {{#IS_SELF}}You{{/IS_SELF}}
-        {{#NOT_SELF}}<a href="/user/{{UID}}">{{USERNAME}}</a>{{/NOT_SELF}}
+        {{#NOT_SELF}}<a href="/user/{{ULINK}}">{{USERNAME}}</a>{{/NOT_SELF}}
         {{/SOURCE}}
         favorited {{#TRACK}}<a href="/track/{{TID}}">{{TITLE}}</a>{{/TRACK}}
-        by {{#TARGET}}<a href="/user/{{UID}}">{{USERNAME}}</a>{{/TARGET}}.
+        by {{#TARGET}}<a href="/user/{{ULINK}}">{{USERNAME}}</a>{{/TARGET}}.
         {{/FAVORITE}}
 
     </li>

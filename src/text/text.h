@@ -5,6 +5,7 @@
 
 // string.cpp
 bool drop(const std::string &sub, std::string &str);
+bool urlize(const std::string &s, std::string &str);
 
 // date.cpp
 std::string formatTime(const std::string &date, const char *fmt);

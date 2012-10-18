@@ -14,7 +14,7 @@
         <link rel="enclosure" type="audio/mpeg" href="{{EQBEATS_URL}}/track/{{TID}}/mp3" />
         <author>
             <name>{{USERNAME}}</name>
-            <uri>{{EQBEATS_URL}}/user/{{UID}}</uri>
+            <uri>{{EQBEATS_URL}}/user/{{ULINK}}</uri>
         </author>
     </entry>
     {{/TRACK}}

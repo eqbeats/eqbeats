@@ -7,7 +7,7 @@
     {{#USER}}
     <li>
         {{>AVATAR}}
-        <a class="name" href="/user/{{UID}}">{{USERNAME}}</a>
+        <a class="name" href="/user/{{ULINK}}">{{USERNAME}}</a>
         {{#HAS_ABOUT}}<div class="about">{{ABOUT:x-format}}</div>{{/HAS_ABOUT}}
         <div style="clear:both;"></div>
     </li>

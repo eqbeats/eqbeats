@@ -11,7 +11,7 @@
     "artist": {
         "id": {{UID}},
         "name": "{{USERNAME}}",
-        "link": "{{EQBEATS_URL}}/user/{{UID}}"
+        "link": "{{EQBEATS_URL}}/user/{{ULINK}}"
     },
     "link": "{{EQBEATS_URL}}/track/{{TID}}",
     "download": {
