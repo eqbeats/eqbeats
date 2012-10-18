@@ -75,7 +75,7 @@ EventList EventList::track(const Track &t){
     return EventList("track_id = " + number(t.id));
 }
 
-Dict* EventList::fill(Dict *d, const std::string &section) const{
+Dict* EventList::fill(Dict *d, const std::string &section, bool showForm) const{
     Dict *sub = d->AddIncludeDictionary(section);
     sub->SetFilename("html/events.tpl");
     Session::fill(sub);
@@ -83,5 +83,7 @@ Dict* EventList::fill(Dict *d, const std::string &section) const{
         sub->ShowSection("NO_EVENT");
     for(const_iterator i=begin(); i!=end(); i++)
         i->fill(sub->AddSectionDictionary("EVENT"));
+    if(showForm)
+        sub->ShowSection("FORM");
     return sub;
 }

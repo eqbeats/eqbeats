@@ -2,12 +2,14 @@
 
 <div class="events_wrapper">
 
+{{#FORM}}
 <form class="postcomment" action="{{PATH}}/comment" method="post">
     {{#LOGGED_OUT}}<input type="text" name="name" placeholder="Name"/>{{/LOGGED_OUT}}
     <input class="honeypot" type="text" name="url" placeholder="If you can see this, don't fill it in." />
     <input type="text" name="msg" placeholder="Leave a note" />
     <input type="submit" value="Post" onclick="this.form.submit();this.disabled=true;return false;" />
 </form>
+{{/FORM}}
 
 <ul class="events">
     <h4><img src="/static/icons/fire-small.png" alt="" /> Recent happenings</h4>

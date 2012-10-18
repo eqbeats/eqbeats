@@ -52,7 +52,7 @@ void Pages::track(Document *doc){
         if(hits) doc->dict()->SetValueAndShowSection("HIT_COUNT", number(hits), "HAS_HITS");
 
         Session::fill(doc->dict());
-        EventList::track(t).fill(doc->dict(), "EVENTS");
+        EventList::track(t).fill(doc->dict(), "EVENTS", false);
         doc->dict()->ShowSection(Follower(Session::user().id).favorited(tid) ? "IS_FAVORITE" : "NOT_FAVORITE");
 
         if(Session::user()){
