@@ -29,6 +29,13 @@ void Event::fill(Dict *d) const{
         Dict *trackDict = d->AddSectionDictionary("TRACK");
         trackDict->SetIntValue("TID", track.id);
         trackDict->SetValue("TITLE", track.title);
+
+        std::string tmp;
+        if(urlize(track.title, tmp)) {
+            trackDict->SetValue("TLINK", number(track.id) + "-" + tmp);
+        } else {
+            trackDict->SetValue("TLINK", number(track.id));
+        }
     }
     else
         d->ShowSection("ON_USER");

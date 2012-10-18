@@ -95,6 +95,13 @@ void Pages::trackUpload(Document *doc){
         Dict *trackDict = doc->dict()->AddSectionDictionary("TRACK");
         trackDict->SetIntValue("TID", t.id);
         trackDict->SetValue("TITLE", t.title);
+
+        std::string tmp;
+        if(urlize(t.title, tmp)) {
+            trackDict->SetValue("TLINK", number(t.id) + "-" + tmp);
+        } else {
+            trackDict->SetValue("TLINK", number(t.id));
+        }
     }
     else
         doc->redirect(t.url());
