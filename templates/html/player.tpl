@@ -2,8 +2,8 @@
 <script>
     registerTrack({
         id: "{{LIST}}-{{COUNT}}",
-        mp3: "/track/{{TID}}/mp3?stream",
-        vorbis: "/track/{{TID}}/vorbis?stream",
+        mp3: "/track/{{TLINK}}/mp3?stream",
+        vorbis: "/track/{{TLINK}}/vorbis?stream",
         list: "{{LIST}}"
     });
 </script>
@@ -11,8 +11,8 @@
 {{#FALLBACK}}
 <noscript>
     <audio controls>
-        <source type="audio/ogg" src="/track/{{TID}}/vorbis?stream" />
-        <source type="audio/mpeg" src="/track/{{TID}}/mp3?stream" />
+        <source type="audio/ogg" src="/track/{{TLINK}}/vorbis?stream" />
+        <source type="audio/mpeg" src="/track/{{TLINK}}/mp3?stream" />
     </audio>
 </noscript>
 {{/FALLBACK}}

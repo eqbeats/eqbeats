@@ -12,11 +12,11 @@
         <div id="player-embed">
 
             {{#FOUND}}
-            <a href="/track/{{TID}}" target="_blank" class="pic">
-                {{#HAS_ART}}<img src="/track/{{TID}}/art/thumb" class="cover" alt="Cover" />{{/HAS_ART}}
+            <a href="/track/{{TLINK}}" target="_blank" class="pic">
+                {{#HAS_ART}}<img src="/track/{{TLINK}}/art/thumb" class="cover" alt="Cover" />{{/HAS_ART}}
                 {{#NO_ART}}<img src="/static/logo.png" class="logo" alt="Equestrian Beats" />{{/NO_ART}}
             </a>
-            <h3><a href="/track/{{TID}}" target="_blank" title="{{TITLE}}">{{TITLE}}</a></h3>
+            <h3><a href="/track/{{TLINK}}" target="_blank" title="{{TITLE}}">{{TITLE}}</a></h3>
             <h4>by <a href="/user/{{ULINK}}" target="_blank" title="{{USERNAME}}">{{USERNAME}}</a></h4>
             {{>PLAYER}}
             {{/FOUND}}

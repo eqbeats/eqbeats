@@ -13,10 +13,10 @@
         "name": "{{USERNAME}}",
         "link": "{{EQBEATS_URL}}/user/{{ULINK}}"
     },
-    "link": "{{EQBEATS_URL}}/track/{{TID}}",
+    "link": "{{EQBEATS_URL}}/track/{{TLINK}}",
     "download": {
-        {{#HAS_ART}}"art": "{{EQBEATS_URL}}/track/{{TID}}/art",{{/HAS_ART}}
-        "mp3": "{{EQBEATS_URL}}/track/{{TID}}/mp3",
-        "vorbis": "{{EQBEATS_URL}}/track/{{TID}}/vorbis"
+        {{#HAS_ART}}"art": "{{EQBEATS_URL}}/track/{{TLINK}}/art",{{/HAS_ART}}
+        "mp3": "{{EQBEATS_URL}}/track/{{TLINK}}/mp3",
+        "vorbis": "{{EQBEATS_URL}}/track/{{TLINK}}/vorbis"
     }
 }

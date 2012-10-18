@@ -4,7 +4,7 @@
     "provider_name": "Equestrian Beats",
     "provider_url": "{{EQBEATS_URL}}",
     "type": "video",
-    "url": "{{EQBEATS_URL}}/track/{{TID}}",
+    "url": "{{EQBEATS_URL}}/track/{{TLINK}}",
     "width": {{WIDTH}},
     "height": 150,
     "html": "{{>EMBED_CODE:json_escape}}",
