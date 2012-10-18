@@ -95,7 +95,7 @@
             <img src="/static/icons/disc-arrow.png" alt="" />
             This track is not yet published.
             <input type="submit" value="Publish"/>
-            <input type="hidden" name="tid" value="{{TLINK}}"/>
+            <input type="hidden" name="tid" value="{{TID}}"/>
         </form>
         {{/IS_HIDDEN}}
 
