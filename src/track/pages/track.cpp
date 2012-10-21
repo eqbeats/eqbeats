@@ -22,6 +22,7 @@ void Pages::trackMisc(Document *doc){
 
     else if(sub == "json"){
         ExtendedTrack t(tid);
+        if(!t) return;
         doc->setJson("json/track.tpl");
         t.fill(doc->dict());
     }
