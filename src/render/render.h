@@ -24,8 +24,8 @@ class FCgiIO : public cgicc::CgiInput, public std::ostream {
 
     protected:
         FCGX_Request* 			fRequest;
-        fcgi_streambuf 			fOutBuf;
-        fcgi_streambuf 			fErrBuf;
+        fcgi_streambuf			fOutBuf;
+        fcgi_streambuf			fErrBuf;
         std::ostream 			fErr;
         std::map<std::string, std::string> 	fEnv;
 
