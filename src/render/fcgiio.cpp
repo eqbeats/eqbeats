@@ -7,8 +7,13 @@ FCgiIO::FCgiIO()
     fErr(&fErrBuf)
 {}
 
+
 void FCgiIO::attach(FCGX_Request* request){
     fRequest = request;
+
+    // Reset error bits if there was an i/o error during the previous request
+    if(bad()) clear();
+
     fOutBuf.attach(request->out);
     fErrBuf.attach(request->err);
 
