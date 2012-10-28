@@ -34,8 +34,8 @@
         </div>
         {{/BUTTONS}}
 
-        {{#HAS_ART}}<img class="cover" alt="" src="/track/{{TLINK}}/art/thumb" />{{/HAS_ART}}
-        <div class="title"><a href="/track/{{TLINK}}" title="{{TITLE}}">{{TITLE}}</a></div>
+        {{#HAS_ART}}<img class="cover" alt="" src="/track/{{TID}}/art/thumb" />{{/HAS_ART}}
+        <div class="title"><a href="/track/{{TID}}" title="{{TITLE}}">{{TITLE}}</a></div>
         <div class="by">by <a href="/user/{{ULINK}}" title="{{USERNAME}}">{{USERNAME}}</a></div>
         <div style="clear:both;"></div>
         {{>PLAYER}}

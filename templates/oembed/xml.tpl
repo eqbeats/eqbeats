@@ -5,7 +5,7 @@
     <provider_name>Equestrian Beats</provider_name>
     <provider_url>{{EQBEATS_URL}}</provider_url>
     <type>video</type>
-    <url>{{EQBEATS_URL}}/track/{{TLINK}}</url>
+    <url>{{EQBEATS_URL}}/track/{{TID}}</url>
     <width>{{WIDTH}}</width>
     <height>150</height>
     <html>{{>EMBED_CODE:xml_escape}}</html>

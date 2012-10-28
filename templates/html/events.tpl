@@ -20,7 +20,7 @@
         {{#PUBLISH}}
         <img src="/static/icons/disc-arrow.png" alt="" />
         {{#SOURCE}}<a href="/user/{{ULINK}}">{{USERNAME}}</a>{{/SOURCE}}
-        published {{#TRACK}}<a href="/track/{{TLINK}}">{{TITLE}}</a>{{/TRACK}}.
+        published {{#TRACK}}<a href="/track/{{TID}}">{{TITLE}}</a>{{/TRACK}}.
         {{/PUBLISH}}
 
         {{#COMMENT}}
@@ -33,7 +33,7 @@
         {{#TRACK}}posted a comment{{/TRACK}}
         {{#ON_USER}}said{{/ON_USER}}
         on
-        {{#TRACK}}<a href="/track/{{TLINK}}">{{TITLE}}</a> by {{#TARGET}}<a href="/user/{{ULINK}}">{{USERNAME}}</a>{{/TARGET}}:{{/TRACK}}
+        {{#TRACK}}<a href="/track/{{TID}}">{{TITLE}}</a> by {{#TARGET}}<a href="/user/{{ULINK}}">{{USERNAME}}</a>{{/TARGET}}:{{/TRACK}}
         {{#ON_USER}}{{#TARGET}}
         {{#IS_SELF}}your profile page:{{/IS_SELF}}
         {{#NOT_SELF}}<a href="/user/{{ULINK}}">{{USERNAME}}'s profile</a>:{{/NOT_SELF}}
@@ -56,7 +56,7 @@
         {{#IS_SELF}}You{{/IS_SELF}}
         {{#NOT_SELF}}<a href="/user/{{ULINK}}">{{USERNAME}}</a>{{/NOT_SELF}}
         {{/SOURCE}}
-        favorited {{#TRACK}}<a href="/track/{{TLINK}}">{{TITLE}}</a>{{/TRACK}}
+        favorited {{#TRACK}}<a href="/track/{{TID}}">{{TITLE}}</a>{{/TRACK}}
         by {{#TARGET}}<a href="/user/{{ULINK}}">{{USERNAME}}</a>{{/TARGET}}.
         {{/FAVORITE}}
 

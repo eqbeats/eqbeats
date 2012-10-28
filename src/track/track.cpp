@@ -3,6 +3,7 @@
 #include <account/session.h>
 #include <core/db.h>
 #include <text/text.h>
+#include <text/text.h>
 #include <youtube/youtube.h>
 
 Track::Track(int tid){
@@ -25,12 +26,7 @@ Track::Track(int tid){
 }
 
 std::string Track::url() const{
-    std::string tmp;
-    if(urlize(title, tmp)) {
-        return "/track/" + number(id) + "-" + tmp;
-    } else {
-        return "/track/" + number(id);
-    }
+    return (std::string) "/track/" + number(id);
 }
 
 void Track::fill(Dict *d) const{
@@ -42,13 +38,6 @@ void Track::fill(Dict *d) const{
     artist.fill(d);
     d->ShowSection(Art(id) ? "HAS_ART" : "NO_ART");
     d->ShowSection(Youtube(artist.id) ? "HAS_YOUTUBE" : "NO_YOUTUBE");
-
-    std::string tmp;
-    if(urlize(title, tmp)) {
-        d->SetValue("TLINK", number(id) + "-" + tmp);
-    } else {
-        d->SetValue("TLINK", number(id));
-    }
 }
 
 Dict* Track::player(Dict *d, bool fallback) const{
