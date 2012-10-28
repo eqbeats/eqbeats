@@ -8,6 +8,9 @@
 #include <unistd.h>
 
 void Pages::oauth(Document *doc){
+    if(path != "/oauth/yt" && path != "/oauth/yt/unlink")
+        return;
+
     if(!Session::user())
         return doc->redirect("/login?redirect=/account");
 
