@@ -26,12 +26,7 @@ bool User::self() const{
 }
 
 std::string User::url() const{
-    std::string tmp;
-    if(urlize(name, tmp)) {
-        return "/user/" + number(id) + "-" + tmp;
-    } else {
-        return "/user/" + number(id);
-    }
+    return "/user/" + number(id);
 }
 
 void User::fill(Dict *d) const{
@@ -39,12 +34,4 @@ void User::fill(Dict *d) const{
     d->SetIntValue("UID", id);
     d->SetValue("USERNAME", name);
     d->ShowSection(self() ? "IS_SELF" : "NOT_SELF");
-
-    std::string tmp;
-    if(urlize(name, tmp)) {
-        d->SetValue("ULINK", number(id) + "-" + tmp);
-    } else {
-        d->SetValue("ULINK", number(id));
-    }
-
 }

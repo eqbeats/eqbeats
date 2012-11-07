@@ -17,7 +17,7 @@
                 {{#NO_ART}}<img src="/static/logo.png" class="logo" alt="Equestrian Beats" />{{/NO_ART}}
             </a>
             <h3><a href="/track/{{TID}}" target="_blank" title="{{TITLE}}">{{TITLE}}</a></h3>
-            <h4>by <a href="/user/{{ULINK}}" target="_blank" title="{{USERNAME}}">{{USERNAME}}</a></h4>
+            <h4>by <a href="/user/{{UID}}" target="_blank" title="{{USERNAME}}">{{USERNAME}}</a></h4>
             {{>PLAYER}}
             {{/FOUND}}
 

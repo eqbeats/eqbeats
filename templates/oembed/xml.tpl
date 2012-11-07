@@ -11,5 +11,5 @@
     <html>{{>EMBED_CODE:xml_escape}}</html>
     <title>{{TITLE}}</title>
     <author_name>{{USERNAME}}</author_name>
-    <author_url>{{EQBEATS_URL}}/user/{{ULINK}}</author_url>
+    <author_url>{{EQBEATS_URL}}/user/{{UID}}</author_url>
 </oembed>

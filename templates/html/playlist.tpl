@@ -2,7 +2,7 @@
 <div class="playlist">
 
     <h2>{{PLAYLIST_NAME}}</h2>
-    <h4>by <a href="/user/{{ULINK}}">{{USERNAME}}</a></h4>
+    <h4>by <a href="/user/{{UID}}">{{USERNAME}}</a></h4>
 
     {{#HAS_DESCRIPTION}}
     <div class="notes">{{DESCRIPTION:x-format}}</div>

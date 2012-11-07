@@ -10,5 +10,5 @@
     "html": "{{>EMBED_CODE:json_escape}}",
     "title": "{{TITLE}}",
     "author_name": "{{USERNAME}}",
-    "author_url": "{{EQBEATS_URL}}/user/{{ULINK}}"
+    "author_url": "{{EQBEATS_URL}}/user/{{UID}}"
 }

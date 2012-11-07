@@ -6,18 +6,18 @@
 <h2>
     {{USERNAME}}
     {{#IS_FOLLOWED}}
-    <a class="follow" href="{{#LOGGED_OUT}}/login?redirect={{/LOGGED_OUT}}/user/{{ULINK}}/unfollow"
+    <a class="follow" href="{{#LOGGED_OUT}}/login?redirect={{/LOGGED_OUT}}/user/{{UID}}/unfollow"
     ><span>Stop following</span></a>
     {{/IS_FOLLOWED}}
     {{#NOT_FOLLOWED}}
-    <a class="follow disabled" href="{{#LOGGED_OUT}}/login?redirect={{/LOGGED_OUT}}/user/{{ULINK}}/follow"
+    <a class="follow disabled" href="{{#LOGGED_OUT}}/login?redirect={{/LOGGED_OUT}}/user/{{UID}}/follow"
     ><span>Follow</span></a>
     {{/NOT_FOLLOWED}}
 </h2>
 
 <div class="item"><img src="/static/icons/mail.png" alt="" /> Email: {{EMAIL:x-email}}</div>
 {{#IS_SELF}}<div class="item"><img src="/static/icons/card-pencil.png" alt="" /> <a href="/account">Edit</a></div>{{/IS_SELF}}
-<div class="item"><img src="/static/icons/star.png" alt="" /> <a href="/user/{{ULINK}}/favorites">Favorite tracks</a></div>
+<div class="item"><img src="/static/icons/star.png" alt="" /> <a href="/user/{{UID}}/favorites">Favorite tracks</a></div>
 <div style="clear:both;"></div>
 
 {{#HAS_ABOUT}}<div class="notes">{{ABOUT:x-format}}</div>{{/HAS_ABOUT}}
