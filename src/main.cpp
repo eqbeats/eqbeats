@@ -21,6 +21,9 @@ std::string path;
 ctemplate::TemplateCache cache;
 
 int main(int argc, char** argv){
+    (void)argc;
+    (void)argv;
+
     DB::connect();
     srand(getpid());
 
