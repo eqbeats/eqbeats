@@ -8,7 +8,7 @@ fi
 BASE="$EQBEATS_DIR/tracks/$1"
 find "$EQBEATS_DIR/tracks" -name "$1.*" -delete
 
-ffmpeg -loglevel quiet -y -i "$2" -acodec libvorbis -b:a 128k -vn "$BASE.ogg" 2>&1 >> "$EQBEATS_DIR/ffmpeg.log"
+ffmpeg -loglevel quiet -y -i "$2" -acodec libvorbis -q:a 4 -vn "$BASE.ogg" 2>&1 >> "$EQBEATS_DIR/ffmpeg.log"
 
 [ $? -ne 0 ] && exit 1
 
