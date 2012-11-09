@@ -14,7 +14,7 @@
 using namespace Render;
 
 bool fromEqBeats(){
-    return pcrecpp::RE("http://(www\\.)?" + cgi.getEnvironment().getServerName() + "/.*", pcrecpp::RE_Options().set_caseless(true)).FullMatch(cgi.getEnvironment().getReferrer());
+    return pcrecpp::RE(eqbeatsUrl() + "/.*", pcrecpp::RE_Options().set_caseless(true)).FullMatch(cgi.getEnvironment().getReferrer());
 }
 
 #include "../render/render.h"
