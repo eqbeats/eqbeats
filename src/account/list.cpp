@@ -51,7 +51,7 @@ AccountList AccountList::artists(int n, int offset){
 
 AccountList AccountList::search(const std::string &q){
     AccountList list;
-    list.extract(DB::query("SELECT %s FROM WHERE name ILIKE $1 ORDER BY name ASC", "%"+q+"%"));
+    list.extract(DB::query((std::string)"SELECT "+FIELDS+" FROM users WHERE name ILIKE $1 ORDER BY name ASC", "%"+q+"%"));
     return list;
 }
 
