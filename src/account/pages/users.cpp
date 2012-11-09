@@ -20,9 +20,10 @@ void Pages::users(Document *doc){
         AccountList l = AccountList::artists(21, 20*(p-1));
         if(p > 1)
             doc->dict()->SetValueAndShowSection("PREV", number(p-1), "HAS_PREV");
-        if(l.size() == 20)
+        if(l.size() == 21){
             doc->dict()->SetValueAndShowSection("NEXT", number(p+1), "HAS_NEXT");
-        if(!l.empty()) l.pop_back();
+            l.pop_back();
+        }
         l.fill(doc->dict(), "USERLIST");
     }
 
