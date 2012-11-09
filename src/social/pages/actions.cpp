@@ -10,7 +10,7 @@
 
 bool fromEqBeats(){
     return pcrecpp::RE(
-        "http://(www\\.)?" + cgi.getEnvironment().getServerName() + "/.*",
+        eqbeatsUrl() + "/.*",
         pcrecpp::RE_Options().set_caseless(true)
     ).FullMatch(cgi.getEnvironment().getReferrer());
 }
