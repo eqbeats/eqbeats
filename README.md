@@ -15,10 +15,11 @@
 
 #### Environment
 
-Set the `EQBEATS_DIR` environment variable to your eqbeats directory.
-You also need to make sure that you are in the `http` group, as well as the user running the webserver.
+Set the `EQBEATS_DIR` environment variable to your eqbeats directory and the `EQBEATS_YT_API_KEY` to your YouTube API key. You can acquire one [here](https://code.google.com/apis/youtube/dashboard/gwt/index.html).
 
 You can set the `EQBEATS_HTTPS` variable to anything if you wish to always use https.
+
+You also need to make sure that you are in the `http` group, as well as the user running the webserver.
 
 #### Webserver
 

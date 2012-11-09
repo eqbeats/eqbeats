@@ -147,7 +147,7 @@ Content-Transfer-Encoding: binary
 """+f.read()+b"""
 --"""+boundary+b"""--"""
             headers = {
-                    "X-GData-Key": "key=AI39si7oQH78ZCSIMu7d8CFZDj6Lhwj0K6NlGMFSzTbRJo2QU9chKlHNUSVoBaj38F0J5aIiLZ0UQu8PhET17q7kAlcgHCbU9w",
+                    "X-GData-Key": "key=%s" % os.getenv("EQBEATS_YT_API_KEY"),
                     "GData-Version": "2",
                     "Slug": "video", # worst bogus filename ever
                     "Content-Type": "multipart/related; boundary="+boundary.decode("utf-8"),
@@ -168,6 +168,9 @@ Content-Transfer-Encoding: binary
             except IndexError:
                 pass
     def run(self):
+        if(not(os.getenv("EQBEATS_DIR" && os.getenv("EQBEATS_YT_API_KEY")):
+            print("Environment is not set up correctly. Both EQBEATS_DIR and EQBEATS_YT_API_KEY are needed")
+            exit(1)
         os.chdir(os.getenv("EQBEATS_DIR"))
         self.socket.bind(sockloc)
         self.socket.settimeout(None)
