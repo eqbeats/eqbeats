@@ -66,6 +66,9 @@ int main(int argc, char** argv){
             cgi.getElementByValue("PHPE9568F36-D428-11d2-A769-00AA001ACF42") != cgi.getElements().end()){
             Http::redirect("http://youtu.be/gvdf5n-zI14");
         }
+        // HTTPS redirect
+        else if (getenv("EQBEATS_HTTPS") && !cgi.getEnvironment().usingHTTPS() && cgi.getElements().size() == 0)
+            Http::redirect(eqbeatsUrl() + path);
         // Static
         else if((id = route("track", "original", path)))
             Http::downloadTrack(id, Track::Original);
