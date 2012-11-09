@@ -59,7 +59,7 @@ int main(int argc, char** argv){
         resetTimer();
         o.attach(&request);
         cgi = cgicc::Cgicc(&o);
-        path = stripSlash(cgi.getEnvironment().getPathInfo());
+        path = stripSlash(cgi.getEnvironment().getScriptName());
         Document doc;
 
         // Nope
