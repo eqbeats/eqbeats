@@ -69,6 +69,9 @@ int main(int argc, char** argv){
             doc.redirect("http://youtu.be/gvdf5n-zI14");
         }
 
+        if (getenv("EQBEATS_HTTPS") && !cgi.getEnvironment().usingHTTPS() && cgi.getElements().size() == 0)
+            doc.redirect(eqbeatsUrl() + path);
+
         Session::start();
 
         for(int i=0; !doc && callbacks[i]; i++)
