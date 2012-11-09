@@ -19,4 +19,4 @@ install -m664 favicon-pub.ico /srv/eqbeats/static/favicon.ico
 cd icons
 install -m664 * /srv/eqbeats/static/icons
 
-sudo -u eqbeats-pub bash -c "EQBEATS_DIR=/srv/eqbeats EQBEATS_COUNT=5 /srv/eqbeats/launch.sh restart"
+sudo -u eqbeats-pub -i bash -c "/srv/eqbeats/launch.sh restart"
