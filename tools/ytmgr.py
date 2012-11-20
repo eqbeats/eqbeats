@@ -168,7 +168,7 @@ Content-Transfer-Encoding: binary
             except IndexError:
                 pass
     def run(self):
-        if(not(os.getenv("EQBEATS_DIR" && os.getenv("EQBEATS_YT_API_KEY")):
+        if(not(os.getenv("EQBEATS_DIR" and os.getenv("EQBEATS_YT_API_KEY")):
             print("Environment is not set up correctly. Both EQBEATS_DIR and EQBEATS_YT_API_KEY are needed")
             exit(1)
         os.chdir(os.getenv("EQBEATS_DIR"))
