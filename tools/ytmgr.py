@@ -93,13 +93,17 @@ class YoutubeManager:
         eqrender ="/tmp/eqrender-" + str(os.getuid()) + "/"
         os.makedirs(eqrender, exist_ok=True)
         out = eqrender + str(tid) + ".avi"
+        for f in os.listdir("tracks"):
+            print(f)
+            if "%s.orig" % tid in f:
+                infile = "tracks/" + f
+                break
         if os.access("art/"+str(tid), os.F_OK):
             art = eqrender + str(tid)+".bmp"
             os.spawnvp(os.P_WAIT, "convert", ("convert", "-flatten", "art/" + str(tid), art))
         else:
             art = "static/placeholder.jpg"
-        #os.spawnvp(os.P_WAIT, "ffmpeg", ("ffmpeg","-loop","1","-r","0.1","-shortest","-i", art,"-i","tracks/"+str(tid)+".mp3","-vf","scale=-1:720,scale=trunc(iw/2)*2:0","-vcodec","libtheora","-acodec","copy","-y",out))
-        os.spawnvp(os.P_WAIT, "ffmpeg", ("ffmpeg","-loop","1","-r","0.1","-shortest","-i", art,"-i","tracks/"+str(tid)+".mp3","-vf","scale=-1:720","-vcodec","libtheora","-acodec","copy","-y",out))
+        os.spawnvp(os.P_WAIT, "ffmpeg", ("ffmpeg","-loop","1","-r","0.1","-i", art,"-i", infile,"-shortest","-vf","scale=-1:720","-vcodec","libtheora","-acodec","libvorbis","-y",out))
         return open(out, "rb")
 
     def upload(self, tid):
