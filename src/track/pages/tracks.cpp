@@ -66,14 +66,7 @@ void Pages::tracks(Document *doc){
         is_json_array = true, json_tracks = Tracks::featured(50);
     if(is_json_array){
         doc->setJson("json/array.tpl");
-        Dict *item, *data;
-        for(TrackList::const_iterator i=json_tracks.begin(); i!=json_tracks.end(); i++){
-            item = doc->dict()->AddSectionDictionary("ITEM");
-            data = item->AddIncludeDictionary("DATA");
-            data->SetFilename("json/track.tpl");
-            data->ShowSection("ARTIST");
-            i->fill(data);
-        }
+        json_tracks.fillJson(doc->dict());
     }
 
     // Feeds
@@ -102,5 +95,4 @@ void Pages::tracks(Document *doc){
         for(TrackList::const_iterator i=l.begin(); i!=l.end(); i++)
             i->fill(doc->dict()->AddSectionDictionary("TRACK"));
     }
-
 }

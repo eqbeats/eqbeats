@@ -53,6 +53,19 @@ Dict* TrackList::fill(Dict *d, std::string section, bool buttons){
     return list_d;
 }
 
+Dict* TrackList::fillJson(Dict *d, bool showArtist){
+    Dict *item, *data;
+    for(TrackList::const_iterator i=begin(); i!=end(); i++){
+        item = d->AddSectionDictionary("TRACK");
+        data = item->AddIncludeDictionary("TRACK");
+        data->SetFilename("json/track.tpl");
+        if(showArtist)
+            data->ShowSection("ARTIST");
+        i->fill(data);
+    }
+    return d;
+}
+
 // Prepared queries
 
 TrackList TrackList::search(const std::string &q){

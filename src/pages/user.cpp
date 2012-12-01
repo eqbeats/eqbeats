@@ -21,14 +21,7 @@ void Pages::user(Document *doc){
     if(sub == "json"){
         doc->setJson("json/account.tpl");
         u.fill(doc->dict());
-        TrackList tracks = Tracks::byUser(u.id, 0);
-        Dict *item, *data;
-        for(TrackList::const_iterator i=tracks.begin(); i!=tracks.end(); i++){
-            item = doc->dict()->AddSectionDictionary("TRACK");
-            data = item->AddIncludeDictionary("TRACK");
-            data->SetFilename("json/track.tpl");
-            i->fill(data);
-        }
+        Tracks::byUser(u.id, 0).fillJson(doc->dict(), false);
     } else { // plain HTML
         doc->setHtml("html/user.tpl", u.name);
         u.fill(doc->dict());
