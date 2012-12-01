@@ -71,6 +71,7 @@ void Pages::tracks(Document *doc){
             item = doc->dict()->AddSectionDictionary("ITEM");
             data = item->AddIncludeDictionary("DATA");
             data->SetFilename("json/track.tpl");
+            data->ShowSection("ARTIST");
             i->fill(data);
         }
     }
