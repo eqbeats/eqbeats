@@ -114,6 +114,8 @@ audio {
     margin: 5px;
     height: 1.2em;
     overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 #player-embed audio {
