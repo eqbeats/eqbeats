@@ -94,7 +94,6 @@ class YoutubeManager:
         os.makedirs(eqrender, exist_ok=True)
         out = eqrender + str(tid) + ".avi"
         for f in os.listdir("tracks"):
-            print(f)
             if "%s.orig" % tid in f:
                 infile = "tracks/" + f
                 break
@@ -103,7 +102,7 @@ class YoutubeManager:
             os.spawnvp(os.P_WAIT, "convert", ("convert", "-flatten", "art/" + str(tid), art))
         else:
             art = "static/placeholder.jpg"
-        os.spawnvp(os.P_WAIT, "ffmpeg", ("ffmpeg","-loop","1","-r","0.1","-i", art,"-i", infile,"-shortest","-vf","scale=-1:720","-vcodec","libtheora","-acodec","libvorbis","-y",out))
+        os.spawnvp(os.P_WAIT, "ffmpeg", ("ffmpeg","-loop","1","-r","0.1","-i", art,"-i", infile,"-shortest","-vf","scale=-1:720","-vcodec","mpeg4","-acodec","copy","-y",out))
         return open(out, "rb")
 
     def upload(self, tid):
