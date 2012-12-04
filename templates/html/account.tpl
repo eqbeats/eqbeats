@@ -1,3 +1,4 @@
+{{%AUTOESCAPE context="HTML"}}
 <h2>Your account</h2>
 
 {{#MESSAGE}}<div class="message">{{MESSAGE}}</div>{{/MESSAGE}}
