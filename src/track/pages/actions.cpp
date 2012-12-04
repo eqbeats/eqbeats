@@ -61,5 +61,4 @@ void Pages::trackActions(Document *doc){
         }
         doc->redirect(t.url());
     }
-
 }

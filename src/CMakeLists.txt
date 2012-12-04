@@ -14,7 +14,7 @@ add_executable ( eqbeats.fcgi
     social/event.cpp social/follower.cpp social/pages/actions.cpp social/pages/comment.cpp social/pages/favorites.cpp
     text/date.cpp text/email.cpp text/format.cpp text/irc.cpp text/number.cpp text/string.cpp
     track/audio.cpp track/art.cpp track/extended.cpp track/list.cpp track/track.cpp
-    track/pages/actions.cpp track/pages/art.cpp track/pages/track.cpp track/pages/tracks.cpp track/pages/upload.cpp track/pages/oembed.cpp
+    track/pages/actions.cpp track/pages/art.cpp track/pages/track.cpp track/pages/tracks.cpp track/pages/upload.cpp track/pages/oembed.cpp track/pages/license.cpp
     youtube/pages/oauth.cpp youtube/pages/upload.cpp youtube/youtube.cpp
     main.cpp
 )

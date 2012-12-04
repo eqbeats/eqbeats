@@ -10,6 +10,7 @@ namespace Pages {
     void trackUpload(Document*);
     void tracks(Document*);
     void oembed(Document*);
+    void license(Document*);
 }
 
 #endif // TRACK_PAGES_H
