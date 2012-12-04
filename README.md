@@ -21,6 +21,8 @@ You can set the `EQBEATS_HTTPS` variable to anything if you wish to always use h
 
 You also need to make sure that you are in the `http` group, as well as the user running the webserver.
 
+There should be a `tracks` directory and an `art` directory with two subdirectories `art/medium` and `art/thumb` in the directory where eqbeats is installed. The user you plan to run as should have write permission to these.
+
 #### Webserver
 
 Point your FCGI enabled webserver to the unix socket at `$EQBEATS_DIR/eqbeats.sock`.
