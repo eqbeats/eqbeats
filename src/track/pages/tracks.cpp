@@ -33,9 +33,10 @@ void Pages::tracks(Document *doc){
         TrackList l = Tracks::latest(16, 15*(p-1));
         if(p > 1)
             doc->dict()->SetValueAndShowSection("PREV", number(p-1), "HAS_PREV");
-        if(l.size() == 16)
+        if(l.size() == 16){
             doc->dict()->SetValueAndShowSection("NEXT", number(p+1), "HAS_NEXT");
-        if(!l.empty()) l.pop_back();
+            l.pop_back();
+        }
         l.fill(doc->dict(), "TRACKLIST");
     }
     else if(path == "/tracks/random"){
