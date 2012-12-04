@@ -4,14 +4,6 @@
     {{#FEED}}<a class="feed" title="Feed" href="{{FEED_URL}}"><span>(Feed)</span></a>{{/FEED}}
 </h2>
 
-<div class="search">
-    <form action="/tracks/search">
-        <img src="/static/icons/magnifier.png" alt="Search" />
-        <input type="text" name="q" />
-        <input type="submit" value="Search" />
-    </form>
-</div>
-
 {{>TRACKLIST}}
 
 {{#HAS_PREV}}
