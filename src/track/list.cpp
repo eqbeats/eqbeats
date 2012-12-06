@@ -56,8 +56,8 @@ Dict* TrackList::fill(Dict *d, std::string section, bool buttons){
 Dict* TrackList::fillJson(Dict *d, bool showArtist){
     Dict *item, *data;
     for(TrackList::const_iterator i=begin(); i!=end(); i++){
-        item = d->AddSectionDictionary("TRACK");
-        data = item->AddIncludeDictionary("TRACK");
+        item = d->AddSectionDictionary("ITEM");
+        data = item->AddIncludeDictionary("DATA");
         data->SetFilename("json/track.tpl");
         if(showArtist)
             data->ShowSection("ARTIST");
