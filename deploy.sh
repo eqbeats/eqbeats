@@ -2,10 +2,15 @@
 
 cd /home/eqbeats/eqbeats
 make || return 1
+mkdir -p /srv/eqbeats/{tools,static,templates/{html,json,oembed}}
+
 install -m775 eqbeats.fcgi launch.sh failsafe transcode.sh hitsd.sh ytmgr.sh /srv/eqbeats/
 
 cd tools
 find . -maxdepth 1 -type f -executable -exec install -m775 '{}' /srv/eqbeats/tools/ \;
+
+cd templates
+find . -maxdepth 1 -type f -exec install -m664 '{}' /srv/eqbeats/templates/'{}' \;
 
 
 cd ../static
