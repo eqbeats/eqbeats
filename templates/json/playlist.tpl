@@ -1,15 +1,14 @@
-{{%AUTOESCAPE context="JSON"}}
 {
     "id": {{PLAYLIST_ID}},
-    "name": "{{PLAYLIST_NAME}}",
+    "name": "{{PLAYLIST_NAME:o}}",
     "author": {
         "id": {{UID}},
-        "name": "{{USERNAME}}",
+        "name": "{{USERNAME:o}}",
         "link": "{{EQBEATS_URL}}/user/{{UID}}"
     },
     {{#HAS_DESCRIPTION}}
-    "description": "{{DESCRIPTION}}",
-    "html_description": "{{DESCRIPTION:x-format}}",
+    "description": "{{DESCRIPTION:o}}",
+    "html_description": "{{DESCRIPTION:x-format:o}}",
     {{/HAS_DESCRIPTION}}
     "tracks": {{>TRACKS}},
     "link": "{{EQBEATS_URL}}{{PLAYLIST_URL}}"

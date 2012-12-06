@@ -1,17 +1,16 @@
-{{%AUTOESCAPE context="JSON"}}
 {
     "id": {{TID}},
-    "title": "{{TITLE}}",
+    "title": "{{TITLE:o}}",
     {{#HAS_NOTES}}
-    "description": "{{NOTES}}",
-    "html_description": "{{NOTES:x-format:json_escape}}",
+    "description": "{{NOTES:o}}",
+    "html_description": "{{NOTES:x-format:o}}",
     {{/HAS_NOTES}}
-    {{#HAS_TAGS}}"tags": [{{#TAG}}"{{TAG}}"{{#TAG_separator}},{{/TAG_separator}}{{/TAG}}],{{/HAS_TAGS}}
-    "license": "{{LICENSE}}",
+    {{#HAS_TAGS}}"tags": [{{#TAG}}"{{TAG:o}}"{{#TAG_separator}},{{/TAG_separator}}{{/TAG}}],{{/HAS_TAGS}}
+    "license": "{{LICENSE:o}}",
     {{#ARTIST}}
     "artist": {
         "id": {{UID}},
-        "name": "{{USERNAME}}",
+        "name": "{{USERNAME:o}}",
         "link": "{{EQBEATS_URL}}/user/{{UID}}"
     },
     {{/ARTIST}}

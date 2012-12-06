@@ -1,10 +1,9 @@
-{{%AUTOESCAPE context="JSON"}}
 {
     "id": {{UID}},
-    "name": "{{USERNAME}}",
+    "name": "{{USERNAME:o}}",
     {{#HAS_ABOUT}}
-    "description": "{{ABOUT}}",
-    "html_description": "{{ABOUT:x-format:json_escape}}",
+    "description": "{{ABOUT:o}}",
+    "html_description": "{{ABOUT:x-format:o}}",
     {{/HAS_ABOUT}}
     "tracks": [{{#TRACK}}{{>TRACK}}{{#TRACK_separator}},{{/TRACK_separator}}{{/TRACK}}],
     "playlists": [{{#PLAYLIST}}{{>PLAYLIST}}{{#PLAYLIST_separator}},{{/PLAYLIST_separator}}{{/PLAYLIST}}],

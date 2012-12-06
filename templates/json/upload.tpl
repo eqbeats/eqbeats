@@ -1,7 +1,7 @@
 {
     {{#TRACK}}
     "track": {{TID}},
-    "title": "{{TITLE}}",
+    "title": "{{TITLE:o}}",
     {{/TRACK}}
     "success": {{SUCCESS}}
 }
