@@ -5,7 +5,7 @@
     "description": "{{ABOUT:o}}",
     "html_description": "{{ABOUT:x-format:o}}",
     {{/HAS_ABOUT}}
-    "tracks": [{{#TRACK}}{{>TRACK}}{{#TRACK_separator}},{{/TRACK_separator}}{{/TRACK}}],
+    "tracks": [{{#ITEM}}{{>DATA}}{{#ITEM_separator}},{{/ITEM_separator}}{{/ITEM}}],
     "playlists": [{{#PLAYLIST}}{{>PLAYLIST}}{{#PLAYLIST_separator}},{{/PLAYLIST_separator}}{{/PLAYLIST}}],
     "link": "{{EQBEATS_URL}}/user/{{UID}}"
 }
