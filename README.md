@@ -7,14 +7,16 @@
 * PostgreSQL with libpq
 * libfcgi (or just fcgi in some package managers)
 * GNU cgicc
+* spawn-fcgi
 * libpcre++ (sometimes included with pcre)
 * TagLib
 * ImageMagick
 * Nettle
 * ctemplate
 * FFmpeg
-* Optional: A Haskell compiler (like GHC) for hitsd
-* Optional: Python 3.x and psycopg2 for YouTube support
+* Optional: jsmin for deploy.sh
+* Optional: OpenBSD netcat and a Haskell compiler (like GHC) for hitsd
+* Optional: OpenBSD netcat, Python 3.x and psycopg2 for YouTube support
 
 ### Preliminary setup
 
