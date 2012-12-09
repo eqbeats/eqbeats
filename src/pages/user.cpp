@@ -21,6 +21,7 @@ void Pages::user(Document *doc){
     if(sub == "json"){
         doc->setJson("json/account.tpl");
         u.fill(doc->dict());
+        doc->dict()->ShowSection("LONG");
         Tracks::byUser(u.id, 0).fillJson(doc->dict(), false);
 
         std::vector<Playlist> playlists = Playlist::forUser(u);

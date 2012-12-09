@@ -33,7 +33,7 @@ void Pages::users(Document *doc){
     if(path == "/users/search/json")
         is_json_array = true, json_users = AccountList::search(cgi("q"));
     if(path == "/artists/json")
-        is_json_array = true, json_users = AccountList::artists(500);
+        is_json_array = true, json_users = AccountList::artists(1000);
     if(is_json_array){
         doc->setJson("json/array.tpl");
         Dict *item, *data;
