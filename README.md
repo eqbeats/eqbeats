@@ -4,9 +4,14 @@
 ### Dependencies
 
 * A webserver that supports FastCGI
-* PostgreSQL
+* PostgreSQL with libpq
 * libfcgi (or just fcgi in some package managers)
 * GNU cgicc
+* libpcre++ (sometimes included with pcre)
+* TagLib
+* ImageMagick
+* Nettle
+* ctemplate
 * FFmpeg
 * Optional: A Haskell compiler (like GHC) for hitsd
 * Optional: Python 3.x and psycopg2 for YouTube support
