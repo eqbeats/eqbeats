@@ -22,6 +22,15 @@ void Pages::user(Document *doc){
         doc->setJson("json/account.tpl");
         u.fill(doc->dict());
         Tracks::byUser(u.id, 0).fillJson(doc->dict(), false);
+
+        std::vector<Playlist> playlists = Playlist::forUser(u);
+        for(std::vector<Playlist>::const_iterator i=playlists.begin(); i!=playlists.end(); i++){
+            Dict *playlistDict = doc->dict()->AddSectionDictionary("PLAYLIST");
+            Dict *item = playlistDict->AddIncludeDictionary("PLAYLIST");
+            item->SetFilename("json/playlist.tpl");
+            i->fill(item);
+        }
+
     } else { // plain HTML
         doc->setHtml("html/user.tpl", u.name);
         u.fill(doc->dict());
