@@ -3,12 +3,12 @@
 
 ### Dependencies
 
-* A webserver that supports fastCGI
-* Postgresql
+* A webserver that supports FastCGI
+* PostgreSQL
 * libfcgi (or just fcgi in some package managers)
-* Cgicc
+* GNU cgicc
 * FFmpeg
-* Optional: A haskell compiler and some other haskell stuff for hitsd
+* Optional: A Haskell compiler (like GHC) for hitsd
 * Optional: Python 3.x and psycopg2 for YouTube support
 
 ### Preliminary setup
@@ -21,14 +21,14 @@ You can set the `EQBEATS_HTTPS` variable to anything if you wish to always use h
 
 You also need to make sure that you are in the `http` group, as well as the user running the webserver.
 
-There should be a `tracks` directory and an `art` directory with two subdirectories `art/medium` and `art/thumb` in the directory where eqbeats is installed. The user you plan to run as should have write permission to these.
+There should be a `tracks` directory and an `art` directory with two subdirectories, `art/medium` and `art/thumb`, in the directory where EqBeats is installed. The user you plan to run as should have write permission to these.
 
 #### Webserver
 
-Point your FCGI enabled webserver to the unix socket at `$EQBEATS_DIR/eqbeats.sock`.
+Point your FastCGI-enabled webserver to the Unix socket `$EQBEATS_DIR/eqbeats.sock`.
 
 You'll also need to alias `/static/` to `$EQBEATS_DIR/static/`,
-and proxy `/download/art/` and `/download/tracks/` to `$EQBEATS_DIR/art/` and `$EQBEATS_DIR/tracks/`
+and proxy `/download/art/` and `/download/tracks/` to `$EQBEATS_DIR/art/` and `$EQBEATS_DIR/tracks/`, respectively.
 
 Here is a sample config for nginx:
 
@@ -60,13 +60,13 @@ Here is a sample config for nginx:
 
 #### Database
 
-By default EqBeats will use the default Postgresql DB for your user, so make sure you have one and that pgcrypto extensions are enabled on it.
+By default, EqBeats will use the default PostgreSQL DB for your user, so make sure you have one and that the pgcrypto extension is enabled on it.
 
     su postgres
     createuser -d YOURNAME
     echo "CREATE EXTENSION pgcrypto;" | psql -d YOURNAME
 
-Then, import the database schema.
+Then, import the database schema:
 
     psql -d YOURNAME < sql/db.sql
 
