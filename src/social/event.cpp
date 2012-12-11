@@ -3,8 +3,6 @@
 #include <core/db.h>
 #include <text/text.h>
 
-#include <log/log.h>
-
 void Event::push(){
     DB::query((std::string)
         "INSERT INTO events (type, target_id, target_name, source_id, source_name, track_id, track_title, message, date)"
