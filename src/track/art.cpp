@@ -53,6 +53,7 @@ void Art::makeThumbs(){
         try{ i.read(filepath()); }
         catch(Magick::Warning &warn){
             std::cerr << "ImageMagick Warning : " << warn.what() << std::endl;
+            return;
         }
         std::string f = getFormat(filepath().c_str());
         if(f!="gif" && (i.size().height()>480 || (f!="jpg" && f!="png"))){
