@@ -6,7 +6,7 @@
     <table>
         <tr>
             <td><label for="r_email">Email:</label></td>
-            <td><input id="r_email" name="email" value="{{EMAIL}}" /></td>
+            <td><input id="r_email" name="email" value="{{EMAIL:h}}" /></td>
         </tr>
         <tr>
             <td><label for="r_pw">Password:</label></td>
