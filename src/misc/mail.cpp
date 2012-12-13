@@ -5,6 +5,8 @@
 #include <unistd.h>
 #include <sys/wait.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <log/log.h>
 
 void sendMail(const char *to, const char *data){
     int fd[2];
@@ -18,6 +20,8 @@ void sendMail(const char *to, const char *data){
         freopen(logfile.c_str(),"a",stdout);
         freopen(logfile.c_str(),"a",stderr);
         execlp("sendmail", "sendmail", to, NULL);
+        log("Mail not sent, sendmail doesn't seem to exist on your machine.");
+        exit(1);
     }
     else if(child > 0){
         close(fd[0]);
