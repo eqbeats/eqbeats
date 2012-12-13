@@ -11,10 +11,12 @@
 #include <text/modifiers.h>
 #include <track/pages/pages.h>
 #include <youtube/pages/pages.h>
+#include <log/log.h>
 
 #include <stdio.h>
 #include <sys/wait.h>
 #include <unistd.h>
+#include <stdexcept>
 
 cgicc::Cgicc cgi;
 std::string path;
@@ -58,7 +60,11 @@ int main(int argc, char** argv){
     while(FCGX_Accept_r(&request) == 0){
         resetTimer();
         o.attach(&request);
-        cgi = cgicc::Cgicc(&o);
+        try { cgi = cgicc::Cgicc(&o); }
+        catch(std::runtime_error &err){
+            log((std::string)"CgiCc error: " + err.what());
+            //continue;
+        }
         path = stripSlash(cgi.getEnvironment().getScriptName());
         Document doc;
 
