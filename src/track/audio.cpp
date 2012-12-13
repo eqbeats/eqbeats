@@ -31,14 +31,14 @@ std::string Audio::filepath(Format f) const{
 }
 
 void Audio::updateTags(Format format){
-    if(format == MP3){
+    if(format == MP3 && access(filepath(MP3).c_str(), R_OK) == 0){
         TagLib::MPEG::File mp3(filepath(MP3).c_str());
         TagLib::Tag *t = mp3.tag();
         if(!t) return;
         t->setTitle(TagLib::String(track->title, TagLib::String::UTF8));
         t->setArtist(TagLib::String(track->artist.name, TagLib::String::UTF8));
         mp3.save(TagLib::MPEG::File::ID3v1 | TagLib::MPEG::File::ID3v2);
-    } else if(format == Vorbis) {
+    } else if(format == Vorbis && access(filepath(Vorbis).c_str(), R_OK) == 0) {
         TagLib::Ogg::Vorbis::File vorbis(filepath(Vorbis).c_str());
         TagLib::Tag *t = vorbis.tag();
         if(!t) return;
