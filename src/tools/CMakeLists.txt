@@ -12,3 +12,6 @@ target_link_libraries ( updatetags pq tag )
 
 add_executable ( fqueue fqueue.cpp ../core/db.cpp ../text/number.cpp ../core/path.cpp )
 target_link_libraries ( fqueue pq )
+
+add_executable ( udpstat udpstat.cpp ../text/number.cpp )
+target_link_libraries ( udpstat crypto )

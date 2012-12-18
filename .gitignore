@@ -14,6 +14,8 @@ pid
 /tmp/
 /tracks/
 /art/
+/udpstat/
+.udpstat.salt
 reports
 hits.dat
 hitsd.sock
@@ -30,3 +32,4 @@ eqbeats.fcgi
 /tools/stats
 /tools/updatetags
 /tools/fqueue
+/tools/udpstat
