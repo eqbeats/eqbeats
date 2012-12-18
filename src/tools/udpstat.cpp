@@ -12,7 +12,6 @@
 #include <errno.h>
 #include <fcntl.h>
 #include <iterator>
-#include <openssl/md5.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string>
@@ -24,41 +23,8 @@
 #include <time.h>
 #include <unistd.h>
 
+#include <misc/hash.h>
 #include <text/text.h>
-
-#include <iostream>
-#include <string.h>
-
-char nibble2Hex(int in){
-    switch(in){
-        case 0: return '0';
-        case 1: return '1';
-        case 2: return '2';
-        case 3: return '3';
-        case 4: return '4';
-        case 5: return '5';
-        case 6: return '6';
-        case 7: return '7';
-        case 8: return '8';
-        case 9: return '9';
-        case 10: return 'a';
-        case 11: return 'b';
-        case 12: return 'c';
-        case 13: return 'd';
-        case 14: return 'e';
-        default: return 'f';
-    }
-}
-std::string trimMD5Hex(std::string in){
-    unsigned char md[16];
-    MD5((const unsigned char*)in.c_str(), in.size(), md);
-    std::string out;
-    for(int i=0; i<5; i++){
-        out += nibble2Hex((md[i] & 240) >> 4); /* 240 = 0b11110000 */
-        out += nibble2Hex(md[i] & 15);         /* 15  = 0b00001111 */
-    }
-    return out;
-}
 
 std::string salt_;
 
@@ -78,7 +44,7 @@ std::string salt(){
         char buffer[10];
         read(urandom, buffer, 10);
         close(urandom);
-        salt_ = trimMD5Hex(std::string(buffer, 10));
+        salt_ = md5(std::string(buffer, 10)).substr(0,10);
 
         umask(0777 % 0640);
         FILE* f_ = fopen(((std::string)getenv("EQBEATS_DIR") + "/.udpstat.salt").c_str(), "w");
@@ -147,7 +113,7 @@ int main(int argc, char** argv){
         for(; i != contents.end() && !(*i == ' ') && !(*i == '\n'); i++){
             addr += *i;
         }
-        addr = trimMD5Hex(addr + salt());
+        addr = md5(addr + salt()).substr(0,10);
 
 
         std::string entry = "{ 'type':'" + type + "', "+
