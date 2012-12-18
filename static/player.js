@@ -79,6 +79,7 @@ function load(player){
             {url:player.track.mp3, type:'audio/mp3'}
         ]
     });
+    snd.triggered = false;
     playing = player;
     playing.volume.slider.inner.style.width = parseInt(playing.volume.slider.style.width) * globalVolume / 100 + 'px';
     playing.style.display = 'block';
@@ -97,6 +98,12 @@ function play(player){
         whileplaying: function(){
             playing.scrubber.style.width = (100 * this.position / this.durationEstimate) + '%';
             playing.playtime.innerHTML = prettyTime(this.position) + '/' + prettyTime(this.durationEstimate);
+            if(this.position > this.durationEstimate / 3 && this.triggered == false){
+                this.triggered = true;
+                var xhr = XMLHttpRequest();
+                xhr.open("POST", "/track/" + playing.track.tid + "/played", true);
+                xhr.send();
+            }
         },
         onfinish: function(){
             if(!scrubbing){

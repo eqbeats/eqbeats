@@ -2,6 +2,7 @@
 #include "../audio.h"
 #include "../extended.h"
 #include <core/cgi.h>
+#include <stat/push.h>
 
 void Pages::trackMisc(Document *doc){
 
@@ -29,17 +30,24 @@ void Pages::trackMisc(Document *doc){
 
     // Download
 
-    else if(sub == "original"){
+    else if(sub == "original" || sub == "vorbis" || sub == "mp3"){
         Track t(tid);
-        if(t) doc->download(Audio(&t).original());
-    }
-    else if(sub == "vorbis"){
-        Track t(tid);
-        if(t) doc->download(Audio(&t).vorbis());
-    }
-    else if(sub == "mp3"){
-        Track t(tid);
-        if(t) doc->download(Audio(&t).mp3());
+        if(!t)
+            return;
+        else if(sub == "original")
+            doc->download(Audio(&t).original());
+        else if(sub == "vorbis")
+            doc->download(Audio(&t).vorbis());
+        else
+            doc->download(Audio(&t).mp3());
+        if(cgi("stream").empty())
+            pushStat("trackDownload", t.artist.id, tid);
     }
 
+    else if(sub == "played"){
+        Track t(tid);
+        if(t)
+            pushStat("trackPlay", t.artist.id, tid);
+        doc->setJson("/dev/null");
+    }
 }

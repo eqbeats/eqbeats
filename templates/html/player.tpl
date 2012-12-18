@@ -2,8 +2,9 @@
 <script>
     registerTrack({
         id: "{{LIST}}-{{COUNT}}",
-        mp3: "/track/{{TID}}/mp3?stream",
-        vorbis: "/track/{{TID}}/vorbis?stream",
+        tid: "{{TID}}",
+        mp3: "/track/{{TID}}/mp3?stream=1",
+        vorbis: "/track/{{TID}}/vorbis?stream=1",
         list: "{{LIST}}"
     });
 </script>
