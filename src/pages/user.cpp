@@ -7,6 +7,7 @@
 #include <social/follower.h>
 #include <text/text.h>
 #include <track/list.h>
+#include <stat/push.h>
 
 void Pages::user(Document *doc){
 
@@ -36,6 +37,8 @@ void Pages::user(Document *doc){
         doc->setHtml("html/user.tpl", u.name);
         u.fill(doc->dict());
         Tracks::byUser(u.id, u.self()).fill(doc->dict(), "TRACK_LIST");
+
+        pushStat("userView", uid);
 
         Dict *uploader = doc->dict()->AddIncludeDictionary("UPLOADER");
         uploader->SetFilename("html/uploader.tpl");

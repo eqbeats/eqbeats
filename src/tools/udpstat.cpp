@@ -79,7 +79,7 @@ int main(int argc, char** argv){
     struct sockaddr_un sa;
     sa.sun_family = AF_UNIX;
     strcpy(sa.sun_path, sockloc.c_str());
-    bind(s, (struct sockaddr *) &sa, sockloc.size() + 2);
+    bind(s, (struct sockaddr *) &sa, SUN_LEN(&sa));
     while(true){
         len = recvfrom(s, buffer, 300, 0, NULL, NULL);
         if(len <= 0)
@@ -125,18 +125,20 @@ int main(int argc, char** argv){
 
 
         struct stat st;
-        if(stat(((std::string)getenv("EQBEATS_DIR") + "/udpstat/").c_str(), &st) == -1 && errno == ENOENT){
+        if((stat(((std::string)getenv("EQBEATS_DIR") + "/udpstat/").c_str(), &st) == -1 ||
+                stat(((std::string)getenv("EQBEATS_DIR") + "/udpstat/users/").c_str(), &st) == -1 ||
+                stat(((std::string)getenv("EQBEATS_DIR") + "/udpstat/tracks/").c_str(), &st) == -1)
+                && errno == ENOENT){
+            umask(0777 % 0755);
             mkdir(((std::string)getenv("EQBEATS_DIR") + "/udpstat/").c_str(), 0755);
             mkdir(((std::string)getenv("EQBEATS_DIR") + "/udpstat/users/").c_str(), 0755);
             mkdir(((std::string)getenv("EQBEATS_DIR") + "/udpstat/tracks/").c_str(), 0755);
         }
 
-        if(tid > 0){
+        if(tid > 0)
             append((std::string)getenv("EQBEATS_DIR") + "/udpstat/tracks/" + number(tid) + ".json", entry);
-        }
-        if(uid > 0){
+        if(uid > 0)
             append((std::string)getenv("EQBEATS_DIR") + "/udpstat/users/" + number(uid) + ".json", entry);
-        }
     }
     return 0; // lol
 }
