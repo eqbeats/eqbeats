@@ -39,6 +39,6 @@ string httpFilename(const string &str){
 string Http::download(const File &f){
     return (string)
         "X-Accel-Redirect: /downloads/" + f.path() + "\n"
-        "Content-Disposition: inline; filename=\"" + httpFilename(f.filename()) +"\"\n"
+        "Content-Disposition: attachment; filename=\"" + httpFilename(f.filename()) +"\"\n"
         "Content-Type: " + f.mimetype() + "\n\n";
 }
