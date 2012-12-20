@@ -45,7 +45,7 @@ void Pages::yt_upload(Document *doc){
         }
         else {
             Session::newNonce();
-            doc->setHtml("html/bsod.tpl", "Linking your YouTube account");
+            doc->setHtml("html/bsod.tpl", "Uploading video...");
             if (yt.upload(t)){
                 doc->dict()->SetValue("TITLE", "Success");
                 doc->dict()->SetValue("MESSAGE",

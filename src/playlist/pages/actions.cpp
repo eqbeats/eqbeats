@@ -10,14 +10,13 @@ void Pages::playlistActions(Document *doc){
     bool post = cgi.getEnvironment().getRequestMethod() == "POST";
     bool nonce = Session::nonce() == cgi("nonce");
 
-    if(nonce) Session::newNonce();
-
     if(path == "/playlist/new"){
         if(!Session::user())
             return doc->redirect("/");
         std::string name = cgi("name");
         if(name.empty() || !post || !nonce)
             return doc->redirect(Session::user().url());
+        Session::newNonce();
         DB::Result r = DB::query(
             "INSERT INTO playlists (user_id, name, description, track_ids) VALUES "
             "("+number(Session::user().id)+", $1, '', ARRAY[]::int[]) RETURNING id", name);
@@ -35,8 +34,10 @@ void Pages::playlistActions(Document *doc){
         if(!p) return;
         if(post && p.author().self()){
             Track t(tid);
-            if(t && t.visible && nonce)
+            if(t && t.visible && nonce){
+                Session::newNonce();
                 p.add(tid);
+            }
         }
         return doc->redirect(p.url());
     }
@@ -54,6 +55,7 @@ void Pages::playlistActions(Document *doc){
             doc->dict()->SetValue("WHAT", p.name());
         }
         else{
+            Session::newNonce();
             log("Deleting playlist: " + p.name() + " (" + number(p.id()) + ")");
             DB::query("DELETE FROM playlists WHERE id = " + number(p.id()));
             doc->redirect(Session::user().url());
@@ -64,8 +66,10 @@ void Pages::playlistActions(Document *doc){
         Playlist p(id);
         if(!p) return;
         if(post && nonce && (p.name() != cgi("name") || p.description() != cgi("desc"))
-           && p.author().self() && !cgi("name").empty())
+           && p.author().self() && !cgi("name").empty()){
+            Session::newNonce();
             DB::query("UPDATE playlists SET name = $1, description = $2 WHERE id = " + number(id), cgi("name"), cgi("desc"));
+        }
         doc->redirect(p.url());
     }
 
@@ -75,6 +79,7 @@ void Pages::playlistActions(Document *doc){
         std::string dir = cgi("dir");
         if(!post || !p.author().self() || (dir != "up" && dir != "down") || !nonce)
             return doc->redirect(p.url());
+        Session::newNonce();
         int i = number(cgi("item"));
         p.swap(i, i + (dir == "up" ? -1 : 1));
         doc->redirect(p.url() + "#tracks");
@@ -83,8 +88,10 @@ void Pages::playlistActions(Document *doc){
     else if(sub == "remove"){
         Playlist p(id);
         if(!p) return;
-        if(post && p.author().self() && nonce)
+        if(post && p.author().self() && nonce){
+            Session::newNonce();
             p.remove(number(cgi("item")));
+        }
         doc->redirect(p.url() + "#tracks");
     }
 

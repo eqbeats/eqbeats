@@ -13,12 +13,12 @@ void Pages::trackActions(Document *doc){
     bool post = cgi.getEnvironment().getRequestMethod() == "POST";
     bool nonce = Session::nonce() == cgi("nonce");
 
-    if(nonce) Session::newNonce();
 
     if(sub == "rename"){
         Track t(tid);
         if(!t) return;
         if(post && t.artist.self() && nonce){
+            Session::newNonce();
             std::string title = cgi("title");
             if(!title.empty() && title != t.title){
                 DB::query("UPDATE tracks SET title = $1 WHERE id = " + number(t.id), title);
@@ -32,24 +32,30 @@ void Pages::trackActions(Document *doc){
     else if(sub == "tags"){
         Track t(tid);
         if(!t) return;
-        if(post && t.artist.self() && nonce)
+        if(post && t.artist.self() && nonce){
+            Session::newNonce();
             DB::query("UPDATE tracks SET tags = regexp_split_to_array(lower($1), E' *, *') WHERE id = " + number(t.id), cgi("tags"));
+        }
         doc->redirect(t.url());
     }
 
     else if(sub == "notes"){
         Track t(tid);
         if(!t) return;
-        if(post && t.artist.self() && nonce)
+        if(post && t.artist.self() && nonce){
+            Session::newNonce();
             DB::query("UPDATE tracks SET notes = $1 WHERE id = " + number(t.id), cgi("notes"));
+        }
         doc->redirect(t.url());
     }
 
     else if(sub == "flags"){
         Track t(tid);
         if(!t) return;
-        if(post && t.artist.self() && nonce)
+        if(post && t.artist.self() && nonce){
+            Session::newNonce();
             DB::query("UPDATE tracks SET airable = $1 WHERE id = " + number(t.id), cgi.queryCheckbox("airable") ? "t" : "f");
+        }
         doc->redirect(t.url());
     }
 
