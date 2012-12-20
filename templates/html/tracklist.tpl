@@ -13,6 +13,7 @@
                 <button name="item" value="{{POSITION}}" title="Remove this track from the playlist.">
                     <img src="/static/icons/music-minus.png" alt="Remove" />
                 </button>
+                <input name="nonce" type="hidden" value="{{NONCE}}"/>
             </form>
             {{#IS_FIRST}}<form style="width: 16px; height: 16px;"></form>{{/IS_FIRST}}
             {{#NOT_FIRST}}
@@ -21,6 +22,7 @@
                     <img src="/static/icons/arrow-up.png" alt="Move up" />
                 </button>
                 <input type="hidden" name="dir" value="up"/>
+                <input name="nonce" type="hidden" value="{{NONCE}}"/>
             </form>
             {{/NOT_FIRST}}
             {{#NOT_LAST}}
@@ -29,6 +31,7 @@
                     <img src="/static/icons/arrow-down.png" alt="Move down"/>
                 </button>
                 <input type="hidden" name="dir" value="down"/>
+                <input name="nonce" type="hidden" value="{{NONCE}}"/>
             </form>
             {{/NOT_LAST}}
         </div>

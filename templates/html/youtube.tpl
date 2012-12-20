@@ -28,6 +28,7 @@
     This is what your video will look like. If you have cover art, make sure you upload it before you continue.
     <form method="post">
         <input type="submit" value="Continue" /> &nbsp; <a class="danger" href="{{URL}}">Cancel</a>
+        <input name="nonce" type="hidden" value="{{NONCE}}"/>
     </form>
 </div>
 

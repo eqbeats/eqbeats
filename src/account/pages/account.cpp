@@ -22,8 +22,10 @@ void Pages::account(Document *doc){
 
     Account a(Session::user().id);
 
-    if(cgi.getEnvironment().getRequestMethod() != "POST")
+    if(cgi.getEnvironment().getRequestMethod() != "POST" || Session::nonce() != cgi("nonce"))
         return form(doc, a);
+
+    Session::newNonce();
 
     std::string name = cgi("name");
     if(!name.empty() && name != a.name){

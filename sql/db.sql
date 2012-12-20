@@ -28,6 +28,7 @@ CREATE TABLE sessions (
     host inet not null,
     user_id integer not null REFERENCES users(id),
     date timestamptz not null,
+    nonce text not null default '',
     UNIQUE (sid, host)
 );
 

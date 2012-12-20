@@ -6,11 +6,11 @@
 <h2>
     {{USERNAME}}
     {{#IS_FOLLOWED}}
-    <a class="follow" href="{{#LOGGED_OUT}}/login?redirect={{/LOGGED_OUT}}/user/{{UID}}/unfollow"
+    <a class="follow" href="{{#LOGGED_OUT}}/login?redirect={{/LOGGED_OUT}}/user/{{UID}}{{#LOGGED_USER}}/unfollow?nonce={{NONCE}}{{/LOGGED_USER}}"
     ><span>Stop following</span></a>
     {{/IS_FOLLOWED}}
     {{#NOT_FOLLOWED}}
-    <a class="follow disabled" href="{{#LOGGED_OUT}}/login?redirect={{/LOGGED_OUT}}/user/{{UID}}/follow"
+    <a class="follow disabled" href="{{#LOGGED_OUT}}/login?redirect={{/LOGGED_OUT}}/user/{{UID}}{{#LOGGED_USER}}/follow?nonce={{NONCE}}{{/LOGGED_USER}}"
     ><span>Follow</span></a>
     {{/NOT_FOLLOWED}}
 </h2>
@@ -34,6 +34,7 @@
 <form class="newplaylist" action="/playlist/new" method="post">
     <input type="text" name="name" placeholder="Name" />
     <input type="submit" value="New playlist" />
+    <input name="nonce" type="hidden" value="{{NONCE}}"/>
 </form>
 {{/IS_SELF}}
 <h3>Playlists</h3>

@@ -12,6 +12,9 @@ namespace Session{
     // Logged user.
     User user();
 
+    std::string nonce();
+    void newNonce();
+
     // Login. Return the sid or an empty string.
     std::string login(const User&);
     std::string login(const std::string &email, const std::string &pw);

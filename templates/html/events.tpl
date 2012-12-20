@@ -8,6 +8,7 @@
     <input class="honeypot" type="text" name="url" placeholder="If you can see this, don't fill it in." />
     <input type="text" name="msg" placeholder="Leave a note" />
     <input type="submit" value="Post" onclick="this.form.submit();this.disabled=true;return false;" />
+    {{#LOGGED_USER}}<input name="nonce" type="hidden" value="{{NONCE}}"/>{{/LOGGED_USER}}
 </form>
 {{/FORM}}
 

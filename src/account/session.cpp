@@ -10,6 +10,7 @@
 // Internal variables
 User u;
 std::string sid;
+std::string nonce_;
 
 User Session::user(){ return u; }
 
@@ -23,13 +24,30 @@ void Session::start(){
             sid = i->getValue();
     }
     if(sid.empty()) return; // No cookie
-    DB::Result r = DB::query("SELECT users.id, users.name FROM sessions, users WHERE sid = $1 AND host = $2 AND users.id = sessions.user_id", sid, env.getRemoteAddr());
-    if(!r.empty()) u = User(number(r[0][0]), r[0][1]);
+    DB::Result r = DB::query("SELECT users.id, users.name, sessions.nonce FROM sessions, users WHERE sid = $1 AND host = $2 AND users.id = sessions.user_id", sid, env.getRemoteAddr());
+    if(!r.empty()){
+        u = User(number(r[0][0]), r[0][1]);
+        nonce_ = r[0][2];
+    }
 }
 
 void Session::destroy(){
     u = User();
     sid = std::string();
+    nonce_ = std::string();
+}
+
+std::string Session::nonce(){
+    if(nonce_.empty()){
+        newNonce();
+    }
+    return nonce_;
+}
+
+void Session::newNonce(){
+    if(u)
+        nonce_ = randomString();
+        DB::query("UPDATE sessions SET nonce = $1 WHERE sid = $2 AND host = $3", nonce_, sid, cgi.getEnvironment().getRemoteAddr());
 }
 
 // Login / Logout
@@ -59,6 +77,7 @@ Dict* Session::fill(Dict *d){
     if(u){
         Dict *s = d->AddSectionDictionary("LOGGED_USER");
         u.fill(s);
+        d->SetTemplateGlobalValue("NONCE", nonce());
         return s;
     }
     else

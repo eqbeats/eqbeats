@@ -23,8 +23,10 @@ void Pages::comment(Document *doc){
             bot = !url->getValue().empty();
 
         std::string msg = cgi("msg");
-        if(cgi.getEnvironment().getRequestMethod() != "POST" || msg.empty() || bot)
+        if(cgi.getEnvironment().getRequestMethod() != "POST" || msg.empty() || bot || (Session::user() && Session::nonce() != cgi("nonce")))
             return doc->redirect(t ? t.url() : u.url());
+
+        Session::newNonce();
 
         Event e;
         e.type = Event::Comment;

@@ -30,7 +30,8 @@ void Pages::socialActions(Document *doc){
         Track t(tid);
         if(!u && !t) return;
 
-        if(fromEqBeats() && self){
+        if(fromEqBeats() && self && Session::nonce() == cgi("nonce")){
+            Session::newNonce();
 
             if(t){
                 bool fav = f.favorited(t.id);

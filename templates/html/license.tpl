@@ -65,4 +65,5 @@
     </tr>
 
 </table>
+<input name="nonce" type="hidden" value="{{NONCE}}"/>
 </form>

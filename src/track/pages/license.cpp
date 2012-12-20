@@ -18,7 +18,8 @@ void Pages::license(Document* doc){
     if(tid && !t) return;
     if(t && !t.artist.self()) return doc->redirect(t.url());
 
-    if(cgi.getEnvironment().getRequestMethod() == "POST"){
+    if(cgi.getEnvironment().getRequestMethod() == "POST" && Session::nonce() == cgi("nonce")){
+        Session::newNonce();
         std::string l = cgi("license");
         if(l == "custom") l = cgi("custom-license");
         if(l.empty()) return doc->redirect(t.url() + "/license");

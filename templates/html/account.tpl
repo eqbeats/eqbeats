@@ -40,6 +40,7 @@
             <td><input type="password" id="r_newpwconf" name="newpwconf" /></td>
         </tr>
     </table>
+    <input name="nonce" type="hidden" value="{{NONCE}}"/>
     <input type="submit" value="Update" />
 </form>
 

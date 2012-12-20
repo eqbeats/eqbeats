@@ -3,12 +3,12 @@
     <h2>{{TITLE}}
         <span class="buttons">
             {{#NOT_FAVORITE}}
-            <a href="{{#LOGGED_OUT}}/login?redirect={{/LOGGED_OUT}}/track/{{TID}}/favorite"
+            <a href="{{#LOGGED_OUT}}/login?redirect={{/LOGGED_OUT}}/track/{{TID}}{{#LOGGED_USER}}/favorite?nonce={{NONCE}}{{/LOGGED_USER}}"
             title="Add to favorites">
                 <img src="/static/icons/star-empty.png" alt="Add to favorites" /></a>
             {{/NOT_FAVORITE}}
             {{#IS_FAVORITE}}
-            <a href="{{#LOGGED_OUT}}/login?redirect={{/LOGGED_OUT}}/track/{{TID}}/unfavorite"
+            <a href="{{#LOGGED_OUT}}/login?redirect={{/LOGGED_OUT}}/track/{{TID}}{{#LOGGED_USER}}/unfavorite?nonce={{NONCE}}{{/LOGGED_USER}}"
             title="Remove from favorites">
                 <img src="/static/icons/star.png" alt="Remove from favorites" /></a>
             {{/IS_FAVORITE}}
@@ -16,6 +16,7 @@
             <span id="addplaylist">
                 <img src="/static/icons/playlist-add.png" alt="Playlists">
                 <form action="/track/{{TID}}/playlist" method="post" title="Add to playlist">
+                    <input name="nonce" type="hidden" value="{{NONCE}}"/>
                     <select name="playlist">
                         {{#PLAYLIST}}<option value="{{PLAYLIST_ID}}">{{PLAYLIST_NAME}}</option>{{/PLAYLIST}}
                     </select><input type="submit" value="Add to this playlist"/>
@@ -51,6 +52,7 @@
         {{#NOT_SELF}}
         <form action="/track/{{TID}}/report" method="post">
             <button type="submit" class="report"><img alt="" src="/static/icons/flag.png" /> <span>Report</span></button>
+            <input name="nonce" type="hidden" value="{{NONCE}}"/>
         </form>
         {{/NOT_SELF}}
     </div>
@@ -62,6 +64,7 @@
             <input name="tags" value="{{#TAG}}{{TAG}}{{#TAG_separator}}, {{/TAG_separator}}{{/TAG}}" />
             <input type="submit" value="Update" />
             <span class="legend">(comma-separated, e.g. instrumental, electronic)</span>
+            <input name="nonce" type="hidden" value="{{NONCE}}"/>
         </form>
     </div>
     {{/IS_SELF}}
@@ -88,6 +91,7 @@
             This track is not yet published.
             <input type="submit" value="Publish"/>
             <input type="hidden" name="tid" value="{{TID}}"/>
+            <input name="nonce" type="hidden" value="{{NONCE}}"/>
         </form>
         {{/IS_HIDDEN}}
 
@@ -97,6 +101,7 @@
                 <b>{{USERNAME}}</b> -
                 <input type="text" name="title" value="{{TITLE}}" />
                 <input type="submit" value="Rename" />
+                <input name="nonce" type="hidden" value="{{NONCE}}"/>
             </form>
         </div>
 
@@ -110,6 +115,7 @@
             <form action="/track/{{TID}}/art/upload" method="post" enctype="multipart/form-data">
                 <input type="file" name="file" />
                 <input type="submit" value="Upload a picture" />
+                <input name="nonce" type="hidden" value="{{NONCE}}"/>
             </form>
 
             <h4><img src="/static/icons/balloon-sound.png"> Broadcast</h4>
@@ -117,12 +123,14 @@
                 <input type="checkbox" name="airable" {{#IS_AIRABLE}}checked="checked"{{/IS_AIRABLE}} />
                 Celestia Radio<br />
                 <input type="submit" value="Update" />
+                <input name="nonce" type="hidden" value="{{NONCE}}"/>
             </form>
             <h4><img src="/static/icons/youtube-up.png" alt=""> Youtube</h4>
             {{#HAS_YOUTUBE}}
             <form action="/track/{{TID}}/youtube_upload">
                 <input type="submit" value="Upload this to YouTube"/>
                 <a class="huh" href="/faq#youtube">Huh?</a>
+                <input name="nonce" type="hidden" value="{{NONCE}}"/>
             </form>
             {{/HAS_YOUTUBE}}
             {{#NO_YOUTUBE}}
@@ -147,6 +155,7 @@
                 <textarea name="notes">{{#HAS_NOTES}}{{NOTES:pre_escape}}{{/HAS_NOTES}}</textarea><br />
                 <div class="legend">(tags: [b]old, [u]nderline, [i]talic)</div>
                 <input type="submit" value="Update description" />
+                <input name="nonce" type="hidden" value="{{NONCE}}"/>
             </form>
         </div>
         <a class="delete" href="/track/{{TID}}/delete">Delete track</a>
@@ -160,6 +169,7 @@
         <input class="honeypot" type="text" name="url" placeholder="If you can see this, don't fill it in." />
         <textarea name="msg"></textarea><br />
         <input type="submit" value="Post a comment" onclick="this.form.submit();this.disabled=true;return false;" />
+        {{#LOGGED_USER}}<input name="nonce" type="hidden" value="{{NONCE}}"/>{{/LOGGED_USER}}
     </form>
 
 </div>

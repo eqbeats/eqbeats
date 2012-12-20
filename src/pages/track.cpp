@@ -78,7 +78,8 @@ void Pages::track(Document *doc){
         if(!t.artist.self())
             doc->redirect(t.url());
 
-        else if(!post || cgi("confirm") != "Delete"){
+        else if(!post || cgi("confirm") != "Delete" || Session::nonce() != cgi("nonce")){
+            Session::newNonce();
             doc->setHtml("html/delete.tpl", "Track deletion");
             doc->dict()->SetValue("WHAT", t.title);
         }

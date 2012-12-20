@@ -32,6 +32,7 @@
                     <td><input type="submit" value="Update" /></td>
                 </tr>
             </table>
+            <input name="nonce" type="hidden" value="{{NONCE}}"/>
         </form>
         <a class="delete" href="/playlist/{{PLAYLIST_ID}}/delete">Delete playlist</a>
         <div style="clear:both;"></div>
