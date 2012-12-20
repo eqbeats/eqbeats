@@ -130,7 +130,6 @@
             <form action="/track/{{TID}}/youtube_upload">
                 <input type="submit" value="Upload this to YouTube"/>
                 <a class="huh" href="/faq#youtube">Huh?</a>
-                <input name="nonce" type="hidden" value="{{NONCE}}"/>
             </form>
             {{/HAS_YOUTUBE}}
             {{#NO_YOUTUBE}}

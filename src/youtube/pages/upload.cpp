@@ -22,7 +22,7 @@ void Pages::yt_upload(Document *doc){
         if(Session::user() != t.artist || !yt)
             return doc->redirect(t.url());
 
-        if(cgi.getEnvironment().getRequestMethod() != "POST"){
+        if(cgi.getEnvironment().getRequestMethod() != "POST" || Session::nonce() != cgi("nonce")){
             doc->setHtml("html/youtube.tpl", "YouTube upload preview");
             doc->dict()->SetValue("ARTIST", Session::user().name);
             doc->dict()->SetValue("TRUNC_TITLE", t.title.substr(0,100));
@@ -44,6 +44,7 @@ void Pages::yt_upload(Document *doc){
             }
         }
         else {
+            Session::newNonce();
             doc->setHtml("html/bsod.tpl", "Linking your YouTube account");
             if (yt.upload(t)){
                 doc->dict()->SetValue("TITLE", "Success");
