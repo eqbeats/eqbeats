@@ -56,6 +56,7 @@ CREATE TABLE favorites (
     type favorite_type not null
 );
 CREATE INDEX fav_idx ON favorites (user_id);
+CREATE INDEX fav_type_idx ON favorites (type);
 
 CREATE TYPE contest_state AS ENUM ('submissions', 'voting', 'closed');
 CREATE TABLE contests (

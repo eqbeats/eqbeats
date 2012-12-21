@@ -8,11 +8,7 @@
 Account::Account(int uid){
     id = 0;
     if(uid<=0) return;
-    DB::Result r = DB::query(
-            "SELECT name, email, about, notify, license, COUNT(*) AS num_favs "
-                "FROM users "
-                    "LEFT JOIN favorites ON favorites.user_id = users.id AND favorites.type = 'track' "
-                "WHERE id=" + number(uid));
+    DB::Result r = DB::query("SELECT name, email, about, notify, license FROM users WHERE id=" + number(uid));
     if(!r.empty()){
         id = uid;
         name = r[0][0];
@@ -20,8 +16,13 @@ Account::Account(int uid){
         about = r[0][2];
         notify = r[0][3] == "t";
         license = r[0][4];
-        num_favs = number(r[0][5]);
     }
+
+    // Using LEFT JOIN / GROUP BY above would require grouping by all otherwise
+    // selected attributes, we're probably better off this way.
+    r = DB::query("SELECT COUNT(*) FROM favorites WHERE type = 'track' AND user_id = " + number(uid));
+    num_favs = r.empty() ? 0 : number(r[0][0]);
+
 }
 
 void Account::fill(Dict* d) const{
