@@ -15,6 +15,8 @@ class Account: public User {
         bool notify;
         std::string license;
 
+        int num_favs;
+
         void fill(Dict*) const;
 
 };

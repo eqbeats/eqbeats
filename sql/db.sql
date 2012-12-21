@@ -51,10 +51,11 @@ CREATE TABLE comments (
 
 CREATE TYPE favorite_type AS ENUM ('track', 'artist');
 CREATE TABLE favorites (
-    user_id integer not null,
+    user_id integer not null REFERENCES users(id),
     ref integer not null,
     type favorite_type not null
 );
+CREATE INDEX fav_idx ON favorites (user_id);
 
 CREATE TYPE contest_state AS ENUM ('submissions', 'voting', 'closed');
 CREATE TABLE contests (
