@@ -67,7 +67,7 @@ std::string Session::login(const std::string &email, const std::string &pw){
 
 void Session::logout(){
     if(sid.empty()) return;
-    DB::query("DELETE FROM sessions WHERE sid = $1", sid);
+    DB::query("DELETE FROM sessions WHERE sid = $1 AND host = $2", sid, cgi.getEnvironment().getRemoteAddr());
     Session::destroy();
 }
 

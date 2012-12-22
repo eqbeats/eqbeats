@@ -9,6 +9,8 @@ CREATE TABLE users (
     notify bool not null default true,
     license text not null default 'Copyright'
 );
+CREATE INDEX user_name_idx ON users(name);
+CREATE INDEX user_email_idx ON users(name);
 
 CREATE TABLE tracks (
     id serial primary key,
@@ -16,12 +18,14 @@ CREATE TABLE tracks (
     title text not null,
     date timestamptz not null,
     license text not null default 'Copyright',
-    hits integer not null default 0,
     visible boolean not null default 'f',
     notes text not null default '',
     airable boolean not null default 't',
     tags text[] not null default ARRAY[]::text[]
 );
+CREATE INDEX track_title_idx ON tracks(title);
+CREATE INDEX track_visible_idx ON tracks(visible);
+CREATE INDEX track_uid_idx ON tracks(user_id);
 
 CREATE TABLE sessions (
     sid text not null,
@@ -31,6 +35,7 @@ CREATE TABLE sessions (
     nonce text not null default '',
     UNIQUE (sid, host)
 );
+CREATE INDEX sess_sid_idx ON sessions(sid, host);
 
 CREATE TABLE ticker (
     id serial primary key,
@@ -55,28 +60,9 @@ CREATE TABLE favorites (
     ref integer not null,
     type favorite_type not null
 );
-CREATE INDEX fav_idx ON favorites (user_id);
-CREATE INDEX fav_type_idx ON favorites (type);
+CREATE INDEX fav_idx ON favorites (user_id, type);
+CREATE INDEX faved_idx ON favorites (ref, type);
 
-CREATE TYPE contest_state AS ENUM ('submissions', 'voting', 'closed');
-CREATE TABLE contests (
-    id serial primary key,
-    name text not null,
-    description text,
-    state contest_state not null default 'submissions'
-);
-CREATE TABLE contest_submissions (
-    contest_id int not null REFERENCES contests(id),
-    track_id int not null REFERENCES tracks(id),
-    votes int not null default 0,
-    UNIQUE (contest_id, track_id)
-);
-CREATE TABLE votes (
-    host inet not null,
-    user_id integer,
-    track_id integer not null REFERENCES tracks(id),
-    contest_id integer not null REFERENCES contests(id)
-);
 
 CREATE TABLE featured_tracks (
     track_id integer not null REFERENCES tracks(id),
@@ -97,23 +83,29 @@ CREATE TABLE events (
     target_name text,
     source_id int,
     source_name text,
-    track_id int,
+    track_id int REFERENCES tracks(id),
     track_title text,
     message text not null
 );
+CREATE INDEX evt_source_idx ON events(source_id);
+CREATE INDEX evt_target_idx ON events(target_id);
+CREATE INDEX evt_track_idx ON events(track_id);
+CREATE INDEX evt_type_idx ON events(type);
 
 CREATE TABLE playlists (
     id serial primary key,
-    user_id int,
+    user_id int REFERENCES users(id),
     name text,
     description text,
     track_ids int[] not null
 );
+CREATE INDEX plist_uid_idx ON playlists(user_id);
 
 CREATE TABLE youtube_refresh_tokens (
     user_id int not null,
     token text not null
 );
+CREATE INDEX yt_idx ON youtube_refresh_tokens(user_id);
 
 CREATE TABLE youtube_access_tokens (
     user_id int not null unique,
