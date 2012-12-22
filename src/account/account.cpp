@@ -20,7 +20,7 @@ Account::Account(int uid){
 
     // Using LEFT JOIN / GROUP BY above would require grouping by all otherwise
     // selected attributes, we're probably better off this way.
-    r = DB::query("SELECT COUNT(*) FROM favorites WHERE type = 'track' AND user_id = " + number(uid));
+    r = DB::query("SELECT COUNT(*) FROM favorites, tracks WHERE tracks.id = favorites.ref AND favorites.type = 'track' AND favorites.user_id = " + number(uid));
     num_favs = r.empty() ? 0 : number(r[0][0]);
 
 }
