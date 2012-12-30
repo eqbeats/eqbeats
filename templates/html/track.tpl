@@ -35,7 +35,7 @@
     <div class="toolbar">
         {{#READY}}
         <span><img alt="" src="/static/icons/drive-download.png" /> Download :
-            <a href="/track/{{TID}}/vorbis">OGG Vorbis</a>
+            <a href="/track/{{TID}}/vorbis">Ogg Vorbis</a>
             {{#MP3_SOURCE}}<a href="/track/{{TID}}/mp3">Original MP3</a>{{/MP3_SOURCE}}
             {{#OTHER_SOURCE}}
             <a href="/track/{{TID}}/mp3">MP3</a>

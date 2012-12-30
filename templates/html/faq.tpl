@@ -42,7 +42,7 @@
 
 <h4>How do you process uploaded files?</h4>
 <p>If the file uploaded by the artist was an MP3, we do not reencode it. Otherwise, an MP3 file will be made (VBR LAME preset <kbd>-V0</kbd>).
-We also create OGG Vorbis files (oggenc preset <kbd>-q3</kbd>).</p>
+We also create Ogg Vorbis files (oggenc preset <kbd>-q3</kbd>).</p>
 <p>Your browser will stream either MP3 or Vorbis depending on its capabilities.</p>
 <p>The original file is always available for download.</p>
 <p>And before you ask, the original cover art files are left untouched as well. We just make two thumbnail sizes.</p>
