@@ -1,6 +1,7 @@
 {
     "id": {{UID}},
     "name": "{{USERNAME:o}}",
+    "avatar": "http://www.gravatar.com/avatar/{{EMAIL_MD5}}?d=http%3A%2F%2Feqbeats.org%2Fstatic%2Favatar.png",
     {{#HAS_ABOUT}}
     "description": "{{ABOUT:o}}",
     "html_description": "{{ABOUT:x-format:o}}",
