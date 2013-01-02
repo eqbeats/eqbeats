@@ -41,7 +41,7 @@
             <a href="/track/{{TID}}/mp3">MP3</a>
             <a href="/track/{{TID}}/original">Original ({{EXTENSION}})</a>
             {{/OTHER_SOURCE}}
-            <a href="/track/{{TID}}/art" target="_blank">Art</a>
+            {{#HAS_ART}}<a href="/track/{{TID}}/art" target="_blank">Art</a>{{/HAS_ART}}
         </span>
         {{/READY}}
         <span><img alt="" src="/static/icons/balloon-white-left.png" /> Share : <a href="#embedcode" onclick="document.getElementById('embedcode').style.display='block';return false;">Embed</a></span>
