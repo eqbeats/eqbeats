@@ -94,7 +94,7 @@ class YoutubeManager:
         os.makedirs(eqrender, exist_ok=True)
         out = eqrender + str(tid) + ".avi"
         for f in os.listdir("tracks"):
-            if "%s.orig" % tid in f:
+            if re.match("%s\\.orig" % tid, f):
                 infile = "tracks/" + f
                 break
         if os.access("art/"+str(tid), os.F_OK):
