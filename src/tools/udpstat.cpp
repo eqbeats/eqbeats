@@ -115,12 +115,19 @@ int main(int argc, char** argv){
         }
         addr = md5(addr + salt()).substr(0,10);
 
+        std::string referrer;
+        i++;
+        for(; i != contents.end() && !(*i == ' ') && !(*i == '\n'); i++){
+            referrer += *i;
+        }
+
 
         std::string entry = "{ 'type':'" + type + "', "+
                             (tid > 0?"'tid':" + number(tid) + ", ":"")+
                             (type == "userView"?"'uid':" + number(uid) + ", ":"")+
-                            "'addr':'" + addr + "', "+
                             "'timestamp':" + number(time(NULL)) + ", "+
+                            "'referrer':'" + referrer + "', "+
+                            "'addr':'" + addr + "', "+
                             "'unique':-1 }";
 
 

@@ -10,7 +10,7 @@
 #include "push.h"
 
 void pushStat(std::string type, int uid, int tid){
-    std::string msg = type + " " + number(tid) + " " + number(uid) + " " + cgi.getEnvironment().getRemoteAddr() + "\n";
+    std::string msg = type + " " + number(tid) + " " + number(uid) + " " + cgi.getEnvironment().getRemoteAddr() + " " + cgi.getEnvironment().getReferrer() + "\n";
     int s = socket(AF_UNIX, SOCK_DGRAM, 0);
     struct sockaddr_un addr;
     addr.sun_family = AF_LOCAL;
