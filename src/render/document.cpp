@@ -67,6 +67,7 @@ std::string Document::generate(){
     }
 
     else if(_mime == "application/json" && _rootDict != _dict){
+        addHttp("Access-Control-Allow-Origin: *\n");
         if(!cgi("jsonp").empty()){
             _mime = "text/javascript";
             _rootDict->SetValueAndShowSection("FUNCTION", cgi("jsonp"), "JSONP");
