@@ -9,6 +9,7 @@
 #include <taglib/taglib.h>
 #include <taglib/vorbisfile.h>
 #include <taglib/mp4file.h>
+#include <taglib/opusfile.h>
 #include <unistd.h>
 
 std::string Audio::filepath(Format f) const{
@@ -56,7 +57,11 @@ void Audio::updateTags(Format format){
         t->setArtist(TagLib::String(track->artist.name));
         aac.save();
     } else if(format == Opus && access(filepath(Opus).c_str(), R_OK) == 0) {
-        // yo fmang where's your libopustags
+        TagLib::Ogg::Opus::File opus(filepath(AAC).c_str());
+        TagLib::Tag *t = opus.tag();
+        t->setTitle(track->title);
+        t->setArtist(track->artist.name);
+        opus.save();
     }
 }
 
@@ -77,7 +82,7 @@ File Audio::vorbis() const{
 }
 
 File Audio::aac() const{
-    return File("tracks/" + number(track->id) + ".aac", track->title + " - " + track->artist.name + ".aac");
+    return File("tracks/" + number(track->id) + ".m4a", track->title + " - " + track->artist.name + ".m4a");
 }
 
 File Audio::opus() const{
