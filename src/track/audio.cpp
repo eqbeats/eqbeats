@@ -57,8 +57,9 @@ void Audio::updateTags(Format format){
         t->setArtist(TagLib::String(track->artist.name));
         aac.save();
     } else if(format == Opus && access(filepath(Opus).c_str(), R_OK) == 0) {
-        TagLib::Ogg::Opus::File opus(filepath(AAC).c_str());
+        TagLib::Ogg::Opus::File opus(filepath(Opus).c_str());
         TagLib::Tag *t = opus.tag();
+        if(!t) return;
         t->setTitle(track->title);
         t->setArtist(track->artist.name);
         opus.save();
