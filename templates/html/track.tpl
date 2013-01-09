@@ -35,13 +35,34 @@
     <div class="toolbar">
         {{#READY}}
         <span><img alt="" src="/static/icons/drive-download.png" /> Download :
-            <a href="/track/{{TID}}/vorbis">Ogg Vorbis</a>
-            {{#MP3_SOURCE}}<a href="/track/{{TID}}/mp3">Original MP3</a>{{/MP3_SOURCE}}
+        <ul class="downloads">
+            {{#MP3_SOURCE}}<li><a href="/track/{{TID}}/mp3"><span>Original MP3
+                <span class="codecinfo">Highest quality</span>
+            </span></a></li>{{/MP3_SOURCE}}
             {{#OTHER_SOURCE}}
-            <a href="/track/{{TID}}/mp3">MP3</a>
-            <a href="/track/{{TID}}/original">Original ({{EXTENSION}})</a>
+            <li><a href="/track/{{TID}}/original"><span>Original ({{EXTENSION}})
+                <span class="codecinfo">Highest quality</span>
+                <span class="settings">(Untouched upload)</span>
+            </span></a></li>
+            <li><a href="/track/{{TID}}/mp3"><span>MP3
+                <span class="codecinfo">Great quality, widely supported</span>
+                <span class="settings">(libmp3lame VBR 0)</span>
+            </span></a></li>
             {{/OTHER_SOURCE}}
-            {{#HAS_ART}}<a href="/track/{{TID}}/art" target="_blank">Art</a>{{/HAS_ART}}
+            <li><a href="/track/{{TID}}/opus"><span>Opus
+                <span class="codecinfo">Great quality, small filesize, experimental</span>
+                <span class="settings">(libopus ABR ~128kbps)</span>
+            </span></a></li>
+            <li><a href="/track/{{TID}}/vorbis"><span>OGG Vorbis
+                <span class="codecinfo">Good quality, small filesize</span>
+                <span class="settings">(libvorbis VBR 4)</span>
+            </span></a></li>
+            <li><a href="/track/{{TID}}/aac"><span>AAC
+                <span class="codecinfo">Okay quality, small filesize</span>
+                <span class="settings">(libfaac VBR 90%)</span>
+            </span></a></li>
+            {{#HAS_ART}}<li><a href="/track/{{TID}}/art" target="_blank"><span>Cover art</span></a></li>{{/HAS_ART}}
+        </ul>
         </span>
         {{/READY}}
         <span><img alt="" src="/static/icons/balloon-white-left.png" /> Share : <a href="#embedcode" onclick="document.getElementById('embedcode').style.display='block';return false;">Embed</a></span>

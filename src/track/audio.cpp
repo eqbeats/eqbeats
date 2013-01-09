@@ -64,6 +64,8 @@ void Audio::unlink(){
     ::unlink(filepath(MP3).c_str());
     ::unlink(filepath(Vorbis).c_str());
     ::unlink(filepath(Original).c_str());
+    ::unlink(filepath(Opus).c_str());
+    ::unlink(filepath(AAC).c_str());
 }
 
 File Audio::mp3() const{

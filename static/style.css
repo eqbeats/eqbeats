@@ -1,8 +1,6 @@
 @import url("player.css");
 
-html, body {
-    background-color: #F2F2F2;
-}
+html, body { background-color: #F2F2F2; }
 
 /** Header ********************************************************************/
 
@@ -149,14 +147,100 @@ div.legend {
     margin-left: 20px;
 }
 
-.report span { 
-    visibility: hidden; 
+.report span {
+    visibility: hidden;
     margin-left: 5px;
 }
 
 .report:hover { cursor: pointer; }
 .report:hover span { visibility: visible; }
 .report img { margin: 0; }
+
+ul.downloads {
+    display: inline-block;
+    padding: 0;
+    margin: 0;
+    vertical-align: top;
+    height: 1em;
+}
+
+ul.downloads li{
+    display: block;
+    position: relative;
+    visibility: hidden;
+    margin: 0;
+    padding: 0;
+    z-index: 100;
+}
+
+.downloads a{
+    display:inline-block;
+    width:100%;
+    background: white;
+    padding: 0; margin: 0;
+}
+
+.downloads a > span{
+    padding: 8px;
+}
+
+
+.downloads a:hover{
+    background: #fafafa;
+    text-decoration: none;
+}
+
+ul.downloads li a{
+    border-left: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+}
+
+ul.downloads li:first-of-type:after{
+    content: "▼";
+    position: absolute;
+    text-align: right;
+    right: .5em;
+    top: 0;
+    left: 0;
+    bottom:0;
+    /* this ensures that the menu can be opened on touch devices
+       the first click will click on this and hover, thus removing this element */
+    cursor: default;
+    color: #333;
+}
+ul.downloads:hover li:first-of-type:after{
+    display: none;
+}
+ul.downloads li:first-of-type a{
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+}
+ul.downloads:hover li:first-of-type a{
+    border-bottom: none;
+}
+ul.downloads:hover li:last-of-type a{
+    border-bottom: 1px solid #ccc;
+}
+ul.downloads li:first-of-type,
+ul.downloads:hover li{
+    visibility: visible;
+}
+
+.downloads .codecinfo, .downloads .settings{
+    color: grey;
+    font-size: 0.7em;
+}
+.downloads a .settings{
+    visibility: hidden;
+    position: absolute;
+    right: 0;
+    bottom: 1px;
+    color: #ccc;
+    background: #fafafa;
+}
+.downloads a:hover .settings{
+    visibility: visible;
+}
 
 .notes, .news {
     line-height: 1.7em;
