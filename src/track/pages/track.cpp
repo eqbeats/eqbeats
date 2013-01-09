@@ -3,6 +3,9 @@
 #include "../extended.h"
 #include <core/cgi.h>
 #include <stat/push.h>
+#include <text/text.h>
+#include <unistd.h>
+#include <render/file.h>
 
 void Pages::trackMisc(Document *doc){
 
@@ -49,5 +52,17 @@ void Pages::trackMisc(Document *doc){
         if(t)
             pushStat("trackPlay", t.artist.id, tid);
         doc->setJson("/dev/null");
+    }
+
+    else if(sub == "stats"){
+        Track t(tid);
+        std::string uri = "udpstat/tracks/" + number(tid) + ".json";
+        std::string path = eqbeatsDir() + "/" + uri;
+        if(t){
+            if(access(path.c_str(), R_OK))
+                doc->setJson("json/array.tpl");
+            else
+                doc->download(File(uri, number(tid) + ".json"));
+        }
     }
 }

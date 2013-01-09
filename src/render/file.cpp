@@ -22,6 +22,8 @@ std::string File::mimetype() const{
     IFEXT(".jpg", "image/jpeg")
     IFEXT(".jpeg", "image/jpeg")
 
+    IFEXT(".json", "application/json")
+
     return "application/octet-stream";
 }
 
