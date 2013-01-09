@@ -75,7 +75,9 @@ function load(player){
             player.playtime.innerHTML = prettyTime(this.position) + '/' + prettyTime(this.durationEstimate);
         },
         url: [
-            {url:player.track.vorbis, type:'audio/ogg'},
+            {url:player.track.opus, type:'audio/ogg; codecs=opus'},
+            {url:player.track.vorbis, type:'audio/ogg; codecs=vorbis'},
+            {url:player.track.aac, type:'audio/aac'},
             {url:player.track.mp3, type:'audio/mp3'}
         ]
     });

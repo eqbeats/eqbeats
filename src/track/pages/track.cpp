@@ -33,7 +33,8 @@ void Pages::trackMisc(Document *doc){
 
     // Download
 
-    else if(sub == "original" || sub == "vorbis" || sub == "mp3"){
+    else if(sub == "original" || sub == "vorbis" || sub == "mp3"
+            || sub == "aac" || sub == "opus"){
         Track t(tid);
         if(!t)
             return;
@@ -41,6 +42,10 @@ void Pages::trackMisc(Document *doc){
             doc->download(Audio(&t).original(), true);
         else if(sub == "vorbis")
             doc->download(Audio(&t).vorbis(), true);
+        else if(sub == "aac")
+            doc->download(Audio(&t).aac(), true);
+        else if(sub == "opus")
+            doc->download(Audio(&t).opus(), true);
         else
             doc->download(Audio(&t).mp3(), true);
         if(cgi("stream").empty())

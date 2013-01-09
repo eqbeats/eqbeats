@@ -12,15 +12,18 @@ class Audio{
 
         File mp3() const;
         File vorbis() const;
+        File aac() const;
+        File opus() const;
         File original() const;
 
-        void updateTags(){ updateTags(MP3); updateTags(Vorbis); }
+        void updateTags(){ updateTags(MP3); updateTags(Vorbis);
+            updateTags(AAC); updateTags(Opus); }
         void unlink();
 
         void fill(Dict*);
 
     private:
-        enum Format { MP3, Vorbis, Original };
+        enum Format { MP3, Vorbis, Original, AAC, Opus };
         std::string filepath(Format f) const;
         void updateTags(Format format);
 

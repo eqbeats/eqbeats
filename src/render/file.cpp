@@ -16,6 +16,7 @@ std::string File::mimetype() const{
     IFEXT(".m4a", "audio/mp4")
     IFEXT(".aac", "audio/aac")
     IFEXT(".flac", "audio/x-flac")
+    IFEXT(".opus", "audio/ogg")
 
     IFEXT(".png", "image/png")
     IFEXT(".gif", "image/gif")

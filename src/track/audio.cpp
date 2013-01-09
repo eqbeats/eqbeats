@@ -8,12 +8,15 @@
 #include <taglib/mpegfile.h>
 #include <taglib/taglib.h>
 #include <taglib/vorbisfile.h>
+#include <taglib/mp4file.h>
 #include <unistd.h>
 
 std::string Audio::filepath(Format f) const{
     std::string base = eqbeatsDir() + "/tracks/";
     if(f == MP3)    return base + number(track->id) + ".mp3";
     if(f == Vorbis) return base + number(track->id) + ".ogg";
+    if(f == AAC) return base + number(track->id) + ".aac";
+    if(f == Opus)    return base + number(track->id) + ".opus";
     // Otherwise, Original
     DIR *dirp = opendir(base.c_str());
     struct dirent *e;
@@ -45,6 +48,15 @@ void Audio::updateTags(Format format){
         t->setTitle(TagLib::String(track->title, TagLib::String::UTF8));
         t->setArtist(TagLib::String(track->artist.name, TagLib::String::UTF8));
         vorbis.save();
+    } else if(format == AAC && access(filepath(AAC).c_str(), R_OK) == 0) {
+        TagLib::MP4::File aac(filepath(AAC).c_str());
+        TagLib::Tag *t = aac.tag();
+        if(!t) return;
+        t->setTitle(TagLib::String(track->title));
+        t->setArtist(TagLib::String(track->artist.name));
+        aac.save();
+    } else if(format == Opus && access(filepath(Opus).c_str(), R_OK) == 0) {
+        // yo fmang where's your libopustags
     }
 }
 
@@ -62,6 +74,14 @@ File Audio::vorbis() const{
     return File("tracks/" + number(track->id) + ".ogg", track->title + " - " + track->artist.name + ".ogg");
 }
 
+File Audio::aac() const{
+    return File("tracks/" + number(track->id) + ".aac", track->title + " - " + track->artist.name + ".aac");
+}
+
+File Audio::opus() const{
+    return File("tracks/" + number(track->id) + ".opus", track->title + " - " + track->artist.name + ".opus");
+}
+
 File Audio::original() const{
     std::string path = filepath(Original);
     std::string ext = path.substr(path.rfind('.'));
@@ -75,7 +95,11 @@ void Audio::fill(Dict *d){
         const char* status;
         if(access(filepath(MP3).c_str(), R_OK) == 0) // mp3 exists, but not the original file
             status = "Transcoding into MP3...";
-        else if(access(filepath(Vorbis).c_str(), R_OK) == 0) // vorbis exists, but no mp3 nor original file
+        else if(access(filepath(Opus).c_str(), R_OK) == 0) // Vorbis, AAC and Opus exist
+            status = "Transcoding into Opus...";
+        else if(access(filepath(AAC).c_str(), R_OK) == 0) // Vorbis and AAC exist
+            status = "Transcoding into AAC...";
+        else if(access(filepath(Vorbis).c_str(), R_OK) == 0) // Only vorbis exists
             status = "Transcoding into Vorbis...";
         else // no mp3, vorbis, or original file
             status = "Couldn't transcode.";
