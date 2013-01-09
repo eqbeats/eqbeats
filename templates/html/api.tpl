@@ -50,8 +50,12 @@
     "artist": {"id": 123, "name": "Foo Bar",...},
     "link": "http://eqbeats.org/track/456",
     "download": {"art":"http://eqbeats.org/track/456/art",
+                 "opus":"http://eqbeats.org/track/456/opus",
+                 "vorbis":"http://eqbeats.org/track/456/vorbis",
+                 "aac":"http://eqbeats.org/track/456/aac",
                  "mp3":"http://eqbeats.org/track/456/mp3",
-                 "vorbis":"http://eqbeats.org/track/456/vorbis"}
+                 "original":"http://eqbeats.org/track/456/original"
+                 }
 }</pre>
 
     <h3 id="playlist">Playlist object</h3>

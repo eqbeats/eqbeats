@@ -15,7 +15,10 @@
     "link": "{{EQBEATS_URL}}/track/{{TID}}",
     "download": {
         {{#HAS_ART}}"art": "{{EQBEATS_URL}}/track/{{TID}}/art",{{/HAS_ART}}
+        "opus": "{{EQBEATS_URL}}/track/{{TID}}/opus",
+        "vorbis": "{{EQBEATS_URL}}/track/{{TID}}/vorbis",
+        "aac": "{{EQBEATS_URL}}/track/{{TID}}/aac",
         "mp3": "{{EQBEATS_URL}}/track/{{TID}}/mp3",
-        "vorbis": "{{EQBEATS_URL}}/track/{{TID}}/vorbis"
+        "original": "{{EQBEATS_URL}}/track/{{TID}}/original"
     }
 }
