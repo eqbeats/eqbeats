@@ -22,9 +22,10 @@ void Document::redirect(const std::string &r){
     _redir = r;
 }
 
-void Document::download(const File &f){
+void Document::download(const File &f, bool attachment){
     _redir.clear();
     dw = f;
+    _attachment = attachment;
 }
 
 void Document::setTemplate(const std::string &tpl, const std::string &mime, int code){
@@ -51,7 +52,7 @@ std::string Document::generate(){
         return _http + Http::redirect(_redir);
 
     else if(dw)
-        return _http + Http::download(dw);
+        return _http + Http::download(dw, _attachment);
 
     std::string out;
     if(_tpl.empty())

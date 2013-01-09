@@ -9,7 +9,7 @@ std::string header(int status=200);
 std::string header(const std::string &type, int status=200);
 
 std::string redirect(const std::string &location);
-std::string download(const File &f);
+std::string download(const File &f, bool attachment);
 
 }
 

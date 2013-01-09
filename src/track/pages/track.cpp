@@ -38,11 +38,11 @@ void Pages::trackMisc(Document *doc){
         if(!t)
             return;
         else if(sub == "original")
-            doc->download(Audio(&t).original());
+            doc->download(Audio(&t).original(), true);
         else if(sub == "vorbis")
-            doc->download(Audio(&t).vorbis());
+            doc->download(Audio(&t).vorbis(), true);
         else
-            doc->download(Audio(&t).mp3());
+            doc->download(Audio(&t).mp3(), true);
         if(cgi("stream").empty())
             pushStat("trackDownload", t.artist.id, tid);
     }
