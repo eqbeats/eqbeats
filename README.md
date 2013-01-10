@@ -9,11 +9,11 @@
 * GNU cgicc
 * spawn-fcgi
 * libpcre++ (sometimes included with pcre)
-* TagLib
+* TagLib with Opus support (current stable TagLib doesn't have it)
 * ImageMagick
 * Nettle
 * ctemplate
-* FFmpeg
+* FFmpeg with libopus support
 * Optional: jsmin for deploy.sh
 * Optional: OpenBSD netcat and a Haskell compiler (like GHC) for hitsd
 * Optional: OpenBSD netcat, Python 3.x and psycopg2 for YouTube support
@@ -60,6 +60,10 @@ Here is a sample config for nginx:
         location /downloads/tracks {
             internal;
             alias /home/you/eqbeats/tracks/;
+        }
+        location /downloads/udpstat { 
+            internal;
+            alias /home/you/eqbeats/udpstat/;
         }
         location /robots.txt { alias /home/you/eqbeats/static/robots.txt; }
     }
