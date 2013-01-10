@@ -75,7 +75,7 @@ function load(player){
             player.playtime.innerHTML = prettyTime(this.position) + '/' + prettyTime(this.durationEstimate);
         },
         url: [
-            {url:player.track.opus, type:'audio/ogg; codecs=opus'},
+            {url:player.track.opus, type:'audio/opus'},
             {url:player.track.vorbis, type:'audio/ogg; codecs=vorbis'},
             {url:player.track.aac, type:'audio/aac'},
             {url:player.track.mp3, type:'audio/mp3'}
@@ -222,9 +222,16 @@ function parseCookies(){
 
 function registerTrack(t){ tracks.push(t); }
 
-soundManager.url = '/static/';
-soundManager.preferFlash = false;
-soundManager.audioFormats.mp3.required=false;
+soundManager.audioFormats.mp3.required = false;
+soundManager.audioFormats['opus'] = {
+    type: ['audio/ogg; codecs=opus', 'audio/opus'],
+    required: false
+};
+soundManager.setup({
+    url: '/static/',
+    html5Test: /^probably$/i,
+    preferFlash: false
+});
 soundManager.onready(function(){
     if(!document.head)
         document.head = document.getElementsByTagName("HEAD")[0];
