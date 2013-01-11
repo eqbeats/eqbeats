@@ -4,8 +4,8 @@
  * "userVisit 0 123 127.0.0.1", etc.
  * From there on, we dispatch that info to the appropriate track / user
  * stat files, as a JSON object.
- * { 'type':'trackPlay', 'id':123, 'addr':'salted md5 shit for anonymity',
- *   'timestamp':1234567890, 'unique':-1 }
+ * { "type":"trackPlay", "id":123, "addr":"salted md5 shit for anonymity",
+ *   "timestamp":1234567890, "unique":-1 }
  * The unique value will be filled later, per day, and addr will be pruned.
  */
 
@@ -122,13 +122,13 @@ int main(int argc, char** argv){
         }
 
 
-        std::string entry = "{ 'type':'" + type + "', "+
-                            (tid > 0?"'tid':" + number(tid) + ", ":"")+
-                            (type == "userView"?"'uid':" + number(uid) + ", ":"")+
-                            "'timestamp':" + number(time(NULL)) + ", "+
-                            "'referrer':'" + referrer + "', "+
-                            "'addr':'" + addr + "', "+
-                            "'unique':-1 }";
+        std::string entry = "{ \"type\":\"" + type + "\", "+
+                            (tid > 0?"\"tid\":" + number(tid) + ", ":"")+
+                            (type == "userView"?"\"uid\":" + number(uid) + ", ":"")+
+                            "\"timestamp\":" + number(time(NULL)) + ", "+
+                            "\"referrer\":\"" + referrer + "\", "+
+                            "\"addr\":\"" + addr + "\", "+
+                            "\"unique\":-1 }";
 
 
         struct stat st;
