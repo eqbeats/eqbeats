@@ -102,7 +102,7 @@ function play(player){
             playing.playtime.innerHTML = prettyTime(this.position) + '/' + prettyTime(this.durationEstimate);
             if(this.position > this.durationEstimate / 3 && this.triggered == false){
                 this.triggered = true;
-                var xhr = XMLHttpRequest();
+                var xhr = new XMLHttpRequest();
                 xhr.open("POST", "/track/" + playing.track.tid + "/played", true);
                 xhr.send();
             }
@@ -164,10 +164,10 @@ function initTrack(t){
         // Volume
         volume.slider = document.createElement('div');
         volume.icon = document.createElement('img');
+        volume.slider.inner = document.createElement('div');
         with(volume){
             slider.className = 'slider';
             slider.style.width = '50px';
-            slider.inner = document.createElement('div');
             slider.appendChild(slider.inner);
             icon.src = '/static/icons/volume.png';
             appendChild(slider);

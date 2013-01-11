@@ -195,7 +195,7 @@ ul.downloads li a{
     border-right: 1px solid #ccc;
 }
 
-ul.downloads li:first-of-type:after{
+ul.downloads li:first-child:after{
     content: "▼";
     position: absolute;
     text-align: right;
@@ -208,20 +208,20 @@ ul.downloads li:first-of-type:after{
     cursor: default;
     color: #333;
 }
-ul.downloads:hover li:first-of-type:after{
+ul.downloads:hover li:first-child:after{
     display: none;
 }
-ul.downloads li:first-of-type a{
+ul.downloads li:first-child a{
     border-top: 1px solid #ccc;
     border-bottom: 1px solid #ccc;
 }
-ul.downloads:hover li:first-of-type a{
+ul.downloads:hover li:first-child a{
     border-bottom: none;
 }
 ul.downloads:hover li:last-of-type a{
     border-bottom: 1px solid #ccc;
 }
-ul.downloads li:first-of-type,
+ul.downloads li:first-child,
 ul.downloads:hover li{
     visibility: visible;
 }
@@ -349,6 +349,8 @@ input.honeypot {
 }
 
 h2 .buttons { padding-left: 4px; }
+
+a img { border: none; }
 
 #addplaylist {
     position: relative;
