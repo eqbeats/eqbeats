@@ -1076,6 +1076,7 @@ svg .ytick, svg .ylabel, svg .chartlabel { fill: #333; z-index: 50; }
 
 .charts .settings {
     text-align: center;
+    margin: 3px;
 }
 .charts .settings span {
     margin: 0 10px;

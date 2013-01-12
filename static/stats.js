@@ -12,7 +12,7 @@ Object.prototype.clone = function() { // http://my.opera.com/GreyWyvern/blog/sho
 var daysecs = 60*60*24;
 timescale = d3.scale.linear().domain([today() - daysecs * 60, today() + daysecs ]).range([0, 650]);
 days = 30;
-data = [];
+var data = [];
 uniqmode = true;
 statsfirstrun = true;
 
@@ -42,7 +42,7 @@ function initstats(){
         statsfirstrun = false;
         var chartdiv = d3.select("div#charts").style("display", "block");
         window.location = "#charts";
-        chartdiv.append("h3").html("Stats");
+        chartdiv.append("h3").html("<img src='/static/icons/system-monitor-24.png' alt=''/>Statistics");
         var inner = chartdiv.append("div").classed("double-column", true);
         var settings = inner.append("div").classed("settings", true);
         var span = settings.append("span");
@@ -78,18 +78,24 @@ function initstats(){
             .attr("x", 5)
             .text(function(d){return d.name;});
 
-        inner.append("h4").text("Referrers");
+        inner.append("h4").html("<img src='/static/icons/chain--arrow.png' alt=''/> Referrers");
         inner.append("table").classed("referrers", true);
     }
     var ellipsis = d3.select("#charts").append("div").classed("ellipsis", true);
     window.location = "#charts";
     var xhr = new XMLHttpRequest();
-    xhr.open("GET", window.location.protocol + "//" + window.location.host + (window.location.port != ''? ":" + window.location.port : '') + window.location.pathname + "/stats", false);
+    xhr.open("GET", window.location.protocol + "//" + window.location.host + (window.location.port != ''? ":" + window.location.port : '') + window.location.pathname + "/stats", true);
+    //xhr.open("GET", "https://eqbeats.org/track/660/stats", true);
+    xhr.onreadystatechange = function(){
+        if(xhr.readyState == 4){
+            data = eval(xhr.responseText);
+            render(true);
+            d3.select(".ellipsis").remove();
+        }
+    }
     xhr.send();
-    data = eval(xhr.response);
-    render(true);
-    ellipsis.remove();
 }
+
 
 function render(refilter){
     if(refilter){
@@ -197,8 +203,9 @@ function render(refilter){
 
     // referrers
     var update = d3.select(".referrers").selectAll("tr").data(referrers);
-    update.enter().append("tr");
-    update.html(function(d){return "<td>" + (d.key==""?"No address (IM, Email, Bookmarks...)</td>":"<a href=\"http://" + d.key + "/\">" + d.key + "</a>") + "</td><td class='value'>" + d.value + "</td>"});
+    var tr = update.enter().append("tr");
+    tr.append("td").html(function(d){ return d.key==""?"No address (IM, Email, Bookmarks...)</td>":"<a href=\"http://" + d.key + "/\">" + d.key + "</a>"; });
+    tr.append("td").classed("value", true).html(function(d){ return d.value; });
     update.exit().remove();
 
 }
