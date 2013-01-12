@@ -68,7 +68,7 @@
         <span><img alt="" src="/static/icons/balloon-white-left.png" /> Share : <a href="#embedcode" onclick="document.getElementById('embedcode').style.display='block';return false;">Embed</a></span>
 
         {{#IS_SELF}}
-        {{#HAS_HITS}}<span><img alt="" src="/static/icons/edit-number.png" /> Hits : {{HIT_COUNT}}</span>{{/HAS_HITS}}
+        <span><img alt="" src="/static/icons/edit-number.png" /> Hits : {{HIT_COUNT}} <a href="#charts" onclick="initstats(); return false;">Detailed stats</a></span>
         {{/IS_SELF}}
         {{#NOT_SELF}}
         <form action="/track/{{TID}}/report" method="post">
@@ -104,7 +104,9 @@
     {{#HAS_NOTES}}<div class="notes">{{NOTES:x-format}}</div>{{/HAS_NOTES}}
 
     {{#IS_SELF}}
-    <div class="edit">
+    <div id="charts" class="charts dialog"></div>
+
+    <div class="dialog">
         <h3><img src="/static/icons/pencil.png" alt="" /> Edit</h3>
         {{#IS_HIDDEN}}
         <form class="publish" action="/track/{{TID}}/publish" method="post">
@@ -116,7 +118,7 @@
         </form>
         {{/IS_HIDDEN}}
 
-        <div class="rename">
+        <div class="double-column">
             <h4><img alt="" src="/static/icons/rename.png" /> Rename</h4>
             <form method="post" action="/track/{{TID}}/rename">
                 <b>{{USERNAME}}</b> -

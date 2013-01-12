@@ -52,7 +52,8 @@ void Pages::track(Document *doc){
         uploader->SetValue("ACTION", t.url() + "/upload");
 
         int hits = t.artist.self() ? t.getHits() : t.hit();
-        if(hits) doc->dict()->SetValueAndShowSection("HIT_COUNT", number(hits), "HAS_HITS");
+        doc->dict()->SetValue("HIT_COUNT", number(hits));
+        doc->rootDict()->ShowSection("REQUIRES_STATS_JS");
 
         Session::fill(doc->dict());
         EventList::track(t).fill(doc->dict(), "EVENTS", false);

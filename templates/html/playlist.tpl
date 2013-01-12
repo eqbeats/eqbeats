@@ -12,7 +12,7 @@
     {{>TRACKLIST}}
 
     {{#IS_SELF}}
-    <div class="edit">
+    <div class="dialog">
         <h3><img src="/static/icons/pencil.png" /> Edit</h3>
         <form method="post" action="/playlist/{{PLAYLIST_ID}}/edit">
             <table>

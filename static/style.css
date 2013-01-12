@@ -350,6 +350,13 @@ input.honeypot {
 
 h2 .buttons { padding-left: 4px; }
 
+.tracklist button, .report button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+}
+
 a img { border: none; }
 
 #addplaylist {
@@ -534,35 +541,6 @@ a.more:before {
     content: "» ";
 }
 
-/** Contests ******************************************************************/
-
-.contest { margin-top: 15px; }
-
-.submissions form {
-    margin: 0;
-}
-
-button {
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 0;
-}
-
-.submissions .votes {
-    font-size: 0.7em;
-    margin: 5px 10px;
-    float:right;
-}
-
-.description ul li {
-    color: #000;
-}
-
-.description ul li.inactive {
-    color: #888;
-}
-
 /** Lists *********************************************************************/
 
 li {
@@ -632,7 +610,7 @@ ul {
 .playlist .notes { margin-bottom: 30px; }
 .tracklist .buttons { float: right; }
 .tracklist .buttons form { margin: 2px; }
-.playlist .edit form img {
+.playlist .dialog form img {
     vertical-align: middle;
     padding-bottom: 2px;
 }
@@ -648,7 +626,7 @@ ul {
 form {
     margin: 20px;
 }
-form input, textarea, select, .qq-upload-button {
+form input, textarea, select, .qq-upload-button, button {
     border: 1px solid #555;
     border-radius: 2px;
     padding: 4px;
@@ -666,7 +644,7 @@ input[type="checkbox"], input[type="radio"] {
 form input[type="file"] {
     border: none;
 }
-form input[type="submit"], .qq-upload-button {
+form input[type="submit"], .qq-upload-button, button {
     width: auto;
     background-color: #F8F8FF;
     padding: 3px 7px;
@@ -687,61 +665,62 @@ textarea {
     margin: 10px 20px;
 }
 
-.edit {
+.dialog {
     padding-bottom: 10px;
     margin: 30px 0;
     border-radius: 5px;
     border: 1px solid #eee;
     line-height: 1.1em;
+    position: relative;
 }
-.edit h4 {
+.dialog h4 {
     border-bottom: 1px solid #e0e0e0;
 }
-.edit h4 img {
+.dialog h4 img {
     margin-top: 3px;
 }
-#contents .edit h3 {
+#contents .dialog h3 {
     margin: 0;
     border: none;
     border-radius: 5px 5px 0 0;
 }
-.edit h4 {
+.dialog h4 {
     margin: 15px 0 0 0;
     padding: 5px;
 }
-.edit form {
+.dialog form {
     margin: 10px 10px;
 }
-.edit .column {
+.dialog .column {
     float: left;
 }
-.edit .column, .edit .rename, .edit .publish {
+.dialog .column, .dialog .double-column, .dialog .publish {
     padding: 0 3%;
 }
-.edit .rename input[type="text"]{
+.dialog .double-column input[type="text"]{
     width: 400px;
     max-width: 50%;
 }
-.edit textarea {
+.dialog textarea {
     width: 350px;
     height: 220px;
 }
-.edit .publish {
+.dialog .publish {
     margin: 25px 0 0 0;
     font-weight: bold;
     color: #548;
     text-align: left;
 }
-.edit .publish img {
+.dialog .publish img {
     float: left;
     margin: 2px 7px 0 5px;
 }
-.edit .publish input {
+.dialog .publish input {
     color: #FFF;
     background: #307;
     border: none;
 }
-.edit .publish input:hover {
+.dialog .publish input:hover {
     background-color: #509;
 }
 
@@ -1072,4 +1051,60 @@ a.qq-upload-file, a.qq-upload-file:hover {
 .ytpreview .tag {
     margin: 0 5px;
     font-weight: normal;
+}
+
+/* stats *************************** */
+
+.charts {
+    display: none;
+}
+
+svg.chart {
+    position: relative;
+    margin: 10px auto;
+    display: block;
+    border: 1px #666 solid;
+    background: #f9f9f9;
+    font-family: sans;
+    font-size: .7em;
+}
+
+svg .views { fill: #3cc; z-index: 20; }
+svg .plays { fill: #55f; z-index: 20; }
+svg .dls { fill: #31a; z-index: 20; }
+svg .ytick, svg .ylabel, svg .chartlabel { fill: #333; z-index: 50; }
+
+.charts .settings {
+    text-align: center;
+}
+.charts .settings span {
+    margin: 0 10px;
+}
+
+.charts .ellipsis {
+    z-index: 100;
+    background: url("/static/ellipsis.png") no-repeat center center, rgba(0,0,0, 0.1);
+    position: absolute;
+    top: 0; bottom: 0; left: 0; right: 0;
+}
+
+.charts table.referrers {
+    min-width: 650px;
+    margin: 0 auto;
+    border-collapse: collapse;
+}
+.charts .referrers tr{
+    margin: 0;
+    padding: 0;
+}
+.charts .referrers td{
+    border: none;
+    margin: 0;
+    padding: 10px;
+}
+.charts .referrers tr:nth-child(2n){
+    background: #f5f5f5;
+}
+.charts .referrers td.value{
+    text-align: right;
 }
