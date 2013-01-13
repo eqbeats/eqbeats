@@ -1,12 +1,12 @@
 //"use strict";
 
-Object.prototype.clone = function() { // http://my.opera.com/GreyWyvern/blog/show.dml/1725165
-    var newObj = (this instanceof Array) ? [] : {};
-    for (i in this) {
+clone = function(obj) { // http://my.opera.com/GreyWyvern/blog/show.dml/1725165
+    var newObj = (obj instanceof Array) ? [] : {};
+    for (i in obj) {
         if (i == 'clone') continue;
-        if (this[i] && typeof this[i] == "object") {
-            newObj[i] = this[i].clone();
-        } else newObj[i] = this[i]
+        if (obj[i] && typeof obj[i] == "object") {
+            newObj[i] = clone(obj[i]);
+        } else newObj[i] = obj[i]
     } return newObj;
 };
 var daysecs = 60*60*24;
@@ -105,19 +105,19 @@ function render(refilter){
         var entriesByType = cf.dimension(function(d){return d.type;});
         for(var i = 0; i < charts.length; i++){
             entriesByType.filter(charts[i].type);
-            charts[i].data = daily.all().clone();
+            charts[i].data = clone(daily.all());
         }
         entriesByType.filter("trackView");
         var entriesByReferrer = cf.dimension(function(d){return d.referrer || '';});
         var entriesGroupByReferringDomain = entriesByReferrer.group(function(ref){return ref.replace(/^https?:\/\/(www\.)?([^\/]*).*/, "$2");});
-        referrers = entriesGroupByReferringDomain.top(6).clone();
+        referrers = clone(entriesGroupByReferringDomain.top(6));
         cf = crossfilter(uniq(data));
         entriesByTime = cf.dimension(function(d){return d.timestamp;});
         daily = entriesByTime.group(function(t){ return t - (t % daysecs); });
         entriesByType = cf.dimension(function(d){return d.type;});
     for(var i = 0; i < charts.length; i++){
             entriesByType.filter(charts[i].type);
-            charts[i].uniqdata = daily.all().clone();
+            charts[i].uniqdata = clone(daily.all());
         }
     }
     for(var i = 0; i < charts.length; i++){
