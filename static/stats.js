@@ -41,7 +41,6 @@ function initstats(){
     if(statsfirstrun){
         statsfirstrun = false;
         var chartdiv = d3.select("div#charts").style("display", "block");
-        window.location = "#charts";
         chartdiv.append("h3").html("<img src='/static/icons/system-monitor-24.png' alt=''/>Statistics");
         var inner = chartdiv.append("div").classed("double-column", true);
         var settings = inner.append("div").classed("settings", true);
@@ -82,7 +81,6 @@ function initstats(){
         inner.append("table").classed("referrers", true);
     }
     var ellipsis = d3.select("#charts").append("div").classed("ellipsis", true);
-    window.location = "#charts";
     var xhr = new XMLHttpRequest();
     xhr.open("GET", window.location.protocol + "//" + window.location.host + (window.location.port != ''? ":" + window.location.port : '') + window.location.pathname + "/stats", true);
     //xhr.open("GET", "https://eqbeats.org/track/660/stats", true);
