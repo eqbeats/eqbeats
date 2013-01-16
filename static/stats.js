@@ -201,7 +201,16 @@ function render(refilter){
     // referrers
     var update = d3.select(".referrers").selectAll("tr").data(referrers);
     var tr = update.enter().append("tr");
-    tr.append("td").html(function(d){ return d.key==""?"No address (IM, Email, Bookmarks...)</td>":"<a href=\"http://" + d.key + "/\">" + d.key + "</a>"; });
+    var td = tr.append("td").each(function(d){
+        if(d.key==""){
+            this.appendChild(document.createTextNode("No address (IM, Email, Bookmarks...)"));
+        } else {
+            var a = document.createElement("A");
+            a['href'] = "http://" + d.key;
+            a.appendChild(document.createTextNode(d.key));
+            this.appendChild(a);
+        }
+    })
     tr.append("td").classed("value", true).html(function(d){ return d.value; });
     update.exit().remove();
 

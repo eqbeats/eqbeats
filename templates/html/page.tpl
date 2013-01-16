@@ -11,10 +11,8 @@
         {{#REQUIRES_STATS_JS}}
         <script type="text/javascript" src="/static/d3.js"></script>
         <script type="text/javascript" src="/static/crossfilter.js"></script>
-        <script type="text/javascript" src="/static/stats.js?2"></script>
+        <script type="text/javascript" src="/static/stats.js?3"></script>
         {{/REQUIRES_STATS_JS}}
-        {{#REQUIRES_FILEUPLOADER_JS}}
-        {{/REQUIRES_FILEUPLOADER_JS}}
         {{#HAS_OEMBED}}
         <link rel="alternate" type="application/json+oembed" href="http://eqbeats.org/oembed?format=json&amp;url={{EQBEATS_URL:u}}/track/{{TID}}">
         <link rel="alternate" type="application/xml+oembed" href="http://eqbeats.org/oembed?format=xml&amp;url={{EQBEATS_URL:u}}/track/{{TID}}">
