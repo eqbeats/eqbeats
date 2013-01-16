@@ -12,5 +12,8 @@
             action: '{{ACTION}}'
         });
     }
-    window.onload = createUploader;
+    function noop(){}
+
+    var oldonload = window.onload || noop;
+    window.onload = function(){ this(); createUploader(); }.bind(oldonload);
 </script>

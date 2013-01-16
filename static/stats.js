@@ -83,7 +83,6 @@ function initstats(){
     var ellipsis = d3.select("#charts").append("div").classed("ellipsis", true);
     var xhr = new XMLHttpRequest();
     xhr.open("GET", window.location.pathname + "/stats", true);
-    //xhr.open("GET", "https://eqbeats.org/track/660/stats", true);
     xhr.onreadystatechange = function(){
         if(xhr.readyState == 4){
             data = eval(xhr.responseText);
@@ -226,4 +225,11 @@ function uniq(data){
         }
     }
     return out;
+}
+
+function noop(){}
+
+if(window.location.hash == "#charts"){
+    var oldonload = window.onload || noop;
+    window.onload = function(){ this(); initstats(); }.bind(oldonload);
 }
