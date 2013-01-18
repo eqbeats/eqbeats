@@ -6,6 +6,7 @@
 
 extern cgicc::Cgicc cgi; // defined in main.cpp
 extern std::string path; // same
+extern char** headers;   // yep
 
 #define eqbeatsUrl() ((getenv("EQBEATS_HTTPS")? "https://" : "http://") + cgi.getEnvironment().getServerName())
 

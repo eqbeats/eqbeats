@@ -20,6 +20,7 @@
 
 cgicc::Cgicc cgi;
 std::string path;
+char** headers;
 ctemplate::TemplateCache cache;
 
 int main(int argc, char** argv){
@@ -59,6 +60,7 @@ int main(int argc, char** argv){
 
     while(FCGX_Accept_r(&request) == 0){
         resetTimer();
+        headers = request.envp;
         o.attach(&request);
         try { cgi = cgicc::Cgicc(&o); }
         catch(std::runtime_error &err){

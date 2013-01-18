@@ -6,11 +6,20 @@
 #include <sys/un.h>
 #include <text/text.h>
 #include <core/cgi.h>
+#include <cgicc/CgiEnvironment.h>
+
+#include <log/log.h>
 
 #include "push.h"
 
 void pushStat(std::string type, int uid, int tid){
-    std::string msg = type + " " + number(tid) + " " + number(uid) + " " + cgi.getEnvironment().getRemoteAddr() + " " + cgi.getEnvironment().getReferrer() + "\n";
+    bool trackme = true;
+    for(int i=0; headers[i] != NULL; i++)
+        if(strcmp(headers[i], "HTTP_DNT=1") == 0)
+            trackme=false;
+    cgicc::CgiEnvironment env = cgi.getEnvironment();
+    std::string host = (trackme) ? env.getRemoteAddr() : "0.0.0.0";
+    std::string msg = type + " " + number(tid) + " " + number(uid) + " " + host + " " + env.getReferrer() + "\n";
     int s = socket(AF_UNIX, SOCK_DGRAM, 0);
     struct sockaddr_un addr;
     addr.sun_family = AF_LOCAL;
