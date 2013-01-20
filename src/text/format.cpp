@@ -9,6 +9,6 @@ void Formatter::Modify(const char *in, size_t inlen, const ctemplate::PerExpandD
     pcrecpp::RE("\\[b\\](.*?)\\[/b\\]").GlobalReplace("<b>\\1</b>", &txt);
     pcrecpp::RE("\\[i\\](.*?)\\[/i\\]").GlobalReplace("<i>\\1</i>", &txt);
     pcrecpp::RE("\\[u\\](.*?)\\[/u\\]").GlobalReplace("<u>\\1</u>", &txt);
-    pcrecpp::RE("(http|ftp|https):\\/\\/[\\w\\-_]+(\\.[\\w\\-_]+)+([\\w\\-\\.,@?^=%&amp;:/~\\+#]*[\\w\\-\\@?^=%&amp;/~\\+#])?").GlobalReplace("<a href=\"\\0\" rel=\"nofollow\">\\0</a>", &txt);
+    pcrecpp::RE("(http|ftp|https):\\/\\/[\\w\\-_]+(\\.[\\w\\-_]+)+([\\w\\-\\.,@?!^=%&amp;:/~\\+#]*[\\w\\-\\@?!^=%&amp;/~\\+#])?").GlobalReplace("<a href=\"\\0\" rel=\"nofollow\">\\0</a>", &txt);
     out->Emit(txt);
 }
