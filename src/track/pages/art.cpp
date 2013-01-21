@@ -27,8 +27,23 @@ void Pages::art(Document *doc){
         return doc->redirect(t.url());
     }
 
-    // Download
     Art art(tid);
+
+    if(sub == "art/delete" && art){
+        if(!t.artist.self()){
+            doc->redirect(t.url());
+        } else if(cgi.getEnvironment().getRequestMethod() == "POST" && Session::nonce() == cgi("nonce")){
+            Session::newNonce();
+            art.remove();
+            doc->redirect(t.url());
+        }else{
+            Session::newNonce();
+            doc->setHtml("html/delete.tpl", "Art deletion");
+            doc->dict()->SetValue("WHAT", t.title + "'s cover art");
+        }
+    }
+
+    // Download
     if(art){
         std::string base = t.artist.name + " - " + t.title;
              if(sub == "art")        doc->download(art.full().setBaseName(base));

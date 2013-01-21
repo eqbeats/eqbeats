@@ -137,8 +137,12 @@
             <h4><img src="/static/icons/picture.png" alt="" /> Art</h4>
             <form action="/track/{{TID}}/art/upload" method="post" enctype="multipart/form-data">
                 <input type="file" name="file" />
-                <input type="submit" value="Upload a picture" />
+                <input type="submit" value="Upload cover art" />
                 <input name="nonce" type="hidden" value="{{NONCE}}"/>
+                {{#HAS_ART}}
+                <br/>
+                <a class="danger" href="/track/{{TID}}/art/delete">Delete existing cover art</a>
+                {{/HAS_ART}}
             </form>
 
             <h4><img src="/static/icons/balloon-sound.png"> Broadcast</h4>
