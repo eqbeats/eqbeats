@@ -83,6 +83,7 @@ void Pages::track(Document *doc){
             Session::newNonce();
             doc->setHtml("html/delete.tpl", "Track deletion");
             doc->dict()->SetValue("WHAT", t.title);
+            doc->dict()->SetValue("CANCEL_URL", t.url());
         }
 
         else{

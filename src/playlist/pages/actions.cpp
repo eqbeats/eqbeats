@@ -53,6 +53,7 @@ void Pages::playlistActions(Document *doc){
         if(!post || cgi("confirm") != "Delete" || !nonce){
             doc->setHtml("html/delete.tpl", "Playlist deletion");
             doc->dict()->SetValue("WHAT", p.name());
+            doc->dict()->SetValue("CANCEL_URL", p.url());
         }
         else{
             Session::newNonce();

@@ -40,6 +40,7 @@ void Pages::art(Document *doc){
             Session::newNonce();
             doc->setHtml("html/delete.tpl", "Art deletion");
             doc->dict()->SetValue("WHAT", t.title + "'s cover art");
+            doc->dict()->SetValue("CANCEL_URL", t.url());
         }
     }
 
