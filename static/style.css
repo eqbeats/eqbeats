@@ -511,6 +511,10 @@ a.avatar:hover[href] {
     background: #ffe;
 }
 
+.faq var {
+    font-family: monospace;
+}
+
 a.huh {
     font-size: 0.7em;
     margin-left: 3px;
@@ -953,7 +957,7 @@ a.qq-upload-file, a.qq-upload-file:hover {
     line-height: 1.2em;
 }
 #api tt, #api pre { color: #511; }
-#api var { 
+#api var {
     color: #840;
     font-style: normal;
 }
@@ -1065,7 +1069,7 @@ svg.chart {
     display: block;
     border: 1px #666 solid;
     background: #f9f9f9;
-    font-family: sans;
+    font-family: sans-serif;
     font-size: .7em;
 }
 
