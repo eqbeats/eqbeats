@@ -343,7 +343,7 @@ input.honeypot {
     margin: 10px;
 }
 
-.date {
+h4 .date, .event .date {
     font-size: 0.7em;
     color: #666;
 }
@@ -1074,10 +1074,20 @@ svg .plays { fill: #55f; z-index: 20; }
 svg .dls { fill: #31a; z-index: 20; }
 svg .ytick, svg .ylabel, svg .chartlabel { fill: #333; z-index: 50; }
 
-.charts .settings {
+.charts .settings, .charts .inspector {
     text-align: center;
     margin: 3px;
 }
+
+.charts .inspector {
+    color: #222;
+    font-size: 0.8em;
+}
+
+.inspector .views { color: #099; }
+.inspector .plays { color: #33c; }
+.inspector .dls   { color: #108; }
+
 .charts .settings span {
     margin: 0 10px;
 }

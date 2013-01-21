@@ -4,14 +4,14 @@
     <head>
         <title>{{#HAS_TITLE}}{{TITLE}} - {{/HAS_TITLE}}Equestrian Beats</title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <link rel="stylesheet" type="text/css" href="/static/style.css?4" />
+        <link rel="stylesheet" type="text/css" href="/static/style.css?5" />
         <link rel="shortcut icon" href="/static/favicon.ico" id="favicon-link" />
         <script type="text/javascript" src="/static/sm2.js?2"></script>
         <script type="text/javascript" src="/static/player.js?4"></script>
         {{#REQUIRES_STATS_JS}}
         <script type="text/javascript" src="/static/d3.js"></script>
         <script type="text/javascript" src="/static/crossfilter.js"></script>
-        <script type="text/javascript" src="/static/stats.js?3"></script>
+        <script type="text/javascript" src="/static/stats.js?4"></script>
         {{/REQUIRES_STATS_JS}}
         {{#HAS_OEMBED}}
         <link rel="alternate" type="application/json+oembed" href="http://eqbeats.org/oembed?format=json&amp;url={{EQBEATS_URL:u}}/track/{{TID}}">

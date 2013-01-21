@@ -65,6 +65,11 @@ function initstats(){
                 render();
             });
 
+        var ins = inner.append("div").classed("inspector", true);
+        ins.append("span").classed("date", true).html("&nbsp;");
+        for(var i = 0; i < charts.length; i++)
+            ins.append("span").classed(charts[i].classname, true);
+
         inner.selectAll("svg.chart").data(charts).enter()
             .append("svg")
             .classed("chart", true)
@@ -93,6 +98,26 @@ function initstats(){
     xhr.send();
 }
 
+var dateformat = d3.time.format("%a, %b %e");
+function barover(d){
+    var thisd = d;
+    d3.selectAll("#charts .bar").style("opacity", 1);
+    var bars = d3.selectAll("#charts .bar").filter(function(d){return d.key == thisd.key;})
+        .style("opacity", 0.5);
+    var ins = d3.select("#charts .inspector");
+    ins.select(".date").text(dateformat(new Date(d.key * 1000)) + ": ");
+    for(var i = 0; i < charts.length; i++){
+        var chart = charts[i];
+        ins.select("." + chart.classname).text(function(){
+            var data = chart.data;
+            for(var j = 0; j < data.length; j++){
+                if(data[j].key == d.key)
+                    return chart.name + ": " + data[j].value + " (" + (chart.uniqdata[j].value || "0") + " uniq.) ";
+            }
+            return 0;
+        });
+    }
+}
 
 function render(refilter){
     if(refilter){
@@ -149,19 +174,20 @@ function render(refilter){
         update.enter()
             .append("rect")
             .attr("height", 1).attr("y", chart.height)
-            .attr("width", timescale(daysecs) - timescale(0) + 2)
-            .attr("x", function(d){ return Math.floor(timescale(d.key) - 1); })
+            .attr("width", timescale(daysecs) - timescale(0) + 1)
+            .attr("x", function(d){ return Math.floor(timescale(d.key)) - 1; })
             .classed(chart.classname, true).classed("bar", true);
         update.transition()
             .attr("height", function(d){ return yscale(d.value); })
             .attr("y", function(d){ return chart.height - yscale(d.value); })
-            .attr("width", Math.floor(timescale(daysecs) - timescale(0)) + 2)
-            .attr("x", function(d){ return Math.floor(timescale(d.key) - 1); });
+            .attr("width", timescale(daysecs) - timescale(0) + 1)
+            .attr("x", function(d){ return Math.floor(timescale(d.key)) - 1; })
         update.exit().transition()
             .attr("height", 0)
             .attr("y", chart.height)
-            .attr("width", Math.floor(timescale(daysecs) - timescale(0)) + 2)
-            .attr("x", function(d){ return Math.floor(timescale(d.key) - 1); });
+            .attr("width", timescale(daysecs) - timescale(0) + 1)
+            .attr("x", function(d){ return Math.floor(timescale(d.key)) - 1; })
+        update.on("mouseover", barover);
 
         // ticks
         var ticks = yscale.ticks(3).slice(1, -1);
