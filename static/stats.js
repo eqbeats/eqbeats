@@ -87,7 +87,7 @@ function initstats(){
     }
     var ellipsis = d3.select("#charts").append("div").classed("ellipsis", true);
     var xhr = new XMLHttpRequest();
-    xhr.open("GET", window.location.pathname + "/stats", true);
+    xhr.open("GET", window.location.pathname + "/stats?" + now(), true);
     xhr.onreadystatechange = function(){
         if(xhr.readyState == 4){
             data = eval(xhr.responseText);
