@@ -37,6 +37,9 @@
 
 <h3>Technical stuff</h3>
 
+<h4 id="formats">What formats do you accept?</h4>
+<p>We accept most popular audio formats, but we encourage you to upload lossless files (WAV, FLAC, ALAC…). The file will be transcoded to a variety of formats for convenience and compatibility, and transcoding from a lossy format to another one will always encur some quality loss.</p>
+
 <h4>How do you process uploaded files?</h4>
 <p>If the original uploaded file is an MP3, we overwrite the artist and title tags with whatever info we have. We do not process other formats.</p>
 <p>The settings used for transcoding into other, more stream-friendly formats can be seen in the download dropdown. The original file is always available, for the sake of fidelity.</p>
@@ -45,7 +48,7 @@
 <h4>Do you have an API?</h4>
 <p><a href="/api">We do.</a></p>
 
-<h4>Can I look at your code?</h4>
+<h4>Can I steal your code?</h4>
 <p>Sure you can. EqBeats is licenced under the BSD-3 open source license, and has a git repository set up at <a href="https://github.com/eqbeats/eqbeats/">github.com/eqbeats/eqbeats/</a>. Any contribution is welcome, and you are encouraged to join IRC for development discussion or help with the code.</p>
 
 <h4>Do you have other cool stuff?</h4>
