@@ -78,7 +78,7 @@ int main(int argc, char** argv){
         }
 
         if (getenv("EQBEATS_HTTPS") && !cgi.getEnvironment().usingHTTPS() && cgi.getElements().size() == 0)
-            doc.redirect(eqbeatsUrl() + path);
+            doc.moved(eqbeatsUrl() + path);
 
         Session::start();
 

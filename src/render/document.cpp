@@ -12,6 +12,7 @@ Document::Document(){
     _rootDict->SetGlobalValue("EQBEATS_URL", eqbeatsUrl());
     _rootDict->SetGlobalValue("PATH", path);
     _dict = _rootDict;
+    _moved = false;
 }
 
 Document::~Document(){
@@ -20,6 +21,11 @@ Document::~Document(){
 
 void Document::redirect(const std::string &r){
     _redir = r;
+}
+
+void Document::moved(const std::string &r){
+    _redir = r;
+    _moved = true;
 }
 
 void Document::download(const File &f, bool attachment){
@@ -48,8 +54,12 @@ void Document::setHtml(const std::string &tpl, const std::string &title, int cod
 }
 
 std::string Document::generate(){
-    if(!_redir.empty())
-        return _http + Http::redirect(_redir);
+    if(!_redir.empty()){
+        if(_moved)
+            return _http + Http::moved(_redir);
+        else
+            return _http + Http::redirect(_redir);
+    }
 
     else if(dw)
         return _http + Http::download(dw, _attachment);

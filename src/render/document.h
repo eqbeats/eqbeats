@@ -15,6 +15,7 @@ class Document {
         Dict* dict(){ return _dict; }
 
         void redirect(const std::string &r);
+        void moved(const std::string &r);
         void download(const File &f, bool attachment=false);
         void setTemplate(const std::string &tpl, const std::string &mime, int code=200);
         void setHtml(const std::string &tpl, const std::string &title="", int code=200);
@@ -30,6 +31,7 @@ class Document {
         std::string _tpl;
         std::string _mime;
         std::string _redir;
+        bool _moved;
         int _code;
         Dict *_rootDict, *_dict;
         File dw;

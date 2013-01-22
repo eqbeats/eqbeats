@@ -6,6 +6,7 @@ using namespace std;
 const char* statusMsg(int stat){
     switch(stat){
         case 200: return "200 OK";
+        case 301: return "301 Moved Permanently";
         case 303: return "303 See Other";
         case 403: return "403 Forbidden";
         case 404: return "404 Not Found";
@@ -25,6 +26,10 @@ string Http::header(const string &type, int status){
 
 string Http::redirect(const string &location){
     return "Location: " + location + "\n" + header(303);
+}
+
+string Http::moved(const string &location){
+    return "Location: " + location + "\n" + header(301);
 }
 
 string httpFilename(const string &str){
