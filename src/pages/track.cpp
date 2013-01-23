@@ -12,6 +12,7 @@
 #include <track/art.h>
 #include <track/extended.h>
 #include <stat/push.h>
+#include <youtube/youtube.h>
 
 static std::string filter(const std::string &str){
     std::string buf;
@@ -41,6 +42,8 @@ void Pages::track(Document *doc){
         t.fill(doc->dict());
         t.player(doc->dict(), true);
         Audio(&t).fill(doc->dict());
+
+        doc->dict()->ShowSection(Youtube(t.artist.id) ? "HAS_YOUTUBE" : "NO_YOUTUBE");
 
         Dict *embed = doc->dict()->AddIncludeDictionary("EMBED_CODE");
         embed->SetFilename("html/embed-code.tpl");
