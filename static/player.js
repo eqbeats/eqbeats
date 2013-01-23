@@ -100,7 +100,7 @@ function play(player){
         whileplaying: function(){
             playing.scrubber.style.width = (100 * this.position / this.durationEstimate) + '%';
             playing.playtime.innerHTML = prettyTime(this.position) + '/' + prettyTime(this.durationEstimate);
-            if(this.position > this.durationEstimate / 3 && this.triggered == false){
+            if(!this.triggered && this.position > 5 && (this.position > this.durationEstimate / 3 || this.position > 90)){
                 this.triggered = true;
                 var xhr = new XMLHttpRequest();
                 xhr.open("POST", "/track/" + playing.track.tid + "/played", true);
