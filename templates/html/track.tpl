@@ -36,7 +36,7 @@
         {{#READY}}
         <span><img alt="" src="/static/icons/drive-download.png" /> Download :
         <ul class="downloads">
-            {{#MP3_SOURCE}}<li><a href="/track/{{TID}}/mp3"><span>Original MP3
+            {{#MP3_SOURCE}}<li><a href="/track/{{TID}}/original"><span>Original MP3
                 <span class="codecinfo">Highest quality</span>
             </span></a></li>{{/MP3_SOURCE}}
             {{#OTHER_SOURCE}}
