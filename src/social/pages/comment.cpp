@@ -37,7 +37,7 @@ void Pages::comment(Document *doc){
         e.push();
 
         Account dst = Account(e.target.id);
-        if(dst.notify){
+        if(dst != e.source && dst.notify){
             std::string mail = (std::string)
                 "From: EqBeats notification <notify@eqbeats.org>\n"
                 "Subject: EqBeats comment notification\n"
