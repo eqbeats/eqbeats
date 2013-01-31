@@ -16,7 +16,7 @@
 
 <h3>Uploading</h3>
 
-<h4>I've just updated the sound file / cover art for my track, but I still see the old one. What gives?</h4>
+<h4>I've just updated the sound file / cover art for my track, but I still hear / see the old one. What gives?</h4>
 <p>Most likely your browser's cached the old version and assumes it hasn't changed. Try refreshing, CTRL+Shift+R, and if all else fails, close and restart your browser.</p>
 
 <h3>Account</h3>
@@ -67,7 +67,7 @@
 <h3>Contact</h3>
 
 <h4>I spotted a bug!</h4>
-<p>Great! Let us know either via email at <var>contact@eqbeats.org</var> or on our <a href="http://github.com/eqbeats/eqbeats/issue/">issue tracker</a>.</p>
+<p>Great! Let us know either via email at <var>contact@eqbeats.org</var> or on our <a href="http://github.com/eqbeats/eqbeats/issues/">issue tracker</a>.</p>
 
 <h4>I've got a question/problem/idea!</h4>
 <p>What are you waiting for? Drop us a line at <var>contact@eqbeats.org</var>.</p>
