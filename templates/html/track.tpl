@@ -103,9 +103,9 @@
 
     {{#HAS_NOTES}}<div class="notes">{{NOTES:x-format}}</div>{{/HAS_NOTES}}
 
-    {{#IS_SELF}}
     <div id="charts" class="charts dialog"></div>
 
+    {{#IS_SELF}}
     <div class="dialog">
         <h3><img src="/static/icons/pencil.png" alt="" /> Edit</h3>
         {{#IS_HIDDEN}}

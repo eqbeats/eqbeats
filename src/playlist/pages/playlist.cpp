@@ -18,6 +18,8 @@ void Pages::playlist(Document *doc){
             doc->setHtml("html/playlist.tpl", p.name());
             Dict* list = p.tracks().fill(doc->dict(), "TRACKLIST", p.author().self());
             list->SetIntValue("PLAYLIST_ID", p.id());
+            if(cgi("firstrun") == "1")
+                doc->dict()->ShowSection("FIRSTRUN");
         }
         p.fill(doc->dict());
     }

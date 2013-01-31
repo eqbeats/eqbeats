@@ -4,6 +4,10 @@
     <h2>{{PLAYLIST_NAME}}</h2>
     <h4>by <a href="/user/{{UID}}">{{USERNAME}}</a></h4>
 
+    {{#FIRSTRUN}}
+    <div class="message">Playlist created.<br/> To add a track to it, navigate to the track's page and look for an <img src="/static/icons/playlist-add.png" alt=""/> icon next to the title.</div>
+    {{/FIRSTRUN}}
+
     {{#HAS_DESCRIPTION}}
     <div class="notes">{{DESCRIPTION:x-format}}</div>
     {{/HAS_DESCRIPTION}}

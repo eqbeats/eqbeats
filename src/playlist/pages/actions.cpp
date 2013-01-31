@@ -23,7 +23,7 @@ void Pages::playlistActions(Document *doc){
         if(r.empty())
             return doc->redirect(Session::user().url());
         log("New playlist: " + name + " (" + r[0][0] + ")");
-        return doc->redirect("/playlist/" + r[0][0]);
+        return doc->redirect("/playlist/" + r[0][0] + "?firstrun=1");
     }
 
     std::string sub;

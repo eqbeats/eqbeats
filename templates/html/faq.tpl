@@ -9,6 +9,11 @@
 <h4>Why not [INSERT SITE HERE]?</h4>
 <p>Because we try to make the publishing and listening process as smooth as can be. No ads, no limits, no downsides.</p>
 
+<h3>Playlists</h3>
+
+<h4>How do I add tracks to my playlist?</h4>
+<p>Navigate to the page of a track you want to add, and look for an <img src="/static/icons/playlist-add.png" alt=""/> icon next to its title.</p>
+
 <h3>Account</h3>
 
 <h4>So how do I get on the list of artists? I wanna be one of the cool kids!</h4>
