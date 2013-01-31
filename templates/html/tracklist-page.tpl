@@ -10,6 +10,7 @@
         <img src="/static/icons/magnifier.png" alt="Search" />
         <input type="text" name="q" value="{{SEARCH}}" />
         <input type="submit" value="Search" />
+        <span class="legend">(Advanced search tags: <kbd>title:</kbd> <kbd>artist:</kbd> <kbd>license:</kbd>)</span>
     </form>
 </div>
 {{/SEARCH}}
