@@ -13,7 +13,8 @@ void Pages::tracks(Document *doc){
         std::string q = cgi("q");
         doc->setHtml("html/tracklist-page.tpl", q);
         doc->dict()->SetValue("TITLE", q);
-        doc->dict()->SetValueAndShowSection("SEARCH", q, "SEARCH");
+        Dict* search = doc->dict()->AddSectionDictionary("SEARCH");
+        search->SetValue("SEARCH", q);
         TrackList::search(q).fill(doc->dict(), "TRACKLIST");
     }
     else if(path.substr(0,12) == "/tracks/tag/"){
