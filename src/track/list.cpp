@@ -75,10 +75,24 @@ TrackList TrackList::search(const std::string &q){
     std::istringstream in(q);
     std::string buf;
     std::string sql;
-    while(in){
-        in >> buf;
-        p.push_back("%"+buf+"%");
-        sql += " AND (tracks.title ILIKE $" + number(p.size()) + " OR users.name ILIKE $" + number(p.size()) + ")";
+    while(in.good()){
+        in >> std::skipws >> buf;
+        if(drop("artist:", buf)){
+            p.push_back("%"+buf+"%");
+            sql += " AND users.name ILIKE $" + number(p.size());
+        }
+        else if(drop("title:", buf)){
+            p.push_back("%"+buf+"%");
+            sql += " AND tracks.title ILIKE $" + number(p.size());
+        }
+        else if(drop("license:", buf)){
+            p.push_back("%"+buf+"%");
+            sql += " AND tracks.license ILIKE $" + number(p.size());
+        }
+        else{
+            p.push_back("%"+buf+"%");
+            sql += " AND (tracks.title ILIKE $" + number(p.size()) + " OR users.name ILIKE $" + number(p.size()) + ")";
+        }
     }
     list.extract(DB::query("SELECT "FIELDS" FROM "TABLES" WHERE "JOIN_VISIBLE + sql, p));
     return list;
