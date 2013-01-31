@@ -4,7 +4,7 @@
 <h3>General</h3>
 
 <h4>What is this?</h4>
-<p>A place for artists to publish their MLP-related music, and get in touch with their audience.</p>
+<p>A place for artists to publish their pony music, and for the rest of us to listen.</p>
 
 <h4>Why not [INSERT SITE HERE]?</h4>
 <p>Because we try to make the publishing and listening process as smooth as can be. No ads, no limits, no downsides.</p>
@@ -14,9 +14,14 @@
 <h4>How do I add tracks to my playlist?</h4>
 <p>Navigate to the page of a track you want to add, and look for an <img src="/static/icons/playlist-add.png" alt=""/> icon next to its title.</p>
 
+<h3>Uploading</h3>
+
+<h4>I've just updated the sound file / cover art for my track, but I still see the old one. What gives?</h4>
+<p>Most likely your browser's cached the old version and assumes it hasn't changed. Try refreshing, CTRL+Shift+R, and if all else fails, close and restart your browser.</p>
+
 <h3>Account</h3>
 
-<h4>So how do I get on the list of artists? I wanna be one of the cool kids!</h4>
+<h4>So how do I get on the list of artists?</h4>
 <p><a href="/register">Sign up</a> for an account. Log in, get to your user page, and upload a track, then publish it. <i>Voil&agrave;</i>, you're on the list.</p>
 
 <h4>How do I set my avatar up?</h4>
