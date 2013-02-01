@@ -13,7 +13,10 @@ void Pages::playlist(Document *doc){
 
         if(sub == "json"){
             doc->setJson("json/playlist.tpl");
-            p.tracks().fillJson(doc->dict());
+            Dict* tracks = doc->dict()->AddIncludeDictionary("TRACKS");
+            tracks->SetFilename("json/array.tpl");
+
+            p.tracks().fillJson(tracks);
         } else {
             doc->setHtml("html/playlist.tpl", p.name());
             Dict* list = p.tracks().fill(doc->dict(), "TRACKLIST", p.author().self());
