@@ -6,7 +6,7 @@
     "html_description": "{{NOTES:x-format:o}}",
     {{/HAS_NOTES}}
     {{#HAS_TAGS}}"tags": [{{#TAG}}"{{TAG:o}}"{{#TAG_separator}},{{/TAG_separator}}{{/TAG}}],{{/HAS_TAGS}}
-    "license": "{{LICENSE:o}}",
+    {{#HAS_LICENSE}}"license": "{{LICENSE:o}}",{{/HAS_LICENSE}}
     "artist": {
         "id": {{UID}},
         "name": "{{USERNAME:o}}",

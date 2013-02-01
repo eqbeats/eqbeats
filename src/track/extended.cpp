@@ -48,6 +48,7 @@ ExtendedTrack::ExtendedTrack(int tid){
 void ExtendedTrack::fill(Dict *d) const{
     Track::fill(d);
     d->SetValueAndShowSection("NOTES", notes, "HAS_NOTES");
+    d->SetValueAndShowSection("LICENSE", license, "HAS_LICENSE");
     d->ShowSection(airable ? "IS_AIRABLE" : "NOT_AIRABLE");
     // Tags
     if(!tags.empty()){
