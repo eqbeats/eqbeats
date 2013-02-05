@@ -38,7 +38,7 @@
                     <img alt="-" src="/static/icons/cm-nav.png"/>
                     <a href="http://blog.eqbeats.org/">Blog</a>
                     <a href="/faq">FAQ</a>
-                    <a title="#eqbeats on irc.ponychat.net" href="http://ponychat.net/webchat?nick={{#LOGGED_USER}}{{USERNAME:x-irc}}{{/LOGGED_USER}}{{#LOGGED_OUT}}pony_.....{{/LOGGED_OUT}}&amp;autojoin=eqbeats">Chat</a>
+                    <a title="#eqbeats on irc.ponychat.net" href="https://irc.lc/ponychat/eqbeats/{{#LOGGED_USER}}{{USERNAME:x-irc}}{{/LOGGED_USER}}{{#LOGGED_OUT}}pony_.....{{/LOGGED_OUT}}">Chat</a>
                 </div>
                 <div style="clear:both;"></div>
             </div>

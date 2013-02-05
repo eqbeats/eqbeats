@@ -71,7 +71,7 @@
 
 <h4>I've got a question/problem/idea!</h4>
 <p>What are you waiting for? Drop us a line at <var>contact@eqbeats.org</var>.</p>
-<p>Or <a href="http://ponychat.net/webchat/?autojoin=eqbeats">come chat with us</a> in <var>#eqbeats</var> on <var>irc.ponychat.net</var>. Don't be shy, we're friendly!</p>
+<p>Or <a title="#eqbeats on irc.ponychat.net" href="https://irc.lc/ponychat/eqbeats/{{#LOGGED_USER}}{{USERNAME:x-irc}}{{/LOGGED_USER}}{{#LOGGED_OUT}}pony_.....{{/LOGGED_OUT}}">chat with us</a> in <var>#eqbeats</var> on <var>irc.ponychat.net</var>. Don't be shy, we're friendly!</p>
 
 <h4>Who are you anyway?</h4>
 <p>We're two developers: <a href="/user/1">codl</a> and <a href="/user/2">fmang</a>. For more information check the <a href="/credits">credits</a>.</p>
