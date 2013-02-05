@@ -6,9 +6,8 @@ DATA="hits.dat"
 
 case "$1" in
   start)
-    if [[ -f $SOCKET ]]; then 
-        echo "hitsd : Already running."
-        exit 0
+    if [[ -f $SOCKET ]]; then
+        rm $SOCKET
     fi
     multiplex clint "$SOCKET" 2> /dev/null &
     sleep 0.5
