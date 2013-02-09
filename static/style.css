@@ -1,5 +1,14 @@
 @import url("player.css");
 
+@font-face {
+    font-family:     "DejaVu Sans";
+    src: url("/static/DejaVuSans-webfont.eot");
+    src: url("/static/DejaVuSans-webfont.eot#iefix") format("embedded-opentype"),
+         url("/static/DejaVuSans-webfont.woff") format("woff"),
+         url("/static/DejaVuSans-webfont.ttf") format("truetype"),
+         url("/static/DejaVuSans-webfont.svg") format("svg");
+}
+
 html, body { background-color: #F2F2F2; }
 
 /** Header ********************************************************************/
@@ -19,6 +28,7 @@ html, body { background-color: #F2F2F2; }
     padding: 25px 20px 0;
     font-size: 2.2em;
     font-weight: 100;
+    font-family: "DejaVu Sans";
 }
 #header h1 a {
     display: block;
@@ -42,7 +52,7 @@ html, body { background-color: #F2F2F2; }
     padding: 0;
     margin: 0;
 }
-#navbar a, #navbar img {
+#navbar a {
     float: left;
     display: block;
     padding: 10px;
@@ -51,9 +61,53 @@ html, body { background-color: #F2F2F2; }
 #navbar a:hover {
     text-decoration: none;
 }
-#navbar img {
-    padding-top: 13px;
+
+#navbar form {
+    margin: 0;
+    padding: 0;
+    padding-top: 5px;
 }
+
+#navbar button img {
+    vertical-align: bottom;
+}
+
+#navbar button {
+    background: transparent;
+    border: none;
+    margin: 0;
+    padding: 0;
+    margin-left: 10px;
+    display: inline-block;
+}
+
+#navbar input[type=text] {
+    font-size: 0.7em;
+    width: 100px;
+    background: transparent;
+    border: 1px solid #ccc;
+    transition-property: width;
+    transition-duration: 0.1s;
+    transition-timing-function: ease-out;
+    -webkit-transition-property: width;
+    -webkit-transition-duration: 0.1s;
+    -webkit-transition-timing-function: ease-out;
+}
+
+#navbar form input[type=text]:hover,
+#navbar form input[type=text]:focus {
+    border: 1px solid #999;
+    background: white;
+}
+
+#navbar form input[type=text]:focus {
+    width: 200px;
+}
+
+#navbar form input[type=text]:focus:after {
+    content: "test";
+}
+
 
 #logstatus {
     float: right;
@@ -64,10 +118,10 @@ html, body { background-color: #F2F2F2; }
 
 #contents {
     padding: 25px 40px 20px;
-    background-color: #FFF;
+    background-color: #fefcf9;
+    color: #181211;
     margin: 0 auto;
     box-shadow: 0px 0px 1px #888;
-    /* word-wrap: break-word; aparemment ça n'est pas dans les docs w3 */
 }
 
 #footer {
@@ -81,7 +135,7 @@ html, body { background-color: #F2F2F2; }
     line-height: 1.2em;
 }
 
-#footer a { color: #777; }
+#footer a { color: #777; padding: 0 3px; }
 #footer a:hover { color: #444; }
 
 /** Generic *******************************************************************/
@@ -619,12 +673,6 @@ ul {
     padding-bottom: 2px;
 }
 
-/** Credits page **************************************************************/
-
-.credits li {
-    color: #000;
-}
-
 /** Forms *********************************************************************/
 
 form {
@@ -841,6 +889,92 @@ textarea {
     float: right;
 }
 
+.featurebox {
+    background: #eee;
+    border-radius: 5px;
+    /*border: 1px solid #999;*/
+    /*box-shadow: inset 0 100px 100px rgba(255,255,255,0.7);*/
+    position: relative;
+}
+
+
+
+.featurebox,
+.prev, .next,
+.featurebox a,
+.featurebox h3 a,
+.featurebox .by,
+.featurebox .title,
+.featurebox .playtime {
+    color: #333;
+    text-shadow: 0 1px 0 rgba(255,255,255,0.7);
+    /*text-shadow: 0 1px 0 rgba(255,255,255,0.3), 0 0 20px rgba(255,255,255,0.5);*/
+}
+.featurebox h3 a,
+.featurebox .title a{
+    color: #111;
+}
+
+#contents .featurebox h3 {
+    background-image: none;
+    background: rgba(242,242,242,0.8);
+    background:   linear-gradient(to bottom, rgba(254,252,249,1) 0%,rgba(254,252,249,0.95) 100%);
+    background: -webkit-linear-gradient(top, rgba(254,252,249,1) 0%,rgba(254,252,249,0.95) 100%);
+    background:      -o-linear-gradient(top, rgba(254,252,249,1) 0%,rgba(254,252,249,0.95) 100%);
+    border-radius: 0;
+    border: none;
+    margin: 0;
+}
+
+.js .featurebox ul {
+    padding: 0;
+    margin: 0;
+}
+.js .featurebox li{
+    display: none;
+    border: none;
+}
+.js .featurebox li,
+.js .featurebox li:hover {
+    background: rgba(242,242,242,0.8);
+    background:   linear-gradient(to bottom, rgba(254,252,249,0.95) 0%,rgba(230,230,230,0.75) 100%);
+    background: -webkit-linear-gradient(top, rgba(254,252,249,0.95) 0%,rgba(230,230,230,0.75) 100%);
+    background:      -o-linear-gradient(top, rgba(254,252,249,0.95) 0%,rgba(230,230,230,0.75) 100%);
+}
+
+.featurebox li.active {
+    display: block;
+}
+
+.featurebox .scrubberbar { background: rgba(0,0,0,0.1); border: 1px solid #666; }
+.featurebox .scrubberbar .scrubber { background-color: #444; }
+.featurebox .volume img { display: none; }
+.featurebox .volume .slider { background-color: rgba(0,0,0,0.2); }
+.featurebox .volume .slider div { background-color: #444; }
+
+.prevnext {
+    position: absolute;
+    bottom: 10px;
+    left: 50px;
+}
+.prev, .next {
+    margin: 0 5px;
+    font-size: 0.6em;
+    font-family: "DejaVu Sans";
+    cursor: pointer;
+    text-shadow: none;
+}
+.prev:hover, .next:hover {
+    opacity: 0.7;
+}
+
+.prev.disabled, .next.disabled {
+    opacity: 0.3;
+}
+
+.prev::after { content: "◀◀"; }
+.next::after { content: "▶▶"; }
+
 /** Messages ******************************************************************/
 
 .message, .error {
@@ -860,8 +994,8 @@ textarea {
 }
 
 #newsticker {
-    margin-left: 19px;
-    margin-right: 19px;
+    /*margin-left: 19px;
+    margin-right: 19px;*/
     background: #fbffff;
     border: 1px solid #e2eaea;
     border-radius: 2px;

@@ -23,7 +23,8 @@ audio {
     left: 0;
     top: 0;
 }
-.hidden .playpause { background-image: url("/static/icons/pp-gray.png"); }
+
+.hidden .playpause, .featurebox .playpause { background-image: url("/static/icons/pp-gray.png"); }
 
 .playpause { background-position: top left; }
 .playpause:hover { background-position: bottom left; }

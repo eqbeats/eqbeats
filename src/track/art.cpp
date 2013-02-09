@@ -59,8 +59,8 @@ void Art::makeThumbs(){
         if(f!="gif" && (i.size().height()>480 || (f!="jpg" && f!="png"))){
             // ^ Don't make a medium thumbnail for GIF (to preserve animation)
             // Otherwise make the thumbnail if the pic is large OR if the format isn't known
-            if(i.size().height() > 480) // scale in the first case
-                i.scale("x480");
+            if(i.size().width() > 1000) // scale in the first case
+                i.scale("1000x");
             i.write(filepath(Medium)); // convert to PNG
         }
         if(i.size().height() > 64) // resize (most of the time)

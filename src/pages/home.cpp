@@ -26,8 +26,8 @@ void Pages::home(Document *doc){
         }
     }
 
-    Tracks::latest(7).fill(doc->dict(), "LATEST_TRACKS");
-    Tracks::featured(7).fill(doc->dict(), "FEATURED_TRACKS");
-    Tracks::random(3).fill(doc->dict(), "RANDOM_TRACKS");
+    Tracks::featured(15).fill(doc->dict(), "FEATURED_TRACKS");
+    Tracks::latest(5).fill(doc->dict(), "LATEST_TRACKS");
+    Tracks::random(5).fill(doc->dict(), "RANDOM_TRACKS");
 
 }

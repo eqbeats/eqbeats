@@ -13,6 +13,7 @@ void Pages::tracks(Document *doc){
         std::string q = cgi("q");
         doc->setHtml("html/tracklist-page.tpl", q);
         doc->dict()->SetValue("TITLE", q);
+        doc->rootDict()->SetValue("SEARCH", q);
         Dict* search = doc->dict()->AddSectionDictionary("SEARCH");
         search->SetValue("SEARCH", q);
         TrackList::search(q).fill(doc->dict(), "TRACKLIST");

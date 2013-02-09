@@ -16,13 +16,11 @@
 <script src="/static/ticker.js"></script>
 {{/DYNAMIC_TICKER}}
 
-<div class="search" style="text-align:center;">
-    <form action="/tracks/search">
-        <img src="/static/icons/magnifier.png" alt="" />
-        Search for tracks:
-        <input type="text" name="q" />
-        <input type="submit" value="Search" />
-    </form>
+<div class="featurebox">
+    <h3>
+        <a href="/tracks/featured">Featured</a>
+    </h3>
+    {{>FEATURED_TRACKS}}
 </div>
 
 <div class="leftcol">
@@ -35,23 +33,9 @@
 </div>
 
 <div class="rightcol">
-    <h3>
-        <a href="/tracks/featured">Featured</a>
-        <a class="feed" title="Feed" href="/tracks/featured/atom"><span>(Feed)</span></a>
-    </h3>
-    {{>FEATURED_TRACKS}}
-    <a class="more" href="/tracks/featured">More</a>
-</div>
-
-<div class="leftcol">
     <h3><a href="/tracks/random">Random</a></h3>
     {{>RANDOM_TRACKS}}
     <a class="more" href="/tracks/random">More</a>
-</div>
-
-<div class="rightcol">
-    <h3>Partners</h3>
-    <a href="http://ponify.me" target="_blank" class="partner"><img src="/static/cr.png" alt="Celestia Radio" /></a>
 </div>
 
 <div style="clear:both;"></div>

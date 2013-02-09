@@ -4,10 +4,10 @@
     <head>
         <title>{{#HAS_TITLE}}{{TITLE}} - {{/HAS_TITLE}}Equestrian Beats</title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <link rel="stylesheet" type="text/css" href="/static/style.css?5" />
+        <link rel="stylesheet" type="text/css" href="/static/style.css?6" />
         <link rel="shortcut icon" href="/static/favicon.ico" id="favicon-link" />
         <script type="text/javascript" src="/static/sm2.js?2"></script>
-        <script type="text/javascript" src="/static/player.js?4"></script>
+        <script type="text/javascript" src="/static/player.js?5"></script>
         {{#REQUIRES_STATS_JS}}
         <script type="text/javascript" src="/static/d3.js"></script>
         <script type="text/javascript" src="/static/crossfilter.js"></script>
@@ -34,11 +34,14 @@
                 </div>
                 <div id="navbar">
                     <a href="/">Home</a>
+                    <a href="/tracks/latest">Latest</a>
                     <a href="/artists">Artists</a>
-                    <img alt="-" src="/static/icons/cm-nav.png"/>
-                    <a href="http://blog.eqbeats.org/">Blog</a>
-                    <a href="/faq">FAQ</a>
-                    <a title="#eqbeats on irc.ponychat.net" href="https://irc.lc/ponychat/eqbeats/{{#LOGGED_USER}}{{USERNAME:x-irc}}{{/LOGGED_USER}}{{#LOGGED_OUT}}pony_.....{{/LOGGED_OUT}}">Chat</a>
+                    <form action="/tracks/search">
+                        <button>
+                            <img alt="Search" src="/static/icons/purple-magnifier.png"/>
+                        </button>
+                        <input type="text" name="q" placeholder="Search…" value="{{SEARCH}}" />
+                    </form>
                 </div>
                 <div style="clear:both;"></div>
             </div>
@@ -46,8 +49,15 @@
                 {{>BODY}}
             </div>
             <div id="footer">
+                <a href="/faq">FAQ</a>
+                <a href="/api">API</a>
+                <a href="https://github.com/eqbeats/eqbeats/">Code</a>
+                -
+                <a href="http://blog.eqbeats.org/">Blog</a>
+                <a title="#eqbeats on irc.ponychat.net" href="https://irc.lc/ponychat/eqbeats/{{#LOGGED_USER}}{{USERNAME:x-irc}}{{/LOGGED_USER}}{{#LOGGED_OUT}}pony_.....{{/LOGGED_OUT}}">IRC</a>
+                <a href="/thanks">Thanks</a>
+                <br/>
                 Contact: &#99;&#111;&#110;&#116;&#97;&#99;&#116;&#64;&#101;&#113;&#98;&#101;&#97;&#116;&#115;&#46;&#111;&#114;&#103;{{! contact@eqbeats.org}}
-                <br /><a href="/credits">Credits</a>
                 <!--Generated in {{GENERATION_TIME}} by {{PID}}.-->
             </div>
         </div>

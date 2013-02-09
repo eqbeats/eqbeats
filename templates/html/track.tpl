@@ -79,21 +79,11 @@
     </div>
     <textarea id="embedcode" style="display:none;">{{>EMBED_CODE:html_escape}}</textarea>
 
-    {{#IS_SELF}}
-    <div class="toolbar tags"><img alt="" src="/static/icons/tag.png" /> Tags:
-        <form action="/track/{{TID}}/tags" method="post">
-            <input name="tags" value="{{#TAG}}{{TAG}}{{#TAG_separator}}, {{/TAG_separator}}{{/TAG}}" />
-            <input type="submit" value="Update" />
-            <span class="legend">(comma-separated, e.g. instrumental, electronic)</span>
-            <input name="nonce" type="hidden" value="{{NONCE}}"/>
-        </form>
-    </div>
-    {{/IS_SELF}}
-    {{#NOT_SELF}}{{#HAS_TAGS}}
+    {{#HAS_TAGS}}
     <div class="toolbar tags"><img alt="" src="/static/icons/tag.png" /> Tags:
         {{#TAG}}<a href="/tracks/tag/{{TAG}}">{{TAG}}</a>{{/TAG}}
     </div>
-    {{/HAS_TAGS}}{{/NOT_SELF}}
+    {{/HAS_TAGS}}
 
     <div class="license">
         {{#COPYRIGHT}} Copyright &copy; {{USERNAME}} {{/COPYRIGHT}}
@@ -145,6 +135,14 @@
                 {{/HAS_ART}}
             </form>
 
+            <h4><img alt="" src="/static/icons/tag.png" /> Tags</h4>
+            <form action="/track/{{TID}}/tags" method="post">
+                <input name="tags" value="{{#TAG}}{{TAG}}{{#TAG_separator}}, {{/TAG_separator}}{{/TAG}}" />
+                <input type="submit" value="Update" />
+                <br/>
+                <span class="legend">(comma-separated, e.g. instrumental, electronic)</span>
+                <input name="nonce" type="hidden" value="{{NONCE}}"/>
+            </form>
             <h4><img src="/static/icons/balloon-sound.png"> Broadcast</h4>
             <form action="/track/{{TID}}/flags" method="post">
                 <input type="checkbox" name="airable" {{#IS_AIRABLE}}checked="checked"{{/IS_AIRABLE}} />

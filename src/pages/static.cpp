@@ -7,7 +7,9 @@ void Pages::statics(Document *doc){
     else if(path == "/faq")
         doc->setHtml("html/faq.tpl", "FAQ");
     else if(path == "/credits")
-        doc->setHtml("html/credits.tpl", "Credits");
+        doc->moved("/thanks");
+    else if(path == "/thanks")
+        doc->setHtml("html/thanks.tpl", "Thanks");
     else if(path == "/api")
         doc->setHtml("html/api.tpl", "API");
 }

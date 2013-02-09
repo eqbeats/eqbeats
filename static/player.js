@@ -59,32 +59,51 @@ function setFavicon(href){
     }
 }
 
-function load(player){
-    if(playing != player){
-        playing.style.display = 'none';
+function load(player, nondisruptive){
+    if(playing != player && !nondisruptive){
         pause(playing);
         playing.scrubber.style.width = '0px';
         playing.playtime.innerHTML = '0:00/0:00';
+        if(playing.track.list == "featured_tracks"){
+            if(player.track.list == playing.track.list)
+                playing.parentNode.className = '';
+        }
+        else
+            playing.style.display = 'none';
     }
-    if(snd) snd.destruct();
-    snd = soundManager.createSound({
-        id: "snd",
-        autoLoad: false,
-        volume: globalVolume,
-        whileloading: function(){
-            player.playtime.innerHTML = prettyTime(this.position) + '/' + prettyTime(this.durationEstimate);
-        },
-        url: [
-            {url:player.track.opus, type:'audio/opus'},
-            {url:player.track.vorbis, type:'audio/ogg; codecs=vorbis'},
-            {url:player.track.aac, type:'audio/aac'},
-            {url:player.track.mp3, type:'audio/mp3'}
-        ]
-    });
-    snd.triggered = false;
-    playing = player;
-    playing.volume.slider.inner.style.width = parseInt(playing.volume.slider.style.width) * globalVolume / 100 + 'px';
-    playing.style.display = 'block';
+    if(!nondisruptive){
+        if(snd) snd.destruct();
+        snd = soundManager.createSound({
+            id: "snd",
+            autoLoad: false,
+            volume: globalVolume,
+            whileloading: function(){
+                player.playtime.innerHTML = prettyTime(this.position) + '/' + prettyTime(this.durationEstimate);
+            },
+            url: [
+                {url:player.track.opus, type:'audio/opus'},
+                {url:player.track.vorbis, type:'audio/ogg; codecs=vorbis'},
+                {url:player.track.aac, type:'audio/aac'},
+                {url:player.track.mp3, type:'audio/mp3'}
+            ]
+        });
+        snd.triggered = false;
+        playing = player;
+    }
+    player.volume.slider.inner.style.width = parseInt(playing.volume.slider.style.width) * globalVolume / 100 + 'px';
+    player.style.display = 'block';
+    if(player.track.list == "featured_tracks"){
+        var featurebox = document.getElementsByClassName("featurebox")[0];
+        featurebox.style["background"] = "url('/track/" + player.track.tid + "/art/medium') center center, #999";
+        // sicknasty preloading
+        if(player.next){
+            var i = new Image();
+            i.src = '/track/' + player.next.track.tid + '/art/medium';
+        }
+        var active = featurebox.getElementsByClassName('active');
+        if(active[0]) active[0].className = '';
+        player.parentNode.className = 'active';
+    }
 }
 
 function pause(player){
@@ -140,37 +159,74 @@ function pp(e){
 
 function vol(e){
     e.stopPropagation();
-    with(playing.volume.slider){
-        inner.style.width = e.clientX - (inner.offsetLeft + inner.offsetParent.offsetLeft) + 'px';
-        globalVolume = parseInt(inner.style.width) * 100 / parseInt(style.width);
-        document.cookie = 'volume=' + globalVolume + '; path=/';
-        snd.setVolume(globalVolume);
+    if(e.currentTarget == playing.volume.slider){
+        with(playing.volume.slider){
+            inner.style.width = e.clientX - recurseoffset(inner)[1] + 'px';
+            globalVolume = parseInt(inner.style.width) * 100 / parseInt(style.width);
+            document.cookie = 'volume=' + globalVolume + '; path=/';
+            snd.setVolume(globalVolume);
+        }
     }
 }
 
+function recurseoffset(el){
+    var top = 0;
+    var left = 0;
+    while(el){
+        top += el.offsetTop;
+        left += el.offsetLeft;
+        el = el.offsetParent;
+    }
+    return [top, left];
+}
 function scrub(e){
     with(playing)
-        snd.setPosition((e.clientX - (scrubberbar.offsetLeft + scrubberbar.offsetParent.offsetLeft + 3))*snd.durationEstimate/(scrubberbar.clientWidth - 6));
+        snd.setPosition((e.clientX - recurseoffset(scrubberbar)[1] - 3)*snd.durationEstimate/(scrubberbar.clientWidth - 6));
 }
 
 function initTrack(t){
     var player = document.getElementById(t.id);
+    if(lists[t.list]){
+        lists[t.list].next = player;
+        player.prev = lists[t.list];
+    }
+    lists[t.list] = player;
+    var featured = t.list == 'featured_tracks';
     player.track = t;
     player.playpause = document.createElement('div');
     player.scrubberbar = document.createElement('div');
     player.scrubber = document.createElement('div');
     player.playtime = document.createElement('div');
     player.volume = document.createElement('div');
+    if(featured){
+        player.prevbtn = document.createElement('span');
+        player.nextbtn = document.createElement('span');
+    }
     with (player){
         playpause.className = 'playpause';
         scrubberbar.className = 'scrubberbar';
         scrubber.className = 'scrubber';
         playtime.className = 'playtime';
+        playtime.innerHTML = '0:00/0:00';
         volume.className = 'volume';
+        if(featured){
+            prevbtn.className = 'prev disabled';
+            if(player.prev){
+                prevbtn.className = 'prev';
+                player.prev.nextbtn.className = 'next';
+            }
+            nextbtn.className = 'next disabled';
+        }
         appendChild(playpause);
         scrubberbar.appendChild(scrubber);
         appendChild(scrubberbar);
         appendChild(playtime);
+        if(featured){
+            /*parentNode.appendChild(prevbtn);
+            parentNode.appendChild(nextbtn);*/
+            appendChild(prevbtn);
+            appendChild(nextbtn);
+        }
         // Volume
         volume.slider = document.createElement('div');
         volume.icon = document.createElement('img');
@@ -192,19 +248,38 @@ function initTrack(t){
         });
         addListener(scrubberbar, 'mousedown', function(e){
             e.preventDefault();
-            snd.pause();
-            scrubbing = true;
-            addListener(document, 'mousemove', scrub);
-            scrub(e);
+            if(e.currentTarget == playing.scrubberbar){
+                snd.pause();
+                scrubbing = true;
+                addListener(document, 'mousemove', scrub);
+                scrub(e);
+            }
         });
+        if(featured){
+            addListener(nextbtn, 'click', function(e){
+                e.stopPropagation();
+                if(player.next){
+                    if(player.className == "player playing")
+                        play(player.next);
+                    else
+                        load(player.next, true);
+                }
+            });
+            addListener(prevbtn, 'click', function(e){
+                e.stopPropagation();
+                if(player.prev){
+                    if(player.className == "player playing")
+                        play(player.prev);
+                    else
+                        load(player.prev, true);
+                }
+            });
+        }
     }
     if (player.parentNode.tagName == 'LI'){
         preventBubbling(player.parentNode, 'a');
         preventBubbling(player.parentNode, 'button');
     }
-    if(lists[t.list])
-        lists[t.list].next = player;
-    lists[t.list] = player;
     if(!playing) playing = player; // preload the first player
 }
 
@@ -228,9 +303,34 @@ function parseCookies(){
     var i = document.cookie.indexOf('volume=');
     if(i >= 0)
         globalVolume = parseInt(document.cookie.substr(i+7));
+    else
+        globalVolume = 90;
 }
 
 function registerTrack(t){ tracks.push(t); }
+
+function getFeatures(){
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", "/tracks/featured/json", true);
+    xhr.onreadystatechange = function(){
+        if(xhr.readyState == 4){
+            var tracks = eval(xhr.responseText);
+            for(var i = 1; i < tracks.length; i++){
+                var track = tracks[i];
+                registerTrack({
+                    id: "featured_tracks-" + i,
+                    tid: "" + track.id,
+                    mp3: "/track/"+track.id+"/mp3?stream=1",
+                    vorbis: "/track/"+track.id+"/vorbis?stream=1",
+                    aac: "/track/"+track.id+"/aac?stream=1",
+                    opus: "/track/"+track.id+"/opus?stream=1",
+                    list: "featured_tracks"
+                });
+            }
+        }
+    };
+    xhr.send();
+}
 
 soundManager.audioFormats.mp3.required = false;
 soundManager.audioFormats['opus'] = {
