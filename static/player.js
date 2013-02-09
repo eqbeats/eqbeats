@@ -94,8 +94,18 @@ function pause(player){
 }
 
 function play(player){
-    if(player != playing)
+    if(player != playing){
         load(player);
+    }
+    snd.load({
+        whileloading: function(){
+            if(!snd.operaquirk){
+                snd.pause();
+                window.setTimeout(function(){snd.play();},100);
+                snd.operaquirk = true;
+            }
+        }
+    });
     snd.play({
         whileplaying: function(){
             playing.scrubber.style.width = (100 * this.position / this.durationEstimate) + '%';
