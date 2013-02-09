@@ -4,7 +4,7 @@
     <head>
         <title>{{#HAS_TITLE}}{{TITLE}} - {{/HAS_TITLE}}Equestrian Beats</title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <link rel="stylesheet" type="text/css" href="/static/style.css?6" />
+        <link rel="stylesheet" type="text/css" href="/static/style.css?7" />
         <link rel="shortcut icon" href="/static/favicon.ico" id="favicon-link" />
         <script type="text/javascript" src="/static/sm2.js?2"></script>
         <script type="text/javascript" src="/static/player.js?5"></script>
@@ -59,6 +59,7 @@
                 <br/>
                 Contact: &#99;&#111;&#110;&#116;&#97;&#99;&#116;&#64;&#101;&#113;&#98;&#101;&#97;&#116;&#115;&#46;&#111;&#114;&#103;{{! contact@eqbeats.org}}
                 <!--Generated in {{GENERATION_TIME}} by {{PID}}.-->
+                <a class="honeypot" href="http://www1360406159.blogblazer.com/">@</a>
             </div>
         </div>
         <script type="text/javascript">document.body.className = 'js';</script>

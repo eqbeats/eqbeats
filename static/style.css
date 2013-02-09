@@ -357,7 +357,7 @@ a.danger {
     margin: 15px;
 }
 
-input.honeypot {
+.honeypot {
     display: none;
     padding: 0;
     border: none;
