@@ -75,19 +75,19 @@ void Audio::unlink(){
 }
 
 File Audio::mp3() const{
-    return File("tracks/" + number(track->id) + ".mp3", track->title + " - " + track->artist.name + ".mp3");
+    return File("tracks/" + number(track->id) + ".mp3",  track->artist.name + " - " + track->title + ".mp3");
 }
 
 File Audio::vorbis() const{
-    return File("tracks/" + number(track->id) + ".ogg", track->title + " - " + track->artist.name + ".ogg");
+    return File("tracks/" + number(track->id) + ".ogg",  track->artist.name + " - " + track->title + ".ogg");
 }
 
 File Audio::aac() const{
-    return File("tracks/" + number(track->id) + ".m4a", track->title + " - " + track->artist.name + ".m4a");
+    return File("tracks/" + number(track->id) + ".m4a",  track->artist.name + " - " + track->title + ".m4a");
 }
 
 File Audio::opus() const{
-    return File("tracks/" + number(track->id) + ".opus", track->title + " - " + track->artist.name + ".opus");
+    return File("tracks/" + number(track->id) + ".opus", track->artist.name + " - " + track->title + ".opus");
 }
 
 File Audio::original() const{
