@@ -15,7 +15,7 @@ Art::Art(int tid){
 
 std::string Art::filepath(Art::Size sz) const{
     return eqbeatsDir() + "/art/" +
-        (sz==Medium ? "medium/" : sz==Thumbnail ? "thumb/" : "") + number(_tid) + (sz==Full?"":".png");
+        (sz==Medium ? "medium/" : sz==Thumbnail ? "thumb/" : "") + number(_tid) + (sz==Full?"":sz==Medium?".jpg":".png");
 }
 
 std::string Art::url(Art::Size sz) const{
@@ -61,7 +61,8 @@ void Art::makeThumbs(){
             // Otherwise make the thumbnail if the pic is large OR if the format isn't known
             if(i.size().width() > 1000) // scale in the first case
                 i.scale("1000x");
-            i.write(filepath(Medium)); // convert to PNG
+                i.quality(90);
+            i.write(filepath(Medium)); // convert to JPEG
         }
         if(i.size().height() > 64) // resize (most of the time)
             i.scale("x64");
@@ -85,7 +86,7 @@ File Art::thumbnail() const{
 File Art::medium() const{
     if(access(filepath(Medium).c_str(), R_OK)) // medium thumbnail doesn't exist
         return full();
-    return File("art/medium/" + number(_tid) + ".png", "medium.png");
+    return File("art/medium/" + number(_tid) + ".jpg", "medium.jpg");
 }
 
 File Art::full() const{
