@@ -14,7 +14,7 @@ find . -type f -exec install -m664 '{}' /srv/eqbeats/templates/'{}' \;
 
 
 cd ../static
-install -m664 *.css *.txt *.swf *.png *.jpg playing.ico 502.html /srv/eqbeats/static
+install -m664 *.css *.txt *.swf *.png *.jpg *.woff *.ttf *.eot *.svg playing.ico 502.html /srv/eqbeats/static
 for f in *.js; do
     jsmin < $f > /srv/eqbeats/static/$f
 done
