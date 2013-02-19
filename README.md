@@ -14,7 +14,6 @@
 * Nettle
 * ctemplate
 * FFmpeg with libopus support
-* Optional: jsmin for deploy.sh
 * Optional: OpenBSD netcat and a Haskell compiler (like GHC) for hitsd
 * Optional: OpenBSD netcat, Python 3.x and psycopg2 for YouTube support
 
@@ -83,7 +82,6 @@ Then, import the database schema:
 
 ### Compiling and starting
 
-    cmake src
     make
     ./launch.sh start
 
