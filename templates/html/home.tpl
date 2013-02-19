@@ -18,7 +18,7 @@
 
 <div class="featurebox">
     <h3>
-        <a href="/tracks/featured">Featured</a>
+        <a href="/tracks/featured">Featured &raquo;</a>
     </h3>
     {{>FEATURED_TRACKS}}
 </div>
