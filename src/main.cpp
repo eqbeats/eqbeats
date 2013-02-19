@@ -17,6 +17,7 @@
 #include <sys/wait.h>
 #include <unistd.h>
 #include <stdexcept>
+#include <Magick++.h>
 
 cgicc::Cgicc cgi;
 std::string path;
@@ -37,6 +38,8 @@ int main(int argc, char** argv){
 
     std::string logfile = eqbeatsDir()+"/eqbeats.log";
     freopen(logfile.c_str(),"a",stderr);
+
+    Magick::InitializeMagick(*argv);
 
     FCGX_Request request;
     FCGX_Init();

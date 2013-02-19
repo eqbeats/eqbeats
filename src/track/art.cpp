@@ -51,8 +51,8 @@ void Art::makeThumbs(){
     unlink(filepath(Thumbnail).c_str());
     try {
         try{ i.read(filepath()); }
-        catch(Magick::Warning &warn){
-            std::cerr << "ImageMagick Warning : " << warn.what() << std::endl;
+        catch(Magick::Exception &err){
+            std::cerr << "ImageMagick Exception : " << err.what() << std::endl;
             return;
         }
         std::string f = getFormat(filepath().c_str());
@@ -61,14 +61,14 @@ void Art::makeThumbs(){
             // Otherwise make the thumbnail if the pic is large OR if the format isn't known
             if(i.size().width() > 1000) // scale in the first case
                 i.scale("1000x");
-                i.quality(90);
+            i.quality(90);
             i.write(filepath(Medium)); // convert to JPEG
         }
         if(i.size().height() > 64) // resize (most of the time)
             i.scale("x64");
         i.write(filepath(Thumbnail)); // convert to PNG
     } catch ( Magick::Exception &err ) {
-        std::cerr << "ImageMagick Exceptions : " << err.what() << std::endl;
+        std::cerr << "ImageMagick Exception : " << err.what() << std::endl;
     }
 }
 
