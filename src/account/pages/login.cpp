@@ -9,7 +9,7 @@ static void form(Document *doc, const char *err=""){
 }
 
 static void redir(Document *doc){
-    doc->redirect(cgi("redirect").empty() ? Session::user().url() : cgi("redirect"));
+    doc->redirect(cgi("redirect").empty() || cgi("redirect")[0] != '/' ? Session::user().url() : cgi("redirect"));
 }
 
 void Pages::login(Document *doc){
@@ -39,7 +39,7 @@ void Pages::login(Document *doc){
     else if(path == "/logout"){
         Session::logout();
         doc->addHttp("Set-Cookie: sid=\n");
-        doc->redirect(cgi("redirect").empty() ? "/" : cgi("redirect"));
+        doc->redirect(cgi("redirect").empty() || cgi("redirect")[0] != '/' ? "/" : cgi("redirect"));
     }
 
 }
