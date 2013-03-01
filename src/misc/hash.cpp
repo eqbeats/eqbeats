@@ -26,3 +26,10 @@ std::string randomString(){
     sprintf(str, "%016lx", n);
     return std::string(str);
 }
+
+std::string randomString(size_t length){
+    std::string buf;
+    while(buf.size() < length)
+        buf += randomString();
+    return buf.substr(0, length);
+}
