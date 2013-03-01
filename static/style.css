@@ -535,7 +535,6 @@ a.avatar:hover[href] {
 .newplaylist{
     float: right;
     margin: 14px 10px;
-    max-width: 50%;
     text-align:right;
 }
 .playlists {
@@ -1279,6 +1278,9 @@ svg .ytick, svg .ylabel, svg .chartlabel { fill: #333; z-index: 50; }
     form {
         margin: 20px auto;
     }
+    textarea, .dialog textarea {
+        max-width: 80%;
+    }
 }
 @media (max-width: 500px) {
     #header h1 a {
@@ -1311,6 +1313,7 @@ svg .ytick, svg .ylabel, svg .chartlabel { fill: #333; z-index: 50; }
     form input, select,
     .events_wrapper input[type=text] {
         width: 120px;
+        margin: 2px 0;
     }
     .user .item {
         margin: 8px 0px;
@@ -1329,6 +1332,12 @@ svg .ytick, svg .ylabel, svg .chartlabel { fill: #333; z-index: 50; }
     textarea, .dialog textarea {
         width: 250px;
         height: 170px;
+    }
+    .newplaylist{
+        max-width: 50%;
+    }
+    .newplaylist input {
+        max-width: 45%;
     }
 }
 
