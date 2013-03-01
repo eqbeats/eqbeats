@@ -14,6 +14,14 @@ void DB::close(){
     PQfinish(db);
 }
 
+int healthCheck(){
+    if(PQstatus(db) != CONNECTION_OK){
+        PQreset(db);
+        return 0;
+    }
+    return 1;
+}
+
 Result toResult(PGresult *res){
     Result r(PQntuples(res), Row(PQnfields(res)));
     for(int i=0; i<PQntuples(res); i++){
@@ -31,18 +39,33 @@ Result queryH(const std::string &q, int n, ...){
     for(int i=0; i<n; i++)
         val[i] = va_arg(vl, const char*);
     va_end(vl);
-    return toResult(PQexecParams(db, q.c_str(), n, 0, val, 0, 0, 0));
+    PGresult* res = PQexecParams(db, q.c_str(), n, 0, val, 0, 0, 0);
+    if(PQstatus(db) != CONNECTION_OK){
+        PQreset(db);
+        res = PQexecParams(db, q.c_str(), n, 0, val, 0, 0, 0);
+    }
+    return toResult(res);
 }
 
 Result DB::query(const std::string &q, const std::vector<std::string> &params){
     const char* val[params.size()];
     for(unsigned i=0; i<params.size(); i++)
         val[i] = params[i].c_str();
-    return toResult(PQexecParams(db, q.c_str(), params.size(), 0, val, 0, 0, 0));
+    PGresult* res = PQexecParams(db, q.c_str(), params.size(), 0, val, 0, 0, 0);
+    if(PQstatus(db) != CONNECTION_OK){
+        PQreset(db);
+        res = PQexecParams(db, q.c_str(), params.size(), 0, val, 0, 0, 0);
+    }
+    return toResult(res);
 }
 
 Result DB::query(const std::string &q){
-    return toResult(PQexec(db, q.c_str()));
+    PGresult* res = PQexec(db, q.c_str());
+    if(PQstatus(db) != CONNECTION_OK){
+        PQreset(db);
+        res = PQexec(db, q.c_str());
+    }
+    return toResult(res);
 }
 
 Result DB::query(const std::string &q, const std::string &p1){ return queryH(q, 1, p1.c_str()); }

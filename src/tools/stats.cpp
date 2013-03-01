@@ -7,7 +7,7 @@ std::string show(const std::string &q){
     return r[0][0];
 }
 
-int main(int argc, char **argv){
+int main(){
     DB::connect();
     std::cout << show("SELECT count(*) FROM tracks") << " tracks ("
               << show("SELECT count(*) FROM tracks WHERE visible='f'") << " hidden)" << std::endl
