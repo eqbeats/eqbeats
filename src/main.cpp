@@ -29,7 +29,7 @@ int main(int argc, char** argv){
     (void)argv;
 
     DB::connect();
-    srand(getpid());
+    srand(getpid() ^ time(NULL));
 
     if(!getenv("EQBEATS_DIR")){
         std::cerr << "Environment variable EQBEATS_DIR isn't set." << std::endl;

@@ -68,7 +68,7 @@ void append(std::string filepath, std::string in){
     close(f);
 }
 
-int main(int argc, char** argv){
+int main(){
     int s;
     char buffer[300];
     size_t len;
