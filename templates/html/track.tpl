@@ -34,7 +34,7 @@
 
     <div class="toolbar">
         {{#READY}}
-        <span><img alt="" src="/static/icons/drive-download.png" /> Download :
+        <span><img alt="" src="/static/icons/drive-download.png" /> Download:
         <ul class="downloads">
             {{#MP3_SOURCE}}<li><a href="/track/{{TID}}/original"><span>Original MP3
                 <span class="codecinfo">Highest quality</span>
@@ -65,10 +65,10 @@
         </ul>
         </span>
         {{/READY}}
-        <span><img alt="" src="/static/icons/balloon-white-left.png" /> Share : <a href="#embedcode" onclick="document.getElementById('embedcode').style.display='block';return false;">Embed</a></span>
+        <span><img alt="" src="/static/icons/balloon-white-left.png" /> Share: <a href="#embedcode" onclick="document.getElementById('embedcode').style.display='block';return false;">Embed</a></span>
 
         {{#IS_SELF}}
-        <span><img alt="" src="/static/icons/edit-number.png" /> Hits : {{HIT_COUNT}} <a href="#charts" onclick="initstats();">Detailed stats</a></span>
+        <span><img alt="" src="/static/icons/edit-number.png" /> Hits: {{HIT_COUNT}} <a href="#charts" onclick="initstats();">Detailed stats</a></span>
         {{/IS_SELF}}
         {{#NOT_SELF}}
         <form action="/track/{{TID}}/report" method="post">
@@ -189,7 +189,7 @@
 
     {{>EVENTS}}
     <form class="postcomment" action="/track/{{TID}}/comment" method="post">
-        {{#LOGGED_OUT}}Name : <input type="text" name="name" /><br />{{/LOGGED_OUT}}
+        {{#LOGGED_OUT}}Name: <input type="text" name="name" /><br />{{/LOGGED_OUT}}
         <input class="honeypot" type="text" name="url" placeholder="If you can see this, don't fill it in." />
         <textarea name="msg"></textarea><br />
         <input type="submit" value="Post a comment" onclick="this.form.submit();this.disabled=true;return false;" />
