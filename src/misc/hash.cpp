@@ -20,16 +20,15 @@ std::string md5(const std::string &str){
     return buf;
 }
 
+std::string pool = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-";
+
 std::string randomString(){
-    ulong n = ((ulong) rand() << 32) | (ulong) rand();
-    char str[17];
-    sprintf(str, "%016lx", n);
-    return std::string(str);
+    return randomString(16);
 }
 
 std::string randomString(size_t length){
     std::string buf;
     while(buf.size() < length)
-        buf += randomString();
-    return buf.substr(0, length);
+        buf += pool[rand() % pool.size()];
+    return buf;
 }
