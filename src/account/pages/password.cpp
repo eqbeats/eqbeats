@@ -30,7 +30,7 @@ void Pages::passwordReset(Document *doc){
 
         else{
             DB::query("DELETE FROM resets WHERE token = $1", cgi("token"));
-            std::string pw = randomString();
+            std::string pw = randomString(16);
             int uid = number(r[0][0]);
 
             Account a(uid);
@@ -55,9 +55,9 @@ void Pages::passwordReset(Document *doc){
             form(doc, "Sorry, we couldn't find any account with this email address. Try again?");
 
         else{
-            std::string token = randomString() + randomString();
+            std::string token = randomString(32);
             while(DB::query("INSERT INTO resets (user_id, token) VALUES ($1, $2) RETURNING 1", r[0][0], token).empty())
-                token = randomString() + randomString();
+                token = randomString(32);
 
             sendMail(cgi("email").c_str(),
                 ((std::string)"From: EqBeats <eqbeats@eqbeats.org>\n"

@@ -46,7 +46,7 @@ std::string Session::nonce(){
 
 void Session::newNonce(){
     if(u)
-        nonce_ = randomString();
+        nonce_ = randomString(16);
         DB::query("UPDATE sessions SET nonce = $1 WHERE sid = $2 AND host = $3", nonce_, sid, cgi.getEnvironment().getRemoteAddr());
 }
 

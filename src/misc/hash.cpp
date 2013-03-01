@@ -22,10 +22,6 @@ std::string md5(const std::string &str){
 
 std::string pool = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-";
 
-std::string randomString(){
-    return randomString(16);
-}
-
 std::string randomString(size_t length){
     std::string buf;
     while(buf.size() < length)
