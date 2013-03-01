@@ -15,9 +15,11 @@
     {{/NOT_FOLLOWED}}
 </h2>
 
+<div class="items">
 <div class="item"><img src="/static/icons/mail.png" alt="" /> Email: {{EMAIL:x-email}}</div>
 {{#IS_SELF}}<div class="item"><img src="/static/icons/card-pencil.png" alt="" /> <a href="/account">Edit</a></div>{{/IS_SELF}}
 {{#HAS_FAVS}}<div class="item"><img src="/static/icons/star.png" alt="" /> <a href="/user/{{UID}}/favorites">Favorite tracks ({{NUM_FAVS}})</a></div>{{/HAS_FAVS}}
+</div>
 <div style="clear:both;"></div>
 
 {{#HAS_ABOUT}}<div class="notes">{{ABOUT:x-format}}</div>{{/HAS_ABOUT}}

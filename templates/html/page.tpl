@@ -4,7 +4,7 @@
     <head>
         <title>{{#HAS_TITLE}}{{TITLE}} - {{/HAS_TITLE}}Equestrian Beats</title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <link rel="stylesheet" type="text/css" href="/static/style.css?8" />
+        <link rel="stylesheet" type="text/css" href="/static/style.css?9" />
         <link rel="shortcut icon" href="/static/favicon.ico" id="favicon-link" />
         <script type="text/javascript" src="/static/sm2.js?2"></script>
         <script type="text/javascript" src="/static/player.js?5"></script>
@@ -18,6 +18,7 @@
         <link rel="alternate" type="application/xml+oembed" href="http://eqbeats.org/oembed?format=xml&amp;url={{EQBEATS_URL:u}}/track/{{TID}}">
         {{/HAS_OEMBED}}
         {{#FEED}}<link href="{{FEED_URL}}" type="application/atom+xml" rel="alternate" />{{/FEED}}
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
     </head>
     <body>
         <div id="main">

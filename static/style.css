@@ -18,6 +18,7 @@ html, body { background-color: #F2F2F2; }
     margin: auto;
 }
 
+
 #header {
     margin: 0 auto;
     color: #203;
@@ -215,7 +216,7 @@ ul.downloads {
     padding: 0;
     margin: 0;
     vertical-align: top;
-    height: 1em;
+    height: 2.5em;
 }
 
 ul.downloads li{
@@ -257,6 +258,7 @@ ul.downloads li:first-child:after{
     top: 0;
     left: 0;
     bottom:0;
+    z-index: 99999;
     /* this ensures that the menu can be opened on touch devices
        the first click will click on this and hover, thus removing this element */
     cursor: default;
@@ -480,8 +482,11 @@ a.avatar:hover[href] {
     border-color: #777;
 }
 
+.user .items {
+    margin-left: 116px;
+}
 .user .item {
-    margin: 8px 25px 15px 5px;
+    margin: 8px 25px 15px 0px;
     display: inline-block;
 }
 .user .item img {
@@ -530,6 +535,8 @@ a.avatar:hover[href] {
 .newplaylist{
     float: right;
     margin: 14px 10px;
+    max-width: 50%;
+    text-align:right;
 }
 .playlists {
     clear: both;
@@ -888,6 +895,7 @@ textarea {
 .rightcol {
     float: right;
 }
+
 
 .featurebox {
     background: #eee;
@@ -1257,3 +1265,70 @@ svg .ytick, svg .ylabel, svg .chartlabel { fill: #333; z-index: 50; }
 .charts .referrers td.value{
     text-align: right;
 }
+
+/* Responsive */
+
+@media (max-width: 800px) {
+    #contents {
+        padding: 25px 10px 20px;
+    }
+    .leftcol, .rightcol {
+        float: none;
+        width: 100%;
+    }
+    form {
+        margin: 20px auto;
+    }
+}
+@media (max-width: 500px) {
+    #header h1 a {
+        font-size: 0.8em;
+        text-align: center;
+        background-position: top center;
+        padding: 72px 0 20px 0;
+    }
+    #logstatus {
+        float: none;
+        position: absolute;
+        top: 0;
+        right: 0;
+    }
+    #header {
+        text-align: center;
+    }
+    #navbar form {
+        display: block;
+        float: none;
+        margin: 10px 0;
+    }
+    #navbar a {
+        float: none;
+        display: inline;
+    }
+    #navbar input[type=text] {
+        width: 200px;
+    }
+    form input, select,
+    .events_wrapper input[type=text] {
+        width: 120px;
+    }
+    .user .item {
+        margin: 8px 0px;
+        display: block;
+    }
+    .events .event {
+        padding: 5px 5px;
+    }
+    .event img {
+        right: 0;
+    }
+    ul.downloads {
+        display:block;
+        margin: 0 20px;
+    }
+    textarea, .dialog textarea {
+        width: 250px;
+        height: 170px;
+    }
+}
+
