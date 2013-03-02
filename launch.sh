@@ -25,9 +25,15 @@ function stop()
     if [[ ! -a pid ]]; then
       echo "$PROGNAME : Not running."
     else
+      echo -n   "$PROGNAME : Stopping gracefully..."
       kill $(cat pid) > /dev/null 2>&1
+      SERVRUNNING=1;
+      while [[ $SERVRUNNING -gt 0 ]]; do
+        sleep 0.1
+        SERVRUNNING=$(ls /proc | egrep -c "^($(cat pid 2> /dev/null | tr "\n" "|"))$")
+      done
       rm pid
-      echo "$PROGNAME : Stopped."
+      echo -e "\r$PROGNAME : Stopped.              "
     fi
 }
 
@@ -49,3 +55,5 @@ case "$1" in
 esac
 
 exit 0
+
+# vim: sw=2 ts=2

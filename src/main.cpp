@@ -18,11 +18,24 @@
 #include <unistd.h>
 #include <stdexcept>
 #include <Magick++.h>
+#include <signal.h>
 
 cgicc::Cgicc cgi;
 std::string path;
 char** headers;
 ctemplate::TemplateCache cache;
+
+bool running = true, answering = false;
+
+void signalCatch(int s){
+    if(s){
+        if(answering)
+            running = false;
+        else
+            DB::close();
+            exit(0);
+    }
+}
 
 int main(int argc, char** argv){
     (void)argc;
@@ -61,7 +74,15 @@ int main(int argc, char** argv){
         0
     };
 
-    while(FCGX_Accept_r(&request) == 0){
+    struct sigaction sa;
+    sa.sa_handler = &signalCatch;
+    sa.sa_flags = SA_RESTART;
+    sigaction(SIGINT, &sa, NULL);
+    sigaction(SIGQUIT, &sa, NULL);
+    sigaction(SIGTERM, &sa, NULL);
+
+    while(running && (FCGX_Accept_r(&request) == 0)){
+        answering = true;
         resetTimer();
         headers = request.envp;
         o.attach(&request);
@@ -94,6 +115,7 @@ int main(int argc, char** argv){
         Session::destroy();
         FCGX_Finish_r(&request);
         while(waitpid(-1, NULL, WNOHANG) > 0); // wait for zombies
+        answering = false;
     }
 
     DB::close();
