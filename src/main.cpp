@@ -19,6 +19,8 @@
 #include <stdexcept>
 #include <Magick++.h>
 #include <signal.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 
 cgicc::Cgicc cgi;
 std::string path;
@@ -42,7 +44,6 @@ int main(int argc, char** argv){
     (void)argv;
 
     DB::connect();
-    srand(getpid() ^ time(NULL));
 
     if(!getenv("EQBEATS_DIR")){
         std::cerr << "Environment variable EQBEATS_DIR isn't set." << std::endl;
@@ -51,6 +52,17 @@ int main(int argc, char** argv){
 
     std::string logfile = eqbeatsDir()+"/eqbeats.log";
     freopen(logfile.c_str(),"a",stderr);
+
+    uint32_t buf = 0;
+    int urandom = open("/dev/urandom", O_RDONLY);
+    if(urandom != -1) {
+        read(urandom, &buf, 32);
+        close(urandom);
+        srand(buf);
+    } else {
+        log("Couldn't open /dev/urandom, random seed will be predictable.");
+        srand(getpid() ^ time(NULL));
+    }
 
     Magick::InitializeMagick(*argv);
 
