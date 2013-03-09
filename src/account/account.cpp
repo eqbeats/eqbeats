@@ -23,6 +23,9 @@ Account::Account(int uid){
     r = DB::query("SELECT COUNT(*) FROM favorites, tracks WHERE tracks.visible = TRUE and tracks.id = favorites.ref AND favorites.type = 'track' AND favorites.user_id = " + number(uid));
     num_favs = r.empty() ? 0 : number(r[0][0]);
 
+    r = DB::query("SELECT COUNT(*) FROM favorites WHERE favorites.ref = " + number(uid) + " AND favorites.type = 'artist'");
+    num_followers = r.empty() ? 0 : number(r[0][0]);
+
 }
 
 void Account::fill(Dict* d) const{
@@ -43,5 +46,9 @@ void Account::fill(Dict* d) const{
     if(num_favs > 0) {
         d->ShowSection("HAS_FAVS");
         d->SetValue("NUM_FAVS", number(num_favs));
+    }
+    if(num_followers > 0) {
+        d->ShowSection("HAS_FOLLOWERS");
+        d->SetValue("NUM_FOLLOWERS", number(num_followers));
     }
 }

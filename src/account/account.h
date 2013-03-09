@@ -16,6 +16,7 @@ class Account: public User {
         std::string license;
 
         int num_favs;
+        int num_followers;
 
         void fill(Dict*) const;
 
