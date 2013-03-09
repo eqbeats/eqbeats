@@ -7,7 +7,7 @@
         <link rel="stylesheet" type="text/css" href="/static/style.css?9" />
         <link rel="shortcut icon" href="/static/favicon.ico" id="favicon-link" />
         <script type="text/javascript" src="/static/sm2.js?2"></script>
-        <script type="text/javascript" src="/static/player.js?5"></script>
+        <script type="text/javascript" src="/static/player.js?6"></script>
         {{#REQUIRES_STATS_JS}}
         <script type="text/javascript" src="/static/d3.js"></script>
         <script type="text/javascript" src="/static/crossfilter.js"></script>
