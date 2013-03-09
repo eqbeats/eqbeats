@@ -203,6 +203,7 @@ function initTrack(t){
             if(player.prev){
                 prevbtn.className = 'prev';
                 player.prev.nextbtn.className = 'next';
+                player.prev.nextbtn.innerHTML = 'Next up: ' + t.artist + " - " + t.title;
             }
             nextbtn.className = 'next disabled';
         }

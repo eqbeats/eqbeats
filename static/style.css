@@ -979,8 +979,8 @@ textarea {
     opacity: 0.3;
 }
 
-.prev::after { content: "◀◀"; }
-.next::after { content: "▶▶"; }
+.prev::before { content: "◀◀"; }
+.next::before { content: "▶▶"; margin-right: 5px; }
 
 /** Messages ******************************************************************/
 

@@ -41,7 +41,7 @@ void Track::fill(Dict *d) const{
 Dict* Track::player(Dict *d, bool fallback) const{
     Dict *p = d->AddIncludeDictionary("PLAYER");
     p->SetFilename("html/player.tpl");
-    p->SetIntValue("TID", id);
+    fill(p);
     p->SetIntValue("LIST", id);
     if(fallback) p->ShowSection("FALLBACK");
     return p;
