@@ -8,6 +8,8 @@
 static void form(Document *doc, const char *err=""){
     doc->setHtml("html/registration.tpl", "Register");
     doc->dict()->SetValueAndShowSection("ERROR", err, "ERROR");
+    doc->dict()->SetValue("NAME", cgi("name"));
+    doc->dict()->SetValue("EMAIL", cgi("email"));
 }
 
 void Pages::registration(Document *doc){

@@ -7,21 +7,28 @@
 <form action="/account" method="post">
     <table>
         <tr>
-            <td><label for="r_name">Display name:</label></td>
+            <td><label for="r_name">Display name:</label>
+            <br/><span class="legend">(will show up in artist tag for your tracks)</span>
+            </td>
+
             <td><input id="r_name" name="name" value="{{USERNAME}}" maxlength="200" /></td>
         </tr>
         <tr>
-            <td><label for="r_email">Email:</label></td>
+            <td><label for="r_email">Email:</label>
+            <br/><span class="legend">(publicly visible)</span>
+            </td>
             <td><input id="r_email" name="email" value="{{EMAIL}}" /></td>
         </tr>
         <tr>
-            <td><label for="r_notify">Email notifications:</label></td>
+            <td><label for="r_notify">Email notifications:</label>
+            <br/><span class="legend">(for followed artists' releases, comments)</span>
+            </td>
             <td><input id="r_notify" name="notify" type="checkbox" {{#NOTIFY}}checked="checked"{{/NOTIFY}} /></td>
         </tr>
         <tr>
             <td><label for="r_about">Description:</label><br />
             <span class="legend">(tags: [b]old, [u]nderline, [i]talic)</span>
-            <td><textarea id="r_about" name="about">{{#HAS_ABOUT}}{{ABOUT:pre_escape}}{{/HAS_ABOUT}}</textarea></td>
+            <td><textarea id="r_about" name="about">{{ABOUT:pre_escape}}</textarea></td>
         </tr>
         <tr>
             <td><label for="r_license">Default license:</label></td>
