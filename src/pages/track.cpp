@@ -100,6 +100,7 @@ void Pages::track(Document *doc){
             DB::query("DELETE FROM events WHERE track_id = " + number(t.id));
             DB::query("DELETE FROM featured_tracks WHERE track_id = " + number(t.id));
             DB::query("DELETE FROM favorites WHERE type = 'track' AND ref = " + number(t.id));
+            DB::query("DELETE FROM user_features WHERE type = 'track' AND ref = " + number(t.id));
             DB::query("DELETE FROM tracks WHERE id = " + number(t.id));
 
             doc->redirect(Session::user().url());

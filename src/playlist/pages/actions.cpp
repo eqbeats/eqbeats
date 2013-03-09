@@ -58,6 +58,7 @@ void Pages::playlistActions(Document *doc){
         else{
             Session::newNonce();
             log("Deleting playlist: " + p.name() + " (" + number(p.id()) + ")");
+            DB::query("DELETE FROM user_features WHERE type = 'playlist' AND ref = " + number(p.id()));
             DB::query("DELETE FROM playlists WHERE id = " + number(p.id()));
             doc->redirect(Session::user().url());
         }
