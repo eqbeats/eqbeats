@@ -52,7 +52,7 @@ void Pages::registration(Document *doc){
         User u = User(number(r[0][0]), name);
         log("New user: " + u.name + " (" + number(u.id) + ")");
         doc->addHttp("Set-Cookie: sid=" + Session::login(u) + ";Max-Age=2592000\n"); // 30 days
-        doc->redirect("/quickstart");
+        doc->redirect(u.url() + "?welcome=1");
 
     }
 

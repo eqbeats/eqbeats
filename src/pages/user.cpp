@@ -56,5 +56,7 @@ void Pages::user(Document *doc){
         Follower(u.id).followed().fill(doc->dict(), "FOLLOWED_USERS");
         if(!u.self())
             doc->dict()->ShowSection(Follower(Session::user().id).following(u.id) ? "IS_FOLLOWED" : "NOT_FOLLOWED");
+        if(!cgi("welcome").empty())
+            doc->dict()->ShowSection("WELCOME");
     }
 }

@@ -1,6 +1,12 @@
 {{%AUTOESCAPE context="HTML"}}
 <div class="user">
 
+{{#WELCOME}}
+<div class="message">
+All set! You can now start following artists and making playlists. If you are an artist yourself you may want to <a href="#track-uploader">upload tracks</a> below and edit your <a href="/account">profile</a>.
+</div>
+{{/WELCOME}}
+
 {{>AVATAR}}
 
 <h2>
