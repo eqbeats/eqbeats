@@ -10,13 +10,14 @@
 void Pages::trackActions(Document *doc){
     std::string sub;
     int tid = route("track", path, sub);
-    Track t(tid);
-    if(!t) return;
+    if(!tid) return;
     bool post = cgi.getEnvironment().getRequestMethod() == "POST";
     bool nonce = Session::nonce() == cgi("nonce");
 
 
     if(sub == "rename"){
+        Track t(tid);
+        if(!t) return;
         if(post && t.artist.self() && nonce){
             Session::newNonce();
             std::string title = cgi("title");
@@ -30,6 +31,8 @@ void Pages::trackActions(Document *doc){
     }
 
     else if(sub == "tags"){
+        Track t(tid);
+        if(!t) return;
         if(post && t.artist.self() && nonce){
             Session::newNonce();
             DB::query("UPDATE tracks SET tags = regexp_split_to_array(lower($1), E' *, *') WHERE id = " + number(t.id), cgi("tags"));
@@ -38,6 +41,8 @@ void Pages::trackActions(Document *doc){
     }
 
     else if(sub == "notes"){
+        Track t(tid);
+        if(!t) return;
         if(post && t.artist.self() && nonce){
             Session::newNonce();
             DB::query("UPDATE tracks SET notes = $1 WHERE id = " + number(t.id), cgi("notes"));
@@ -46,6 +51,8 @@ void Pages::trackActions(Document *doc){
     }
 
     else if(sub == "flags"){
+        Track t(tid);
+        if(!t) return;
         if(post && t.artist.self() && nonce){
             Session::newNonce();
             DB::query("UPDATE tracks SET airable = $1 WHERE id = " + number(t.id), cgi.queryCheckbox("airable") ? "t" : "f");
@@ -54,6 +61,8 @@ void Pages::trackActions(Document *doc){
     }
 
     else if(sub == "report"){
+        Track t(tid);
+        if(!t) return;
         if(post){
             std::string path = eqbeatsDir() + "/reports";
             std::ofstream f(path.c_str(), std::ios_base::app);
@@ -64,6 +73,8 @@ void Pages::trackActions(Document *doc){
     }
 
     else if(sub == "feature"){
+        Track t(tid);
+        if(!t) return;
         User u = t.artist;
         if(post && u.self() && nonce){
             Session::newNonce();

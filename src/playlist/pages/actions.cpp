@@ -44,10 +44,11 @@ void Pages::playlistActions(Document *doc){
     }
 
     int id = route("playlist", path, sub);
-    Playlist p(id);
-    if(!p) return;
+    if(!id) return;
 
     if(sub == "delete"){
+        Playlist p(id);
+        if(!p) return;
         if(!p.author().self())
             return doc->redirect(p.url());
         if(!post || cgi("confirm") != "Delete" || !nonce){
@@ -64,6 +65,7 @@ void Pages::playlistActions(Document *doc){
     }
 
     else if(sub == "edit"){
+        Playlist p(id);
         if(!p) return;
         if(post && nonce && (p.name() != cgi("name") || p.description() != cgi("desc"))
            && p.author().self() && !cgi("name").empty()){
@@ -74,6 +76,7 @@ void Pages::playlistActions(Document *doc){
     }
 
     else if(sub == "move"){
+        Playlist p(id);
         if(!p) return;
         std::string dir = cgi("dir");
         if(!post || !p.author().self() || (dir != "up" && dir != "down") || !nonce)
@@ -85,6 +88,8 @@ void Pages::playlistActions(Document *doc){
     }
 
     else if(sub == "remove"){
+        Playlist p(id);
+        if(!p) return;
         if(post && p.author().self() && nonce){
             Session::newNonce();
             p.remove(number(cgi("item")));
@@ -93,6 +98,8 @@ void Pages::playlistActions(Document *doc){
     }
 
     else if(sub == "feature"){
+        Playlist p(id);
+        if(!p) return;
         User u = p.author();
         if(post && u.self() && nonce){
             Session::newNonce();
