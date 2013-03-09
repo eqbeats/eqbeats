@@ -3,8 +3,8 @@
     registerTrack({
         id: "{{LIST}}-{{COUNT}}",
         tid: "{{TID}}",
-        title: "{{TITLE}}",
-        artist: "{{USERNAME}}",
+        title: "{{TITLE:h}}",
+        artist: "{{USERNAME:h}}",
         mp3: "/track/{{TID}}/mp3?stream=1",
         vorbis: "/track/{{TID}}/vorbis?stream=1",
         aac: "/track/{{TID}}/aac?stream=1",
