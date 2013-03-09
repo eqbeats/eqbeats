@@ -5,7 +5,6 @@
 #include <core/db.h>
 #include <log/log.h>
 #include <text/text.h>
-#include <user_feature/feature.h>
 
 void Pages::trackActions(Document *doc){
     std::string sub;
@@ -68,22 +67,6 @@ void Pages::trackActions(Document *doc){
             std::ofstream f(path.c_str(), std::ios_base::app);
             f << t.artist.id << " " << t.artist.name << " - " << t.id << " " << t.title << std::endl;
             f.close();
-        }
-        doc->redirect(t.url());
-    }
-
-    else if(sub == "feature"){
-        Track t(tid);
-        if(!t) return;
-        User u = t.artist;
-        if(post && u.self() && nonce){
-            Session::newNonce();
-            if(Feature(u.id))
-                DB::query("UPDATE user_features SET ref = "+number(t.id)+", type = 'track' WHERE user_id = " + number(u.id));
-            else
-                DB::query("INSERT INTO user_features (ref, type, user_id) VALUES ("+number(t.id)+", 'track', " + number(u.id)+")");
-            doc->redirect(u.url());
-            return;
         }
         doc->redirect(t.url());
     }

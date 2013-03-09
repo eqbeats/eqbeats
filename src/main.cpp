@@ -10,6 +10,7 @@
 #include <social/pages/pages.h>
 #include <text/modifiers.h>
 #include <track/pages/pages.h>
+#include <userfeature/pages/pages.h>
 #include <youtube/pages/pages.h>
 #include <log/log.h>
 
@@ -79,9 +80,10 @@ int main(int argc, char** argv){
     void (*callbacks[])(Document*) = {
         Pages::statics, Pages::home,
         Pages::track, Pages::trackMisc, Pages::tracks, Pages::oembed, Pages::trackActions, Pages::trackUpload, Pages::art, Pages::license,
-        Pages::account, Pages::login, Pages::user, Pages::userActions, Pages::users, Pages::registration, Pages::passwordReset,
+        Pages::account, Pages::login, Pages::user, Pages::users, Pages::registration, Pages::passwordReset,
         Pages::playlist, Pages::playlistActions,
         Pages::comment, Pages::socialActions, Pages::favorites,
+        Pages::featureActions,
         Pages::oauth, Pages::yt_upload,
         0
     };

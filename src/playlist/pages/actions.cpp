@@ -4,7 +4,6 @@
 #include <core/cgi.h>
 #include <log/log.h>
 #include <text/text.h>
-#include <user_feature/feature.h>
 
 void Pages::playlistActions(Document *doc){
 
@@ -96,21 +95,4 @@ void Pages::playlistActions(Document *doc){
         }
         doc->redirect(p.url() + "#tracks");
     }
-
-    else if(sub == "feature"){
-        Playlist p(id);
-        if(!p) return;
-        User u = p.author();
-        if(post && u.self() && nonce){
-            Session::newNonce();
-            if(Feature(u.id))
-                DB::query("UPDATE user_features SET ref = "+number(p.id())+", type = 'playlist' WHERE user_id = " + number(u.id));
-            else
-                DB::query("INSERT INTO user_features (ref, type, user_id) VALUES ("+number(p.id())+", 'playlist', " + number(u.id)+")");
-            doc->redirect(u.url());
-            return;
-        }
-        doc->redirect(p.url());
-    }
-
 }
