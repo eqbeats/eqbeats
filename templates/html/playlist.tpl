@@ -38,6 +38,11 @@
             </table>
             <input name="nonce" type="hidden" value="{{NONCE}}"/>
         </form>
+        <form action="/playlist/{{PLAYLIST_ID}}/feature" method="post">
+            <img src="/static/icons/billboard.png" alt=""/>
+            <input type="submit" value="Feature this on your profile"/>
+            <input name="nonce" type="hidden" value="{{NONCE}}"/>
+        </form>
         <a class="delete" href="/playlist/{{PLAYLIST_ID}}/delete">Delete playlist</a>
         <div style="clear:both;"></div>
     </div>

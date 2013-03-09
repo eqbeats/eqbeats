@@ -4,6 +4,7 @@
 #include <core/cgi.h>
 #include <log/log.h>
 #include <text/text.h>
+#include <user_feature/feature.h>
 
 void Pages::playlistActions(Document *doc){
 
@@ -43,11 +44,10 @@ void Pages::playlistActions(Document *doc){
     }
 
     int id = route("playlist", path, sub);
-    if(!id) return;
+    Playlist p(id);
+    if(!p) return;
 
     if(sub == "delete"){
-        Playlist p(id);
-        if(!p) return;
         if(!p.author().self())
             return doc->redirect(p.url());
         if(!post || cgi("confirm") != "Delete" || !nonce){
@@ -64,7 +64,6 @@ void Pages::playlistActions(Document *doc){
     }
 
     else if(sub == "edit"){
-        Playlist p(id);
         if(!p) return;
         if(post && nonce && (p.name() != cgi("name") || p.description() != cgi("desc"))
            && p.author().self() && !cgi("name").empty()){
@@ -75,7 +74,6 @@ void Pages::playlistActions(Document *doc){
     }
 
     else if(sub == "move"){
-        Playlist p(id);
         if(!p) return;
         std::string dir = cgi("dir");
         if(!post || !p.author().self() || (dir != "up" && dir != "down") || !nonce)
@@ -87,13 +85,25 @@ void Pages::playlistActions(Document *doc){
     }
 
     else if(sub == "remove"){
-        Playlist p(id);
-        if(!p) return;
         if(post && p.author().self() && nonce){
             Session::newNonce();
             p.remove(number(cgi("item")));
         }
         doc->redirect(p.url() + "#tracks");
+    }
+
+    else if(sub == "feature"){
+        User u = p.author();
+        if(post && u.self() && nonce){
+            Session::newNonce();
+            if(Feature(u.id))
+                DB::query("UPDATE user_features SET ref = "+number(p.id())+", type = 'playlist' WHERE user_id = " + number(u.id));
+            else
+                DB::query("INSERT INTO user_features (ref, type, user_id) VALUES ("+number(p.id())+", 'playlist', " + number(u.id)+")");
+            doc->redirect(u.url());
+            return;
+        }
+        doc->redirect(p.url());
     }
 
 }

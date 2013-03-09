@@ -8,6 +8,7 @@
 #include <text/text.h>
 #include <track/list.h>
 #include <stat/push.h>
+#include <user_feature/feature.h>
 
 void Pages::user(Document *doc){
 
@@ -58,5 +59,7 @@ void Pages::user(Document *doc){
             doc->dict()->ShowSection(Follower(Session::user().id).following(u.id) ? "IS_FOLLOWED" : "NOT_FOLLOWED");
         if(!cgi("welcome").empty())
             doc->dict()->ShowSection("WELCOME");
+
+        Feature(u.id).fill(doc->dict());
     }
 }

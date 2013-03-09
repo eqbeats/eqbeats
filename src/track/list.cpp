@@ -29,7 +29,7 @@ void TrackList::extract(const DB::Result &r){
     }
 }
 
-Dict* TrackList::fill(Dict *d, std::string section, bool buttons){
+Dict* TrackList::fill(Dict *d, std::string section, bool buttons) const {
     Dict *list_d = d->AddIncludeDictionary(section);
     list_d->SetFilename("html/tracklist.tpl");
     if(empty()){

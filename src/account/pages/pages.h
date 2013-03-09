@@ -9,6 +9,7 @@ namespace Pages {
     void login(Document*);
     void registration(Document*);
     void passwordReset(Document*);
+    void userActions(Document*);
 }
 
 #endif // ACCOUNT_PAGES_H

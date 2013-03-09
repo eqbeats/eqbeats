@@ -112,3 +112,11 @@ CREATE TABLE youtube_access_tokens (
     token text not null,
     expire timestamptz not null
 );
+
+CREATE TYPE feature_type AS ENUM ('track', 'playlist');
+CREATE TABLE user_features (
+    user_id integer not null REFERENCES users(id),
+    ref integer not null,
+    type feature_type not null
+);
+CREATE INDEX user_features_idx ON user_features(user_id);

@@ -17,7 +17,7 @@ class TrackList : public std::vector<Track> {
         static TrackList exactSearch(const std::string &artist, const std::string &title);
         static TrackList tag(const std::string&);
 
-        Dict* fill(Dict*, std::string section, bool buttons=false);
+        Dict* fill(Dict*, std::string section, bool buttons=false) const;
         Dict* fillJson(Dict*, bool showArtist=true);
 
     private:

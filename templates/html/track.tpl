@@ -171,6 +171,11 @@
                 <input type="hidden" name="approval_prompt" value="force"/>
             </form>
             {{/NO_YOUTUBE}}
+            <h4><img src="/static/icons/billboard.png" alt=""/> Feature</h4>
+            <form action="/track/{{TID}}/feature" method="post">
+                <input type="submit" value="Feature this on your profile"/>
+                <input name="nonce" type="hidden" value="{{NONCE}}"/>
+            </form>
         </div>
 
         <div class="column">

@@ -26,7 +26,7 @@ TrackList Playlist::tracks(){
             "(SELECT unnest AS track_id, row_number() OVER () AS pos "
              "FROM unnest(coalesce((select track_ids FROM playlists where id = " + number(_id) + ")))) "
         "SELECT %s FROM %s, playlist WHERE %s AND tracks.id = playlist.track_id ORDER BY playlist.pos"
-    );
+    , true);
 }
 
 void Playlist::add(unsigned tid){

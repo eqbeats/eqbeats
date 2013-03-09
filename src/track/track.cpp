@@ -3,7 +3,6 @@
 #include <account/session.h>
 #include <core/db.h>
 #include <text/text.h>
-#include <text/text.h>
 
 Track::Track(int tid){
 

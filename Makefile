@@ -21,7 +21,7 @@ clean:
 -include $(DEPFILES)
 
 eqbeats.fcgi: src/account/account.o src/account/list.o src/account/user.o src/account/session.o \
-              src/account/pages/account.o src/account/pages/login.o src/account/pages/registration.o src/account/pages/users.o src/account/pages/password.o \
+              src/account/pages/account.o src/account/pages/actions.o src/account/pages/login.o src/account/pages/registration.o src/account/pages/users.o src/account/pages/password.o \
               src/core/db.o src/core/path.o \
               src/log/log.o \
               src/misc/hash.o src/misc/mail.o src/misc/repl.o src/misc/timer.o \
@@ -33,6 +33,7 @@ eqbeats.fcgi: src/account/account.o src/account/list.o src/account/user.o src/ac
               src/text/date.o src/text/email.o src/text/format.o src/text/irc.o src/text/number.o src/text/string.o \
               src/track/audio.o src/track/art.o src/track/extended.o src/track/list.o src/track/track.o \
               src/track/pages/actions.o src/track/pages/art.o src/track/pages/track.o src/track/pages/tracks.o src/track/pages/upload.o src/track/pages/oembed.o src/track/pages/license.o \
+              src/user_feature/feature.o \
               src/youtube/pages/oauth.o src/youtube/pages/upload.o src/youtube/youtube.o \
               src/main.o
 	@$(CXX) -lcgicc -lctemplate -lfcgi -lfcgi++ -lnettle -lpcrecpp -lpq -ltag $(MAGICK_LDFLAGS) $^ -o $@

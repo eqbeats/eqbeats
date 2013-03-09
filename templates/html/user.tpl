@@ -29,6 +29,23 @@ All set! You can now start following artists and making playlists. If you are an
 </div>
 <div style="clear:both;"></div>
 
+{{#HAS_FEATURED}}
+<div class="featurebox">
+    {{#IS_SELF}}
+    <form class="defeature" action="/user/{{UID}}/defeature" method="post">
+        <button class="fakelink" type="submit"><span>Remove featured content</span> &#10006;</button>
+        <input name="nonce" type="hidden" value="{{NONCE}}"/>
+    </form>
+    {{/IS_SELF}}
+    {{#FEATURED_TITLE}}
+    <h3>
+        <a href="{{FEATURED_LINK}}">{{FEATURED_TITLE}} &raquo;</a>
+    </h3>
+    {{/FEATURED_TITLE}}
+    {{>FEATURED_TRACKS}}
+</div>
+{{/HAS_FEATURED}}
+
 {{#HAS_ABOUT}}<div class="notes">{{ABOUT:x-format}}</div>{{/HAS_ABOUT}}
 
 </div>

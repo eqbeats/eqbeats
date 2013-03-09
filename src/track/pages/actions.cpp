@@ -5,18 +5,18 @@
 #include <core/db.h>
 #include <log/log.h>
 #include <text/text.h>
+#include <user_feature/feature.h>
 
 void Pages::trackActions(Document *doc){
     std::string sub;
     int tid = route("track", path, sub);
-    if(!tid) return;
+    Track t(tid);
+    if(!t) return;
     bool post = cgi.getEnvironment().getRequestMethod() == "POST";
     bool nonce = Session::nonce() == cgi("nonce");
 
 
     if(sub == "rename"){
-        Track t(tid);
-        if(!t) return;
         if(post && t.artist.self() && nonce){
             Session::newNonce();
             std::string title = cgi("title");
@@ -30,8 +30,6 @@ void Pages::trackActions(Document *doc){
     }
 
     else if(sub == "tags"){
-        Track t(tid);
-        if(!t) return;
         if(post && t.artist.self() && nonce){
             Session::newNonce();
             DB::query("UPDATE tracks SET tags = regexp_split_to_array(lower($1), E' *, *') WHERE id = " + number(t.id), cgi("tags"));
@@ -40,8 +38,6 @@ void Pages::trackActions(Document *doc){
     }
 
     else if(sub == "notes"){
-        Track t(tid);
-        if(!t) return;
         if(post && t.artist.self() && nonce){
             Session::newNonce();
             DB::query("UPDATE tracks SET notes = $1 WHERE id = " + number(t.id), cgi("notes"));
@@ -50,8 +46,6 @@ void Pages::trackActions(Document *doc){
     }
 
     else if(sub == "flags"){
-        Track t(tid);
-        if(!t) return;
         if(post && t.artist.self() && nonce){
             Session::newNonce();
             DB::query("UPDATE tracks SET airable = $1 WHERE id = " + number(t.id), cgi.queryCheckbox("airable") ? "t" : "f");
@@ -60,13 +54,25 @@ void Pages::trackActions(Document *doc){
     }
 
     else if(sub == "report"){
-        Track t(tid);
-        if(!t) return;
         if(post){
             std::string path = eqbeatsDir() + "/reports";
             std::ofstream f(path.c_str(), std::ios_base::app);
             f << t.artist.id << " " << t.artist.name << " - " << t.id << " " << t.title << std::endl;
             f.close();
+        }
+        doc->redirect(t.url());
+    }
+
+    else if(sub == "feature"){
+        User u = t.artist;
+        if(post && u.self() && nonce){
+            Session::newNonce();
+            if(Feature(u.id))
+                DB::query("UPDATE user_features SET ref = "+number(t.id)+", type = 'track' WHERE user_id = " + number(u.id));
+            else
+                DB::query("INSERT INTO user_features (ref, type, user_id) VALUES ("+number(t.id)+", 'track', " + number(u.id)+")");
+            doc->redirect(u.url());
+            return;
         }
         doc->redirect(t.url());
     }
