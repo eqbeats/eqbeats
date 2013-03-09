@@ -50,5 +50,7 @@ void Account::fill(Dict* d) const{
     if(num_followers > 0) {
         d->ShowSection("HAS_FOLLOWERS");
         d->SetValue("NUM_FOLLOWERS", number(num_followers));
+        if(num_followers > 1)
+            d->ShowSection("FOLLOWERS_PLURAL");
     }
 }

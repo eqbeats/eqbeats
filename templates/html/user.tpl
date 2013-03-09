@@ -25,7 +25,7 @@ All set! You can now start following artists and making playlists. If you are an
 <div class="item"><img src="/static/icons/mail.png" alt="" /> Email: {{EMAIL:x-email}}</div>
 {{#IS_SELF}}<div class="item"><img src="/static/icons/card-pencil.png" alt="" /> <a href="/account">Edit</a></div>{{/IS_SELF}}
 {{#HAS_FAVS}}<div class="item"><img src="/static/icons/star.png" alt="" /> <a href="/user/{{UID}}/favorites">Favorite tracks ({{NUM_FAVS}})</a></div>{{/HAS_FAVS}}
-{{#HAS_FOLLOWERS}}<div class="item"><img src="/static/icons/users.png" alt="" />{{NUM_FOLLOWERS}} followers</div>{{/HAS_FOLLOWERS}}
+{{#HAS_FOLLOWERS}}<div class="item"><img src="/static/icons/users.png" alt="" />{{NUM_FOLLOWERS}} follower{{#FOLLOWERS_PLURAL}}s{{/FOLLOWERS_PLURAL}}</div>{{/HAS_FOLLOWERS}}
 </div>
 <div style="clear:both;"></div>
 
