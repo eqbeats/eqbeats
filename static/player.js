@@ -48,17 +48,6 @@ function prettyTime(ms){
     return time[0] + ':' + time[1]
 }
 
-function setFavicon(href){
-    var oldIcon = document.getElementById('favicon-link');
-    if(oldIcon){
-        var icon = document.createElement('link');
-        icon.id = 'favicon-link';
-        icon.rel = 'shortcut icon';
-        icon.href = href;
-        document.head.replaceChild(icon, oldIcon);
-    }
-}
-
 function load(player, nondisruptive){
     if(playing != player && !nondisruptive){
         pause(playing);
@@ -109,7 +98,7 @@ function load(player, nondisruptive){
 function pause(player){
     snd.pause();
     player.className = 'player paused';
-    setFavicon('/static/favicon.ico');
+    document.getElementsByTagName("title")[0].innerHTML = pagetitle;
 }
 
 function play(player){
@@ -144,7 +133,7 @@ function play(player){
         }
     });
     player.className = 'player playing';
-    setFavicon('/static/playing.ico');
+    document.getElementsByTagName("title")[0].innerHTML = "▶ " + pagetitle;
 }
 function toggle(player){
     if(player == playing && player.className == 'player playing')
@@ -345,6 +334,7 @@ soundManager.setup({
 soundManager.onready(function(){
     if(!document.head)
         document.head = document.getElementsByTagName("HEAD")[0];
+    pagetitle = document.getElementsByTagName("title")[0].innerHTML;
     for(var i=0; i<tracks.length; i++)
         initTrack(tracks[i]);
     if(!playing) return;
