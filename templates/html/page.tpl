@@ -11,7 +11,7 @@
         {{#REQUIRES_STATS_JS}}
         <script type="text/javascript" src="/static/d3.js"></script>
         <script type="text/javascript" src="/static/crossfilter.js"></script>
-        <script type="text/javascript" src="/static/stats.js?4"></script>
+        <script type="text/javascript" src="/static/stats.js?5"></script>
         {{/REQUIRES_STATS_JS}}
         {{#HAS_OEMBED}}
         <link rel="alternate" type="application/json+oembed" href="http://eqbeats.org/oembed?format=json&amp;url={{EQBEATS_URL:u}}/track/{{TID}}">

@@ -130,8 +130,8 @@ function render(refilter){
             charts[i].data = clone(daily.all());
         }
         entriesByType.filter("trackView");
-        var entriesByReferrer = cf.dimension(function(d){return d.referrer || '';});
-        var entriesGroupByReferringDomain = entriesByReferrer.group(function(ref){return ref.replace(/^https?:\/\/(www\.)?([^\/]*).*/, "$2");});
+        var entriesByReferrer = cf.dimension(function(d){return d.referrer ? d.referrer.replace(/^https?:\/\/(www\.)?([^\/]*).*$/, "$2") : '';});
+        var entriesGroupByReferringDomain = entriesByReferrer.group();
         referrers = clone(entriesGroupByReferringDomain.top(6));
         cf = crossfilter(uniq(data));
         entriesByTime = cf.dimension(function(d){return d.timestamp;});
