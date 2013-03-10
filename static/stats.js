@@ -238,6 +238,7 @@ function render(refilter){
         }
     })
     tr.append("td").classed("value", true).html(function(d){ return d.value; });
+    tr.filter(function(d){ return d.value <= 0; }).remove();
     update.exit().remove();
 
 }
