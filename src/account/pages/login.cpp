@@ -2,6 +2,8 @@
 #include "../session.h"
 #include <core/cgi.h>
 
+using namespace std;
+
 static void form(Document *doc, const char *err=""){
     doc->setHtml("html/login.tpl", "Login");
     doc->dict()->SetValueAndShowSection("ERROR", err, "ERROR");
@@ -26,6 +28,9 @@ void Pages::login(Document *doc){
             return form(doc, "Please specify an email address.");
         if(cgi("pw").empty())
             return form(doc, "Please specify a password.");
+
+        if(cgi("email").find('@') == string::npos || cgi("email").find('.') == string::npos)
+            return form(doc, "That doesn't look like an email address. Make sure you enter your email, not your screenname.");
 
         std::string sid = Session::login(cgi("email"), cgi("pw"));
         if(sid.empty())
