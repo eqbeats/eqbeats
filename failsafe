@@ -1,6 +1,6 @@
 #!/bin/bash
 
-SERVCOUNT=$(ps -A | egrep -c "$(cat ${EQBEATS_DIR}/pid | tr "\n" "|")")
+SERVCOUNT=$(pgrep -c -u $USER "^eqbeats.fcgi$")
 MINCOUNT=${EQBEATS_COUNT:=1}
 
 if [[ $SERVCOUNT == "" ]]; then #something went wrong with the pidfile
@@ -16,7 +16,6 @@ curl --connect-timeout 6 -If eqbeats.org > /dev/null 2>&1 || {
 
 if [[ $SERVCOUNT -lt $MINCOUNT || $REACHABLE == 0 ]]; then
     [[ $SERVCOUNT -lt $MINCOUNT ]] && echo "$(date '+[%F %T %Z]') $SERVCOUNT servers left, restarting..." >> ${EQBEATS_DIR}/eqbeats.fails
-    pkill eqbeats.fcgi 2> /dev/null
     ${EQBEATS_DIR}/launch.sh restart > /dev/null
     exit $[$MINCOUNT + 1 - $SERVCOUNT]
 else
