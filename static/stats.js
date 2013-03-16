@@ -1,8 +1,8 @@
-//"use strict";
+"use strict";
 
-clone = function(obj) { // http://my.opera.com/GreyWyvern/blog/show.dml/1725165
+var clone = function(obj) { // http://my.opera.com/GreyWyvern/blog/show.dml/1725165
     var newObj = (obj instanceof Array) ? [] : {};
-    for (i in obj) {
+    for (var i in obj) {
         if (i == 'clone') continue;
         if (obj[i] && typeof obj[i] == "object") {
             newObj[i] = clone(obj[i]);
@@ -10,19 +10,19 @@ clone = function(obj) { // http://my.opera.com/GreyWyvern/blog/show.dml/1725165
     } return newObj;
 };
 var daysecs = 60*60*24;
-timescale = d3.scale.linear().domain([today() - daysecs * 60, today() + daysecs ]).range([0, 650]);
-days = 30;
+var timescale = d3.scale.linear().domain([today() - daysecs * 60, today() + daysecs ]).range([0, 650]);
+var days = 30;
 var data = [];
-uniqmode = true;
-statsfirstrun = true;
+var uniqmode = true;
+var statsfirstrun = true;
 
-charts = [
+var charts = [
     { "name": "Views", "id": "views", "classname": "views", "type": "trackView", "height":150, "width": 650, "data": [], "uniqdata": [] },
     { "name": "Plays", "id": "plays", "classname": "plays", "type": "trackPlay", "height":100, "width": 650, "data": [], "uniqdata": [] },
     { "name": "Downloads", "id": "dls", "classname": "dls", "type": "trackDownload", "height":100, "width": 650, "data": [], "uniqdata": [] }
 ]
 
-timeranges = [
+var timeranges = [
     { "name": "A month", "days": "30" },
     { "name": "Two months", "days": "61" },
     { "name": "Four months", "days": "122" },
@@ -132,7 +132,7 @@ function render(refilter){
         entriesByType.filter("trackView");
         var entriesByReferrer = cf.dimension(function(d){return d.referrer ? d.referrer.replace(/^https?:\/\/(www\.)?([^\/]*).*$/, "$2") : '';});
         var entriesGroupByReferringDomain = entriesByReferrer.group();
-        referrers = clone(entriesGroupByReferringDomain.top(6));
+        var referrers = clone(entriesGroupByReferringDomain.top(6));
         cf = crossfilter(uniq(data));
         entriesByTime = cf.dimension(function(d){return d.timestamp;});
         daily = entriesByTime.group(function(t){ return t - (t % daysecs); });
@@ -244,10 +244,10 @@ function render(refilter){
 }
 
 function uniq(data){
-    out = Array();
-    seen = Array();
+    var out = Array();
+    var seen = Array();
     for(var i=0; i < data.length; i++){
-        row = data[i];
+        var row = data[i];
         switch(row.unique){
             case 1:
                 out.push(row);
