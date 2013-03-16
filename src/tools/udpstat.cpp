@@ -117,7 +117,10 @@ int main(){
         std::string referrer;
         i++;
         for(; i != contents.end() && !(*i == ' ') && !(*i == '\n'); i++){
-            referrer += *i;
+            if(*i == '"')
+                referrer += "\\\"";
+            else
+                referrer += *i;
         }
 
 
