@@ -83,7 +83,11 @@ function initstats(){
             .text(function(d){return d.name;});
 
         inner.append("h4").html("<img src='/static/icons/chain--arrow.png' alt=''/> Referrers");
-        inner.append("table").classed("referrers", true);
+        var table = inner.append("table");
+        table.classed("referrers", true);
+        var colgroup = table.append("colgroup");
+        colgroup.append("col");
+        colgroup.append("col").classed("value", true);
     }
     var ellipsis = d3.select("#charts").append("div").classed("ellipsis", true);
     var xhr = new XMLHttpRequest();
@@ -119,6 +123,9 @@ function barover(d){
     }
 }
 
+var referrers;
+var referring_domains;
+
 function render(refilter){
     if(refilter){
         var cf = crossfilter(data);
@@ -130,9 +137,18 @@ function render(refilter){
             charts[i].data = clone(daily.all());
         }
         entriesByType.filter("trackView");
-        var entriesByReferrer = cf.dimension(function(d){return d.referrer ? d.referrer.replace(/^https?:\/\/(www\.)?([^\/]*).*$/, "$2") : '';});
-        var entriesGroupByReferringDomain = entriesByReferrer.group();
-        var referrers = clone(entriesGroupByReferringDomain.top(6));
+        var entriesByReferringDomain = cf.dimension(function(d){return d.referrer ? d.referrer.replace(/^https?:\/\/(www\.)?([^\/]*).*$/, "$2") : '';});
+        var entriesGroupByReferringDomain = entriesByReferringDomain.group();
+        referring_domains = clone(entriesGroupByReferringDomain.top(6));
+
+        referrers = Object();
+        var entriesByReferrer = cf.dimension(function(d){return d.referrer || '';});
+        var entriesGroupByReferrer = entriesByReferrer.group();
+        for(var i = 0; i < referring_domains.length; i++){
+            var domain = referring_domains[i].key;
+            entriesByReferringDomain.filter(domain);
+            referrers[domain] = clone(entriesGroupByReferrer.top(5));
+        }
         cf = crossfilter(uniq(data));
         entriesByTime = cf.dimension(function(d){return d.timestamp;});
         daily = entriesByTime.group(function(t){ return t - (t % daysecs); });
@@ -225,7 +241,7 @@ function render(refilter){
     }
 
     // referrers
-    var update = d3.select(".referrers").selectAll("tr").data(referrers);
+    var update = d3.select(".referrers").selectAll("tr").data(referring_domains);
     var tr = update.enter().append("tr");
     var td = tr.append("td").each(function(d){
         if(d.key==""){
@@ -233,12 +249,28 @@ function render(refilter){
         } else {
             var a = document.createElement("A");
             a['href'] = "http://" + d.key;
-            a.appendChild(document.createTextNode(d.key));
+            a.appendChild(document.createTextNode(d.key))
             this.appendChild(a);
+            var ul = document.createElement("UL");
+            d3.select(ul).selectAll("li").data(referrers[d.key]).enter()
+                .append("li").append("a")
+                .attr("href", function(d){return d.key})
+                .each(function(d){this.appendChild(document.createTextNode(d.key))});
+            this.appendChild(ul);
+            var thistd = this;
+            a.onclick = function(e){
+                e.preventDefault();
+                if(thistd.className != "open"){
+                    d3.select(thistd).classed("open", true);
+                } else {
+                    d3.select(thistd).classed("open", false);
+                }
+            }
         }
     })
     tr.append("td").classed("value", true).html(function(d){ return d.value; });
     tr.filter(function(d){ return d.value <= 0; }).remove();
+    tr.select("ul").selectAll("li").filter(function(d){ return d.value <= 0; }).remove();
     update.exit().remove();
 
 }
