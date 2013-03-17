@@ -13,7 +13,7 @@ ffmpeg -loglevel error -probesize 10000000 -i "$2" -acodec libvorbis -q:a 4 -vn 
 [ $? -ne 0 ] && rm -f "$BASE.ogg" && exit 1
 
 
-ffmpeg -loglevel error -probesize 10000000 -i "$2" -strict -2 -acodec aac -q:a 90 -vn "$BASE.m4a" 2>&1 >> "$EQBEATS_DIR/ffmpeg.log"
+ffmpeg -loglevel error -probesize 10000000 -i "$2" -strict -2 -acodec libfaac -q:a 90 -vn "$BASE.m4a" 2>&1 >> "$EQBEATS_DIR/ffmpeg.log"
 ffmpeg -loglevel error -probesize 10000000 -i "$2" -acodec libopus -b:a 128k -vn "$BASE.opus" 2>&1 >> "$EQBEATS_DIR/ffmpeg.log"
 
 
