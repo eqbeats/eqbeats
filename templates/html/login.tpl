@@ -16,4 +16,4 @@
     <input type="submit" value="Login" />
 </form>
 
-<a href="/register">Register</a> &middot; <a href="/account/reset">Lost your passord?</a>
+<a href="/register">Register</a> &middot; <a href="/account/reset">Lost your password?</a>
