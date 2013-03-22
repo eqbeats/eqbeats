@@ -24,7 +24,7 @@ void Session::start(){
             sid = i->getValue();
     }
     if(sid.empty()) return; // No cookie
-    DB::Result r = DB::query("SELECT users.id, users.name, sessions.nonce FROM sessions, users WHERE sid = $1 AND host = $2 AND users.id = sessions.user_id", sid, env.getRemoteAddr());
+    DB::Result r = DB::query("SELECT users.id, users.name, sessions.nonce FROM sessions, users WHERE sid = $1 AND users.id = sessions.user_id", sid);
     if(!r.empty()){
         u = User(number(r[0][0]), r[0][1]);
         nonce_ = r[0][2];
@@ -47,7 +47,7 @@ std::string Session::nonce(){
 void Session::newNonce(){
     if(u)
         nonce_ = randomString(16);
-        DB::query("UPDATE sessions SET nonce = $1 WHERE sid = $2 AND host = $3", nonce_, sid, cgi.getEnvironment().getRemoteAddr());
+        DB::query("UPDATE sessions SET nonce = $1 WHERE sid = $2", nonce_, sid);
 }
 
 // Login / Logout
@@ -67,7 +67,7 @@ std::string Session::login(const std::string &email, const std::string &pw){
 
 void Session::logout(){
     if(sid.empty()) return;
-    DB::query("DELETE FROM sessions WHERE sid = $1 AND host = $2", sid, cgi.getEnvironment().getRemoteAddr());
+    DB::query("DELETE FROM sessions WHERE sid = $1", sid);
     Session::destroy();
 }
 
