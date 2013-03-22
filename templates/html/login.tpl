@@ -14,6 +14,7 @@
         </tr>
     </table>
     <input type="submit" value="Login" />
+    <span class="legend">(A cookie will be stored on your computer to keep your session open.)</span>
 </form>
 
 <a href="/register">Register</a> &middot; <a href="/account/reset">Lost your password?</a>
