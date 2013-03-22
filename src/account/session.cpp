@@ -9,7 +9,7 @@
 
 // Internal variables
 User u;
-std::string sid;
+std::string sid_;
 std::string nonce_;
 
 User Session::user(){ return u; }
@@ -21,8 +21,13 @@ void Session::start(){
     cgicc::CgiEnvironment env = cgi.getEnvironment();
     for(std::vector<cgicc::HTTPCookie>::const_iterator i=env.getCookieList().begin(); i!= env.getCookieList().end(); i++){
         if(i->getName() == "sid")
-            sid = i->getValue();
+            Session::start(i->getValue());
     }
+}
+
+void Session::start(std::string sid){
+    destroy();
+    sid_ = sid;
     if(sid.empty()) return; // No cookie
     DB::Result r = DB::query("SELECT users.id, users.name, sessions.nonce FROM sessions, users WHERE sid = $1 AND users.id = sessions.user_id", sid);
     if(!r.empty()){
@@ -33,7 +38,7 @@ void Session::start(){
 
 void Session::destroy(){
     u = User();
-    sid = std::string();
+    sid_ = std::string();
     nonce_ = std::string();
 }
 
@@ -47,17 +52,17 @@ std::string Session::nonce(){
 void Session::newNonce(){
     if(u)
         nonce_ = randomString(16);
-        DB::query("UPDATE sessions SET nonce = $1 WHERE sid = $2", nonce_, sid);
+        DB::query("UPDATE sessions SET nonce = $1 WHERE sid = $2", nonce_, sid_);
 }
 
 // Login / Logout
 
 std::string Session::login(const User &_user){
     u = _user;
-    sid = randomString(64);
-    DB::query("INSERT INTO sessions (user_id, sid, host, date) VALUES ($1, $2, $3, 'now')", number(u.id), sid, cgi.getEnvironment().getRemoteAddr());
+    sid_ = randomString(64);
+    DB::query("INSERT INTO sessions (user_id, sid, host, date) VALUES ($1, $2, $3, 'now')", number(u.id), sid_, cgi.getEnvironment().getRemoteAddr());
     DB::query("UPDATE users SET last_login = 'now' WHERE id = " + number(u.id));
-    return sid;
+    return sid_;
 }
 
 std::string Session::login(const std::string &email, const std::string &pw){
@@ -66,8 +71,8 @@ std::string Session::login(const std::string &email, const std::string &pw){
 }
 
 void Session::logout(){
-    if(sid.empty()) return;
-    DB::query("DELETE FROM sessions WHERE sid = $1", sid);
+    if(sid_.empty()) return;
+    DB::query("DELETE FROM sessions WHERE sid = $1", sid_);
     Session::destroy();
 }
 
@@ -78,6 +83,7 @@ Dict* Session::fill(Dict *d){
         Dict *s = d->AddSectionDictionary("LOGGED_USER");
         u.fill(s);
         d->SetTemplateGlobalValue("NONCE", nonce());
+        d->SetTemplateGlobalValue("SID", sid_);
         return s;
     }
     else

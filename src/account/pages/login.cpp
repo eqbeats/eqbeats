@@ -47,4 +47,20 @@ void Pages::login(Document *doc){
         doc->redirect(cgi("redirect").empty() || cgi("redirect")[0] != '/' ? "/" : cgi("redirect"));
     }
 
+    else if(path == "/login/json"){
+        doc->setJson("json/login.tpl");
+        if(cgi.getEnvironment().getRequestMethod() == "POST"){
+            if (Session::login(cgi("email"), cgi("pw")).empty()){
+                doc->dict()->SetValueAndShowSection("ERROR", "Invalid credentials.", "ERROR");
+            }
+            else
+                Session::fill(doc->dict());
+        } else
+            doc->dict()->SetValueAndShowSection("ERROR", "This resource can only be accessed with POST.", "ERROR");
+    }
+    else if(path == "/logout/json"){
+        Session::start(cgi("sid"));
+        Session::logout();
+    }
+
 }

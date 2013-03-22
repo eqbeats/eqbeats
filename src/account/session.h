@@ -7,6 +7,7 @@
 namespace Session{
 
     void start();
+    void start(std::string sid);
     void destroy();
 
     // Logged user.
