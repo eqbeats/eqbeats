@@ -361,6 +361,9 @@ function initTrack(t){
     if (player.parentNode.tagName != 'LI') {
         // loads moodbar (at some point in a deferred manner)
         player.moodbar = loadMoodbar(t, player.scrubberbar);
+        if(player.moodbar) {
+            player.scrubber.className = 'scrubber withmoodbar';
+        }
     }
     if (player.parentNode.tagName == 'LI'){
         preventBubbling(player.parentNode, 'a');
