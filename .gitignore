@@ -21,14 +21,4 @@ hitsd.sock
 feature.queue
 
 eqbeats.fcgi
-/tools/CMakeFiles
-/tools/cmake_install.cmake
-/tools/Makefile
-/tools/dumptracks
-/tools/mkcontest
-/tools/mknews
-/tools/mkthumbs
-/tools/stats
-/tools/updatetags
-/tools/fqueue
-/tools/udpstat
+/tools/*

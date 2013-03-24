@@ -13,7 +13,10 @@ DEPFILES := $(patsubst %.cpp,%.d,$(SRCFILES))
 all: eqbeats.fcgi tools/dumptracks tools/fqueue tools/mkthumbs tools/stats tools/udpstat tools/updatetags tools/multiplex tools/clint
 
 clean:
-	@-$(RM) $(wildcard $(OBJFILES) $(DEPFILES) eqbeats.fcgi)
+	@-$(RM) $(wildcard $(OBJFILES) $(DEPFILES))
+
+mrproper: clean
+	@-$(RM) $(wildcard eqbeats.fcgi tools/*)
 
 %.o: %.cpp Makefile
 	@$(CXX) $(CXXFLAGS) -MMD -MP -c $< -o $@
@@ -57,7 +60,19 @@ tools/udpstat: src/tools/udpstat.o src/misc/hash.o src/text/number.o
 	@$(CXX) -lnettle $^ -o $@
 
 tools/multiplex: src/tools/Multiplex.hs
-	@ghc $^ -o $@
+	@ghc -v0 $^ -o $@
 
-tools/clint: src/tools/clint.cpp
+tools/clint: src/tools/clint.o
 	@$(CXX) $^ -o $@
+
+tools/ytmgr.py: src/tools/ytmgr.py
+	@install -m775 $^ $@
+
+tools/feature: src/tools/feature
+	@install -m775 $^ $@
+
+tools/transcode.sh: src/tools/transcode.sh
+	@install -m775 $^ $@
+
+tools/autofeature: src/tools/autofeature
+	@install -m775 $^ $@
