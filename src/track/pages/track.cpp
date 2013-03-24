@@ -50,7 +50,7 @@ void Pages::trackMisc(Document *doc){
             doc->download(Audio(&t).mood(), true);
         else
             doc->download(Audio(&t).mp3(), true);
-        if(cgi("stream").empty())
+        if(cgi("stream").empty() && sub != "mood")
             pushStat("trackDownload", t.artist.id, tid);
     }
 
