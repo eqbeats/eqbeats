@@ -10,7 +10,7 @@ DEPFILES := $(patsubst %.cpp,%.d,$(SRCFILES))
 
 .PHONY: all clean
 
-all: eqbeats.fcgi tools/dumptracks tools/fqueue tools/mkthumbs tools/stats tools/udpstat tools/updatetags
+all: eqbeats.fcgi tools/dumptracks tools/fqueue tools/mkthumbs tools/stats tools/udpstat tools/updatetags tools/multiplex tools/clint
 
 clean:
 	@-$(RM) $(wildcard $(OBJFILES) $(DEPFILES) eqbeats.fcgi)
@@ -55,3 +55,9 @@ tools/fqueue: src/tools/fqueue.o src/core/db.o src/core/path.o src/text/number.o
 
 tools/udpstat: src/tools/udpstat.o src/misc/hash.o src/text/number.o
 	@$(CXX) -lnettle $^ -o $@
+
+tools/multiplex: src/tools/Multiplex.hs
+	@ghc $^ -o $@
+
+tools/clint: src/tools/clint.cpp
+	@$(CXX) $^ -o $@

@@ -9,7 +9,7 @@ case "$1" in
     if [[ -f $SOCKET ]]; then
         rm $SOCKET
     fi
-    multiplex clint "$SOCKET" 2> /dev/null &
+    tools/multiplex tools/clint "$SOCKET" 2> /dev/null &
     sleep 0.5
     echo "load $DATA" | nc.openbsd -U "$SOCKET" > /dev/null
     echo "hitsd : Started."
