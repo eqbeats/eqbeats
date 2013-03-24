@@ -90,6 +90,10 @@ File Audio::opus() const{
     return File("tracks/" + number(track->id) + ".opus", track->artist.name + " - " + track->title + ".opus");
 }
 
+File Audio::mood() const{
+    return File("tracks/" + number(track->id) + ".mood", track->artist.name + " - " + track->title + ".mood");
+}
+
 File Audio::original() const{
     std::string path = filepath(Original);
     std::string ext = path.substr(path.rfind('.'));

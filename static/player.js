@@ -98,6 +98,8 @@ function load(player, nondisruptive){
 function pause(player){
     snd.pause();
     player.className = 'player paused';
+    if(player.moodbar)
+        player.moodbar.className = 'moodbar';
     document.getElementsByTagName("title")[0].innerHTML = pagetitle;
 }
 
@@ -133,6 +135,8 @@ function play(player){
         }
     });
     player.className = 'player playing';
+    if(player.moodbar)
+        player.moodbar.className = 'moodbar visible';
     document.getElementsByTagName("title")[0].innerHTML = "▶ " + pagetitle;
 }
 function toggle(player){
@@ -171,6 +175,93 @@ function recurseoffset(el){
 function scrub(e){
     with(playing)
         snd.setPosition((e.clientX - recurseoffset(scrubberbar)[1] - 3)*snd.durationEstimate/(scrubberbar.clientWidth - 6));
+}
+
+function loadMoodbar(t, container) {
+
+    var xhr = new XMLHttpRequest();
+    // if mimetype overriding isn't supported or d3 isn't loaded, bail out
+    if(typeof(d3) == 'undefined' || !xhr.overrideMimeType)
+        return false;
+
+    var moodbar = d3.select(container).append("div")
+            .classed("moodbar", true)
+            .style("display", "none");
+
+    // xhr.open('GET', t.mood, true);
+    xhr.open('GET', t.mood, true);
+
+    // Hack to pass bytes through unprocessed.
+    xhr.overrideMimeType('text/plain; charset=x-user-defined');
+
+    xhr.onreadystatechange = function(e) {
+
+      if (this.readyState == 4 && this.status == 200) {
+        if(this.responseText.length != 3000)
+            return;
+        var rgb = new Array(this.responseText.length / 3);
+        for (var i = 0, len = rgb.length; i < len; i++) {
+            rgb[i] = {
+                offset: (i / len * 100) + "%",
+                r: this.responseText.charCodeAt(i*3+0) & 0xff,
+                g: this.responseText.charCodeAt(i*3+1) & 0xff,
+                b: this.responseText.charCodeAt(i*3+2) & 0xff
+            };
+        }
+
+        var svg = moodbar.append("svg")
+            .classed("greyscale", true)
+          .append("g");
+
+        svg.append("linearGradient")
+              .attr("id", "moodbar-gradient-grey-" + t.id)
+              .attr("gradientUnits", "userSpaceOnUse")
+            .selectAll("stop")
+              .data(rgb)
+            .enter().append("stop")
+              .attr("offset", function(d) { return d.offset; })
+              .attr("stop-color", function(d) {
+                  var grey = Math.round(0.21*d.r + 0.71*d.g + 0.07*d.b);
+                  return "rgb(" + grey + ", "  + grey + ", " + grey + ")";
+              });
+
+        svg.append("rect")
+              .attr("fill", "url(#moodbar-gradient-grey-" + t.id + ")")
+              .attr("x", 0)
+              .attr("y", 0)
+              .attr("width", "100%")
+              .attr("height", "100%")
+
+        var svg = moodbar.append("svg")
+            .classed("colored", true)
+            .classed("hidden", true)
+          .append("g");
+
+        svg.append("linearGradient")
+              .attr("id", "moodbar-gradient-" + t.id)
+              .attr("gradientUnits", "userSpaceOnUse")
+            .selectAll("stop")
+              .data(rgb)
+            .enter().append("stop")
+              .attr("offset", function(d) { return d.offset; })
+              .attr("stop-color", function(d) { return "rgb(" + d.r + ", " + d.g + ", " + d.b + ")"; });
+
+        svg.append("rect")
+              .attr("fill", "url(#moodbar-gradient-" + t.id + ")")
+              .attr("x", 0)
+              .attr("y", 0)
+              .attr("width", "100%")
+              .attr("height", "100%")
+
+        moodbar.style("display", "block");
+
+      }
+    };
+
+    xhr.send();
+
+    return moodbar.node();
+
 }
 
 function initTrack(t){
@@ -264,6 +355,14 @@ function initTrack(t){
                         load(player.prev, true);
                 }
             });
+        }
+    }
+    // only do this on standalone tracks and if d3 is loaded
+    if (player.parentNode.tagName != 'LI') {
+        // loads moodbar (at some point in a deferred manner)
+        player.moodbar = loadMoodbar(t, player.scrubberbar);
+        if(player.moodbar) {
+            player.scrubber.className = 'scrubber withmoodbar';
         }
     }
     if (player.parentNode.tagName == 'LI'){

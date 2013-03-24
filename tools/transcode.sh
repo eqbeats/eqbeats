@@ -26,4 +26,9 @@ else
     mv "$2" "$BASE.orig.${2##*.}"
 fi
 
+# if moodbar is available, get a .mood file
+if command -v moodbar >/dev/null 2>&1 ; then
+    moodbar "$BASE.mp3" -o "$BASE.mood" 2>&1 >> "$EQBEATS_DIR/moodbar.log"
+fi
+
 updatetags "$1"

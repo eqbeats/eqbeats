@@ -9,6 +9,7 @@
         vorbis: "/track/{{TID}}/vorbis?stream=1",
         aac: "/track/{{TID}}/aac?stream=1",
         opus: "/track/{{TID}}/opus?stream=1",
+        mood: "/track/{{TID}}/mood",
         list: "{{LIST}}"
     });
 </script>

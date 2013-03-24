@@ -14,6 +14,7 @@ class Audio{
         File vorbis() const;
         File aac() const;
         File opus() const;
+        File mood() const;
         File original() const;
 
         void updateTags(){ updateTags(MP3); updateTags(Vorbis);
