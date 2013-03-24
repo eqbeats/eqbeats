@@ -28,7 +28,7 @@
         <tr>
             <td><label for="r_about">Description:</label><br />
             <span class="legend">(tags: [b]old, [u]nderline, [i]talic)</span>
-            <td><textarea id="r_about" name="about">{{ABOUT:pre_escape}}</textarea></td>
+            <td><textarea id="r_about" name="about">{{#HAS_ABOUT}}{{ABOUT:pre_escape}}{{/HAS_ABOUT}}</textarea></td>
         </tr>
         <tr>
             <td><label for="r_license">Default license:</label></td>
