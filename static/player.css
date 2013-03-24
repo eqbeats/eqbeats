@@ -48,6 +48,7 @@ audio {
     box-shadow: 0 1px 2px rgba(0,0,0,.2);
 }
 .scrubber.withmoodbar {
+    height: 6px;
     border-radius: 2px 2px 0px 0px;
 }
 
@@ -60,11 +61,14 @@ audio {
 }
 
 .scrubberbar .moodbar {
-    height: 6px;
+    margin-top: 1px;
+    height: 3px;
+    position: relative;
 }
 .moodbar svg {
-    display: block;
-    height: 6px;
+    position: absolute;
+    margin: 0;
+    height: 4px;
     width: 100%;
     border-radius: 0px 0px 2px 2px;
 }
@@ -74,9 +78,8 @@ audio {
     -moz-transition: opacity .25s ease-in-out;
     -webkit-transition: opacity .25s ease-in-out;
     -o-transition: opacity .25s ease-in-out;
-    margin-top: -6px;
 }
-.moodbar.visible .colored, .scrubberbar:hover .colored {
+.scrubberbar:hover .colored {
     opacity: 1.0;
 }
 

@@ -188,7 +188,6 @@ function loadMoodbar(t, container) {
             .classed("moodbar", true)
             .style("display", "none");
 
-    // xhr.open('GET', t.mood, true);
     xhr.open('GET', t.mood, true);
 
     // Hack to pass bytes through unprocessed.
@@ -200,9 +199,13 @@ function loadMoodbar(t, container) {
         if(this.responseText.length != 3000)
             return;
         var rgb = new Array(this.responseText.length / 3);
+
         for (var i = 0, len = rgb.length; i < len; i++) {
+            var r = this.responseText.charCodeAt(i*3+0) & 0xff;
+            var g = this.responseText.charCodeAt(i*3+1) & 0xff;
+            var b = this.responseText.charCodeAt(i*3+2) & 0xff;
             rgb[i] = {
-                offset: (i / len * 100) + "%",
+                offset: (i / len),
                 r: this.responseText.charCodeAt(i*3+0) & 0xff,
                 g: this.responseText.charCodeAt(i*3+1) & 0xff,
                 b: this.responseText.charCodeAt(i*3+2) & 0xff
@@ -222,7 +225,10 @@ function loadMoodbar(t, container) {
               .attr("offset", function(d) { return d.offset; })
               .attr("stop-color", function(d) {
                   var grey = Math.round(0.21*d.r + 0.71*d.g + 0.07*d.b);
-                  return "rgb(" + grey + ", "  + grey + ", " + grey + ")";
+                  var r = 255 - Math.round(187 * grey / 255);
+                  var g = 255 - grey;
+                  var b = 255 - Math.round(153 * grey / 255);
+                  return "rgb(" + r + ", "  + g + ", " + b + ")";
               });
 
         svg.append("rect")
@@ -244,7 +250,10 @@ function loadMoodbar(t, container) {
               .data(rgb)
             .enter().append("stop")
               .attr("offset", function(d) { return d.offset; })
-              .attr("stop-color", function(d) { return "rgb(" + d.r + ", " + d.g + ", " + d.b + ")"; });
+              .attr("stop-color", function(d) {
+                    var shift = (255 - Math.max(d.r, d.g, d.b)) - Math.min(d.r, d.g, d.b)
+                    return "rgb(" + (d.r + shift) + ", " + (d.g + shift) + ", " + (d.b + shift) + ")";
+              });
 
         svg.append("rect")
               .attr("fill", "url(#moodbar-gradient-" + t.id + ")")
