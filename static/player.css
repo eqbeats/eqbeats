@@ -60,11 +60,11 @@ audio {
 }
 
 .scrubberbar .moodbar {
-    height: 8px;
+    height: 6px;
 }
 .moodbar svg {
     display: block;
-    height: 8px;
+    height: 6px;
     width: 100%;
     border-radius: 0px 0px 2px 2px;
 }
@@ -74,7 +74,7 @@ audio {
     -moz-transition: opacity .25s ease-in-out;
     -webkit-transition: opacity .25s ease-in-out;
     -o-transition: opacity .25s ease-in-out;
-    margin-top: -8px;
+    margin-top: -6px;
 }
 .moodbar.visible .colored, .scrubberbar:hover .colored {
     opacity: 1.0;
