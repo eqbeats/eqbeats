@@ -14,7 +14,7 @@
 * Nettle
 * ctemplate
 * FFmpeg with libopus support
-* Optional: OpenBSD netcat and a Haskell compiler (like GHC) for hitsd
+* Optional: OpenBSD netcat, a Haskell compiler (like GHC), and the Network haskell lib for hitsd
 * Optional: OpenBSD netcat, Python 3.x and psycopg2 for YouTube support
 
 ### Preliminary setup
@@ -60,7 +60,7 @@ Here is a sample config for nginx:
             internal;
             alias /home/you/eqbeats/tracks/;
         }
-        location /downloads/udpstat { 
+        location /downloads/udpstat {
             internal;
             alias /home/you/eqbeats/udpstat/;
         }

@@ -11,12 +11,12 @@ case "$1" in
     fi
     tools/multiplex tools/clint "$SOCKET" 2> /dev/null &
     sleep 0.5
-    echo "load $DATA" | nc.openbsd -U "$SOCKET" > /dev/null
+    echo "load $DATA" | nc -U "$SOCKET" > /dev/null
     echo "hitsd : Started."
     ;;
   stop)
-    echo "save $DATA" | nc.openbsd -U "$SOCKET" > /dev/null
-    echo "exit" | nc.openbsd -U "$SOCKET"
+    echo "save $DATA" | nc -U "$SOCKET" > /dev/null
+    echo "exit" | nc -U "$SOCKET"
     echo "hitsd : Stopped."
     ;;
   restart)
