@@ -33,7 +33,7 @@ audio {
 
 .scrubberbar {
     border: solid 1px #ddd;
-    height: 8px;
+    min-height: 8px;
     padding: 3px;
     border-radius: 3px;
     box-shadow: inset 0 1px 2px -1px rgba(0,0,0,.2);
@@ -54,6 +54,28 @@ audio {
 
 .hidden .scrubber {
     background-color: #999;
+}
+
+.scrubberbar .moodbar {
+    height: 8px;
+    border-radius: 2px;
+}
+.moodbar svg {
+    display: block;
+    height: 8px;
+    width: 100%;
+    border-radius: 2px;
+}
+.moodbar .colored {
+    opacity: 0.0;
+    transition: opacity .25s ease-in-out;
+    -moz-transition: opacity .25s ease-in-out;
+    -webkit-transition: opacity .25s ease-in-out;
+    -o-transition: opacity .25s ease-in-out;
+    margin-top: -8px;
+}
+.moodbar.visible .colored, .scrubberbar:hover .colored {
+    opacity: 1.0;
 }
 
 .playtime, .volume {
