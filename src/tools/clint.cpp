@@ -45,7 +45,7 @@ bool number(const std::string &str, unsigned &n){
     return true;
 }
 
-int main(int argc, char **argv){
+int main(){
     vector<unsigned> data;
     Command cmd;
     while(1){
