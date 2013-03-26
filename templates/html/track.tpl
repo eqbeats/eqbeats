@@ -94,8 +94,8 @@
     <div id="charts" class="charts dialog"></div>
 
     {{#IS_SELF}}
-    <div class="dialog">
-        <h3><img src="/static/icons/pencil.png" alt="" /> Edit</h3>
+    <div id="track-edit" class="dialog">
+        <h3 id="track-edit-title"><img src="/static/icons/pencil.png" alt="" /> Edit</h3>
         {{#IS_HIDDEN}}
         <form class="publish" action="/track/{{TID}}/publish" method="post">
             <img src="/static/icons/disc-arrow.png" alt="" />
@@ -188,6 +188,15 @@
         <a class="delete" href="/track/{{TID}}/delete">Delete track</a>
         <div style="clear:both;"></div>
     </div>
+    <script type="text/javascript">
+        var edit = document.getElementById('track-edit');
+        var title = document.getElementById('track-edit-title');
+        edit.style.maxHeight = '27px';
+        title.style.cursor = 'pointer';
+        addListener(title, 'click', function() {
+            edit.style.maxHeight = edit.style.maxHeight == '27px' ? '750px' : '27px';
+        });
+    </script>
     {{/IS_SELF}}
 
     {{>EVENTS}}
