@@ -1,3 +1,4 @@
+CC=cc
 CXX=c++
 WARNINGS := -Wall -Wextra
 CXXFLAGS := $(WARNINGS) -Isrc $(shell Magick++-config --cxxflags)
@@ -20,6 +21,9 @@ mrproper: clean
 
 %.o: %.cpp Makefile
 	@$(CXX) $(CXXFLAGS) -MMD -MP -c $< -o $@
+
+%.o: %.c Makefile
+	@$(CC) $(CCFLAGS) -MMD -MP -c $< -o $@
 
 -include $(DEPFILES)
 
@@ -59,8 +63,8 @@ tools/fqueue: src/tools/fqueue.o src/core/db.o src/core/path.o src/text/number.o
 tools/udpstat: src/tools/udpstat.o src/misc/hash.o src/text/number.o
 	@$(CXX) -lnettle $^ -o $@
 
-tools/multiplex: src/tools/Multiplex.hs
-	@ghc -v0 $^ -o $@
+tools/multiplex: src/tools/multiplex.o
+	@$(CC) $^ -o $@
 
 tools/clint: src/tools/clint.o
 	@$(CXX) $^ -o $@
