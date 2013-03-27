@@ -9,9 +9,11 @@ HDRFILES := $(shell find $(PROJDIRS) -type f -name "*.h")
 OBJFILES := $(patsubst %.cpp,%.o,$(SRCFILES))
 DEPFILES := $(patsubst %.cpp,%.d,$(SRCFILES))
 
-.PHONY: all clean
+.PHONY: all tools clean mrproper
 
-all: eqbeats.fcgi tools/dumptracks tools/fqueue tools/mkthumbs tools/stats tools/udpstat tools/updatetags tools/multiplex tools/clint tools/ytmgr
+all: eqbeats.fcgi tools
+
+tools: tools/dumptracks tools/fqueue tools/mkthumbs tools/stats tools/udpstat tools/updatetags tools/multiplex tools/clint tools/ytmgr tools/feature tools/autofeature
 
 clean:
 	@-$(RM) $(wildcard $(OBJFILES) $(DEPFILES))
@@ -75,8 +77,8 @@ tools/ytmgr: src/tools/ytmgr.py
 tools/feature: src/tools/feature
 	@install -m775 $^ $@
 
-tools/transcode.sh: src/tools/transcode.sh
+tools/autofeature: src/tools/autofeature
 	@install -m775 $^ $@
 
-tools/autofeature: src/tools/autofeature
+tools/transcode.sh: src/tools/transcode.sh
 	@install -m775 $^ $@
