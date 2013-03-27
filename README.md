@@ -1,6 +1,8 @@
 # EqBeats
 ## Quick and ugly startup guide
 
+If you don't want to bother with all this, here's a virtual machine with everything set up: [EqBeats.ova](http://files.codl.fr/1303/EqBeats.ova) (1.06GB) [MD5](http://files.codl.fr/1303/EqBeats.ova.md5.txt) [SHA1](http://files.codl.fr/1303/EqBeats.ova.sha1.txt) [torrent](http://files.codl.fr/1303/EqBeats.ova.torrent) [magnet](magnet:?xt=urn:btih:0BA6FA56C113256E71514241A5566169C0FDC351&tr=http://tracker.ex.ua/announce&dn=EqBeats.ova)
+
 ### Dependencies
 
 * A webserver that supports FastCGI
@@ -85,3 +87,8 @@ Then, import the database schema:
     make
     ./launch.sh start
 
+Optional parts you might want to start:
+
+    ./udpstat.sh start
+    ./hitsd.sh start
+    ./ytmgr.sh start
