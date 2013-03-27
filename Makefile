@@ -11,7 +11,7 @@ DEPFILES := $(patsubst %.cpp,%.d,$(SRCFILES))
 
 .PHONY: all clean
 
-all: eqbeats.fcgi tools/dumptracks tools/fqueue tools/mkthumbs tools/stats tools/udpstat tools/updatetags tools/multiplex tools/clint
+all: eqbeats.fcgi tools/dumptracks tools/fqueue tools/mkthumbs tools/stats tools/udpstat tools/updatetags tools/multiplex tools/clint tools/ytmgr
 
 clean:
 	@-$(RM) $(wildcard $(OBJFILES) $(DEPFILES))
@@ -69,7 +69,7 @@ tools/multiplex: src/tools/multiplex.o
 tools/clint: src/tools/clint.o
 	@$(CXX) $^ -o $@
 
-tools/ytmgr.py: src/tools/ytmgr.py
+tools/ytmgr: src/tools/ytmgr.py
 	@install -m775 $^ $@
 
 tools/feature: src/tools/feature
