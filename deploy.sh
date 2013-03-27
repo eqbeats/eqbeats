@@ -4,12 +4,12 @@ cd /home/eqbeats/eqbeats
 make || return 1
 mkdir -p /srv/eqbeats/{tools,static,templates/{html,json,oembed},rc}
 
-install -m775 eqbeats.fcgi launch.sh failsafe hitsd.sh ytmgr.sh /srv/eqbeats/
+install -m775 eqbeats.fcgi launch.sh failsafe /srv/eqbeats/
 
 cd tools
 find . -maxdepth 1 -type f -executable -exec install -m775 '{}' /srv/eqbeats/tools/ \;
 
-cd rc
+cd ../rc
 find . -maxdepth 1 -type f -executable -exec install -m775 '{}' /srv/eqbeats/rc/ \;
 
 cd ../templates
