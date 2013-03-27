@@ -1,35 +1,19 @@
 #!/bin/bash
 
-PROGNAME='eqbeats fcgi server'
-BINARY='eqbeats.fcgi'
-SOCKET='eqbeats.sock'
-SERVCOUNT=${EQBEATS_COUNT:=1}
-
 cd $EQBEATS_DIR
 
-function start()
-{
-    SERVRUNNING=$(pgrep -c -u $USER "^eqbeats.fcgi$")
-    if [[ $SERVRUNNING -ge $SERVCOUNT ]]; then
-      echo "$PROGNAME : Already running"
-    else
-      export PATH="$PATH:$EQBEATS_DIR/tools"
-      spawn-fcgi -F $SERVCOUNT -f ./$BINARY -s $SOCKET -M 0775 > /dev/null
-      chgrp http eqbeats.sock
-      echo "$PROGNAME : Started $SERVCOUNT."
-    fi
+function start(){
+  ./rc/eqbeats start || exit 1
+  ./rc/hitsd   start || exit 1
+  ./rc/ytmgr   start || exit 1
+  ./rc/udpstat start || exit 1
 }
 
-function stop()
-{
-    echo -n   "$PROGNAME : Stopping gracefully..."
-    pkill -u $USER "^eqbeats.fcgi$" > /dev/null 2>&1
-    SERVRUNNING=1;
-    while [[ $SERVRUNNING -gt 0 ]]; do
-      sleep 0.1
-      SERVRUNNING=$(pgrep -c -u $USER "^eqbeats.fcgi$")
-    done
-    echo -e "\r$PROGNAME : Stopped.              "
+function stop(){
+  ./rc/udpstat stop || exit 1
+  ./rc/ytmgr   stop || exit 1
+  ./rc/hitsd   stop || exit 1
+  ./rc/eqbeats stop || exit 1
 }
 
 case "$1" in
@@ -41,7 +25,7 @@ case "$1" in
     ;;
   restart)
     stop
-    sleep 0.5 # wait for the socket to close properly
+    sleep 0.5
     start
     ;;
 

@@ -1,0 +1,28 @@
+#!/bin/bash
+
+cd "$EQBEATS_DIR"
+
+case "$1" in
+  start)
+    if [[ $(pgrep -c -u $USER "^udpstat$") -gt 1 ]]; then
+        echo "udpstat : Already running."
+        exit 0
+    fi
+    tools/udpstat &
+    echo "udpstat : Started."
+    ;;
+  stop)
+      if [[ $(pgrep -c -u $USER "^udpstat$") == 1 ]]; then
+        echo "udpstat : Not running."
+        exit 0
+    fi
+    pkill -o -u $USER "^udpstat$" > /dev/null 2>&1
+    echo "udpstat : Stopped."
+    ;;
+  restart)
+    $0 stop
+    $0 start
+    ;;
+  *)
+    echo "Usage : $0 (start|stop|restart)"
+esac

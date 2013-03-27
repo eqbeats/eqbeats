@@ -86,9 +86,3 @@ Then, import the database schema:
 
     make
     ./launch.sh start
-
-Optional parts you might want to start:
-
-    ./udpstat.sh start
-    ./hitsd.sh start
-    ./ytmgr.sh start
