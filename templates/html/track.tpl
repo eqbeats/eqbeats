@@ -95,98 +95,137 @@
 
     {{#IS_SELF}}
     <div id="track-edit" class="dialog">
+
         <h3 id="track-edit-title"><img src="/static/icons/pencil.png" alt="" /> Edit</h3>
+
         {{#IS_HIDDEN}}
-        <form class="publish" action="/track/{{TID}}/publish" method="post">
-            <img src="/static/icons/disc-arrow.png" alt="" />
-            This track is not yet published.
-            <input type="submit" value="Publish"/>
-            <input type="hidden" name="tid" value="{{TID}}"/>
-            <input name="nonce" type="hidden" value="{{NONCE}}"/>
-        </form>
+        <h4 class="edit-category">Publish</h4>
+        <div class="edit-container">
+            <div>
+                <form class="publish" action="/track/{{TID}}/publish" method="post">
+                    <img src="/static/icons/disc-arrow.png" alt="" />
+                    This track is not yet published.
+                    <input type="submit" value="Publish"/>
+                    <input type="hidden" name="tid" value="{{TID}}"/>
+                    <input name="nonce" type="hidden" value="{{NONCE}}"/>
+                </form>
+            </div>
+        </div>
         {{/IS_HIDDEN}}
 
-        <div class="double-column">
-            <h4><img alt="" src="/static/icons/rename.png" /> Rename</h4>
-            <form method="post" action="/track/{{TID}}/rename">
-                <b>{{USERNAME}}</b> -
-                <input type="text" name="title" value="{{TITLE}}" />
-                <input type="submit" value="Rename" />
-                <input name="nonce" type="hidden" value="{{NONCE}}"/>
-            </form>
+        <h4 class="edit-category">General</h4>
+        <div class="edit-container">
+
+            <div>
+                <h4><img alt="" src="/static/icons/rename.png" /> Rename</h4>
+                <form method="post" action="/track/{{TID}}/rename">
+                    <b>{{USERNAME}}</b> -
+                    <input type="text" name="title" value="{{TITLE}}" />
+                    <input type="submit" value="Rename" />
+                    <input name="nonce" type="hidden" value="{{NONCE}}"/>
+                </form>
+            </div>
+
+            <div>
+                <h4><img alt="" src="/static/icons/tag.png" /> Tags</h4>
+                <form action="/track/{{TID}}/tags" method="post">
+                    <input name="tags" value="{{#TAG}}{{TAG}}{{#TAG_separator}}, {{/TAG_separator}}{{/TAG}}" />
+                    <input type="submit" value="Update" />
+                    <br/>
+                    <span class="legend">(comma-separated, e.g. instrumental, electronic)</span>
+                    <input name="nonce" type="hidden" value="{{NONCE}}"/>
+                </form>
+            </div>
+
+            <div>
+                <h4><img src="/static/icons/picture.png" alt="" /> Art</h4>
+                <form action="/track/{{TID}}/art/upload" method="post" enctype="multipart/form-data">
+                    <input type="file" name="file" />
+                    <br />
+                    {{#HAS_ART}}
+                    <a href="/track/{{TID}}/art/delete" class="danger">(Delete existing cover art)</a>
+                    {{/HAS_ART}}
+                    <input type="submit" value="Upload cover art" />
+                    <input name="nonce" type="hidden" value="{{NONCE}}"/>
+                </form>
+            </div>
+
+            <div>
+                <h4><img src="/static/icons/drive-upload.png" alt="" /> Re-upload</h4>
+                {{>UPLOADER}}
+            </div>
+
         </div>
 
-
-        <div class="column">
-
-            <h4><img src="/static/icons/drive-upload.png" alt="" /> Re-upload</h4>
-            {{>UPLOADER}}
-
-            <h4><img src="/static/icons/picture.png" alt="" /> Art</h4>
-            <form action="/track/{{TID}}/art/upload" method="post" enctype="multipart/form-data">
-                <input type="file" name="file" />
-                <input type="submit" value="Upload cover art" />
-                <input name="nonce" type="hidden" value="{{NONCE}}"/>
-                {{#HAS_ART}}
-                <br/>
-                <a class="danger" href="/track/{{TID}}/art/delete">Delete existing cover art</a>
-                {{/HAS_ART}}
-            </form>
-
-            <h4><img alt="" src="/static/icons/tag.png" /> Tags</h4>
-            <form action="/track/{{TID}}/tags" method="post">
-                <input name="tags" value="{{#TAG}}{{TAG}}{{#TAG_separator}}, {{/TAG_separator}}{{/TAG}}" />
-                <input type="submit" value="Update" />
-                <br/>
-                <span class="legend">(comma-separated, e.g. instrumental, electronic)</span>
-                <input name="nonce" type="hidden" value="{{NONCE}}"/>
-            </form>
-            <h4><img src="/static/icons/balloon-sound.png"> Broadcast</h4>
-            <form action="/track/{{TID}}/flags" method="post">
-                <input type="checkbox" name="airable" {{#IS_AIRABLE}}checked="checked"{{/IS_AIRABLE}} />
-                Celestia Radio<br />
-                <input type="submit" value="Update" />
-                <input name="nonce" type="hidden" value="{{NONCE}}"/>
-            </form>
-            <h4><img src="/static/icons/youtube-up.png" alt=""> Youtube</h4>
-            {{#HAS_YOUTUBE}}
-            <form action="/track/{{TID}}/youtube_upload">
-                <input type="submit" value="Upload this to YouTube"/>
-                <a class="huh" href="/faq#youtube">Huh?</a>
-            </form>
-            {{/HAS_YOUTUBE}}
-            {{#NO_YOUTUBE}}
-            <form action="https://accounts.google.com/o/oauth2/auth">
-                Your YouTube account is not linked.
-                <a class="huh" href="/faq#youtube">Huh?</a>
-                </br>
-                <input type="submit" value="Link your YouTube account"/>
-                <input type="hidden" name="response_type" value="code"/>
-                <input type="hidden" name="client_id" value="767490682254.apps.googleusercontent.com"/>
-                <input type="hidden" name="scope" value="https://uploads.gdata.youtube.com/feeds/api/users/default/uploads"/>
-                <input type="hidden" name="access_type" value="offline"/>
-                <input type="hidden" name="redirect_uri" value="http://eqbeats.org/oauth/yt"/>
-                <input type="hidden" name="approval_prompt" value="force"/>
-            </form>
-            {{/NO_YOUTUBE}}
-            <h4><img src="/static/icons/billboard.png" alt=""/> Feature</h4>
-            <form action="/track/{{TID}}/feature" method="post">
-                <input type="submit" value="Feature this on your profile"/>
-                <input name="nonce" type="hidden" value="{{NONCE}}"/>
-            </form>
+        <h4 class="edit-category">Description</h4>
+        <div class="edit-container">
+            <div class="edit-notes">
+                <h4><img src="/static/icons/card-pencil.png" /> Notes</h4>
+                <form action="/track/{{TID}}/notes" method="post">
+                    <textarea name="notes">{{#HAS_NOTES}}{{NOTES:pre_escape}}{{/HAS_NOTES}}</textarea><br />
+                    <div class="legend">(tags: [b]old, [u]nderline, [i]talic)</div>
+                    <input type="submit" value="Update description" />
+                    <input name="nonce" type="hidden" value="{{NONCE}}"/>
+                </form>
+            </div>
         </div>
 
-        <div class="column">
-            <h4><img src="/static/icons/card-pencil.png" /> Notes</h4>
-            <form action="/track/{{TID}}/notes" method="post">
-                <textarea name="notes">{{#HAS_NOTES}}{{NOTES:pre_escape}}{{/HAS_NOTES}}</textarea><br />
-                <div class="legend">(tags: [b]old, [u]nderline, [i]talic)</div>
-                <input type="submit" value="Update description" />
-                <input name="nonce" type="hidden" value="{{NONCE}}"/>
-            </form>
+        <h4 class="edit-category">Misc</h4>
+        <div class="edit-container">
+
+            <div>
+                <h4><img src="/static/icons/balloon-sound.png"> Broadcast</h4>
+                <form action="/track/{{TID}}/flags" method="post">
+                    <input type="checkbox" name="airable" {{#IS_AIRABLE}}checked="checked"{{/IS_AIRABLE}} />
+                    Celestia Radio<br />
+                    <input type="submit" value="Update" />
+                    <input name="nonce" type="hidden" value="{{NONCE}}"/>
+                </form>
+            </div>
+
+            <div>
+                <h4><img src="/static/icons/youtube-up.png" alt=""> Youtube</h4>
+                {{#HAS_YOUTUBE}}
+                <form action="/track/{{TID}}/youtube_upload">
+                    <input type="submit" value="Upload this to YouTube"/>
+                    <a class="huh" href="/faq#youtube">Huh?</a>
+                </form>
+                {{/HAS_YOUTUBE}}
+                {{#NO_YOUTUBE}}
+                <form action="https://accounts.google.com/o/oauth2/auth">
+                    Your YouTube account is not linked.
+                    <a class="huh" href="/faq#youtube">Huh?</a>
+                    </br>
+                    <input type="submit" value="Link your YouTube account"/>
+                    <input type="hidden" name="response_type" value="code"/>
+                    <input type="hidden" name="client_id" value="767490682254.apps.googleusercontent.com"/>
+                    <input type="hidden" name="scope" value="https://uploads.gdata.youtube.com/feeds/api/users/default/uploads"/>
+                    <input type="hidden" name="access_type" value="offline"/>
+                    <input type="hidden" name="redirect_uri" value="http://eqbeats.org/oauth/yt"/>
+                    <input type="hidden" name="approval_prompt" value="force"/>
+                </form>
+                {{/NO_YOUTUBE}}
+            </div>
+
+            <div>
+                <h4><img src="/static/icons/billboard.png" alt=""/> Feature</h4>
+                <form action="/track/{{TID}}/feature" method="post">
+                    <input type="submit" value="Feature this on your profile"/>
+                    <input name="nonce" type="hidden" value="{{NONCE}}"/>
+                </form>
+            </div>
+
+            <div>
+                <h4><img src="/static/icons/delete.png" alt="" style="margin-top: 0px;" /> Delete</h4>
+                <form action="/track/{{TID}}/delete" method="get">
+                    <input type="submit" value="Delete track"/>
+                </form>
+            </div>
+
         </div>
-        <a class="delete" href="/track/{{TID}}/delete">Delete track</a>
+
         <div style="clear:both;"></div>
+
     </div>
     <script type="text/javascript">
         var edit = document.getElementById('track-edit');
@@ -198,7 +237,7 @@
     {{/IS_HIDDEN}}
         title.style.cursor = 'pointer';
         addListener(title, 'click', function() {
-            edit.style.maxHeight = edit.style.maxHeight == '27px' ? '750px' : '27px';
+            edit.style.maxHeight = edit.style.maxHeight == '27px' ? '1000px' : '27px';
         });
     </script>
     {{/IS_SELF}}

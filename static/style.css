@@ -168,6 +168,18 @@ div.legend {
     margin: 6px;
 }
 
+.leftcol, .rightcol {
+    width: 48%;
+}
+.leftcol {
+    float: left;
+    clear: both;
+}
+.rightcol {
+    float: right;
+}
+
+
 /** Track page ****************************************************************/
 
 .toolbar {
@@ -446,6 +458,45 @@ a img { border: none; }
     padding: 20px;
 }
 
+
+/** Track edit area ****************************************************************/
+
+.edit-container {
+    clear: left;
+    margin-left: 27px;
+    padding: 5px 10px;
+
+    border-left: 1px solid #c9f;
+}
+.edit-container > div {
+    display: inline-block;
+    vertical-align: top;
+    margin-left: 20px;
+    min-width: 400px;
+}
+.edit-container .danger {
+    float: right;
+    margin: 5px;
+}
+
+h4.edit-category {
+    display: inline-block;
+    float: left;
+    padding: 3px 10px;
+    margin-right: 10px;
+    margin-left: 10px;
+
+    border-bottom: 1px solid #c9f;
+}
+div.edit-notes {
+    display: block;
+    max-width: 820px;
+}
+div.edit-notes textarea {
+    width: 95%;
+}
+
+
 /** User page *****************************************************************/
 
 .user {
@@ -699,7 +750,7 @@ button.fakelink {
 }
 form input, select {
     vertical-align: middle;
-    width: 250px;
+    width: 240px;
 }
 input[type="checkbox"], input[type="radio"] {
     margin: 0 5px;
@@ -707,6 +758,8 @@ input[type="checkbox"], input[type="radio"] {
     width: auto;
 }
 form input[type="file"] {
+    width: auto;
+    margin-bottom: 3px;
     border: none;
 }
 form input[type="submit"], .qq-upload-button, button {
@@ -899,19 +952,7 @@ textarea {
     width: 90px;
 }
 
-/** Track grid ****************************************************************/
-
-.leftcol, .rightcol {
-    width: 48%;
-}
-.leftcol {
-    float: left;
-    clear: both;
-}
-.rightcol {
-    float: right;
-}
-
+/** Feature box ***************************************************************/
 
 .featurebox {
     background: #eee;
@@ -922,7 +963,6 @@ textarea {
 .user .featurebox {
     margin-top: 15px;
 }
-
 
 .featurebox,
 .prev, .next,
@@ -1427,4 +1467,3 @@ svg .ytick, svg .ylabel, svg .chartlabel { fill: #333; z-index: 50; }
         max-width: 45%;
     }
 }
-
