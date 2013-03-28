@@ -474,18 +474,13 @@ a img { border: none; }
     margin-left: 20px;
     min-width: 400px;
 }
-.edit-container .danger {
-    float: right;
-    margin: 5px;
-}
 
-h4.edit-category {
+.dialog h4.edit-category {
     display: inline-block;
     float: left;
     padding: 3px 10px;
     margin-right: 10px;
     margin-left: 10px;
-
     border-bottom: 1px solid #c9f;
 }
 div.edit-notes {
@@ -803,9 +798,11 @@ textarea {
 }
 .dialog h4 {
     border-bottom: 1px solid #e0e0e0;
+    //line-height: 1em;
+    vertical-align: middle;
 }
 .dialog h4 img {
-    margin-top: 3px;
+    //margin-top: 3px;
 }
 #contents .dialog h3 {
     margin: 0;
@@ -822,7 +819,7 @@ textarea {
 .dialog .column {
     float: left;
 }
-.dialog .column, .dialog .double-column, .dialog .publish {
+.dialog .column, .dialog .double-column {
     padding: 0 3%;
 }
 .dialog .double-column input[type="text"]{
@@ -834,7 +831,6 @@ textarea {
     height: 220px;
 }
 .dialog .publish {
-    margin: 25px 0 0 0;
     font-weight: bold;
     color: #548;
     text-align: left;
@@ -1394,6 +1390,12 @@ svg .ytick, svg .ylabel, svg .chartlabel { fill: #333; z-index: 50; }
 
 /* Responsive */
 
+@media (max-width: 999px) {
+    .edit-container > div {
+        display: block;
+        min-width: none;
+    }
+}
 @media (max-width: 800px) {
     #contents {
         padding: 25px 10px 20px;

@@ -216,7 +216,7 @@
             </div>
 
             <div>
-                <h4><img src="/static/icons/delete.png" alt="" style="margin-top: 0px;" /> Delete</h4>
+                <h4><img src="/static/icons/cross.png" alt="" style="margin-top: 0px;" /> Delete</h4>
                 <form action="/track/{{TID}}/delete" method="get">
                     <input type="submit" value="Delete track"/>
                 </form>
@@ -233,11 +233,11 @@
         edit.style.maxHeight = '27px';
     {{#IS_HIDDEN}}
         // don't hide this stuff for unpublished tracks!
-        edit.style.maxHeight = '1000px';
+        edit.style.maxHeight = '1500px';
     {{/IS_HIDDEN}}
         title.style.cursor = 'pointer';
         addListener(title, 'click', function() {
-            edit.style.maxHeight = edit.style.maxHeight == '27px' ? '1000px' : '27px';
+            edit.style.maxHeight = edit.style.maxHeight == '27px' ? '1500px' : '27px';
         });
     </script>
     {{/IS_SELF}}
