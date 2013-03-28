@@ -192,6 +192,10 @@
         var edit = document.getElementById('track-edit');
         var title = document.getElementById('track-edit-title');
         edit.style.maxHeight = '27px';
+    {{#IS_HIDDEN}}
+        // don't hide this stuff for unpublished tracks!
+        edit.style.maxHeight = '1000px';
+    {{/IS_HIDDEN}}
         title.style.cursor = 'pointer';
         addListener(title, 'click', function() {
             edit.style.maxHeight = edit.style.maxHeight == '27px' ? '750px' : '27px';
