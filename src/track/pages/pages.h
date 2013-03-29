@@ -7,6 +7,7 @@ namespace Pages {
     void art(Document*);
     void trackMisc(Document*);
     void trackActions(Document*);
+    void JSONTrackActions(Document*);
     void trackUpload(Document*);
     void tracks(Document*);
     void oembed(Document*);

@@ -10,6 +10,7 @@ const char* statusMsg(int stat){
         case 303: return "303 See Other";
         case 403: return "403 Forbidden";
         case 404: return "404 Not Found";
+        case 405: return "405 Method Not Allowed";
         case 500: return "500 Server Error";
     }
     return "";

@@ -49,27 +49,32 @@ void Pages::login(Document *doc){
 }
 void Pages::JSONLogin(Document *doc){
     if(path == "/login/json"){
-        doc->setJson("json/login.tpl");
         if(cgi.getEnvironment().getRequestMethod() == "POST"){
             if (Session::login(cgi("email"), cgi("pw")).empty()){
-                doc->dict()->SetValueAndShowSection("ERROR", "Invalid credentials.", "ERROR");
-                doc->dict()->SetValue("STATUS", "ERROR");
+                doc->setJson("json/error.tpl", 403);
+                doc->dict()->SetValue("ERROR", "Invalid credentials.");
             }
             else {
-                doc->dict()->SetValue("STATUS", "OK");
+                doc->setJson("json/login.tpl");
                 Session::fill(doc->dict());
             }
-        } else
-            doc->dict()->SetValueAndShowSection("ERROR", "This resource can only be accessed with POST.", "ERROR");
+        } else {
+            doc->setJson("json/error.tpl", 405);
+            doc->dict()->SetValue("ERROR", "This resource can only be accessed with POST.");
+        }
     }
 
     else if(path == "/logout/json"){
-        doc->setJson("json/status.tpl");
-        if(Session::logout())
-            doc->dict()->SetValue("STATUS", "OK");
-        else {
-            doc->dict()->SetValue("STATUS", "ERROR");
-            doc->dict()->SetValueAndShowSection("ERROR", "Not logged in.", "ERROR");
+        if(cgi.getEnvironment().getRequestMethod() == "POST"){
+            if(Session::logout())
+                doc->setJson("json/ok.tpl");
+            else {
+                doc->setJson("json/error.tpl", 403);
+                doc->dict()->SetValue("ERROR", "Not logged in.");
+            }
+        } else {
+            doc->setJson("json/error.tpl", 405);
+            doc->dict()->SetValue("ERROR", "This resource can only be accessed with POST.");
         }
     }
 }
