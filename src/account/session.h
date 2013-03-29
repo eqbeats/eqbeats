@@ -25,7 +25,7 @@ namespace Session{
     // Return false and fill the dictionary otherwise.
     bool login(Dict *d, std::string *sid);
 
-    void logout();
+    bool logout();
 
     Dict* fill(Dict*);
 

@@ -1,5 +1,6 @@
 {
-    {{#LOGGED_USER}}
+    "status": "{{STATUS}}"
+    {{#LOGGED_USER}},
     "sid": "{{SID:o}}",
     "user": {
         "id": {{UID}},
@@ -7,7 +8,7 @@
         "link": "{{EQBEATS_URL}}/user/{{UID}}"
     }
     {{/LOGGED_USER}}
-    {{#ERROR}}
+    {{#ERROR}},
     "error": "{{ERROR:o}}"
     {{/ERROR}}
 }

@@ -70,10 +70,11 @@ std::string Session::login(const std::string &email, const std::string &pw){
     return r.empty() ? std::string() : login(User(number(r[0][0]), r[0][1]));
 }
 
-void Session::logout(){
-    if(sid_.empty()) return;
-    DB::query("DELETE FROM sessions WHERE sid = $1", sid_);
+bool Session::logout(){
+    if(sid_.empty()) return false;
+    DB::Result r = DB::query("DELETE FROM sessions WHERE sid = $1 RETURNING 1", sid_);
     Session::destroy();
+    return r.empty() ? false : true;
 }
 
 // Dict

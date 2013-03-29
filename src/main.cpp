@@ -77,6 +77,12 @@ int main(int argc, char** argv){
     ctemplate::AddXssSafeModifier("x-format", new Formatter);
     cache.SetTemplateRootDirectory(eqbeatsDir() + "/templates");
 
+    void (*nocookie_callbacks[])(Document*) = {
+        Pages::JSONLogin,
+        //Pages::JSONTrackActions,
+        0
+    };
+
     void (*callbacks[])(Document*) = {
         Pages::statics, Pages::home,
         Pages::track, Pages::trackMisc, Pages::tracks, Pages::oembed, Pages::trackActions, Pages::trackUpload, Pages::art, Pages::license,
@@ -118,10 +124,15 @@ int main(int argc, char** argv){
         if (getenv("EQBEATS_HTTPS") && !cgi.getEnvironment().usingHTTPS() && cgi.getElements().size() == 0)
             doc.moved(eqbeatsUrl() + path);
 
-        Session::start();
+        Session::start(cgi("sid"));
+        for(int i=0; !doc && nocookie_callbacks[i]; i++)
+            nocookie_callbacks[i](&doc);
 
-        for(int i=0; !doc && callbacks[i]; i++)
-            callbacks[i](&doc);
+        if(!doc){
+            Session::start();
+            for(int i=0; !doc && callbacks[i]; i++)
+                callbacks[i](&doc);
+        }
 
         Session::fill(doc.rootDict());
         o << doc.generate();

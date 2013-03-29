@@ -46,21 +46,30 @@ void Pages::login(Document *doc){
         doc->addHttp("Set-Cookie: sid=\n");
         doc->redirect(cgi("redirect").empty() || cgi("redirect")[0] != '/' ? "/" : cgi("redirect"));
     }
-
-    else if(path == "/login/json"){
+}
+void Pages::JSONLogin(Document *doc){
+    if(path == "/login/json"){
         doc->setJson("json/login.tpl");
         if(cgi.getEnvironment().getRequestMethod() == "POST"){
             if (Session::login(cgi("email"), cgi("pw")).empty()){
                 doc->dict()->SetValueAndShowSection("ERROR", "Invalid credentials.", "ERROR");
+                doc->dict()->SetValue("STATUS", "ERROR");
             }
-            else
+            else {
+                doc->dict()->SetValue("STATUS", "OK");
                 Session::fill(doc->dict());
+            }
         } else
             doc->dict()->SetValueAndShowSection("ERROR", "This resource can only be accessed with POST.", "ERROR");
     }
-    else if(path == "/logout/json"){
-        Session::start(cgi("sid"));
-        Session::logout();
-    }
 
+    else if(path == "/logout/json"){
+        doc->setJson("json/status.tpl");
+        if(Session::logout())
+            doc->dict()->SetValue("STATUS", "OK");
+        else {
+            doc->dict()->SetValue("STATUS", "ERROR");
+            doc->dict()->SetValueAndShowSection("ERROR", "Not logged in.", "ERROR");
+        }
+    }
 }
