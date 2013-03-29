@@ -1,7 +1,12 @@
 # EqBeats
 ## Quick and ugly startup guide
 
-If you don't want to bother with all this, here's a virtual machine with everything set up: [EqBeats.ova](http://files.codl.fr/1303/EqBeats.ova) (1.06GB) [MD5](http://files.codl.fr/1303/EqBeats.ova.md5.txt) [SHA1](http://files.codl.fr/1303/EqBeats.ova.sha1.txt) [torrent](http://files.codl.fr/1303/EqBeats.ova.torrent) [magnet](magnet:?xt=urn:btih:0BA6FA56C113256E71514241A5566169C0FDC351&tr=http://tracker.ex.ua/announce&dn=EqBeats.ova)
+If you don't want to bother with all this, here's a virtual machine with everything set up:
+[EqBeats.ova](http://files.codl.fr/1303/EqBeats.ova) (1.06GB)
+[MD5](http://files.codl.fr/1303/EqBeats.ova.md5.txt)
+[SHA1](http://files.codl.fr/1303/EqBeats.ova.sha1.txt)
+[torrent](http://files.codl.fr/1303/EqBeats.ova.torrent)
+<a href="magnet:?xt=urn:btih:0BA6FA56C113256E71514241A5566169C0FDC351&tr=http://tracker.ex.ua/announce&dn=EqBeats.ova">magnet</a>
 
 ### Dependencies
 
@@ -16,7 +21,7 @@ If you don't want to bother with all this, here's a virtual machine with everyth
 * Nettle
 * ctemplate
 * FFmpeg with libopus support
-* Optional: OpenBSD netcat, a Haskell compiler (like GHC), and the Network haskell lib for hitsd
+* Optional: OpenBSD netcat for hitsd
 * Optional: OpenBSD netcat, Python 3.x and psycopg2 for YouTube support
 
 ### Preliminary setup
