@@ -87,7 +87,7 @@ void Pages::JSONTrackActions(Document *doc){
         Track t(tid);
         if(!t){
             doc->setJson("json/error.tpl", 404);
-            doc->dict()->SetValue("ERROR", "Track does not exist.");
+            doc->dict()->SetValue("ERROR", "No such track.");
             return;
         }
         if(!t.artist.self()){

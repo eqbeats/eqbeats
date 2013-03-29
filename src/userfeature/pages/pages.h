@@ -5,6 +5,7 @@
 
 namespace Pages {
     void featureActions(Document* doc);
+    void JSONFeatureActions(Document* doc);
 }
 
 #endif
