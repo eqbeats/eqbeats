@@ -6,7 +6,7 @@ If you don't want to bother with all this, here's a virtual machine with everyth
 [MD5](http://files.codl.fr/1303/EqBeats.ova.md5.txt)
 [SHA1](http://files.codl.fr/1303/EqBeats.ova.sha1.txt)
 [torrent](http://files.codl.fr/1303/EqBeats.ova.torrent)
-<a href="magnet:?xt=urn:btih:0BA6FA56C113256E71514241A5566169C0FDC351&tr=http://tracker.ex.ua/announce&dn=EqBeats.ova">magnet</a>
+[magnet](http://mgnet.me/DuwC)
 
 ### Dependencies
 
