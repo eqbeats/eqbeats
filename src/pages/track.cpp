@@ -22,6 +22,44 @@ static std::string filter(const std::string &str){
     return buf;
 }
 
+void delete_track(Track &t){
+    log("Deleting track: " + t.title + " (" + number(t.id) + ")");
+
+    Art art(t.id);
+    if(art) art.remove();
+    Audio(&t).unlink();
+
+    Playlist::removeTrack(t.id);
+    DB::query("DELETE FROM events WHERE track_id = " + number(t.id));
+    DB::query("DELETE FROM featured_tracks WHERE track_id = " + number(t.id));
+    DB::query("DELETE FROM favorites WHERE type = 'track' AND ref = " + number(t.id));
+    DB::query("DELETE FROM user_features WHERE type = 'track' AND ref = " + number(t.id));
+    DB::query("DELETE FROM tracks WHERE id = " + number(t.id));
+}
+
+void publish_track(Track &t){
+    DB::query("UPDATE tracks SET visible = 't', date = 'now' WHERE id = " + number(t.id));
+
+    Event e;
+    e.type = Event::Publish;
+    e.source = t.artist;
+    e.track = t;
+    e.push();
+
+    std::vector<std::string> emails = Follower(t.artist.id).followers();
+    std::string maildata =
+        "From: EqBeats notification <notify@eqbeats.org>\n"
+        "Message-ID: notify-t" + number(t.id) + "\n"
+        "Subject: " + filter("EqBeats notification: " + t.artist.name + " - " + t.title) + "\n"
+        "Precedence: bulk\n\n" +
+        t.artist.name + " just published a new track : " + t.title + "\n"
+        "Listen to it here : " + eqbeatsUrl() + t.url() + "\n\n"
+        "You're receiving this email because you're following " + t.artist.name + " on EqBeats.\n"
+        "If you don't want to receive these notifications anymore, go to " + eqbeatsUrl() + t.artist.url() + " and click \"Stop following\".";
+    for(std::vector<std::string>::const_iterator i = emails.begin(); i!=emails.end(); i++)
+        sendMail(i->c_str(), maildata.c_str());
+}
+
 void Pages::track(Document *doc){
 
     std::string sub;
@@ -90,19 +128,7 @@ void Pages::track(Document *doc){
         }
 
         else{
-            log("Deleting track: " + t.title + " (" + number(t.id) + ")");
-
-            Art art(t.id);
-            if(art) art.remove();
-            Audio(&t).unlink();
-
-            Playlist::removeTrack(t.id);
-            DB::query("DELETE FROM events WHERE track_id = " + number(t.id));
-            DB::query("DELETE FROM featured_tracks WHERE track_id = " + number(t.id));
-            DB::query("DELETE FROM favorites WHERE type = 'track' AND ref = " + number(t.id));
-            DB::query("DELETE FROM user_features WHERE type = 'track' AND ref = " + number(t.id));
-            DB::query("DELETE FROM tracks WHERE id = " + number(t.id));
-
+            delete_track(t);
             doc->redirect(Session::user().url());
         }
 
@@ -115,31 +141,50 @@ void Pages::track(Document *doc){
             return doc->redirect(t.url());
 
         if(t.artist.self() && !t.visible && post){
-
-            DB::query("UPDATE tracks SET visible = 't', date = 'now' WHERE id = " + number(t.id));
-
-            Event e;
-            e.type = Event::Publish;
-            e.source = t.artist;
-            e.track = t;
-            e.push();
-
-            std::vector<std::string> emails = Follower(t.artist.id).followers();
-            std::string maildata =
-                "From: EqBeats notification <notify@eqbeats.org>\n"
-                "Message-ID: notify-t" + number(t.id) + "\n"
-                "Subject: " + filter("EqBeats notification: " + t.artist.name + " - " + t.title) + "\n"
-                "Precedence: bulk\n\n" +
-                t.artist.name + " just published a new track : " + t.title + "\n"
-                "Listen to it here : " + eqbeatsUrl() + t.url() + "\n\n"
-                "You're receiving this email because you're following " + t.artist.name + " on EqBeats.\n"
-                "If you don't want to receive these notifications anymore, go to " + eqbeatsUrl() + t.artist.url() + " and click \"Stop following\".";
-            for(std::vector<std::string>::const_iterator i = emails.begin(); i!=emails.end(); i++)
-                sendMail(i->c_str(), maildata.c_str());
-
+            publish_track(t);
         }
         doc->redirect(t.url());
 
     }
+}
 
+void Pages::JSONTrack(Document *doc){
+    std::string sub;
+    int tid = route("track", path, sub);
+    bool post = cgi.getEnvironment().getRequestMethod() == "POST";
+
+    if(sub == "delete/json" || sub == "publish/json"){
+        if(!post){
+            doc->setJson("json/error.tpl", 405);
+            doc->dict()->SetValue("ERROR", "This resource can only be accessed with POST.");
+            return;
+        }
+        Track t(tid);
+        if(!t){
+            doc->setJson("json/error.tpl", 404);
+            doc->dict()->SetValue("ERROR", "No such track.");
+            return;
+        }
+        if(!t.artist.self()){
+            doc->setJson("json/error.tpl", 403);
+            doc->dict()->SetValue("ERROR", "You do not own this track.");
+            return;
+        }
+
+        if(sub == "delete/json"){
+            delete_track(t);
+            doc->setJson("json/ok.tpl");
+        }
+        else{
+            if(!t.visible){
+                publish_track(t);
+                doc->setJson("json/ok.tpl");
+            }
+            else {
+                doc->setJson("json/error.tpl", 200);
+                doc->dict()->SetValue("ERROR", "Track has already been published.");
+            }
+        }
+
+    }
 }

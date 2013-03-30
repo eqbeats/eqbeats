@@ -8,6 +8,7 @@ namespace Pages {
     void home(Document*);
     void user(Document*);
     void track(Document*);
+    void JSONTrack(Document*);
 }
 
 #endif // PAGES_H
