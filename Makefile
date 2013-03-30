@@ -13,7 +13,7 @@ DEPFILES := $(patsubst %.cpp,%.d,$(SRCFILES))
 
 all: eqbeats.fcgi tools
 
-tools: tools/dumptracks tools/fqueue tools/mkthumbs tools/stats tools/udpstat tools/updatetags tools/multiplex tools/clint tools/ytmgr tools/feature tools/autofeature
+tools: tools/dumptracks tools/fqueue tools/mkthumbs tools/stats tools/udpstat tools/updatetags tools/multiplex tools/clint tools/ytmgr tools/feature tools/autofeature tools/transcode.sh
 
 clean:
 	@-$(RM) $(wildcard $(OBJFILES) $(DEPFILES))
