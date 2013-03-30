@@ -15,6 +15,7 @@ void Pages::playlist(Document *doc){
             doc->setJson("json/playlist.tpl");
             Dict* tracks = doc->dict()->AddIncludeDictionary("TRACKS");
             tracks->SetFilename("json/array.tpl");
+            doc->dict()->ShowSection("LONG");
 
             p.tracks().fillJson(tracks);
         } else {

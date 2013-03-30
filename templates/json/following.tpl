@@ -1,0 +1,4 @@
+{
+    "status": "OK",
+    "following": {{>FOLLOWING}}
+}

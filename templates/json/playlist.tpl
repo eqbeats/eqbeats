@@ -1,6 +1,11 @@
 {
     "id": {{PLAYLIST_ID}},
     "name": "{{PLAYLIST_NAME:o}}",
+    {{#HAS_DESCRIPTION}}
+    "description": "{{DESCRIPTION:o}}",
+    "html_description": "{{DESCRIPTION:x-format:o}}",
+    {{/HAS_DESCRIPTION}}
+    {{#LONG}}
     {{#AUTHOR}}
     "author": {
         "id": {{UID}},
@@ -8,10 +13,7 @@
         "link": "{{EQBEATS_URL}}/user/{{UID}}"
     },
     {{/AUTHOR}}
-    {{#HAS_DESCRIPTION}}
-    "description": "{{DESCRIPTION:o}}",
-    "html_description": "{{DESCRIPTION:x-format:o}}",
-    {{/HAS_DESCRIPTION}}
     "tracks": {{>TRACKS}},
+    {{/LONG}}
     "link": "{{EQBEATS_URL}}{{PLAYLIST_URL}}"
 }

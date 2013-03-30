@@ -34,6 +34,16 @@ Dict* AccountList::fill(Dict *d, const std::string &marker){
     return list_d;
 }
 
+void AccountList::fillJson(Dict *d){
+    Dict *item, *data;
+    for(AccountList::const_iterator i=begin(); i!=end(); i++){
+        item = d->AddSectionDictionary("ITEM");
+        data = item->AddIncludeDictionary("DATA");
+        data->SetFilename("json/user.tpl");
+        i->fill(data);
+    }
+}
+
 // Prepared queries
 
 AccountList AccountList::all(int n, int offset){

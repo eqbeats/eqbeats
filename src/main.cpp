@@ -80,6 +80,7 @@ int main(int argc, char** argv){
     void (*nocookie_callbacks[])(Document*) = {
         Pages::JSONLogin,
         Pages::JSONTrack,
+        Pages::JSONUser,
         Pages::JSONTrackActions,
         Pages::JSONFeatureActions,
         0

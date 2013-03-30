@@ -7,6 +7,7 @@ namespace Pages {
     void statics(Document*);
     void home(Document*);
     void user(Document*);
+    void JSONUser(Document*);
     void track(Document*);
     void JSONTrack(Document*);
 }

@@ -24,13 +24,6 @@ void Pages::trackMisc(Document *doc){
         return;
     }
 
-    else if(sub == "json"){
-        ExtendedTrack t(tid);
-        if(!t) return;
-        doc->setJson("json/track.tpl");
-        t.fill(doc->dict());
-    }
-
     // Download
 
     else if(sub == "original" || sub == "vorbis" || sub == "mp3"

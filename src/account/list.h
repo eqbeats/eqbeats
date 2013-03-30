@@ -18,6 +18,7 @@ class AccountList : public std::vector<Account> {
         static AccountList search(const std::string &q);
 
         Dict* fill(Dict*, const std::string &marker);
+        void fillJson(Dict*);
 
     private:
         void extract(const DB::Result &r);

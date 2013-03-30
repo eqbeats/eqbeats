@@ -46,7 +46,7 @@ void publish_track(Track &t){
     e.track = t;
     e.push();
 
-    std::vector<std::string> emails = Follower(t.artist.id).followers();
+    AccountList emails = Follower(t.artist.id).followers();
     std::string maildata =
         "From: EqBeats notification <notify@eqbeats.org>\n"
         "Message-ID: notify-t" + number(t.id) + "\n"
@@ -56,8 +56,8 @@ void publish_track(Track &t){
         "Listen to it here : " + eqbeatsUrl() + t.url() + "\n\n"
         "You're receiving this email because you're following " + t.artist.name + " on EqBeats.\n"
         "If you don't want to receive these notifications anymore, go to " + eqbeatsUrl() + t.artist.url() + " and click \"Stop following\".";
-    for(std::vector<std::string>::const_iterator i = emails.begin(); i!=emails.end(); i++)
-        sendMail(i->c_str(), maildata.c_str());
+    for(AccountList::const_iterator i = emails.begin(); i!=emails.end(); i++)
+        sendMail(i->email.c_str(), maildata.c_str());
 }
 
 void Pages::track(Document *doc){
@@ -153,16 +153,24 @@ void Pages::JSONTrack(Document *doc){
     int tid = route("track", path, sub);
     bool post = cgi.getEnvironment().getRequestMethod() == "POST";
 
-    if(sub == "delete/json" || sub == "publish/json"){
-        if(!post){
-            doc->setJson("json/error.tpl", 405);
-            doc->dict()->SetValue("ERROR", "This resource can only be accessed with POST.");
-            return;
-        }
-        Track t(tid);
+    if(!tid) return;
+
+    if(sub == "json" || sub == "delete/json" || sub == "publish/json"){
+        ExtendedTrack t(tid);
         if(!t){
             doc->setJson("json/error.tpl", 404);
             doc->dict()->SetValue("ERROR", "No such track.");
+            return;
+        }
+        if(sub == "json"){
+            doc->setJson("json/track.tpl");
+            t.fill(doc->dict());
+            doc->dict()->ShowSection("LONG");
+            return;
+        }
+        if(!post){
+            doc->setJson("json/error.tpl", 405);
+            doc->dict()->SetValue("ERROR", "This resource can only be accessed with POST.");
             return;
         }
         if(!t.artist.self()){
@@ -170,7 +178,6 @@ void Pages::JSONTrack(Document *doc){
             doc->dict()->SetValue("ERROR", "You do not own this track.");
             return;
         }
-
         if(sub == "delete/json"){
             delete_track(t);
             doc->setJson("json/ok.tpl");

@@ -15,7 +15,7 @@ class Follower{
 
         bool following(int uid);
         AccountList followed();
-        std::vector<std::string> followers(); // email addresses
+        AccountList followers();
 
     private:
         int id;

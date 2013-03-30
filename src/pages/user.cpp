@@ -15,16 +15,57 @@ void Pages::user(Document *doc){
     std::string sub;
     int uid = route("user", path, sub);
 
-    if(!uid || (sub != "" && sub != "json")) return;
+    if(!uid || sub != "") return;
 
     Account u(uid);
     if(!u) return;
 
+    doc->setHtml("html/user.tpl", u.name);
+    u.fill(doc->dict());
+    Tracks::byUser(u.id, u.self()).fill(doc->dict(), "TRACK_LIST");
+
+    pushStat("userView", uid);
+
+    Dict *uploader = doc->dict()->AddIncludeDictionary("UPLOADER");
+    uploader->SetFilename("html/uploader.tpl");
+    uploader->SetValue("ACTION", "/track/new");
+
+    std::vector<Playlist> playlists = Playlist::forUser(u);
+    doc->dict()->ShowSection(playlists.empty() ? "NO_PLAYLIST" : "HAS_PLAYLISTS");
+    for(std::vector<Playlist>::const_iterator i=playlists.begin(); i!=playlists.end(); i++){
+        Dict *playlistDict = doc->dict()->AddSectionDictionary("PLAYLIST");
+        i->fill(playlistDict);
+    }
+
+    Session::fill(doc->dict());
+    EventList::user(u, 12).fill(doc->dict(), "EVENTS", true);
+    Follower(u.id).followed().fill(doc->dict(), "FOLLOWED_USERS");
+    if(!u.self())
+        doc->dict()->ShowSection(Follower(Session::user().id).following(u.id) ? "IS_FOLLOWED" : "NOT_FOLLOWED");
+    if(!cgi("welcome").empty())
+        doc->dict()->ShowSection("WELCOME");
+
+    Feature(u.id).fill(doc->dict());
+}
+
+void Pages::JSONUser(Document* doc){
+    std::string sub;
+    int uid = route("user", path, sub);
+
+    if(!uid || (sub != "json" && sub != "following/json" && sub != "followers/json")) return;
+
+    User u(uid);
+    if(!u){
+        doc->setJson("json/error.tpl");
+        doc->dict()->SetValue("ERROR", "No such user.");
+        return;
+    }
     if(sub == "json"){
         doc->setJson("json/account.tpl");
         u.fill(doc->dict());
         doc->dict()->ShowSection("LONG");
-        Tracks::byUser(u.id, 0).fillJson(doc->dict(), false);
+        bool all = u.self();
+        Tracks::byUser(u.id, all).fillJson(doc->dict(), false);
 
         std::vector<Playlist> playlists = Playlist::forUser(u);
         for(std::vector<Playlist>::const_iterator i=playlists.begin(); i!=playlists.end(); i++){
@@ -33,33 +74,21 @@ void Pages::user(Document *doc){
             item->SetFilename("json/playlist.tpl");
             i->fill(item);
         }
-
-    } else { // plain HTML
-        doc->setHtml("html/user.tpl", u.name);
-        u.fill(doc->dict());
-        Tracks::byUser(u.id, u.self()).fill(doc->dict(), "TRACK_LIST");
-
-        pushStat("userView", uid);
-
-        Dict *uploader = doc->dict()->AddIncludeDictionary("UPLOADER");
-        uploader->SetFilename("html/uploader.tpl");
-        uploader->SetValue("ACTION", "/track/new");
-
-        std::vector<Playlist> playlists = Playlist::forUser(u);
-        doc->dict()->ShowSection(playlists.empty() ? "NO_PLAYLIST" : "HAS_PLAYLISTS");
-        for(std::vector<Playlist>::const_iterator i=playlists.begin(); i!=playlists.end(); i++){
-            Dict *playlistDict = doc->dict()->AddSectionDictionary("PLAYLIST");
-            i->fill(playlistDict);
+    }
+    else{
+        Follower f(uid);
+        if(sub == "following/json"){
+            doc->setJson("json/following.tpl");
+            Dict *following = doc->dict()->AddIncludeDictionary("FOLLOWING");
+            following->SetFilename("json/array.tpl");
+            f.followed().fillJson(following);
         }
-
-        Session::fill(doc->dict());
-        EventList::user(u, 12).fill(doc->dict(), "EVENTS", true);
-        Follower(u.id).followed().fill(doc->dict(), "FOLLOWED_USERS");
-        if(!u.self())
-            doc->dict()->ShowSection(Follower(Session::user().id).following(u.id) ? "IS_FOLLOWED" : "NOT_FOLLOWED");
-        if(!cgi("welcome").empty())
-            doc->dict()->ShowSection("WELCOME");
-
-        Feature(u.id).fill(doc->dict());
+        else{ // sub == "followers/json"
+            Follower f(uid);
+            doc->setJson("json/followers.tpl");
+            Dict *followers = doc->dict()->AddIncludeDictionary("FOLLOWERS");
+            followers->SetFilename("json/array.tpl");
+            f.followers().fillJson(followers);
+        }
     }
 }

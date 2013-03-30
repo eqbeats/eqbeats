@@ -9,15 +9,11 @@ AccountList Follower::followed(){
         "ORDER BY users.name ASC");
 }
 
-std::vector<std::string> Follower::followers(){
-    DB::Result r = DB::query(
-        "SELECT users.email FROM users, favorites "
-        "WHERE favorites.user_id = users.id AND favorites.type = 'artist' "
-        "AND favorites.ref = " + number(id));
-    std::vector<std::string> emails(r.size());
-    for(unsigned i=0; i<r.size(); i++)
-        emails[i] = r[i][0];
-    return emails;
+AccountList Follower::followers(){
+    return AccountList("SELECT %s FROM users, favorites "
+        "WHERE favorites.ref = " + number(id) + " AND favorites.type = 'artist' "
+        "AND favorites.user_id = users.id "
+        "ORDER BY users.name ASC");
 }
 
 bool favHelper(const std::string &t, int ref, int id){
