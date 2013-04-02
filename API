@@ -1,0 +1,57 @@
+* try to keep the same arguments as the HTML version
+* all resources and methods should return an object with a "status" member, either "OK" or "ERROR"
+* compatibility should be kept
+* I have no idea what to do with searches and such that return an array of tracks, can't make those into objects without breaking compatibility
+* once this is done, every feature available on the website should be also available through the API
+
+✔ POST /login/json?email&pw
+✔ POST /logout/json?sid
+
+  GET  /track/ID/json  (still needs tags)
+
+✔ GET  /user/ID/json
+
+✔ POST /track/ID/rename/json?sid&title
+✔ POST /track/ID/description/json?sid&notes
+✔ POST /track/ID/tags/json?sid&tags
+✔ POST /track/ID/flags/json?sid&airable
+✔ POST /track/ID/delete/json?sid&airable
+
+  POST /track/new/json?sid&file&filename
+  POST /track/ID/upload/json?sid&file&filename
+
+  GET  /account/json?sid  (is it necessary?)
+  POST /account/name/json?sid&name
+  POST /account/email/json?sid&email
+  POST /account/description/json?sid&about
+  POST /account/password/json?sid&oldpw&newpw
+  POST /account/license/json?sid&license&custom-license
+
+  GET  /playlist/ID/json
+  POST /playlist/ID/name/json?sid&name
+  POST /playlist/ID/description/json?sid&desc
+  POST /playlist/ID/delete/json?sid
+
+✔ POST /playlist/ID/feature/json?sid
+✔ POST /track/ID/feature/json?sid
+
+  POST /track/ID/favorite/json?sid
+  POST /track/ID/unfavorite/json?sid
+  GET  /user/ID/favourites/json
+  GET  /track/ID/favourited/json
+  POST /user/ID/follow/json?sid
+  POST /user/ID/unfollow/json?sid
+✔ GET  /user/ID/following/json
+✔ GET  /user/ID/followers/json
+
+  GET  /track/ID/events/json?type&before&after&max
+  POST /track/ID/comment/json?sid&msg or ?name&msg
+  GET  /user/ID/events/json?type&before&after&max
+  POST /user/ID/comment/json?sid&msg or ?name&msg
+
+  GET  /tracks/search/json?q&count&offset
+  GET  /tracks/latest/json?count&offset
+  GET  /tracks/featured/json?count&offset
+  GET  /tracks/random/json?count
+  GET  /tracks/all/json
+  GET  /tracks/search/exact/json?artist&track  (CR bs, I doubt I can change it without triggering thermonuclear war)
