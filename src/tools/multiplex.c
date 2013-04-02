@@ -31,6 +31,8 @@ int main(int argc, char** argv){
         return EX_USAGE;
     }
 
+    memset(&sa_chld, 0, sizeof(struct sigaction));
+    memset(&sa_pipe, 0, sizeof(struct sigaction));
     sa_chld.sa_handler = &chld_handler;
     sa_chld.sa_flags = SA_RESTART;
     sigaction(SIGCHLD, &sa_chld, NULL);
