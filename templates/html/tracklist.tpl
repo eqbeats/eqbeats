@@ -5,7 +5,7 @@
     {{#EMPTY}}<li class="empty">Nothing here yet</li>{{/EMPTY}}
 
     {{#TRACK}}
-    <li {{#IS_HIDDEN}}class="hidden"{{/IS_HIDDEN}} onclick="toggle(this.getElementsByClassName('player')[0]);">
+    <li {{#IS_HIDDEN}}class="hidden"{{/IS_HIDDEN}} onclick="toggle(this.querySelector('.player'));">
 
         {{#BUTTONS}}
         <div class="buttons">

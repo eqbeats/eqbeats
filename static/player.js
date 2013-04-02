@@ -82,14 +82,14 @@ function load(player, nondisruptive){
     player.volume.slider.inner.style.width = parseInt(playing.volume.slider.style.width) * globalVolume / 100 + 'px';
     player.style.display = 'block';
     if(player.track.list == "featured_tracks"){
-        var featurebox = document.getElementsByClassName("featurebox")[0];
+        var featurebox = document.querySelector(".featurebox");
         featurebox.style["background"] = "url('/track/" + player.track.tid + "/art/medium') center center, #999";
         // sicknasty preloading
         if(player.next){
             var i = new Image();
             i.src = '/track/' + player.next.track.tid + '/art/medium';
         }
-        var active = featurebox.getElementsByClassName('active');
+        var active = featurebox.querySelectorAll('.active');
         if(active[0]) active[0].className = '';
         player.parentNode.className = 'active';
     }
@@ -98,7 +98,7 @@ function load(player, nondisruptive){
 function pause(player){
     snd.pause();
     player.className = 'player paused';
-    document.getElementsByTagName("title")[0].innerHTML = pagetitle;
+    document.title = pagetitle;
 }
 
 function play(player){
@@ -133,7 +133,7 @@ function play(player){
         }
     });
     player.className = 'player playing';
-    document.getElementsByTagName("title")[0].innerHTML = "▶ " + pagetitle;
+    document.title = "▶ " + pagetitle;
 }
 function toggle(player){
     if(player == playing && player.className == 'player playing')
@@ -148,7 +148,7 @@ function pp(e){
 
 function vol(e){
     e.stopPropagation();
-    if(e.currentTarget == playing.volume.slider){
+    if(this == playing.volume.slider){
         with(playing.volume.slider){
             inner.style.width = e.clientX - recurseoffset(inner)[1] + 'px';
             globalVolume = parseInt(inner.style.width) * 100 / parseInt(style.width);
@@ -238,7 +238,7 @@ function initTrack(t){
         });
         addListener(scrubberbar, 'mousedown', function(e){
             e.preventDefault();
-            if(e.currentTarget == playing.scrubberbar){
+            if(this == playing.scrubberbar){
                 snd.pause();
                 scrubbing = true;
                 addListener(document, 'mousemove', scrub);
@@ -274,7 +274,7 @@ function initTrack(t){
 }
 
 function preventBubbling(el, tagname){
-    elts = el.getElementsByTagName(tagname);
+    elts = el.querySelectorAll("." + tagname);
     for(var i = 0; i < elts.length; i++){
         addListener(elts[i], 'click', function(e){
             e.stopPropagation();
@@ -334,8 +334,8 @@ soundManager.setup({
 });
 soundManager.onready(function(){
     if(!document.head)
-        document.head = document.getElementsByTagName("HEAD")[0];
-    pagetitle = document.getElementsByTagName("title")[0].innerHTML;
+        document.head = document.querySelector("HEAD");
+    pagetitle = document.querySelector("title").innerHTML;
     for(var i=0; i<tracks.length; i++)
         initTrack(tracks[i]);
     if(!playing) return;
