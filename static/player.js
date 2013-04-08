@@ -41,13 +41,14 @@ function removeListener(obj,type,fn) {
     obj[type+fn+2] = null;
 }
 
-function prettyTime(ms){
-    if(isNaN(ms)) return '0:00';
-    time = [Math.floor(ms / 60000), Math.floor(ms / 1000) % 60];
+function prettyTime(s){
+    if(isNaN(s)) return '0:00';
+    time = [Math.floor(s / 60), Math.floor(s) % 60];
     if(time[1] < 10) time[1] = '0' + time[1];
     return time[0] + ':' + time[1]
 }
 
+var snd;
 function load(player, nondisruptive){
     if(playing != player && !nondisruptive){
         pause(playing);
@@ -61,25 +62,34 @@ function load(player, nondisruptive){
             playing.style.display = 'none';
     }
     if(!nondisruptive){
-        if(snd) snd.destruct();
-        snd = soundManager.createSound({
-            id: "snd",
-            autoLoad: false,
-            volume: globalVolume,
-            whileloading: function(){
-                player.playtime.innerHTML = prettyTime(this.position) + '/' + prettyTime(this.durationEstimate);
-            },
-            url: [
-                {url:player.track.opus, type:'audio/opus'},
-                {url:player.track.vorbis, type:'audio/ogg; codecs=vorbis'},
-                {url:player.track.aac, type:'audio/aac'},
-                {url:player.track.mp3, type:'audio/mp3'}
-            ]
-        });
+        snd = new Audio();
+        snd.preload = 'metadata';
+        snd.onloadedmetadata = function(){
+            console.log(this.duration);
+            player.playtime.innerHTML = prettyTime(this.currentTime) + '/' + prettyTime(this.duration);
+        };
+        var opus = document.createElement("source");
+        opus.src = player.track.opus;
+        opus.type = "audio/ogg; codecs=opus";
+        var vorbis = document.createElement("source");
+        vorbis.src = player.track.vorbis;
+        vorbis.type = "audio/ogg; codecs=vorbis";
+        var aac = document.createElement("source");
+        aac.src = player.track.aac;
+        aac.type = "audio/aac";
+        var mp3 = document.createElement("source");
+        mp3.src = player.track.mp3;
+        mp3.type = "audio/mp3";
+        snd.appendChild(opus);
+        snd.appendChild(vorbis);
+        snd.appendChild(aac);
+        snd.appendChild(mp3);
+        snd.load();
         snd.triggered = false;
         playing = player;
+        snd.volume = globalVolume;
     }
-    player.volume.slider.inner.style.width = parseInt(playing.volume.slider.style.width) * globalVolume / 100 + 'px';
+    player.volume.slider.inner.style.width = parseInt(playing.volume.slider.style.width) * globalVolume + 'px';
     player.style.display = 'block';
     if(player.track.list == "featured_tracks"){
         var featurebox = document.querySelector(".featurebox");
@@ -105,33 +115,25 @@ function play(player){
     if(player != playing){
         load(player);
     }
-    snd.load({
-        whileloading: function(){
-            if(!snd.operaquirk){
-                snd.pause();
-                window.setTimeout(function(){snd.play();},100);
-                snd.operaquirk = true;
-            }
+    snd.ontimeupdate = function(){
+        playing.scrubber.style.width = (100 * this.currentTime / this.duration) + '%';
+        playing.playtime.innerHTML = prettyTime(this.currentTime) + '/' + prettyTime(this.duration);
+        if(!this.triggered && this.currentTime > 5 && (this.currentTime > this.duration / 3 || this.currentTime > 90000)){
+            this.triggered = true;
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/track/" + playing.track.tid + "/played", true);
+            xhr.send();
         }
-    });
-    snd.play({
-        whileplaying: function(){
-            playing.scrubber.style.width = (100 * this.position / this.durationEstimate) + '%';
-            playing.playtime.innerHTML = prettyTime(this.position) + '/' + prettyTime(this.durationEstimate);
-            if(!this.triggered && this.position > 5 && (this.position > this.durationEstimate / 3 || this.position > 90000)){
-                this.triggered = true;
-                var xhr = new XMLHttpRequest();
-                xhr.open("POST", "/track/" + playing.track.tid + "/played", true);
-                xhr.send();
-            }
-        },
-        onfinish: function(){
-            if(!scrubbing){
-                pause(playing);
-                if(playing.next) play(playing.next);
-            }
+    };
+    snd.onended = function(){
+        if(!scrubbing){
+            pause(playing);
+            if(playing.next) play(playing.next);
         }
-    });
+    };
+
+    snd.play()
+
     player.className = 'player playing';
     document.title = "▶ " + pagetitle;
 }
@@ -151,9 +153,11 @@ function vol(e){
     if(this == playing.volume.slider){
         with(playing.volume.slider){
             inner.style.width = e.clientX - recurseoffset(inner)[1] + 'px';
-            globalVolume = parseInt(inner.style.width) * 100 / parseInt(style.width);
+            console.log(inner.style.width);
+            console.log(this.style.width);
+            globalVolume = parseInt(inner.style.width) / parseInt(style.width);
             document.cookie = 'volume=' + globalVolume + '; path=/';
-            snd.setVolume(globalVolume);
+            snd.volume = globalVolume;
         }
     }
 }
@@ -170,7 +174,7 @@ function recurseoffset(el){
 }
 function scrub(e){
     with(playing)
-        snd.setPosition((e.clientX - recurseoffset(scrubberbar)[1] - 3)*snd.durationEstimate/(scrubberbar.clientWidth - 6));
+        snd.currentTime = ((e.clientX - recurseoffset(scrubberbar)[1] - 3)*snd.duration/(scrubberbar.clientWidth - 6));
 }
 
 function initTrack(t){
@@ -239,7 +243,7 @@ function initTrack(t){
         addListener(scrubberbar, 'mousedown', function(e){
             e.preventDefault();
             if(this == playing.scrubberbar){
-                snd.pause();
+                wasPlaying = !snd.paused;
                 scrubbing = true;
                 addListener(document, 'mousemove', scrub);
                 scrub(e);
@@ -287,14 +291,16 @@ var tracks = [];
 var lists = Object();
 var snd;
 var scrubbing = false;
-var globalVolume = 100;
+var wasPlaying = false;
+var globalVolume = 0.9;
 
 function parseCookies(){
     var i = document.cookie.indexOf('volume=');
     if(i >= 0)
-        globalVolume = parseInt(document.cookie.substr(i+7));
-    else
-        globalVolume = 90;
+        globalVolume = document.cookie.substr(i+7);
+        if(globalVolume > 1 || globalVolume < 0 || globalVolume - 0 == NaN){
+            globalVolume = 0.9
+        }
 }
 
 function registerTrack(t){ tracks.push(t); }
@@ -343,7 +349,8 @@ soundManager.onready(function(){
     load(playing);
     addListener(document, 'mouseup', function(){
         if(scrubbing){
-            play(playing);
+            if(!wasPlaying)
+                pause(playing);
             scrubbing = false;
             removeListener(document, 'mousemove', scrub);
         }
