@@ -48,7 +48,6 @@ function prettyTime(s){
     return time[0] + ':' + time[1]
 }
 
-var snd;
 function load(player, nondisruptive){
     if(playing != player && !nondisruptive){
         pause(playing);
@@ -64,9 +63,17 @@ function load(player, nondisruptive){
     if(!nondisruptive){
         snd = new Audio();
         snd.preload = 'metadata';
-        snd.onloadedmetadata = function(){
+        addListener(snd, "loadedmetadata", function(){
             player.playtime.innerHTML = prettyTime(this.currentTime) + '/' + prettyTime(this.duration);
-        };
+        });
+        addListener(snd, "progress", function(){
+            if(snd.readystate == 4 && !snd.paused && !snd.operaquirk){
+                console.log(snd);
+                snd.pause();
+                window.setTimeout(function(){snd.play();},100);
+                snd.operaquirk = true;
+            }
+        });
         var opus = document.createElement("source");
         opus.src = player.track.opus;
         opus.type = "audio/ogg; codecs=opus";
@@ -112,9 +119,11 @@ function pause(player){
 
 function play(player){
     if(player != playing){
+        snd.pause();
         load(player);
     }
-    snd.ontimeupdate = function(){
+    addListener(snd, "timeupdate", function(){
+        console.log("UPDATE");
         playing.scrubber.style.width = (100 * this.currentTime / this.duration) + '%';
         playing.playtime.innerHTML = prettyTime(this.currentTime) + '/' + prettyTime(this.duration);
         if(!this.triggered && this.currentTime > 5 && (this.currentTime > this.duration / 3 || this.currentTime > 90000)){
@@ -123,13 +132,13 @@ function play(player){
             xhr.open("POST", "/track/" + playing.track.tid + "/played", true);
             xhr.send();
         }
-    };
-    snd.onended = function(){
+    });
+    addListener(snd, "ended", function(){
         if(!scrubbing){
             pause(playing);
             if(playing.next) play(playing.next);
         }
-    };
+    });
 
     snd.play()
 
@@ -286,7 +295,7 @@ function preventBubbling(el, tagname){
 var playing;
 var tracks = [];
 var lists = Object();
-var snd;
+var snd = new Audio();
 var scrubbing = false;
 var wasPlaying = false;
 var globalVolume = 0.9;
