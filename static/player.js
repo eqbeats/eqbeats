@@ -65,7 +65,6 @@ function load(player, nondisruptive){
         snd = new Audio();
         snd.preload = 'metadata';
         snd.onloadedmetadata = function(){
-            console.log(this.duration);
             player.playtime.innerHTML = prettyTime(this.currentTime) + '/' + prettyTime(this.duration);
         };
         var opus = document.createElement("source");
@@ -153,8 +152,6 @@ function vol(e){
     if(this == playing.volume.slider){
         with(playing.volume.slider){
             inner.style.width = e.clientX - recurseoffset(inner)[1] + 'px';
-            console.log(inner.style.width);
-            console.log(this.style.width);
             globalVolume = parseInt(inner.style.width) / parseInt(style.width);
             document.cookie = 'volume=' + globalVolume + '; path=/';
             snd.volume = globalVolume;
@@ -328,17 +325,7 @@ function getFeatures(){
     xhr.send();
 }
 
-soundManager.audioFormats.mp3.required = false;
-soundManager.audioFormats['opus'] = {
-    type: ['audio/ogg; codecs=opus', 'audio/opus'],
-    required: false
-};
-soundManager.setup({
-    url: '/static/',
-    html5Test: /^probably$/i,
-    preferFlash: false
-});
-soundManager.onready(function(){
+function loadplayer(){
     if(!document.head)
         document.head = document.querySelector("HEAD");
     pagetitle = document.querySelector("title").innerHTML;
@@ -355,5 +342,8 @@ soundManager.onready(function(){
             removeListener(document, 'mousemove', scrub);
         }
     });
-});
+};
 
+function noop(){}
+var oldonload = window.onload || noop;
+window.onload = function(){ this(); loadplayer(); }.bind(oldonload);
