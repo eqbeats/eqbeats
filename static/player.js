@@ -66,11 +66,10 @@ function load(player, nondisruptive){
         addListener(snd, "loadedmetadata", function(){
             player.playtime.innerHTML = prettyTime(this.currentTime) + '/' + prettyTime(this.duration);
         });
-        addListener(snd, "progress", function(){
-            if(snd.readystate == 4 && !snd.paused && !snd.operaquirk){
-                console.log(snd);
+        addListener(snd, "playing", function(){
+            if(!snd.paused && !snd.operaquirk){
                 snd.pause();
-                window.setTimeout(function(){snd.play();},100);
+                snd.play();
                 snd.operaquirk = true;
             }
         });
@@ -112,9 +111,11 @@ function load(player, nondisruptive){
 }
 
 function pause(player){
-    snd.pause();
-    player.className = 'player paused';
-    document.title = pagetitle;
+    if(player){
+        snd.pause();
+        player.className = 'player paused';
+        document.title = pagetitle;
+    }
 }
 
 function play(player){
@@ -123,7 +124,6 @@ function play(player){
         load(player);
     }
     addListener(snd, "timeupdate", function(){
-        console.log("UPDATE");
         playing.scrubber.style.width = (100 * this.currentTime / this.duration) + '%';
         playing.playtime.innerHTML = prettyTime(this.currentTime) + '/' + prettyTime(this.duration);
         if(!this.triggered && this.currentTime > 5 && (this.currentTime > this.duration / 3 || this.currentTime > 90000)){
