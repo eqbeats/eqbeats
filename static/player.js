@@ -49,30 +49,27 @@ function prettyTime(s){
 }
 
 function load(player, nondisruptive){
-    if(playing != player && !nondisruptive){
-        pause(playing);
-        playing.scrubber.style.width = '0px';
-        playing.playtime.innerHTML = '0:00/0:00';
-        if(playing.track.list == "featured_tracks"){
-            if(player.track.list == playing.track.list)
-                playing.parentNode.className = '';
-        }
-        else
-            playing.style.display = 'none';
-    }
     if(!nondisruptive){
-        snd = new Audio();
-        snd.preload = 'metadata';
-        addListener(snd, "loadedmetadata", function(){
-            player.playtime.innerHTML = prettyTime(this.currentTime) + '/' + prettyTime(this.duration);
-        });
-        addListener(snd, "playing", function(){
-            if(!snd.paused && !snd.operaquirk){
-                snd.pause();
-                snd.play();
-                snd.operaquirk = true;
+        if(playing != player && !nondisruptive){
+            var prev = playing;
+            playing = player;
+            pause(prev);
+            prev.scrubber.style.width = '0px';
+            prev.playtime.innerHTML = '0:00/0:00';
+            if(prev.track.list == "featured_tracks"){
+                if(player.track.list == prev.track.list)
+                    prev.parentNode.className = '';
             }
-        });
+            else
+                prev.style.display = 'none';
+        }
+        //snd = new Audio();
+        snd.player = player;
+        snd.preload = 'metadata';
+        snd.triggered = false;
+        snd.stopped = false;
+        snd.operaquirk = false;
+        snd.innerHTML = "";
         var opus = document.createElement("source");
         opus.src = player.track.opus;
         opus.type = "audio/ogg; codecs=opus";
@@ -90,8 +87,6 @@ function load(player, nondisruptive){
         snd.appendChild(aac);
         snd.appendChild(mp3);
         snd.load();
-        snd.triggered = false;
-        playing = player;
         snd.volume = globalVolume;
     }
     player.volume.slider.inner.style.width = parseInt(playing.volume.slider.style.width) * globalVolume + 'px';
@@ -111,34 +106,18 @@ function load(player, nondisruptive){
 }
 
 function pause(player){
+    snd.pause();
+    snd.stopped = true;
+    document.title = pagetitle;
     if(player){
-        snd.pause();
         player.className = 'player paused';
-        document.title = pagetitle;
     }
 }
 
 function play(player){
     if(player != playing){
-        snd.pause();
         load(player);
     }
-    addListener(snd, "timeupdate", function(){
-        playing.scrubber.style.width = (100 * this.currentTime / this.duration) + '%';
-        playing.playtime.innerHTML = prettyTime(this.currentTime) + '/' + prettyTime(this.duration);
-        if(!this.triggered && this.currentTime > 5 && (this.currentTime > this.duration / 3 || this.currentTime > 90000)){
-            this.triggered = true;
-            var xhr = new XMLHttpRequest();
-            xhr.open("POST", "/track/" + playing.track.tid + "/played", true);
-            xhr.send();
-        }
-    });
-    addListener(snd, "ended", function(){
-        if(!scrubbing){
-            pause(playing);
-            if(playing.next) play(playing.next);
-        }
-    });
 
     snd.play()
 
@@ -349,6 +328,32 @@ function loadplayer(){
                 pause(playing);
             scrubbing = false;
             removeListener(document, 'mousemove', scrub);
+        }
+    });
+    addListener(snd, "loadedmetadata", function(){
+        playing.playtime.innerHTML = prettyTime(this.currentTime) + '/' + prettyTime(this.duration);
+    });
+    addListener(snd, "playing", function(){
+        if(!this.paused && !snd.operaquirk){
+            this.pause();
+            if(!this.stopped)
+                this.play();
+            this.operaquirk = true;
+        }
+    });
+    addListener(snd, "timeupdate", function(){
+        playing.scrubber.style.width = (100 * this.currentTime / this.duration) + '%';
+        playing.playtime.innerHTML = prettyTime(this.currentTime) + '/' + prettyTime(this.duration);
+        if(!this.paused && !this.triggered && this.currentTime > 5 && (this.currentTime > this.duration / 3 || this.currentTime > 90000)){
+            this.triggered = true;
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/track/" + playing.track.tid + "/played", true);
+            xhr.send();
+        }
+    });
+    addListener(snd, "ended", function(){
+        if(!scrubbing){
+            if(playing.next) play(playing.next);
         }
     });
 };
