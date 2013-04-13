@@ -11,13 +11,12 @@
 
 html, body { background-color: #F2F2F2; }
 
-/** Header ********************************************************************/
-
 #main {
     max-width: 1000px;
     margin: auto;
 }
 
+/** Header ********************************************************************/
 
 #header {
     margin: 0 auto;
@@ -36,6 +35,17 @@ html, body { background-color: #F2F2F2; }
     text-decoration: none;
     padding: 20px 0 20px 160px;
     background: url("/static/logo.png") no-repeat left center;
+}
+
+.nohtml5-notice {
+    display: none;
+}
+
+body.nohtml5 .nohtml5-notice {
+    display: block;
+    background: #fdb;
+    padding: 8px 25px;
+    border-bottom: #c50 1px solid;
 }
 
 .feed {
@@ -798,11 +808,7 @@ textarea {
 }
 .dialog h4 {
     border-bottom: 1px solid #e0e0e0;
-    //line-height: 1em;
     vertical-align: middle;
-}
-.dialog h4 img {
-    //margin-top: 3px;
 }
 #contents .dialog h3 {
     margin: 0;

@@ -41,6 +41,31 @@ function removeListener(obj,type,fn) {
     obj[type+fn+2] = null;
 }
 
+// https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Function/bind#Compatibility
+if (!Function.prototype.bind) {
+    Function.prototype.bind = function (oThis) {
+        if (typeof this !== "function") {
+            // closest thing possible to the ECMAScript 5 internal IsCallable function
+            throw new TypeError("Function.prototype.bind - what is trying to be bound is not callable");
+        }
+
+        var aArgs = Array.prototype.slice.call(arguments, 1),
+            fToBind = this,
+            fNOP = function () {},
+            fBound = function () {
+                return fToBind.apply(this instanceof fNOP && oThis
+                        ? this
+                        : oThis,
+                        aArgs.concat(Array.prototype.slice.call(arguments)));
+            };
+
+        fNOP.prototype = this.prototype;
+        fBound.prototype = new fNOP();
+
+        return fBound;
+    };
+}
+
 function prettyTime(s){
     if(isNaN(s)) return '0:00';
     time = [Math.floor(s / 60), Math.floor(s) % 60];
@@ -63,7 +88,6 @@ function load(player, nondisruptive){
             else
                 prev.style.display = 'none';
         }
-        //snd = new Audio();
         snd.player = player;
         snd.preload = 'metadata';
         snd.triggered = false;
@@ -274,7 +298,7 @@ function preventBubbling(el, tagname){
 var playing;
 var tracks = [];
 var lists = Object();
-var snd = new Audio();
+var snd;
 var scrubbing = false;
 var wasPlaying = false;
 var globalVolume = 0.9;
@@ -314,6 +338,11 @@ function getFeatures(){
 }
 
 function loadplayer(){
+    if(typeof Audio == "undefined"){
+        document.body.className += " nohtml5";
+        return;
+    }
+    snd = new Audio();
     if(!document.head)
         document.head = document.querySelector("HEAD");
     pagetitle = document.querySelector("title").innerHTML;

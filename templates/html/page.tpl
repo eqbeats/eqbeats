@@ -4,9 +4,9 @@
     <head>
         <title>{{#HAS_TITLE}}{{TITLE}} - {{/HAS_TITLE}}Equestrian Beats</title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <link rel="stylesheet" type="text/css" href="/static/style.css?1" />
+        <link rel="stylesheet" type="text/css" href="/static/style.css?2" />
         <link rel="shortcut icon" href="/static/favicon.ico" id="favicon-link" />
-        <script type="text/javascript" src="/static/player.js?3"></script>
+        <script type="text/javascript" src="/static/player.js?4"></script>
         {{#REQUIRES_STATS_JS}}
         <script type="text/javascript" src="/static/d3.js"></script>
         <script type="text/javascript" src="/static/crossfilter.js"></script>
@@ -21,6 +21,7 @@
     </head>
     <body>
         <div id="main">
+            <div class="nohtml5-notice"><b>Notice</b>: EqBeats requires a browser with HTML5 audio support, which your browser does not seem to have. You will not be able to play tracks with your current setup. We recommend you upgrade to a better browser, like <a href="http://mozilla.org/firefox/">Firefox</a> or <a href="http://chrome.google.com/">Chrome</a>.</div>
             <div id="header">
                 <h1><a href="/">Equestrian Beats</a></h1>
                 <div id="logstatus">
