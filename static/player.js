@@ -287,7 +287,7 @@ function initTrack(t){
 }
 
 function preventBubbling(el, tagname){
-    elts = el.querySelectorAll("." + tagname);
+    elts = el.querySelectorAll(tagname);
     for(var i = 0; i < elts.length; i++){
         addListener(elts[i], 'click', function(e){
             e.stopPropagation();
