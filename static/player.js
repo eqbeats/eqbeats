@@ -383,6 +383,7 @@ function loadplayer(){
     addListener(snd, "ended", function(){
         if(!scrubbing){
             if(playing.next) play(playing.next);
+            else pause(playing);
         }
     });
 };
