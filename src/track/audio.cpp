@@ -75,23 +75,33 @@ void Audio::unlink(){
 }
 
 File Audio::mp3() const{
+    if(access(filepath(MP3).c_str(), R_OK) != 0)
+        return File();
     return File("tracks/" + number(track->id) + ".mp3",  track->artist.name + " - " + track->title + ".mp3");
 }
 
 File Audio::vorbis() const{
+    if(access(filepath(Vorbis).c_str(), R_OK) != 0)
+        return File();
     return File("tracks/" + number(track->id) + ".ogg",  track->artist.name + " - " + track->title + ".ogg");
 }
 
 File Audio::aac() const{
+    if(access(filepath(AAC).c_str(), R_OK) != 0)
+        return File();
     return File("tracks/" + number(track->id) + ".m4a",  track->artist.name + " - " + track->title + ".m4a");
 }
 
 File Audio::opus() const{
+    if(access(filepath(Opus).c_str(), R_OK) != 0)
+        return File();
     return File("tracks/" + number(track->id) + ".opus", track->artist.name + " - " + track->title + ".opus");
 }
 
 File Audio::original() const{
     std::string path = filepath(Original);
+    if(access(path.c_str(), R_OK) != 0)
+        return File();
     std::string ext = path.substr(path.rfind('.'));
     return File("tracks/" + number(track->id) + ".orig" + ext, track->title + " - " + track->artist.name + ext);
 }
