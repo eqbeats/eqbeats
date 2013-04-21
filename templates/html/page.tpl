@@ -21,7 +21,7 @@
     </head>
     <body>
         <div id="main">
-            <div class="nohtml5-notice"><b>Notice</b>: EqBeats requires a browser with HTML5 audio support, which your browser does not seem to have. You will not be able to play tracks with your current setup. We recommend you upgrade to a better browser, like <a href="http://mozilla.org/firefox/">Firefox</a> or <a href="http://chrome.google.com/">Chrome</a>.</div>
+            <div class="nohtml5-notice"><b>Notice</b>: EqBeats requires a browser with HTML5 audio support, which your browser does not seem to have. You will not be able to play tracks with your current setup. We recommend you upgrade to a modern browser, like <a href="http://mozilla.org/firefox/">Firefox</a> or <a href="http://chrome.google.com/">Chrome</a>.</div>
             <div id="header">
                 <h1><a href="/">Equestrian Beats</a></h1>
                 <div id="logstatus">
