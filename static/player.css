@@ -128,3 +128,20 @@ audio {
 #player-embed .player {
     margin: 20px 15px 10px 15px;
 }
+
+.nohtml5-notice {
+    display: none;
+}
+
+body.nohtml5 .nohtml5-notice {
+    display: block;
+    background: #fdb;
+    padding: 8px 25px;
+    border-bottom: #c50 1px solid;
+}
+
+#player-embed .nohtml5-notice {
+    font-size:0.7em;
+    border: #c50 1px solid;
+    padding: 8px;
+}

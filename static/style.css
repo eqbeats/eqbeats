@@ -37,17 +37,6 @@ html, body { background-color: #F2F2F2; }
     background: url("/static/logo.png") no-repeat left center;
 }
 
-.nohtml5-notice {
-    display: none;
-}
-
-body.nohtml5 .nohtml5-notice {
-    display: block;
-    background: #fdb;
-    padding: 8px 25px;
-    border-bottom: #c50 1px solid;
-}
-
 .feed {
     display: inline-block;
     height: 12px;

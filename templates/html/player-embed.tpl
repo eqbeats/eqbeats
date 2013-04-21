@@ -10,6 +10,7 @@
     </head>
     <body>
         <div id="player-embed">
+            <div class="nohtml5-notice">Sorry, your browser does not support HTML5 audio. We recommend you upgrade to a better browser, like <a href="http://mozilla.org/firefox/">Firefox</a> or <a href="http://chrome.google.com/">Chrome</a>.</div>
 
             {{#FOUND}}
             <a href="/track/{{TID}}" target="_blank" class="pic">
