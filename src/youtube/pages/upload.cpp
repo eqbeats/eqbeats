@@ -50,7 +50,7 @@ void Pages::yt_upload(Document *doc){
                 doc->dict()->SetValue("TITLE", "Success");
                 doc->dict()->SetValue("MESSAGE",
                     "The new video should appear <a href=\"https://www.youtube.com/my_videos\">on "
-                    "your YouTube account</a> in the next few seconds.");
+                    "your YouTube account</a> in a minute or two.");
             }
             else {
                 doc->dict()->SetValue("TITLE", "There was a problem");
