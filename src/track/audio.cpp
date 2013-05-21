@@ -16,7 +16,7 @@ std::string Audio::filepath(Format f) const{
     std::string base = eqbeatsDir() + "/tracks/";
     if(f == MP3)    return base + number(track->id) + ".mp3";
     if(f == Vorbis) return base + number(track->id) + ".ogg";
-    if(f == AAC) return base + number(track->id) + ".aac";
+    if(f == AAC) return base + number(track->id) + ".m4a";
     if(f == Opus)    return base + number(track->id) + ".opus";
     // Otherwise, Original
     DIR *dirp = opendir(base.c_str());
