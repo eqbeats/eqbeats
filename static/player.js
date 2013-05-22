@@ -307,7 +307,7 @@ function parseCookies(){
     var i = document.cookie.indexOf('volume=');
     if(i >= 0)
         globalVolume = document.cookie.substr(i+7);
-        if(globalVolume > 1 || globalVolume < 0 || globalVolume - 0 == NaN){
+        if(globalVolume > 1 || globalVolume < 0 || isNaN(globalVolume - 0)){
             globalVolume = 0.9
         }
 }
