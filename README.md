@@ -20,7 +20,7 @@ If you don't want to bother with all this, here's a virtual machine with everyth
 * ImageMagick
 * Nettle
 * ctemplate
-* FFmpeg with libopus support
+* FFmpeg compiled with libfdk\_aac and libopus support
 * Optional: OpenBSD netcat for hitsd
 * Optional: OpenBSD netcat, Python 3.x and psycopg2 for YouTube support
 
