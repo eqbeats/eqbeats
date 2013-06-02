@@ -1026,7 +1026,7 @@ textarea {
 }
 
 .prev.disabled, .next.disabled {
-    opacity: 0.3;
+    opacity: 0;
 }
 
 .prev::before { content: "◀◀"; }
