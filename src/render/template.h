@@ -7,6 +7,6 @@
 
 typedef ctemplate::TemplateDictionary Dict;
 
-extern ctemplate::TemplateCache cache; // defined in main.cpp
+extern ctemplate::TemplateCache cache; // defined in template.cpp
 
 #endif // RENDER_TEMPLATE_H

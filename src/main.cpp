@@ -23,11 +23,6 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
-cgicc::Cgicc cgi;
-std::string path;
-char** headers;
-ctemplate::TemplateCache cache;
-
 bool running = true, answering = false;
 
 void signalCatch(int s){

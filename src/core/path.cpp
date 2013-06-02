@@ -3,6 +3,8 @@
 
 #include <stdlib.h>
 
+std::string path;
+
 using namespace std;
 
 string stripSlash(const string &path){

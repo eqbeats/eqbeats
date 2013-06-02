@@ -31,12 +31,12 @@ mrproper: clean
 
 eqbeats.fcgi: src/account/account.o src/account/list.o src/account/user.o src/account/session.o \
               src/account/pages/account.o src/account/pages/login.o src/account/pages/registration.o src/account/pages/users.o src/account/pages/password.o \
-              src/core/db.o src/core/path.o \
+              src/core/cgi.o src/core/db.o src/core/path.o \
               src/log/log.o \
               src/misc/hash.o src/misc/mail.o src/misc/repl.o src/misc/timer.o \
               src/pages/static.o src/pages/home.o src/pages/user.o src/pages/track.o \
               src/playlist/playlist.o src/playlist/pages/actions.o src/playlist/pages/playlist.o \
-              src/render/document.o src/render/fcgiio.o src/render/file.o src/render/http.o \
+              src/render/document.o src/render/fcgiio.o src/render/file.o src/render/http.o src/render/template.o \
               src/social/event.o src/social/follower.o src/social/pages/actions.o src/social/pages/comment.o src/social/pages/favorites.o \
               src/stat/push.o \
               src/text/date.o src/text/email.o src/text/format.o src/text/irc.o src/text/number.o src/text/string.o \

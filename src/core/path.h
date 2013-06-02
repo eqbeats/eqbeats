@@ -3,6 +3,8 @@
 
 #include <string>
 
+extern std::string path; // defined in path.cpp
+
 // Return 0 on error.
 int route(const std::string &t, std::string path, std::string &sub);
 
