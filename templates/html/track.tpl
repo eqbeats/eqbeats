@@ -59,7 +59,7 @@
             </span></a></li>
             <li><a href="/track/{{TID}}/aac"><span>AAC
                 <span class="codecinfo">Okay quality, small filesize</span>
-                <span class="settings">(libfaac VBR 90%)</span>
+                <span class="settings">(libfdk_aac VBR 3)</span>
             </span></a></li>
             {{#HAS_ART}}<li><a href="/track/{{TID}}/art" target="_blank"><span>Cover art</span></a></li>{{/HAS_ART}}
         </ul>
