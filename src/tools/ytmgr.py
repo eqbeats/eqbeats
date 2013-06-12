@@ -102,7 +102,7 @@ class YoutubeManager:
             os.spawnvp(os.P_WAIT, "convert", ("convert", "-flatten", "art/" + str(tid), art))
         else:
             art = "static/placeholder.jpg"
-        os.spawnvp(os.P_WAIT, "ffmpeg", ("ffmpeg","-loop","1","-r","0.1","-i", art,"-i", infile,"-shortest","-vf","scale=-1:720","-vcodec","mpeg4","-acodec","libfdk_aac","-b:a","192k","-f","mp4","-y",out))
+        os.spawnvp(os.P_WAIT, "ffmpeg", ("ffmpeg","-loop","1","-r","0.1","-i", art,"-i", infile,"-shortest","-vf","scale=-1:720","-vcodec","libx264","-acodec","libfdk_aac","-b:a","192k","-f","mp4","-y",out))
         return open(out, "rb")
 
     def upload(self, tid):
