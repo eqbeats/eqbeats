@@ -4,6 +4,7 @@
 *.lo
 *.d
 *.hi
+tags
 
 dox/html
 dox/latex
