@@ -1,4 +1,4 @@
-SUBDIRS = account core log misc pages playlist render social stat text track userfeature youtube
+SUBDIRS = account core log misc pages playlist render social stat text track userfeature youtube tools
 
 pkglibexec_PROGRAMS = eqbeats.fcgi
 eqbeats_fcgi_LDADD = \
