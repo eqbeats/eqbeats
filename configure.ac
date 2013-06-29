@@ -65,5 +65,12 @@ AC_CONFIG_FILES([
     src/youtube/pages/Makefile
     src/tools/Makefile
     rc/Makefile
+    static/Makefile
+    static/icons/Makefile
+    templates/Makefile
+    templates/html/Makefile
+    templates/json/Makefile
+    templates/oembed/Makefile
+    sql/Makefile
 ])
 AC_OUTPUT
