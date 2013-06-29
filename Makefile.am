@@ -1,1 +1,1 @@
-SUBDIRS = src rc static templates sql
+SUBDIRS = lib src rc static templates sql

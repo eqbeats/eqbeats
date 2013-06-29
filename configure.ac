@@ -4,6 +4,7 @@
 AC_PREREQ([2.69])
 AC_INIT([eqbeats], [3.0], [contact@eqbeats.org])
 AM_INIT_AUTOMAKE([foreign])
+LT_INIT
 AC_CONFIG_SRCDIR([src/main.cpp])
 AC_CONFIG_HEADERS([config.h])
 
@@ -13,7 +14,6 @@ AC_PROG_CC
 AC_PROG_INSTALL
 AC_PROG_LN_S
 AC_PROG_MAKE_SET
-AC_PROG_RANLIB
 
 # Checks for libraries.
 PKG_CHECK_MODULES([MAGICK], [Magick++])
@@ -43,6 +43,7 @@ AC_CHECK_FUNCS([dup2 gettimeofday memset mkdir select socket strchr])
 
 AC_CONFIG_FILES([
     Makefile
+    lib/Makefile
     src/Makefile
     src/account/Makefile
     src/account/pages/Makefile
