@@ -22,3 +22,12 @@ feature.queue
 
 eqbeats.fcgi
 /tools/*
+
+*.in
+.deps
+aclocal.m4
+autom4te.cache
+depcomp
+install-sh
+missing
+configure
