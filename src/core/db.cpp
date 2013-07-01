@@ -1,17 +1,26 @@
 #include "db.h"
+#include "path.h"
 #include <stdarg.h>
 #include <libpq-fe.h>
+#include <hiredis/hiredis.h>
 
 using namespace DB;
 
 PGconn *db;
+redisContext *redis_ctx;
 
 void DB::connect(){
     db = PQconnectdb("");
+    redis_ctx = redisConnectUnix((eqbeatsDir() + "/redis.sock").c_str());
 }
 
 void DB::close(){
     PQfinish(db);
+    redisFree(redis_ctx);
+}
+
+struct redisContext* DB::redis() {
+    return redis_ctx;
 }
 
 int healthCheck(){
