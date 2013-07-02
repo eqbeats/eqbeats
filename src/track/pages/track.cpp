@@ -60,14 +60,7 @@ void Pages::trackMisc(Document *doc){
     }
 
     else if(sub == "stats"){
-        Track t(tid);
-        std::string uri = "udpstat/tracks/" + number(tid) + ".json";
-        std::string path = eqbeatsDir() + "/" + uri;
-        if(t){
-            if(access(path.c_str(), R_OK))
-                doc->setJson("json/array.tpl");
-            else
-                doc->download(File(uri, number(tid) + ".json"));
-        }
+        if(Track(tid))
+            doc->setContent(Stat::getTrackJson(tid), "application/json");
     }
 }

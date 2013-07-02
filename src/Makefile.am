@@ -6,11 +6,11 @@ eqbeats_fcgi_LDADD = \
     pages/libpages.a \
     playlist/libplaylist.a playlist/pages/libplaylistpages.a \
     social/libsocial.a social/pages/libsocialpages.a \
-    stat/libstat.a \
     track/libtrack.a track/pages/libtrackpages.a \
     userfeature/libuserfeature.a userfeature/pages/libuserfeaturepages.a \
     youtube/libyoutube.a youtube/pages/libyoutubepages.a \
     account/libaccount.a account/pages/libaccountpages.a \
+    stat/libstat.a \
     misc/libmisc.a \
     render/librender.a \
     text/libtext.a \
