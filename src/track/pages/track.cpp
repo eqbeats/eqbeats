@@ -2,7 +2,7 @@
 #include "../audio.h"
 #include "../extended.h"
 #include <core/cgi.h>
-#include <stat/push.h>
+#include <stat/stat.h>
 #include <text/text.h>
 #include <unistd.h>
 #include <render/file.h>
@@ -49,13 +49,13 @@ void Pages::trackMisc(Document *doc){
         else
             doc->download(Audio(&t).mp3(), true);
         if(cgi("stream").empty())
-            pushStat("trackDownload", t.artist.id, tid);
+            Stat::push("trackDownload", t.artist.id, tid);
     }
 
     else if(sub == "played"){
         Track t(tid);
         if(t)
-            pushStat("trackPlay", t.artist.id, tid);
+            Stat::push("trackPlay", t.artist.id, tid);
         doc->setJson("/dev/null");
     }
 

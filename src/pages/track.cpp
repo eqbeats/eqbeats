@@ -11,7 +11,7 @@
 #include <track/audio.h>
 #include <track/art.h>
 #include <track/extended.h>
-#include <stat/push.h>
+#include <stat/stat.h>
 #include <youtube/youtube.h>
 
 static std::string filter(const std::string &str){
@@ -35,7 +35,7 @@ void Pages::track(Document *doc){
         ExtendedTrack t(tid);
         if(!t) return;
 
-        pushStat("trackView", t.artist.id, tid);
+        Stat::push("trackView", t.artist.id, tid);
 
         doc->setHtml("html/track.tpl", t.title);
         doc->rootDict()->SetValueAndShowSection("TID", number(t.id), "HAS_OEMBED");

@@ -14,7 +14,7 @@
 #include <hiredis/hiredis.h>
 #include <core/db.h>
 
-#include "push.h"
+#include "stat.h"
 
 std::string salt_;
 
@@ -45,7 +45,7 @@ std::string salt(){
     }
 }
 
-void pushStat(std::string type, int uid, int tid){
+void Stat::push(std::string type, int uid, int tid){
     bool trackme = true;
     for(int i=0; headers[i] != NULL; i++)
         if(strcmp(headers[i], "HTTP_DNT=1") == 0)
