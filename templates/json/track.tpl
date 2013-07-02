@@ -20,5 +20,11 @@
         "aac": "{{EQBEATS_URL}}/track/{{TID}}/aac",
         "mp3": "{{EQBEATS_URL}}/track/{{TID}}/mp3",
         "original": "{{EQBEATS_URL}}/track/{{TID}}/original"
+    },
+    "stream": {
+        "opus": "{{EQBEATS_URL}}/track/{{TID}}/opus?stream=1",
+        "vorbis": "{{EQBEATS_URL}}/track/{{TID}}/vorbis?stream=1",
+        "aac": "{{EQBEATS_URL}}/track/{{TID}}/aac?stream=1",
+        "mp3": "{{EQBEATS_URL}}/track/{{TID}}/mp3?stream=1"
     }
 }
