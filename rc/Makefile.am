@@ -1,1 +1,1 @@
-pkglibexec_SCRIPTS = eqbeats hitsd udpstat ytmgr
+pkglibexec_SCRIPTS = eqbeats
