@@ -1,9 +1,7 @@
 pkglibexec_SCRIPTS = autofeature feature transcode.sh ytmgr.py
-pkglibexec_PROGRAMS = clint dumptracks fqueue mkthumbs multiplex udpstat updatetags
+pkglibexec_PROGRAMS = dumptracks fqueue mkthumbs udpstat updatetags
 
 AM_CPPFLAGS = -I$(top_srcdir)/src
-
-clint_SOURCES = clint.cpp
 
 dumptracks_SOURCES = dumptracks.cpp
 dumptracks_LDADD = -lpq $(HIREDIS_LIBS) ../core/libcore.a ../text/libtext.a
@@ -14,8 +12,6 @@ fqueue_LDADD = -lpq $(HIREDIS_LIBS) ../core/libcore.a ../text/libtext.a
 mkthumbs_SOURCES = mkthumbs.cpp
 mkthumbs_CPPFLAGS = $(AM_CPPFLAGS) $(MAGICK_CFLAGS)
 mkthumbs_LDADD = $(MAGICK_LIBS) ../track/libtrack.a ../text/libtext.a ../core/libcore.a
-
-multiplex_SOURCES = multiplex.c
 
 udpstat_SOURCES = udpstat.cpp
 udpstat_LDADD = $(NETTLE_LIBS) ../misc/libmisc.a ../text/libtext.a
