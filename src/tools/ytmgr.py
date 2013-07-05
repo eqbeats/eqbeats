@@ -164,7 +164,7 @@ Content-Transfer-Encoding: binary
                 ### else: warn that account has been unlinked somehow?
             except IndexError:
                 pass
-    def run(self, argv):
+    def run(self):
         if(not(os.getenv("EQBEATS_DIR") and os.getenv("EQBEATS_YT_API_KEY"))):
             print("Environment is not set up correctly. Both EQBEATS_DIR and EQBEATS_YT_API_KEY are needed")
             exit(1)
@@ -174,7 +174,7 @@ Content-Transfer-Encoding: binary
                 if self.auth(sys.argv[1], int(sys.argv[2])) == False:
                     exit(1)
             elif sys.argv[1] == "upload":
-                self.upload(int(argv[1])
+                self.upload(int(sys.argv[1])
             else:
                 exit(1)
         except TypeError: # silly weak typing
@@ -183,4 +183,4 @@ Content-Transfer-Encoding: binary
             exit(2)
 
 yt = YoutubeManager()
-yt.run(sys.argv)
+yt.run()
