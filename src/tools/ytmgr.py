@@ -174,7 +174,7 @@ Content-Transfer-Encoding: binary
                 if self.auth(sys.argv[1], int(sys.argv[2])) == False:
                     exit(1)
             elif sys.argv[1] == "upload":
-                self.upload(int(sys.argv[1])
+                self.upload(int(sys.argv[2])
             else:
                 exit(1)
         except TypeError: # silly weak typing
