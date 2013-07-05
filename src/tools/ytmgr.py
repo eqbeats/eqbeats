@@ -171,7 +171,7 @@ Content-Transfer-Encoding: binary
         os.chdir(os.getenv("EQBEATS_DIR"))
         try:
             if sys.argv[1] == "auth":
-                if self.auth(sys.argv[1], int(sys.argv[2])) == False:
+                if self.auth(sys.argv[2], int(sys.argv[3])) == False:
                     exit(1)
             elif sys.argv[1] == "upload":
                 self.upload(int(sys.argv[2])
