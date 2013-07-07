@@ -25,7 +25,7 @@ hits.dat
 hitsd.sock
 feature.queue
 
-eqbeats.fcgi
+src/eqbeats.fcgi
 /tools/*
 
 *.in
