@@ -9,7 +9,6 @@
         <script type="text/javascript" src="/static/player.js"></script>
         {{#REQUIRES_STATS_JS}}
         <script type="text/javascript" src="/static/d3.js"></script>
-        <script type="text/javascript" src="/static/crossfilter.js"></script>
         <script type="text/javascript" src="/static/stats.js"></script>
         {{/REQUIRES_STATS_JS}}
         {{#HAS_OEMBED}}

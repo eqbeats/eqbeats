@@ -11,8 +11,8 @@ var clone = function(obj) { // http://my.opera.com/GreyWyvern/blog/show.dml/1725
 };
 var daysecs = 60*60*24;
 var timescale = d3.scale.linear().domain([today() - daysecs * 60, today() + daysecs ]).range([0, 650]);
-var days = 30;
-var data = [];
+var timerange = 30;
+var data = {};
 var uniqmode = true;
 var statsfirstrun = true;
 
@@ -31,6 +31,7 @@ var timeranges = [
 ]
 
 
+function ts(datestring){ return (new Date(datestring) - 0)/1000; }
 function now(){ return Math.floor(+(new Date())/1000); }
 function day(t){ return t - (t % 86400); }
 function today(){ return day(now()); }
@@ -59,9 +60,9 @@ function initstats(){
             .append("option")
             .attr("value", function(d){return d.days;})
             .text(function(d){return d.name;});
-        select.property("value", days)
+        select.property("value", timerange)
             .on("change", function(){
-                days = this.value;
+                timerange = this.value;
                 render();
             });
 
@@ -94,7 +95,7 @@ function initstats(){
     xhr.open("GET", window.location.pathname + "/stats?" + now(), true);
     xhr.onreadystatechange = function(){
         if(xhr.readyState == 4){
-            data = eval(xhr.responseText);
+            data = eval(xhr.responseText)[0];
             render(true);
             d3.select(".ellipsis").remove();
         }
@@ -104,76 +105,92 @@ function initstats(){
 
 var dateformat = d3.time.format("%a, %b %e");
 function barover(d){
+    console.log(d);
     var thisd = d;
     d3.selectAll("#charts .bar").style("opacity", 1);
     var bars = d3.selectAll("#charts .bar").filter(function(d){return d.key == thisd.key;})
         .style("opacity", 0.5);
     var ins = d3.select("#charts .inspector");
-    ins.select(".date").text(dateformat(new Date(d.key * 1000)) + ": ");
+    ins.select(".date").text(dateformat(new Date(d.key)) + ": ");
     for(var i = 0; i < charts.length; i++){
         var chart = charts[i];
         ins.select("." + chart.classname).text(function(){
-            var data = chart.data;
-            for(var j = 0; j < data.length; j++){
-                if(data[j].key == d.key)
-                    return chart.name + ": " + data[j].value + " (" + (chart.uniqdata[j].value || "0") + " uniq.) ";
-            }
-            return 0;
+            var days = data.days[chart.type];
+            var unique_days = data.unique_days[chart.type];
+            if(days[d.key])
+                    return chart.name + ": " + unique_days[d.key] + " (" + days[d.key] + " total) ";
+            return "";
         });
     }
 }
 
-var referrers;
 var referring_domains;
+
+function quicksort(array, val_f){
+    if(array.length == 0) return array;
+    var lower = []; var higher = [];
+    for(var i = 1; i < array.length; i++){
+        if(val_f(array[i]) > val_f(array[0]))
+            higher.push(array[i]);
+        else
+            lower.push(array[i]);
+    }
+    return lower.concat( [array[0]].concat(higher) );
+}
+
+function exists(array, value){
+    for(var i = 0; i < array.length; i++)
+        if(value == array[i])
+            return true;
+    return false;
+}
+
+function obj2arr(object){
+    var array = [];
+    for(var key in object)
+        array.push({"key": key, "value": object[key]});
+    return array;
+}
 
 function render(refilter){
     if(refilter){
-        var cf = crossfilter(data);
-        var entriesByTime = cf.dimension(function(d){return d.timestamp;});
-        var daily = entriesByTime.group(function(t){ return t - (t % daysecs); });
-        var entriesByType = cf.dimension(function(d){return d.type;});
-        for(var i = 0; i < charts.length; i++){
-            entriesByType.filter(charts[i].type);
-            charts[i].data = clone(daily.all());
+        referring_domains = [];
+        var seen = [];
+        for(var referrer in data.referrers){
+            var domain = referrer.replace(/^https?:\/\/(www\.)?([^\/]*).*$/, "$2");
+            if(!exists(seen, domain)){
+                referring_domains.push({"domain": domain, "hits":data.referrers[referrer], "urls": [{"url":referrer, "hits":data.referrers[referrer]}]});
+                seen.push(domain);
+            }
+            else{
+                for(var i = 0; i < referring_domains.length; i++)
+                    if(referring_domains[i].domain == domain){
+                        referring_domains[i].hits += data.referrers[referrer];
+                        referring_domains[i].urls.push({"url":referrer, "hits":data.referrers[referrer]});
+                    }
+            }
         }
-        entriesByType.filter("trackView");
-        var entriesByReferringDomain = cf.dimension(function(d){return d.referrer ? d.referrer.replace(/^https?:\/\/(www\.)?([^\/]*).*$/, "$2") : '';});
-        var entriesGroupByReferringDomain = entriesByReferringDomain.group();
-        referring_domains = clone(entriesGroupByReferringDomain.top(6));
-
-        referrers = Object();
-        var entriesByReferrer = cf.dimension(function(d){return d.referrer || '';});
-        var entriesGroupByReferrer = entriesByReferrer.group();
-        for(var i = 0; i < referring_domains.length; i++){
-            var domain = referring_domains[i].key;
-            entriesByReferringDomain.filter(domain);
-            referrers[domain] = clone(entriesGroupByReferrer.top(5));
-        }
-        cf = crossfilter(uniq(data));
-        entriesByTime = cf.dimension(function(d){return d.timestamp;});
-        daily = entriesByTime.group(function(t){ return t - (t % daysecs); });
-        entriesByType = cf.dimension(function(d){return d.type;});
-    for(var i = 0; i < charts.length; i++){
-            entriesByType.filter(charts[i].type);
-            charts[i].uniqdata = clone(daily.all());
-        }
+        referring_domains = quicksort(referring_domains, function(d){ return d.hits }).slice(0, 6);
+        // the urls should already be sorted, since they are sorted in the JSON
     }
     for(var i = 0; i < charts.length; i++){
         var chart = charts[i];
 
         // grab in-range days only
-        var chartdata_ = uniqmode?chart.uniqdata:chart.data;
-        var chartdata = Array();
-        for(var j = 0; j < chartdata_.length; j++){
-            if(chartdata_[j].key >= today() - (days - 1) * daysecs)
-                chartdata.push(chartdata_[j]);
+        var start = new Date();
+        start.setDate(start.getDate() - (timerange - 1));
+        var days_ = uniqmode?data.unique_days[chart.type]:data.days[chart.type];
+        var days = {};
+        for(var day in days_){
+            if(new Date(day) >= start)
+                days[day] = days_[day];
         }
 
         // scale
-        timescale = timescale.domain([today() - daysecs * (days - 1), today() + daysecs]);
+        timescale = timescale.domain([ts(start), today() + daysecs]);
         var ceiling = 20;
-        for(var j = 0; j < chartdata.length; j++)
-            while(chartdata[j].value >= ceiling - 1){
+        for(var day in days)
+            while(days[day] >= ceiling - 1){
                 var power = Math.pow(10, Math.floor(log(10, ceiling)));
                 if(Math.round(ceiling / power) < 2){ ceiling = 2 * power; }
                 else if(Math.round(ceiling / power) < 4){ ceiling = 4 * power; }
@@ -182,27 +199,28 @@ function render(refilter){
             }
         var yscale = d3.scale.linear().domain([0, ceiling]).range([0, chart.height]).nice();
         var prevyscale = chart.yscale || yscale;
+
         chart.yscale = yscale;
 
         // making bars
         var update = d3.select("#" + chart.id).selectAll("." + chart.classname)
-            .data(chartdata, function(d){ return d.key; });
+            .data(obj2arr(days), function(d){ return d.key; });
         update.enter()
             .append("rect")
             .attr("height", 1).attr("y", chart.height)
             .attr("width", timescale(daysecs) - timescale(0) + 1)
-            .attr("x", function(d){ return Math.floor(timescale(d.key)) - 1; })
+            .attr("x", function(d){ return Math.floor(timescale(ts(d.key))) - 1; })
             .classed(chart.classname, true).classed("bar", true);
         update.transition()
             .attr("height", function(d){ return yscale(d.value); })
             .attr("y", function(d){ return chart.height - yscale(d.value); })
             .attr("width", timescale(daysecs) - timescale(0) + 1)
-            .attr("x", function(d){ return Math.floor(timescale(d.key)) - 1; })
+            .attr("x", function(d){ return Math.floor(timescale(ts(d.key))) - 1; })
         update.exit().transition()
             .attr("height", 0)
             .attr("y", chart.height)
             .attr("width", timescale(daysecs) - timescale(0) + 1)
-            .attr("x", function(d){ return Math.floor(timescale(d.key)) - 1; })
+            .attr("x", function(d){ return Math.floor(timescale(ts(d.key))) - 1; })
         update.on("mouseover", barover);
 
         // ticks
@@ -241,21 +259,21 @@ function render(refilter){
     }
 
     // referrers
-    var update = d3.select(".referrers").selectAll("tr").data(referring_domains);
+    var update = d3.select(".referrers").selectAll("tr").data(referring_domains, function(d){ return d.domain; });
     var tr = update.enter().append("tr");
     var td = tr.append("td").each(function(d){
-        if(d.key==""){
+        if(d.domain==""){
             this.appendChild(document.createTextNode("No address (IM, Email, Bookmarks...)"));
         } else {
             var a = document.createElement("A");
-            a['href'] = "http://" + d.key;
-            a.appendChild(document.createTextNode(d.key))
+            a['href'] = "http://" + d.domain;
+            a.appendChild(document.createTextNode(d.domain))
             this.appendChild(a);
             var ul = document.createElement("UL");
-            d3.select(ul).selectAll("li").data(referrers[d.key]).enter()
+            d3.select(ul).selectAll("li").data(d['urls'], function(d){return d.url}).enter()
                 .append("li").append("a")
-                .attr("href", function(d){return d.key})
-                .each(function(d){this.appendChild(document.createTextNode(d.key))});
+                .attr("href", function(d){return d.url})
+                .each(function(d){this.appendChild(document.createTextNode(d.url))});
             this.appendChild(ul);
             var thistd = this;
             a.onclick = function(e){
@@ -268,31 +286,9 @@ function render(refilter){
             }
         }
     })
-    tr.append("td").classed("value", true).html(function(d){ return d.value; });
-    tr.filter(function(d){ return d.value <= 0; }).remove();
-    tr.select("ul").selectAll("li").filter(function(d){ return d.value <= 0; }).remove();
+    tr.append("td").classed("value", true).html(function(d){ return d.hits; });
     update.exit().remove();
 
-}
-
-function uniq(data){
-    var out = Array();
-    var seen = Array();
-    for(var i=0; i < data.length; i++){
-        var row = data[i];
-        switch(row.unique){
-            case 1:
-                out.push(row);
-                break;
-            case -1:
-            var hash = row.type + row.addr + day(row.timestamp);
-            if(seen.indexOf(hash) == -1){
-                seen.push(hash);
-                out.push(row);
-            }
-        }
-    }
-    return out;
 }
 
 function noop(){}

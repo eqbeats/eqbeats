@@ -1,4 +1,4 @@
-{
+[{
     {{#HAS_UNIQUE}}
 
     "unique_totals": {
@@ -46,4 +46,4 @@
         {{/REFERRER}}
     }
     {{/HAS_REFERRERS}}
-}
+}]
