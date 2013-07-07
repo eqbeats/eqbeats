@@ -59,8 +59,4 @@ void Pages::trackMisc(Document *doc){
         doc->setJson("/dev/null");
     }
 
-    else if(sub == "stats"){
-        if(Track(tid))
-            doc->setContent(Stat::getTrackJson(tid), "application/json");
-    }
 }
