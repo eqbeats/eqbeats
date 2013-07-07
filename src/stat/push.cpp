@@ -48,14 +48,13 @@ int Stat::push(std::string type, int uid, int tid){
             DB::blindRedisCommand("MULTI");
             DB::blindRedisCommand("INCR stat:track:%d:%s:unique", tid, type.c_str());
             DB::blindRedisCommand("HINCRBY stat:track:%d:%s:daily:unique %s 1", tid, type.c_str(), day);
+            DB::blindRedisCommand("ZINCRBY stat:track:%d:referrers 1 %s", tid, env.getReferrer().c_str());
             DB::blindRedisCommand("SETEX stat:track:%d:%s:seen:%s:%s 86400 1", tid, type.c_str(), day, host.c_str());
             DB::blindRedisCommand("EXEC");
         }
         else
             DB::blindRedisCommand("UNWATCH");
         freeReplyObject(r);
-
-        DB::blindRedisCommand("ZINCRBY stat:track:%d:referrers 1 %s", tid, env.getReferrer().c_str());
     }
     return ret;
 }
