@@ -8,10 +8,8 @@ struct redisContext;
 
 namespace DB{
 
-void connect();
+void connect(std::string name="");
 void close();
-
-void setName(std::string name);
 
 void healthCheck();
 

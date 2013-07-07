@@ -11,6 +11,7 @@
 #include <social/pages/pages.h>
 #include <stat/pages.h>
 #include <text/modifiers.h>
+#include <text/text.h>
 #include <track/pages/pages.h>
 #include <userfeature/pages/pages.h>
 #include <youtube/pages/pages.h>
@@ -40,12 +41,12 @@ int main(int argc, char** argv){
     (void)argc;
     (void)argv;
 
-    DB::connect();
-
     if(!getenv("EQBEATS_DIR")){
         std::cerr << "Environment variable EQBEATS_DIR isn't set." << std::endl;
         return 1;
     }
+
+    DB::connect((std::string)argv[0] + "-" + number(getpid()));
 
     std::string logfile = eqbeatsDir()+"/eqbeats.log";
     freopen(logfile.c_str(),"a",stderr);

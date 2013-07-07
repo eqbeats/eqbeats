@@ -8,14 +8,17 @@ using namespace DB;
 
 PGconn *db;
 redisContext *redis_ctx;
+std::string name;
 
-void DB::connect(){
+void DB::connect(std::string name){
     db = PQconnectdb("");
     redis_ctx = redisConnectUnix((eqbeatsDir() + "/redis.sock").c_str());
-}
-
-void DB::setName(std::string name){
-        redisCommand(redis_ctx, "CLIENT SETNAME %s", name.c_str());
+    if(!name.empty()){
+        ::name = name;
+        blindRedisCommand("CLIENT SETNAME %s", name.c_str());
+    }
+    else if(!::name.empty())
+        blindRedisCommand("CLIENT SETNAME %s", ::name.c_str());
 }
 
 void DB::close(){
