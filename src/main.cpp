@@ -93,6 +93,7 @@ int main(int argc, char** argv){
     while(running && (FCGX_Accept_r(&request) == 0)){
         answering = true;
         resetTimer();
+        DB::healthCheck();
         headers = request.envp;
         o.attach(&request);
         try { cgi = cgicc::Cgicc(&o); }

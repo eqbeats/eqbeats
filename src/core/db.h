@@ -11,7 +11,12 @@ namespace DB{
 void connect();
 void close();
 
+void setName(std::string name);
+
+void healthCheck();
+
 struct redisContext* redis();
+void blindRedisCommand(const std::string &q, ...);
 
 typedef std::vector<std::string> Row;
 typedef std::vector<Row> Result;

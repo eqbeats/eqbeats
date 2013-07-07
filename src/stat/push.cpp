@@ -16,54 +16,46 @@
 
 #include "stat.h"
 
-std::string salt_;
+#include <log/log.h>
 
-std::string salt(){
-    if(!salt_.empty())
-        return salt_;
-    int f = open(((std::string)getenv("EQBEATS_DIR") + "/.udpstat.salt").c_str(), O_RDONLY);
-    if(f > -1){
-        char buffer[10];
-        read(f, buffer, 10);
-        close(f);
-        salt_ = std::string(buffer, 10);
-        return salt_;
-    }
-    else {
-        int urandom = open("/dev/urandom", O_RDONLY);
-        char buffer[10];
-        read(urandom, buffer, 10);
-        close(urandom);
-        salt_ = md5(std::string(buffer, 10)).substr(0,10);
-
-        umask(0777 % 0640);
-        FILE* f_ = fopen(((std::string)getenv("EQBEATS_DIR") + "/.udpstat.salt").c_str(), "w");
-        fprintf(f_, "%s", salt_.c_str());
-        fclose(f_);
-
-        return salt_;
-    }
-}
-
-void Stat::push(std::string type, int uid, int tid){
-    bool trackme = true;
-    for(int i=0; headers[i] != NULL; i++)
-        if(strcmp(headers[i], "HTTP_DNT=1") == 0)
-            trackme=false;
+int Stat::push(std::string type, int uid, int tid){
     cgicc::CgiEnvironment env = cgi.getEnvironment();
-    std::string host = (trackme) ? env.getRemoteAddr() : "0.0.0.0";
-    std::string addr = md5(host + salt()).substr(0,10);
+    std::string host = env.getRemoteAddr();
 
-    std::string entry = "{ \"type\":\"" + type + "\", "+
-                        (tid > 0?"\"tid\":" + number(tid) + ", ":"")+
-                        (type == "userView"?"\"uid\":" + number(uid) + ", ":"")+
-                        "\"timestamp\":" + number(time(NULL)) + ", "+
-                        "\"referrer\":\"" + env.getReferrer() + "\", "+
-                        "\"addr\":\"" + addr + "\", "+
-                        "\"unique\":-1 }";
+    redisReply* r;
 
-    if(tid > 0)
-        redisCommand(DB::redis(), "RPUSH stat:track:%d %s", tid, entry.c_str());
-    if(uid > 0)
-        redisCommand(DB::redis(), "RPUSH stat:user:%d %s", uid, entry.c_str());
+    r = (redisReply*) redisCommand(DB::redis(), "INCR stat:user:%d:%s", uid, type.c_str());
+    if(!r) return 0;
+    int ret = r->type == REDIS_REPLY_INTEGER ? r->integer : 0;
+    freeReplyObject(r);
+
+    if(tid > 0){
+        r = (redisReply*) redisCommand(DB::redis(), "INCR stat:track:%d:%s", tid, type.c_str());
+        if(!r) return ret;
+        ret = r->type == REDIS_REPLY_INTEGER ? r->integer : 0;
+        freeReplyObject(r);
+
+        char day[11];
+        time_t t = time(NULL);
+        strftime(day, 11, "%F", gmtime(&t));
+
+        DB::blindRedisCommand("HINCRBY stat:track:%d:%s:daily %s 1", tid, type.c_str(), day);
+
+        DB::blindRedisCommand("WATCH stat:track:%d:%s:seen:%s:%s", tid, type.c_str(), day, host.c_str());
+        r = (redisReply*)redisCommand(DB::redis(), "GET stat:track:%d:%s:seen:%s:%s", tid, type.c_str(), day, host.c_str());
+        if(!r) return ret;
+        if(r->type == REDIS_REPLY_NIL){
+            DB::blindRedisCommand("MULTI");
+            DB::blindRedisCommand("INCR stat:track:%d:%s:unique", tid, type.c_str());
+            DB::blindRedisCommand("HINCRBY stat:track:%d:%s:daily:unique %s 1", tid, type.c_str(), day);
+            DB::blindRedisCommand("SETEX stat:track:%d:%s:seen:%s:%s 86400 1", tid, type.c_str(), day, host.c_str());
+            DB::blindRedisCommand("EXEC");
+        }
+        else
+            DB::blindRedisCommand("UNWATCH");
+        freeReplyObject(r);
+
+        DB::blindRedisCommand("ZINCRBY stat:track:%d:referrers 1 %s", tid, env.getReferrer().c_str());
+    }
+    return ret;
 }

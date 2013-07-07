@@ -35,9 +35,8 @@ void Pages::track(Document *doc){
         ExtendedTrack t(tid);
         if(!t) return;
 
-        Stat::push("trackView", t.artist.id, tid);
-
         doc->setHtml("html/track.tpl", t.title);
+
         doc->rootDict()->SetValueAndShowSection("TID", number(t.id), "HAS_OEMBED");
         t.fill(doc->dict());
         t.player(doc->dict(), true);
@@ -54,7 +53,7 @@ void Pages::track(Document *doc){
         uploader->SetFilename("html/uploader.tpl");
         uploader->SetValue("ACTION", t.url() + "/upload");
 
-        int hits = t.artist.self() ? t.getHits() : t.hit();
+        int hits = Stat::push("trackView", t.artist.id, tid);
         doc->dict()->SetValue("HIT_COUNT", number(hits));
         doc->rootDict()->ShowSection("REQUIRES_STATS_JS");
 
