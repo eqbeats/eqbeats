@@ -2,26 +2,27 @@
 #include <account/session.h>
 #include <core/cgi.h>
 #include <core/db.h>
+#include <log/log.h>
 #include <misc/timer.h>
 #include <pages/pages.h>
 #include <playlist/pages/pages.h>
 #include <render/document.h>
 #include <render/fcgiio.h>
 #include <social/pages/pages.h>
+#include <stat/pages.h>
 #include <text/modifiers.h>
 #include <track/pages/pages.h>
 #include <userfeature/pages/pages.h>
 #include <youtube/pages/pages.h>
-#include <log/log.h>
 
-#include <stdio.h>
-#include <sys/wait.h>
-#include <unistd.h>
-#include <stdexcept>
+#include <fcntl.h>
 #include <Magick++.h>
 #include <signal.h>
+#include <stdexcept>
+#include <stdio.h>
 #include <sys/stat.h>
-#include <fcntl.h>
+#include <sys/wait.h>
+#include <unistd.h>
 
 bool running = true, answering = false;
 
@@ -80,6 +81,7 @@ int main(int argc, char** argv){
         Pages::comment, Pages::socialActions, Pages::favorites,
         Pages::featureActions,
         Pages::oauth, Pages::yt_upload,
+        Pages::stats,
         0
     };
 

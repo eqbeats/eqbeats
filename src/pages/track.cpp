@@ -55,6 +55,8 @@ void Pages::track(Document *doc){
 
         int hits = Stat::push("trackView", t.artist.id, tid);
         doc->dict()->SetValue("HIT_COUNT", number(hits));
+        int unique_hits = Stat::get("trackView", 0, tid, true);
+        doc->dict()->SetValue("UNIQUE_HIT_COUNT", number(unique_hits));
         doc->rootDict()->ShowSection("REQUIRES_STATS_JS");
 
         Session::fill(doc->dict());

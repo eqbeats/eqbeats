@@ -2,10 +2,10 @@
 #include "../audio.h"
 #include "../extended.h"
 #include <core/cgi.h>
-#include <stat/stat.h>
 #include <text/text.h>
 #include <unistd.h>
 #include <render/file.h>
+#include <stat/stat.h>
 
 void Pages::trackMisc(Document *doc){
 
