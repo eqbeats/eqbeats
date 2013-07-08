@@ -32,7 +32,7 @@ int main(int argc, char **argv){
         return 1;
     }
 
-    DB::connect();
+    DB::connect("updatetags");
 
     DB::Result r = DB::query("SELECT tracks.id, tracks.title, users.name FROM tracks, users WHERE users.id = tracks.user_id AND tracks.id = $1", number(id));
 
