@@ -8,7 +8,7 @@ std::string show(const std::string &q){
 }
 
 int main(){
-    DB::connect();
+    DB::connect("stats");
     std::cout << show("SELECT count(*) FROM tracks") << " tracks ("
               << show("SELECT count(*) FROM tracks WHERE visible='f'") << " hidden)" << std::endl
               << show("SELECT count(*) FROM playlists") << " playlists" << std::endl

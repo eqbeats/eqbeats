@@ -7,6 +7,7 @@
 #include <track/extended.h>
 
 #include <unistd.h>
+#include <sys/wait.h>
 
 Youtube::Youtube(int uid): _uid(uid) { }
 
@@ -19,12 +20,23 @@ void Youtube::unlink() {
     DB::query("DELETE FROM youtube_refresh_tokens WHERE user_id = " + number(_uid));
 }
 
+std::string ytmgrPath(){
+    return eqbeatsDir() + "/tools/ytmgr.py";
+}
+
 bool Youtube::link(std::string & code){
-    Repl ytmgr(("/tmp/ytmgr-" + number(getuid()) + ".sock").c_str());
-    return ytmgr.exec("auth " + code + " " + number(_uid)).find("OK") == 0;
+    int rc;
+    pid_t pid = fork();
+    if(pid == 0){
+        if(execl(ytmgrPath().c_str(), "ytmgr", "auth", code.c_str(), number(_uid).c_str(), NULL) == -1)
+            exit(1);
+    }
+    waitpid(pid, &rc, 0);
+    return WIFEXITED(rc);
 }
 
 bool Youtube::upload(ExtendedTrack & t){
-    Repl ytmgr(("/tmp/ytmgr-" + number(getuid()) + ".sock").c_str());
-    return ytmgr.exec("upload " + number(t.id)).find("OK") == 0;
+    if(fork() == 0)
+        execl(ytmgrPath().c_str(), "ytmgr", "upload", number(t.id).c_str(), NULL);
+    return true;
 }

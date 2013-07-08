@@ -1,4 +1,7 @@
 *.o
+*.a
+*.la
+*.lo
 *.d
 *.hi
 tags
@@ -10,6 +13,7 @@ static/awstats
 
 *.log
 *.sw?
+*~
 pid
 /tmp/
 /tracks/
@@ -21,5 +25,32 @@ hits.dat
 hitsd.sock
 feature.queue
 
-eqbeats.fcgi
+src/eqbeats.fcgi
 /tools/*
+
+*.in
+.deps
+aclocal.m4
+autom4te.cache
+depcomp
+install-sh
+missing
+configure
+Makefile
+config.guess
+config.h
+config.status
+config.sub
+libtool
+ltmain.sh
+stamp-h1
+compile
+.libs
+
+src/tools/clint
+src/tools/dumptracks
+src/tools/fqueue
+src/tools/mkthumbs
+src/tools/multiplex
+src/tools/udpstat
+src/tools/updatetags

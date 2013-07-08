@@ -15,7 +15,7 @@ std::string escape(const std::string &str){
 }
 
 int main(int argc, char **argv){
-    DB::connect();
+    DB::connect("dumptracks");
 
     bool all=false, id=false, airable=false;
     for(int i=1; i<argc; i++){

@@ -11,7 +11,7 @@
 #include <track/audio.h>
 #include <track/art.h>
 #include <track/extended.h>
-#include <stat/push.h>
+#include <stat/stat.h>
 #include <youtube/youtube.h>
 
 static std::string filter(const std::string &str){
@@ -35,9 +35,8 @@ void Pages::track(Document *doc){
         ExtendedTrack t(tid);
         if(!t) return;
 
-        pushStat("trackView", t.artist.id, tid);
-
         doc->setHtml("html/track.tpl", t.title);
+
         doc->rootDict()->SetValueAndShowSection("TID", number(t.id), "HAS_OEMBED");
         t.fill(doc->dict());
         t.player(doc->dict(), true);
@@ -54,8 +53,10 @@ void Pages::track(Document *doc){
         uploader->SetFilename("html/uploader.tpl");
         uploader->SetValue("ACTION", t.url() + "/upload");
 
-        int hits = t.artist.self() ? t.getHits() : t.hit();
+        int hits = Stat::push("trackView", t.artist.id, tid);
         doc->dict()->SetValue("HIT_COUNT", number(hits));
+        int unique_hits = Stat::get("trackView", 0, tid, true);
+        doc->dict()->SetValue("UNIQUE_HIT_COUNT", number(unique_hits));
         doc->rootDict()->ShowSection("REQUIRES_STATS_JS");
 
         Session::fill(doc->dict());

@@ -3,6 +3,7 @@
 #include <core/path.h>
 #include <text/text.h>
 #include <misc/repl.h>
+#include <hiredis/hiredis.h>
 
 ExtendedTrack::ExtendedTrack(int tid){
 
@@ -63,21 +64,23 @@ void ExtendedTrack::fill(Dict *d) const{
 
 // Hits
 
-Repl hitsd;
-
-void initHitsd(){
-    if(!hitsd){
-        std::string path = eqbeatsDir() + "/hitsd.sock";
-        hitsd = Repl(path.c_str());
-    }
+int runRedis(const char *format, int id){
+    redisReply *reply = (redisReply*) redisCommand(DB::redis(), format, id);
+    if(!reply)
+        return 0;
+    int hits = 0;
+    if(reply->type == REDIS_REPLY_INTEGER)
+        hits = reply->integer;
+    else if(reply->type == REDIS_REPLY_STRING)
+        hits = number((std::string) reply->str);
+    freeReplyObject(reply);
+    return hits;
 }
 
 int ExtendedTrack::getHits(){
-    initHitsd();
-    return number(hitsd.exec("get " + number(id)));
+    return runRedis("GET hits:%d", id);
 }
 
 int ExtendedTrack::hit(){
-    initHitsd();
-    return number(hitsd.exec("increment " + number(id)));
+    return runRedis("INCR hits:%d", id);
 }

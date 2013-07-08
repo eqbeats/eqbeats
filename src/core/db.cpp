@@ -1,25 +1,48 @@
 #include "db.h"
+#include "path.h"
 #include <stdarg.h>
 #include <libpq-fe.h>
+#include <hiredis/hiredis.h>
 
 using namespace DB;
 
 PGconn *db;
+redisContext *redis_ctx;
+std::string name;
 
-void DB::connect(){
+void DB::connect(std::string name){
     db = PQconnectdb("");
+    redis_ctx = redisConnectUnix((eqbeatsDir() + "/redis.sock").c_str());
+    if(!name.empty()){
+        ::name = name;
+        blindRedisCommand("CLIENT SETNAME %s", name.c_str());
+    }
+    else if(!::name.empty())
+        blindRedisCommand("CLIENT SETNAME %s", ::name.c_str());
 }
 
 void DB::close(){
     PQfinish(db);
+    redisFree(redis_ctx);
 }
 
-int healthCheck(){
-    if(PQstatus(db) != CONNECTION_OK){
+struct redisContext* DB::redis() {
+    return redis_ctx;
+}
+
+void DB::healthCheck(){
+    if(PQstatus(db) != CONNECTION_OK || redis_ctx->err){
         PQreset(db);
-        return 0;
+        redisFree(redis_ctx);
+        DB::connect();
     }
-    return 1;
+}
+
+void DB::blindRedisCommand(const std::string &q, ...){
+    va_list ap;
+    va_start(ap, q);
+    void* r = redisvCommand(redis_ctx, q.c_str(), ap);
+    if(r != NULL) freeReplyObject(r);
 }
 
 Result toResult(PGresult *res){
@@ -40,10 +63,6 @@ Result queryH(const std::string &q, int n, ...){
         val[i] = va_arg(vl, const char*);
     va_end(vl);
     PGresult* res = PQexecParams(db, q.c_str(), n, 0, val, 0, 0, 0);
-    if(PQstatus(db) != CONNECTION_OK){
-        PQreset(db);
-        res = PQexecParams(db, q.c_str(), n, 0, val, 0, 0, 0);
-    }
     return toResult(res);
 }
 
@@ -52,19 +71,11 @@ Result DB::query(const std::string &q, const std::vector<std::string> &params){
     for(unsigned i=0; i<params.size(); i++)
         val[i] = params[i].c_str();
     PGresult* res = PQexecParams(db, q.c_str(), params.size(), 0, val, 0, 0, 0);
-    if(PQstatus(db) != CONNECTION_OK){
-        PQreset(db);
-        res = PQexecParams(db, q.c_str(), params.size(), 0, val, 0, 0, 0);
-    }
     return toResult(res);
 }
 
 Result DB::query(const std::string &q){
     PGresult* res = PQexec(db, q.c_str());
-    if(PQstatus(db) != CONNECTION_OK){
-        PQreset(db);
-        res = PQexec(db, q.c_str());
-    }
     return toResult(res);
 }
 

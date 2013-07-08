@@ -2,26 +2,28 @@
 #include <account/session.h>
 #include <core/cgi.h>
 #include <core/db.h>
+#include <log/log.h>
 #include <misc/timer.h>
 #include <pages/pages.h>
 #include <playlist/pages/pages.h>
 #include <render/document.h>
 #include <render/fcgiio.h>
 #include <social/pages/pages.h>
+#include <stat/pages.h>
 #include <text/modifiers.h>
+#include <text/text.h>
 #include <track/pages/pages.h>
 #include <userfeature/pages/pages.h>
 #include <youtube/pages/pages.h>
-#include <log/log.h>
 
-#include <stdio.h>
-#include <sys/wait.h>
-#include <unistd.h>
-#include <stdexcept>
+#include <fcntl.h>
 #include <Magick++.h>
 #include <signal.h>
+#include <stdexcept>
+#include <stdio.h>
 #include <sys/stat.h>
-#include <fcntl.h>
+#include <sys/wait.h>
+#include <unistd.h>
 
 bool running = true, answering = false;
 
@@ -39,12 +41,12 @@ int main(int argc, char** argv){
     (void)argc;
     (void)argv;
 
-    DB::connect();
-
     if(!getenv("EQBEATS_DIR")){
         std::cerr << "Environment variable EQBEATS_DIR isn't set." << std::endl;
         return 1;
     }
+
+    DB::connect((std::string)argv[0] + "-" + number(getpid()));
 
     std::string logfile = eqbeatsDir()+"/eqbeats.log";
     freopen(logfile.c_str(),"a",stderr);
@@ -80,6 +82,7 @@ int main(int argc, char** argv){
         Pages::comment, Pages::socialActions, Pages::favorites,
         Pages::featureActions,
         Pages::oauth, Pages::yt_upload,
+        Pages::stats,
         0
     };
 
@@ -93,6 +96,7 @@ int main(int argc, char** argv){
     while(running && (FCGX_Accept_r(&request) == 0)){
         answering = true;
         resetTimer();
+        DB::healthCheck();
         headers = request.envp;
         o.attach(&request);
         try { cgi = cgicc::Cgicc(&o); }

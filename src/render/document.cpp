@@ -34,9 +34,18 @@ void Document::download(const File &f, bool attachment){
     _attachment = attachment;
 }
 
+void Document::setContent(const std::string &cnt, const std::string &mime, int code){
+    _redir.clear();
+    if(dw) dw = File();
+    _content = cnt;
+    _code = code;
+    _mime = mime;
+}
+
 void Document::setTemplate(const std::string &tpl, const std::string &mime, int code){
     _redir.clear();
     if(dw) dw = File();
+    _content.clear();
     _code = code;
     _mime = mime;
     _tpl = tpl;
@@ -63,6 +72,9 @@ std::string Document::generate(){
 
     else if(dw)
         return _http + Http::download(dw, _attachment);
+
+    if(!_content.empty())
+        return _http + Http::header(_mime, _code) + _content;
 
     std::string out;
     if(_tpl.empty())

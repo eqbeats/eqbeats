@@ -4,10 +4,17 @@
 #include <string>
 #include <vector>
 
+struct redisContext;
+
 namespace DB{
 
-void connect();
+void connect(std::string name="");
 void close();
+
+void healthCheck();
+
+struct redisContext* redis();
+void blindRedisCommand(const std::string &q, ...);
 
 typedef std::vector<std::string> Row;
 typedef std::vector<Row> Result;

@@ -8,7 +8,7 @@
 using namespace std;
 
 int main(int argc, char **argv){
-    DB::connect();
+    DB::connect("fqueue");
 
     int tid = 0;
     if(argc == 2)

@@ -79,8 +79,9 @@ Here is a sample config for nginx:
 
 By default, EqBeats will use the default PostgreSQL DB for your user, so make sure you have one and that the pgcrypto extension is enabled on it.
 
+    su postgres -c 'createuser -d YOURNAME'
+    su YOU -c 'createdb'
     su postgres
-    createuser -d YOURNAME
     echo "CREATE EXTENSION pgcrypto;" | psql -d YOURNAME
 
 Then, import the database schema:

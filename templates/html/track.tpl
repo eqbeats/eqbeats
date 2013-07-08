@@ -67,7 +67,8 @@
         {{/READY}}
         <span><img alt="" src="/static/icons/balloon-white-left.png" /> Share: <a href="#embedcode" onclick="document.getElementById('embedcode').style.display='block';return false;">Embed</a></span>
 
-        <span><img alt="" src="/static/icons/edit-number.png" /> Hits: {{HIT_COUNT}} <a href="#charts" onclick="initstats();">Detailed stats</a></span>
+        <span><img alt="" src="/static/icons/edit-number.png" /> Views: {{UNIQUE_HIT_COUNT}}
+            <small title="Includes non-unique views">({{HIT_COUNT}} total)</small> <a href="#charts" onclick="initstats();">Detailed stats</a></span>
         {{#NOT_SELF}}
         <form action="/track/{{TID}}/report" method="post">
             <button type="submit" class="report"><img alt="" src="/static/icons/flag.png" /> <span>Report</span></button>

@@ -6,20 +6,14 @@ import time
 import re
 import json
 import random
-import socket
 import sqlite3
-import threading
+import tempfile
 import psycopg2
 import datetime
 import http.client as hc
 import urllib.parse as up
 
-sockloc = "/tmp/ytmgr-"+str(os.getuid())+".sock"
-
 class YoutubeManager:
-    def __init__(self):
-        self.socket = socket.socket(socket.AF_UNIX)
-
     def db(self):
         db = psycopg2.connect("")
         db.set_client_encoding("UTF8")
@@ -90,9 +84,9 @@ class YoutubeManager:
 
     def mkvideo(self, tid):
         os.chdir(os.getenv("EQBEATS_DIR", "."))
-        eqrender ="/tmp/eqrender-" + str(os.getuid()) + "/"
+        eqrender = tempfile.mkdtemp('', "/tmp/eqrender-")
         os.makedirs(eqrender, exist_ok=True)
-        out = eqrender + str(tid) + ".mp4"
+        out = eqrender + "/" + str(tid) + ".mp4"
         for f in os.listdir("tracks"):
             if re.match("%s\\.orig" % tid, f):
                 infile = "tracks/" + f
@@ -175,45 +169,18 @@ Content-Transfer-Encoding: binary
             print("Environment is not set up correctly. Both EQBEATS_DIR and EQBEATS_YT_API_KEY are needed")
             exit(1)
         os.chdir(os.getenv("EQBEATS_DIR"))
-        self.socket.bind(sockloc)
-        self.socket.settimeout(None)
-        self.socket.listen(5)
-        while True:
-            try:
-                s, _ = self.socket.accept()
-                s.settimeout(3000)
-                command = b""
-                while command[-1:] != b"\n":
-                    command += s.recv(2048)
-                if command[:4] == b"auth":
-                    args = command[5:-1].split(b" ")
-                    args[1] = int(args[1]) # uid
-                    if self.auth(*args):
-                        s.send(b"OK\n")
-                    else:
-                        s.send(b"! Key was incorrect\n")
-                elif command[:6] == b"upload":
-                    tid = int(command[7:-1])
-                    threading.Thread(target=self.upload, args=(tid,)).start()
-                    s.send(b"OK\n")
-                elif command[:4] == b"exit":
-                    s.send(b"OK\n")
-                    s.shutdown(socket.SHUT_RDWR)
-                    exit(0)
-                else:
-                    s.send(b"! Not a command\n")
-            except TypeError:
-                s.send(b"! Wrong number of arguments\n")
-            except ValueError:
-                s.send(b"! Illegal argument\n")
-            except socket.timeout:
-                pass
-            except (KeyboardInterrupt, SystemExit):
-                print("\nclosing sockets")
-                self.socket.shutdown(socket.SHUT_RDWR)
-                self.socket.close()
-                os.remove(sockloc)
-                exit(0)
+        try:
+            if sys.argv[1] == "auth":
+                if self.auth(sys.argv[2], int(sys.argv[3])) == False:
+                    exit(1)
+            elif sys.argv[1] == "upload":
+                self.upload(int(sys.argv[2])
+            else:
+                exit(1)
+        except TypeError: # silly weak typing
+            exit(2)
+        except ValueError:
+            exit(2)
 
 yt = YoutubeManager()
 yt.run()
