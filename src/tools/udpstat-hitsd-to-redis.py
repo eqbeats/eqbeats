@@ -54,12 +54,3 @@ def go():
         go(); # this is so gross
 
 go()
-
-hitsd = socket.socket(socket.AF_UNIX)
-hitsd.connect("/srv/eqbeats/hitsd.sock")
-for tid in tids:
-    hitsd.send(("get %d\n" % tid).encode())
-    tally = int(hitsd.recv(4096));
-    print("SET stat:track:%d:trackView %d" % (tid, tally))
-
-hitsd.close()
