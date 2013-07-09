@@ -105,7 +105,6 @@ function initstats(){
 
 var dateformat = d3.time.format("%a, %b %e");
 function barover(d){
-    console.log(d);
     var thisd = d;
     d3.selectAll("#charts .bar").style("opacity", 1);
     var bars = d3.selectAll("#charts .bar").filter(function(d){return d.key == thisd.key;})
@@ -135,7 +134,7 @@ function quicksort(array, val_f){
         else
             lower.push(array[i]);
     }
-    return quicksort(higher).concat( [array[0]].concat(quicksort(lower)) );
+    return quicksort(higher, val_f).concat( [array[0]].concat(quicksort(lower, val_f)) );
 }
 
 function exists(array, value){
