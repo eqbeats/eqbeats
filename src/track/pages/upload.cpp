@@ -85,7 +85,7 @@ void Pages::trackUpload(Document *doc){
     pid_t worker;
     if(!(worker = fork())){
         freopen("/dev/null","r",stdin);
-        execlp("transcode.sh", "transcode.sh", number(t.id).c_str(), tmpFile, NULL);
+        execl(LIBEXEC_DIR "/transcode.sh", "transcode.sh", number(t.id).c_str(), tmpFile, NULL);
         exit(127);
     }
     else{

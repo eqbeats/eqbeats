@@ -21,15 +21,13 @@ void Youtube::unlink() {
     DB::query("DELETE FROM youtube_refresh_tokens WHERE user_id = " + number(_uid));
 }
 
-std::string ytmgrPath(){
-    return eqbeatsDir() + "/tools/ytmgr.py";
-}
+#define YTMGR_PATH LIBEXEC_DIR"/ytmgr.py"
 
 bool Youtube::link(std::string & code){
     int rc;
     pid_t pid = fork();
     if(pid == 0){
-        if(execl(ytmgrPath().c_str(), "ytmgr", "auth", code.c_str(), number(_uid).c_str(), NULL) == -1)
+        if(execl(YTMGR_PATH, "ytmgr", "auth", code.c_str(), number(_uid).c_str(), NULL) == -1)
             exit(1);
     }
     waitpid(pid, &rc, 0);
@@ -43,7 +41,7 @@ bool Youtube::link(std::string & code){
 bool Youtube::upload(ExtendedTrack & t){
     pid_t worker;
     if(!(worker = fork())){
-        execl(ytmgrPath().c_str(), "ytmgr", "upload", number(t.id).c_str(), NULL);
+        execl(YTMGR_PATH, "ytmgr", "upload", number(t.id).c_str(), NULL);
         exit(127);
     }
     else
