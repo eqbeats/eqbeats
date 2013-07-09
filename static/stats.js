@@ -135,7 +135,7 @@ function quicksort(array, val_f){
         else
             lower.push(array[i]);
     }
-    return higher.concat( [array[0]].concat(lower) );
+    return quicksort(higher).concat( [array[0]].concat(quicksort(lower)) );
 }
 
 function exists(array, value){
