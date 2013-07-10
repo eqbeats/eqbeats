@@ -86,6 +86,7 @@ void Pages::trackUpload(Document *doc){
     if(!(worker = fork())){
         freopen("/dev/null","r",stdin);
         execlp("transcode.sh", "transcode.sh", number(t.id).c_str(), tmpFile, NULL);
+        exit(127);
     }
     else{
         syslog(LOG_NOTICE, "Spawned transcoder %d for track %d.", worker, t.id);
