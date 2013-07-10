@@ -93,6 +93,9 @@ int main(int argc, char** argv){
     sigaction(SIGQUIT, &sa, NULL);
     sigaction(SIGTERM, &sa, NULL);
 
+    pid_t child;
+    int rc;
+
     while(running && (FCGX_Accept_r(&request) == 0)){
         answering = true;
         resetTimer();
@@ -127,7 +130,8 @@ int main(int argc, char** argv){
 
         Session::destroy();
         FCGX_Finish_r(&request);
-        while(waitpid(-1, NULL, WNOHANG) > 0); // wait for zombies
+        while((child = waitpid(-1, &rc, WNOHANG)) > 0) // wait for zombies
+            syslog(rc ? LOG_ERR : LOG_NOTICE, "%d exited with %d.", child, rc);
         answering = false;
     }
 
