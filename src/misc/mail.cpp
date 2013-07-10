@@ -16,11 +16,10 @@ void sendMail(const char *to, const char *data){
         close(fd[1]);
         close(0);
         dup(fd[0]);
-        std::string logfile = eqbeatsDir() + "/sendmail.log";
-        freopen(logfile.c_str(),"a",stdout);
-        freopen(logfile.c_str(),"a",stderr);
+        freopen("/dev/null","a",stdout);
+        freopen("/dev/null","a",stderr);
         execlp("sendmail", "sendmail", to, NULL);
-        log("Mail not sent, sendmail doesn't seem to exist on your machine.");
+        log("sendmail error: %m");
         exit(1);
     }
     else if(child > 0){
