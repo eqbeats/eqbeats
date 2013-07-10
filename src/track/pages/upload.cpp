@@ -10,6 +10,7 @@
 #include <taglib/mpegfile.h>
 #include <taglib/tag.h>
 #include <unistd.h>
+#include <syslog.h>
 
 void Pages::trackUpload(Document *doc){
 
@@ -81,12 +82,15 @@ void Pages::trackUpload(Document *doc){
 
     log("Track uploaded: " + t.title + " (" + number(t.id) + ", " + tmpFile + ")");
 
-    if(fork() == 0){
+    pid_t worker;
+    if(!(worker = fork())){
         freopen("/dev/null","r",stdin);
         execlp("transcode.sh", "transcode.sh", number(t.id).c_str(), tmpFile, NULL);
     }
-    else
+    else{
+        syslog(LOG_NOTICE, "Spawned transcoder %d for track %d.", worker, t.id);
         sleep(2);
+    }
 
     free(tmpFile);
 

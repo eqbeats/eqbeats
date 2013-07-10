@@ -8,21 +8,26 @@ fi
 BASE="$EQBEATS_DIR/tracks/$1"
 find "$EQBEATS_DIR/tracks" -name "$1.*" -delete
 
-ffmpeg -loglevel error -probesize 10000000 -i "$2" -acodec libvorbis -q:a 4 -vn "$BASE.ogg" 2>&1 >> "$EQBEATS_DIR/ffmpeg.log"
+FFMPEG='ffmpeg -loglevel quiet -probesize 10000000'
+
+$FFMPEG -i "$2" -acodec libvorbis -q:a 4 -vn "$BASE.ogg"
 
 [ $? -ne 0 ] && rm -f "$BASE.ogg" && exit 1
 
-ffmpeg -loglevel error -probesize 10000000 -i "$2" -acodec libfdk_aac -vbr 3 -vn "$BASE.m4a" 2>&1 >> "$EQBEATS_DIR/ffmpeg.log"
-ffmpeg -loglevel error -probesize 10000000 -i "$2" -acodec libopus -b:a 128k -vn "$BASE.opus" 2>&1 >> "$EQBEATS_DIR/ffmpeg.log"
+errors=0
 
+$FFMPEG -i "$2" -acodec libfdk_aac -vbr 3 -vn "$BASE.m4a" || ((errors++))
+$FFMPEG -i "$2" -acodec libopus -b:a 128k -vn "$BASE.opus" || ((errors++))
 
 if [[ $(file -b --mime-type "$2") = "audio/mpeg" ]]
 then
     mv "$2" "$BASE.mp3"
     ln -s "$1.mp3" "$BASE.orig.mp3"
 else
-    ffmpeg -loglevel error -probesize 10000000 -i "$2" -acodec libmp3lame -q:a 0 -vn "$BASE.mp3" 2>&1 >> "$EQBEATS_DIR/ffmpeg.log"
+    $FFMPEG -i "$2" -acodec libmp3lame -q:a 0 -vn "$BASE.mp3" || ((errors++))
     mv "$2" "$BASE.orig.${2##*.}"
 fi
 
-updatetags "$1"
+updatetags "$1" || ((errors++))
+
+exit $errors
