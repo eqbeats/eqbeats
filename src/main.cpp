@@ -24,6 +24,7 @@
 #include <sys/stat.h>
 #include <sys/wait.h>
 #include <unistd.h>
+#include <syslog.h>
 
 bool running = true, answering = false;
 
@@ -45,6 +46,8 @@ int main(int argc, char** argv){
         std::cerr << "Environment variable EQBEATS_DIR isn't set." << std::endl;
         return 1;
     }
+
+    openlog("eqbeats", LOG_PID, LOG_USER);
 
     DB::connect((std::string)argv[0] + "-" + number(getpid()));
 
