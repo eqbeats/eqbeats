@@ -8,6 +8,7 @@
 
 #include <unistd.h>
 #include <sys/wait.h>
+#include <syslog.h>
 
 Youtube::Youtube(int uid): _uid(uid) { }
 
@@ -32,11 +33,20 @@ bool Youtube::link(std::string & code){
             exit(1);
     }
     waitpid(pid, &rc, 0);
+    if(rc)
+        syslog(LOG_ERR, "Failed to link YouTube account for user %d.", _uid);
+    else
+        syslog(LOG_NOTICE, "YouTube account linked successfully for user %d.", _uid);
     return WIFEXITED(rc);
 }
 
 bool Youtube::upload(ExtendedTrack & t){
-    if(fork() == 0)
+    pid_t worker;
+    if(!(worker = fork())){
         execl(ytmgrPath().c_str(), "ytmgr", "upload", number(t.id).c_str(), NULL);
+        exit(127);
+    }
+    else
+        syslog(LOG_NOTICE, "Spawned YouTube uploader %d for track %d.", worker, t.id);
     return true;
 }

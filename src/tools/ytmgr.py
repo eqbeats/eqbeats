@@ -10,6 +10,7 @@ import sqlite3
 import tempfile
 import psycopg2
 import datetime
+import syslog
 import http.client as hc
 import urllib.parse as up
 
@@ -20,12 +21,8 @@ class YoutubeManager:
         return db
 
     def log(self, msg):
-        os.chdir(os.getenv("EQBEATS_DIR"))
-        f = open("ytmgr.log", "a")
-        f.write("\n\n" + datetime.datetime.utcnow().isoformat() + "\n")
-        f.write(msg)
-        f.write("\n")
-        f.close()
+        syslog.openlog(ident="eqbeats-ytmgr", logoption=syslog.LOG_PID)
+        syslog.syslog(msg)
 
     def auth(self, auth_token, uid):
         h = hc.HTTPSConnection("accounts.google.com")
@@ -153,14 +150,15 @@ Content-Transfer-Encoding: binary
             h.request("POST", "/feeds/api/users/default/uploads", body, headers)
             r = h.getresponse()
             if r.status != 201:
-                self.log("YT upload failed. Track : " + str(tid) + "\nResponse follows:\n" + r.read().decode("utf-8"))
+                self.log("YouTube error (track: " + str(tid) + "): " + r.read().decode("utf-8")) # sad smiley
+                return False
             else:
-                self.log("YT upload successful. Track : " + str(tid))
+                return True
         else:
             try:
                 c.execute("SELECT user_id FROM tracks WHERE id=" + str(tid))
                 if self.new_access_token(c.fetchone()[0]):
-                    self.upload(tid)
+                    return self.upload(tid)
                 ### else: warn that account has been unlinked somehow?
             except IndexError:
                 pass
@@ -174,7 +172,10 @@ Content-Transfer-Encoding: binary
                 if self.auth(sys.argv[2], int(sys.argv[3])) == False:
                     exit(1)
             elif sys.argv[1] == "upload":
-                self.upload(int(sys.argv[2]))
+                if self.upload(int(sys.argv[2])):
+                    exit(0)
+                else:
+                    exit(1)
             else:
                 exit(1)
         except TypeError: # silly weak typing
