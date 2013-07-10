@@ -48,9 +48,6 @@ int main(int argc, char** argv){
 
     DB::connect((std::string)argv[0] + "-" + number(getpid()));
 
-    std::string logfile = eqbeatsDir()+"/eqbeats.log";
-    freopen(logfile.c_str(),"a",stderr);
-
     uint32_t buf = 0;
     int urandom = open("/dev/urandom", O_RDONLY);
     if(urandom != -1) {
