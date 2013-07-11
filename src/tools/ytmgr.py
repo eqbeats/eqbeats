@@ -82,7 +82,6 @@ class YoutubeManager:
     def mkvideo(self, tid):
         os.chdir(os.getenv("EQBEATS_DIR", "."))
         eqrender = tempfile.mkdtemp('', "/tmp/eqrender-")
-        os.makedirs(eqrender, exist_ok=True)
         out = eqrender + "/" + str(tid) + ".mp4"
         for f in os.listdir("tracks"):
             if re.match("%s\\.orig" % tid, f):
