@@ -6,10 +6,10 @@ mkdir -p /srv/eqbeats/{tools,static,templates/{html,json,oembed},rc}
 
 install -m775 eqbeats.fcgi launch.sh failsafe /srv/eqbeats/
 
-cd tools
+cd src/tools
 find . -maxdepth 1 -type f -executable -exec install -m775 '{}' /srv/eqbeats/tools/ \;
 
-cd ../rc
+cd ../../rc
 find . -maxdepth 1 -type f -executable -exec install -m775 '{}' /srv/eqbeats/rc/ \;
 
 cd ../templates
