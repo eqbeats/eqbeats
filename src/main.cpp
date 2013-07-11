@@ -131,7 +131,7 @@ int main(int argc, char** argv){
         Session::destroy();
         FCGX_Finish_r(&request);
         while((child = waitpid(-1, &rc, WNOHANG)) > 0) // wait for zombies
-            syslog(rc ? LOG_ERR : LOG_NOTICE, "%d exited with %d.", child, rc);
+            syslog(WIFEXITED(rc) ? LOG_NOTICE : LOG_ERR, "%d exited with %d.", child, WEXITSTATUS(rc));
         answering = false;
     }
 
