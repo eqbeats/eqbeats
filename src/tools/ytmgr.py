@@ -165,23 +165,21 @@ Content-Transfer-Encoding: binary
     def run(self):
         if(not(os.getenv("EQBEATS_DIR") and os.getenv("EQBEATS_YT_API_KEY"))):
             print("Environment is not set up correctly. Both EQBEATS_DIR and EQBEATS_YT_API_KEY are needed")
-            exit(1)
+            exit(8)
         os.chdir(os.getenv("EQBEATS_DIR"))
         try:
             if sys.argv[1] == "auth":
                 if self.auth(sys.argv[2], int(sys.argv[3])) == False:
-                    exit(1)
+                    exit(5)
             elif sys.argv[1] == "upload":
-                if self.upload(int(sys.argv[2])):
-                    exit(0)
-                else:
-                    exit(1)
+                if not self.upload(int(sys.argv[2])):
+                    exit(4)
             else:
-                exit(1)
+                exit(12)
         except TypeError: # silly weak typing
             exit(2)
         except ValueError:
-            exit(2)
+            exit(3)
 
 yt = YoutubeManager()
 yt.run()
