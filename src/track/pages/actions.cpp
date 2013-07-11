@@ -5,6 +5,7 @@
 #include <core/db.h>
 #include <log/log.h>
 #include <text/text.h>
+#include <syslog.h>
 
 void Pages::trackActions(Document *doc){
     std::string sub;
@@ -22,6 +23,7 @@ void Pages::trackActions(Document *doc){
             std::string title = cgi("title");
             if(!title.empty() && title != t.title){
                 DB::query("UPDATE tracks SET title = $1 WHERE id = " + number(t.id), title);
+                syslog(LOG_NOTICE, "Renaming track %d from \"%s\" to \"%s\".", t.id, t.title.c_str(), title.c_str());
                 t.title = title;
                 Audio(&t).updateTags();
             }
