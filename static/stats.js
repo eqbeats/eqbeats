@@ -262,7 +262,7 @@ function render(refilter){
     var tr = update.enter().append("tr");
     var td = tr.append("td").each(function(d){
         if(d.domain==""){
-            this.appendChild(document.createTextNode("No address (IM, Email, Bookmarks...)"));
+            this.appendChild(document.createTextNode("Direct link (IM, Email, Bookmarks...)"));
         } else {
             var a = document.createElement("A");
             a['href'] = "http://" + d.domain;
