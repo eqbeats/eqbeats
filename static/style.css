@@ -1,12 +1,12 @@
 @import url("player.css?2");
 
 @font-face {
-    font-family:     "DejaVu Sans";
-    src: url("/static/DejaVuSans-webfont.eot");
-    src: url("/static/DejaVuSans-webfont.eot#iefix") format("embedded-opentype"),
-         url("/static/DejaVuSans-webfont.woff") format("woff"),
-         url("/static/DejaVuSans-webfont.ttf") format("truetype"),
-         url("/static/DejaVuSans-webfont.svg") format("svg");
+    font-family: "DejaVu Sans";
+    src: url("/static/fonts/DejaVuSans-webfont.eot");
+    src: url("/static/fonts/DejaVuSans-webfont.eot#iefix") format("embedded-opentype"),
+         url("/static/fonts/DejaVuSans-webfont.woff") format("woff"),
+         url("/static/fonts/DejaVuSans-webfont.ttf") format("truetype"),
+         url("/static/fonts/DejaVuSans-webfont.svg") format("svg");
 }
 
 html, body { background-color: #F2F2F2; }
