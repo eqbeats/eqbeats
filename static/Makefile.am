@@ -4,10 +4,6 @@ static_DATA = \
     avatar.png \
     common.css \
     cr.png \
-    DejaVuSans-webfont.eot \
-    DejaVuSans-webfont.svg \
-    DejaVuSans-webfont.ttf \
-    DejaVuSans-webfont.woff \
     ellipsis.png \
     embedtest.html \
     eqbeats.png \
