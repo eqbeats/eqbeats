@@ -9,7 +9,6 @@ static_DATA = \
     DejaVuSans-webfont.ttf \
     DejaVuSans-webfont.woff \
     ellipsis.png \
-    embedtest.html \
     eqbeats.png \
     favicon.ico \
     favicon-pub.ico \
