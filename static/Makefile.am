@@ -4,7 +4,6 @@ static_DATA = \
     avatar.png \
     common.css \
     cr.png \
-    d3.js \
     DejaVuSans-webfont.eot \
     DejaVuSans-webfont.svg \
     DejaVuSans-webfont.ttf \
