@@ -3,7 +3,6 @@ static_DATA = \
     502.html \
     avatar.png \
     common.css \
-    cr.png \
     d3.js \
     DejaVuSans-webfont.eot \
     DejaVuSans-webfont.svg \
