@@ -3,7 +3,6 @@ static_DATA = \
     502.html \
     avatar.png \
     common.css \
-    cr.png \
     ellipsis.png \
     embedtest.html \
     eqbeats.png \
