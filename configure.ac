@@ -16,7 +16,7 @@ AC_PROG_LN_S
 AC_PROG_MAKE_SET
 
 # Checks for libraries.
-PKG_CHECK_MODULES([MAGICK], [Magick++])
+PKG_CHECK_MODULES([MAGICK], [MagickWand])
 PKG_CHECK_MODULES([TAGLIB], [taglib])
 PKG_CHECK_MODULES([CGICC], [cgicc])
 PKG_CHECK_MODULES([CTEMPLATE], [libctemplate])

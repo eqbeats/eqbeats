@@ -3,7 +3,7 @@
 #include <text/text.h>
 
 #include <iostream>
-#include <Magick++.h>
+#include <wand/magick_wand.h>
 #include <stdio.h>
 #include <unistd.h>
 
@@ -45,31 +45,33 @@ std::string getFormat(const char *filepath){
 
 void Art::makeThumbs(){
     if(_tid<=0) return;
-    Magick::Image i;
+    // MagickWandGenesis();
+    MagickWand *wand = NewMagickWand();
+    if(!wand)
+        return;
     // Remove previously existing thumbnails
     unlink(filepath(Medium).c_str());
     unlink(filepath(Thumbnail).c_str());
-    try {
-        try{ i.read(filepath()); }
-        catch(Magick::Exception &err){
-            std::cerr << "ImageMagick Exception : " << err.what() << std::endl;
-            return;
-        }
-        std::string f = getFormat(filepath().c_str());
-        if(f!="gif" && (i.size().height()>480 || (f!="jpg" && f!="png"))){
-            // ^ Don't make a medium thumbnail for GIF (to preserve animation)
-            // Otherwise make the thumbnail if the pic is large OR if the format isn't known
-            if(i.size().width() > 1000) // scale in the first case
-                i.scale("1000x");
-            i.quality(90);
-            i.write(filepath(Medium)); // convert to JPEG
-        }
-        if(i.size().height() > 64) // resize (most of the time)
-            i.scale("x64");
-        i.write(filepath(Thumbnail)); // convert to PNG
-    } catch ( Magick::Exception &err ) {
-        std::cerr << "ImageMagick Exception : " << err.what() << std::endl;
+    // Magick
+    if(!MagickReadImage(wand, filepath().c_str())){
+        DestroyMagickWand(wand);
+        return;
     }
+    float aspect = ((float) MagickGetImageWidth(wand)) / ((float) MagickGetImageHeight(wand));
+    std::string f = getFormat(filepath().c_str());
+    if(f!="gif" && (MagickGetImageHeight(wand)>480 || (f!="jpg" && f!="png"))){
+        // ^ Don't make a medium thumbnail for GIF (to preserve animation)
+        // Otherwise make the thumbnail if the pic is large OR if the format isn't known
+        if(MagickGetImageWidth(wand) > 1000) // scale in the first case
+            MagickScaleImage(wand, 1000, 1000.0 / aspect);
+        MagickSetImageCompressionQuality(wand, 90);
+        MagickWriteImage(wand, filepath(Medium).c_str());
+    }
+    if(MagickGetImageHeight(wand) > 64) // resize (most of the time)
+        MagickScaleImage(wand, 64 * aspect, 64);
+    MagickWriteImage(wand, filepath(Thumbnail).c_str());
+    if(wand)
+        DestroyMagickWand(wand);
 }
 
 void Art::remove(){
