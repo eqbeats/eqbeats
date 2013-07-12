@@ -4,7 +4,6 @@ static_DATA = \
     avatar.png \
     common.css \
     ellipsis.png \
-    embedtest.html \
     eqbeats.png \
     favicon.ico \
     favicon-pub.ico \
