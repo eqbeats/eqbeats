@@ -17,7 +17,7 @@
 #include <youtube/pages/pages.h>
 
 #include <fcntl.h>
-#include <Magick++.h>
+#include <wand/magick_wand.h>
 #include <signal.h>
 #include <stdexcept>
 #include <stdio.h>
@@ -62,7 +62,7 @@ int main(int argc, char** argv){
         srand(getpid() ^ time(NULL));
     }
 
-    Magick::InitializeMagick(*argv);
+    MagickWandGenesis();
 
     FCGX_Request request;
     FCGX_Init();
@@ -135,6 +135,7 @@ int main(int argc, char** argv){
         answering = false;
     }
 
+    MagickWandTerminus();
     DB::close();
     return 0;
 }
