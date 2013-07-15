@@ -1,4 +1,4 @@
-templatesdir = $(pkgdatadir)/templates
+templatesdir = $(templates_dir)
 templates_DATA = \
     atom-feed.tpl
 

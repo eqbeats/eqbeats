@@ -1,4 +1,4 @@
-htmldir = $(pkgdatadir)/templates/html
+htmldir = $(templates_dir)/html
 html_DATA = \
     playlist.tpl \
     thanks.tpl \

@@ -55,6 +55,12 @@ AC_ARG_WITH([eqbeats-dir],
     [eqbeats_dir='/var/lib/eqbeats'])
 AC_SUBST([eqbeats_dir])
 
+AC_ARG_WITH([templates],
+    AC_HELP_STRING([--with-templates=DIR], [path to the CTemplate files @<:@PKGDATADIR/templates@:>@]),
+    [templates_dir="$withval"],
+    [templates_dir='${pkgdatadir}/templates'])
+AC_SUBST([templates_dir])
+
 AC_CONFIG_FILES([
     Makefile
     lib/Makefile

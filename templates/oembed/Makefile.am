@@ -1,2 +1,2 @@
-oembeddir = $(pkgdatadir)/templates/oembed
+oembeddir = $(templates_dir)/oembed
 oembed_DATA = json.tpl xml.tpl

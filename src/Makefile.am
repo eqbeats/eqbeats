@@ -17,4 +17,4 @@ eqbeats_fcgi_LDADD = \
     log/liblog.a \
     core/libcore.a
 eqbeats_fcgi_SOURCES = main.cpp
-AM_CPPFLAGS = -I$(top_srcdir)/src $(MAGICK_CFLAGS) $(TAGLIB_CFLAGS) -DDEFAULT_EQBEATS_DIR=\"$(eqbeats_dir)\"
+AM_CPPFLAGS = -I$(top_srcdir)/src $(MAGICK_CFLAGS) $(TAGLIB_CFLAGS) -DDEFAULT_EQBEATS_DIR=\"$(eqbeats_dir)\" -DTEMPLATES_DIR=\"$(templates_dir)\"
