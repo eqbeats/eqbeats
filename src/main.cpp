@@ -42,10 +42,7 @@ int main(int argc, char** argv){
     (void)argc;
     (void)argv;
 
-    if(!getenv("EQBEATS_DIR")){
-        std::cerr << "Environment variable EQBEATS_DIR isn't set." << std::endl;
-        return 1;
-    }
+    setenv("EQBEATS_DIR", DEFAULT_EQBEATS_DIR, 0);
 
     openlog("eqbeats", LOG_PID, LOG_USER);
 

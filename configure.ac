@@ -49,6 +49,12 @@ AC_ARG_WITH([redis-socket],
     [redis_socket='/run/eqbeats/redis.sock'])
 AC_SUBST([redis_socket])
 
+AC_ARG_WITH([eqbeats-dir],
+    AC_HELP_STRING([--with-eqbeats-dir=DIR], [Writable site-specific files @<:@/var/lib/eqbeats@:>@]),
+    [eqbeats_dir="$withval"],
+    [eqbeats_dir='/var/lib/eqbeats'])
+AC_SUBST([eqbeats_dir])
+
 AC_CONFIG_FILES([
     Makefile
     lib/Makefile
