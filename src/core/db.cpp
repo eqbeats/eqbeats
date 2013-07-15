@@ -12,7 +12,7 @@ std::string name;
 
 void DB::connect(std::string name){
     db = PQconnectdb("");
-    redis_ctx = redisConnectUnix((eqbeatsDir() + "/redis.sock").c_str());
+    redis_ctx = redisConnectUnix(REDIS_SOCK);
     if(!name.empty()){
         ::name = name;
         blindRedisCommand("CLIENT SETNAME %s", name.c_str());
