@@ -69,7 +69,7 @@ int main(int argc, char** argv){
     ctemplate::AddModifier("x-irc", new IrcEscape);
     ctemplate::AddXssSafeModifier("x-email", new EmailEscape);
     ctemplate::AddXssSafeModifier("x-format", new Formatter);
-    cache.SetTemplateRootDirectory(TEMPLATES_DIR "/eqbeats/templates");
+    cache.SetTemplateRootDirectory(TEMPLATES_DIR);
 
     void (*callbacks[])(Document*) = {
         Pages::statics, Pages::home,
