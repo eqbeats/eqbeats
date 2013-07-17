@@ -11,7 +11,7 @@ static_DATA = \
     ellipsis.png \
     eqbeats.png \
     favicon.ico \
-    favicon-pub.ico \
+    favicon-dev.ico \
     fileuploader.js \
     logo.png \
     placeholder.jpg \
