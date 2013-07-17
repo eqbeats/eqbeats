@@ -1,1 +1,0 @@
-pkglibexec_SCRIPTS = eqbeats

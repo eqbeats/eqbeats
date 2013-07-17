@@ -85,7 +85,6 @@ AC_CONFIG_FILES([
     src/youtube/Makefile
     src/youtube/pages/Makefile
     src/tools/Makefile
-    rc/Makefile
     static/Makefile
     static/icons/Makefile
     templates/Makefile
