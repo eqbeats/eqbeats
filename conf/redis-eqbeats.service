@@ -1,0 +1,13 @@
+[Unit]
+Description=Advanced key-value store for EqBeats
+After=network.target
+Before=eqbeats.service
+
+[Service]
+User=eqbeats
+ExecStartPre=/usr/bin/mkdir -p -m 750 /var/lib/eqbeats/redis/
+ExecStart=/usr/bin/redis-server /etc/redis-eqbeats.conf
+ExecStop=/usr/bin/redis-cli -s /run/eqbeats/redis.sock shutdown
+
+[Install]
+WantedBy=multi-user.target

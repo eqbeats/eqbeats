@@ -1,0 +1,12 @@
+[Unit]
+Description=EqBeats FastCGI daemon
+After=postgresql.service
+
+[Service]
+User=eqbeats
+Group=http
+ExecStart=/usr/bin/spawn-fcgi -s /run/eqbeats/eqbeats.sock -n -M 0770 -- /usr/bin/multiwatch -f 5 /usr/libexec/eqbeats/eqbeats.fcgi
+ExecStopPost=/bin/rm -f /run/eqbeats/eqbeats.sock
+
+[Install]
+WantedBy=multi-user.target
