@@ -28,6 +28,11 @@ else
     mv "$2" "$BASE.orig.${2##*.}"
 fi
 
-updatetags "$1" || ((errors++))
+if [ "x$(basename "$1")" == "x$1" ]; then
+    tags="updatetags"
+else
+    tags="$(dirname "$0")/updatetags"
+fi
+"$tags" "$1" || ((errors++))
 
 exit $errors
