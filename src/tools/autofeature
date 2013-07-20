@@ -1,11 +1,11 @@
 #!/bin/bash
 
-QUEUE="$EQBEATS_DIR/feature.queue"
+QUEUE="${1:-/var/spool/eqbeats/feature.queue}"
 
-tid=$(head -n 1 "$QUEUE" | cut -d ' ' -f 1)
+tid="$(head -n 1 "$QUEUE" | cut -d ' ' -f 1)"
 [ -z "$tid" ] && exit 1
 
-feature "$tid"
+psql -c "INSERT INTO featured_tracks (track_id, date) VALUES ($tid, 'now')"
 
-tail -n +2 "$QUEUE" > "$QUEUE.tail"
-mv "$QUEUE.tail" "$QUEUE"
+tail -n +2 "$QUEUE" > "${QUEUE}.tail"
+mv "${QUEUE}.tail" "$QUEUE"
