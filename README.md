@@ -22,13 +22,17 @@
 
 #### Environment
 
-If you want YouTube support, set the `EQBEATS_YT_API_KEY` to your YouTube API key. You can acquire one [here](https://code.google.com/apis/youtube/dashboard/gwt/index.html).
+If you want YouTube support, set the `EQBEATS_YT_API_KEY` to your YouTube API
+key. You can acquire one [here](https://code.google.com/apis/youtube/dashboard/gwt/index.html).
 
-You can set the `EQBEATS_HTTPS` variable to anything if you wish to always use https.
+You can set the `EQBEATS_HTTPS` variable to anything if you wish to always use
+HTTPS.
 
-You also need to make sure that you are in the `http` group, as well as the user running the webserver.
+You also need to make sure that you are in the `http` group, as well as the user
+running the webserver.
 
-You need the following file structure, writable by the user that will run EqBeats:
+You need the following file structure, writable by the user that will run
+EqBeats:
 * `EQBEATS_DIR` (by default: `/var/lib/eqbeats/`)
 * `EQBEATS_DIR/tracks`
 * `EQBEATS_DIR/art`
@@ -37,7 +41,8 @@ You need the following file structure, writable by the user that will run EqBeat
 
 #### Web server
 
-We’ll assume you put the FastCGI socket in `/run/eqbeats/eqbeats.sock`, and that EqBeats’s data files are installed in `/usr/share/eqbeats`.
+We’ll assume you put the FastCGI socket in `/run/eqbeats/eqbeats.sock`, and that
+EqBeats’s data files are installed in `/usr/share/eqbeats`.
 
 Here is a sample config for nginx:
 
@@ -70,7 +75,8 @@ Here is a sample config for nginx:
 
 #### PostgreSQL database
 
-By default, EqBeats will use the default PostgreSQL DB for your user, so make sure you have one and that the pgcrypto extension is enabled on it.
+By default, EqBeats will use the default PostgreSQL DB for your user, so make
+sure you have one and that the pgcrypto extension is enabled on it.
 
     su postgres -c 'createuser -d YOURNAME'
     su YOU -c 'createdb'
@@ -83,9 +89,12 @@ Then, import the database schema:
 
 #### Redis database
 
-If you want statistics support, you need to set up a Redis server to listen on a Unix socket (like `/run/eqbeats/redis.sock`). It is recommended that only the user that runs EqBeats is allowed to access it.
+If you want statistics support, you need to set up a Redis server to listen on a
+Unix socket (like `/run/eqbeats/redis.sock`). It is recommended that only the
+user that runs EqBeats is allowed to access it.
 
-A sample Redis configuration is available in `conf/redis-eqbeats.conf`. A systemd unit is also provided in `conf/redis-eqbeats.service`.
+A sample Redis configuration is available in `conf/redis-eqbeats.conf`. A
+systemd unit is also provided in `conf/redis-eqbeats.service`.
 
 ### Installing from source
 
@@ -105,6 +114,10 @@ After that, the usual procedure will do:
 
 ### Running
 
-If you’re running systemd, you can use the service unit at `conf/eqbeats.service`. You’ll need to have spawn-fcgi and multiwatch installed in order to use it. You might as well want `conf/tmpfiles-eqbeats.conf` (see tmpfiles.d(5) for more information).
+If you’re running systemd, you can use the service unit at
+`conf/eqbeats.service`. You’ll need to have spawn-fcgi and multiwatch installed
+in order to use it. You might as well want `conf/tmpfiles-eqbeats.conf` (see
+tmpfiles.d(5) for more information).
 
-Since EqBeats is a regular FastCGI application, you can spawn it the way you want though.
+Since EqBeats is a regular FastCGI application, you can spawn it the way you
+want though.
