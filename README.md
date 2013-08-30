@@ -1,13 +1,6 @@
 # EqBeats
 ## Quick and ugly startup guide
 
-If you don't want to bother with all this, here's a virtual machine with everything set up:
-[EqBeats.ova](http://files.codl.fr/1303/EqBeats.ova) (1.06GB)
-[MD5](http://files.codl.fr/1303/EqBeats.ova.md5.txt)
-[SHA1](http://files.codl.fr/1303/EqBeats.ova.sha1.txt)
-[torrent](http://files.codl.fr/1303/EqBeats.ova.torrent)
-[magnet](http://mgnet.me/DuwC)
-
 ### Dependencies
 
 * A webserver that supports FastCGI
@@ -21,6 +14,7 @@ If you don't want to bother with all this, here's a virtual machine with everyth
 * Nettle
 * ctemplate
 * FFmpeg compiled with libfdk\_aac and libopus support
+* Redis and hiredis
 * Optional: OpenBSD netcat for hitsd
 * Optional: OpenBSD netcat, Python 3.x and psycopg2 for YouTube support
 
@@ -28,20 +22,22 @@ If you don't want to bother with all this, here's a virtual machine with everyth
 
 #### Environment
 
-Set the `EQBEATS_DIR` environment variable to your eqbeats directory and the `EQBEATS_YT_API_KEY` to your YouTube API key. You can acquire one [here](https://code.google.com/apis/youtube/dashboard/gwt/index.html).
+If you want YouTube support, set the `EQBEATS_YT_API_KEY` to your YouTube API key. You can acquire one [here](https://code.google.com/apis/youtube/dashboard/gwt/index.html).
 
 You can set the `EQBEATS_HTTPS` variable to anything if you wish to always use https.
 
 You also need to make sure that you are in the `http` group, as well as the user running the webserver.
 
-There should be a `tracks` directory and an `art` directory with two subdirectories, `art/medium` and `art/thumb`, in the directory where EqBeats is installed. The user you plan to run as should have write permission to these.
+You need the following file structure, writable by the user that will run EqBeats:
+* `EQBEATS_DIR` (by default: `/var/lib/eqbeats/`)
+* `EQBEATS_DIR/tracks`
+* `EQBEATS_DIR/art`
+* `EQBEATS_DIR/art/medium`
+* `EQBEATS_DIR/art/thumb`
 
-#### Webserver
+#### Web server
 
-Point your FastCGI-enabled webserver to the Unix socket `$EQBEATS_DIR/eqbeats.sock`.
-
-You'll also need to alias `/static/` to `$EQBEATS_DIR/static/`,
-and proxy `/download/art/` and `/download/tracks/` to `$EQBEATS_DIR/art/` and `$EQBEATS_DIR/tracks/`, respectively.
+We’ll assume you put the FastCGI socket in `/run/eqbeats/eqbeats.sock`, and that EqBeats’s data files are installed in `/usr/share/eqbeats`.
 
 Here is a sample config for nginx:
 
@@ -54,28 +50,25 @@ Here is a sample config for nginx:
 
         location / {
             include fastcgi.conf;
-            fastcgi_pass unix:/home/you/eqbeats/eqbeats.sock;
+            fastcgi_pass unix:/run/eqbeats/eqbeats.sock;
         }
         location /static {
-            root /home/you/eqbeats/;
+            root /usr/share/eqbeats/static;
         }
         location /downloads/art {
             internal;
-            alias /home/you/eqbeats/art/;
+            alias /var/lib/eqbeats/art/;
         }
         location /downloads/tracks {
             internal;
-            alias /home/you/eqbeats/tracks/;
+            alias /var/lib/eqbeats/tracks/;
         }
-        location /downloads/udpstat {
-            internal;
-            alias /home/you/eqbeats/udpstat/;
+        location /robots.txt {
+            alias /usr/share/eqbeats/static/robots.txt;
         }
-        location /robots.txt { alias /home/you/eqbeats/static/robots.txt; }
     }
 
-
-#### Database
+#### PostgreSQL database
 
 By default, EqBeats will use the default PostgreSQL DB for your user, so make sure you have one and that the pgcrypto extension is enabled on it.
 
@@ -88,7 +81,30 @@ Then, import the database schema:
 
     psql -d YOURNAME < sql/db.sql
 
-### Compiling and starting
+#### Redis database
 
+If you want statistics support, you need to set up a Redis server to listen on a Unix socket (like `/run/eqbeats/redis.sock`). It is recommended that only the user that runs EqBeats is allowed to access it.
+
+A sample Redis configuration is available in `conf/redis-eqbeats.conf`. A systemd unit is also provided in `conf/redis-eqbeats.service`.
+
+### Installing from source
+
+If you want to generate the configure script, run:
+
+    autoreconf -i
+
+You can then see the available options with:
+
+    ./configure --help
+
+After that, the usual procedure will do:
+
+    ./configure
     make
-    ./launch.sh start
+    make install
+
+### Running
+
+If you’re running systemd, you can use the service unit at `conf/eqbeats.service`. You’ll need to have spawn-fcgi and multiwatch installed in order to use it. You might as well want `conf/tmpfiles-eqbeats.conf` (see tmpfiles.d(5) for more information).
+
+Since EqBeats is a regular FastCGI application, you can spawn it the way you want though.
