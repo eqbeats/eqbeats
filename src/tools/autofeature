@@ -3,7 +3,22 @@
 QUEUE="${1:-/var/spool/eqbeats/feature.queue}"
 
 tid="$(head -n 1 "$QUEUE" | cut -d ' ' -f 1)"
-[ -z "$tid" ] && exit 1
+
+if [ -z "$tid" ]; then
+    echo "Queue is empty, refeaturing something." > /dev/stderr
+    psql -c "
+        WITH feature_to_push AS (
+            SELECT track_id, featured_tracks.date
+                FROM tracks JOIN featured_tracks ON id = track_id
+                ORDER BY random() LIMIT 1
+        )
+        UPDATE featured_tracks
+            SET date = 'now'
+            FROM feature_to_push
+            WHERE featured_tracks.date = feature_to_push.date
+                AND featured_tracks.track_id = feature_to_push.track_id;"
+    exit 0
+fi
 
 psql -c "INSERT INTO featured_tracks (track_id, date) VALUES ($tid, 'now')"
 
