@@ -5,7 +5,6 @@ QUEUE="${1:-/var/spool/eqbeats/feature.queue}"
 tid="$(head -n 1 "$QUEUE" | cut -d ' ' -f 1)"
 
 if [ -z "$tid" ]; then
-    echo "Queue is empty, refeaturing something." > /dev/stderr
     psql -c "
         WITH feature_to_push AS (
             SELECT track_id, featured_tracks.date
