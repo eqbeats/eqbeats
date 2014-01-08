@@ -88,6 +88,7 @@ void Playlist::fill(Dict *d) const{
     d->SetIntValue("PLAYLIST_ID", _id);
     d->SetFormattedValue("TRACK_COUNT", "%d track%s", _length, _length>1?"s":"");
     d->SetValue("PLAYLIST_NAME", _name);
+    d->SetValue("PLAYLIST_URL", url());
     d->SetValueAndShowSection("DESCRIPTION", _description, "HAS_DESCRIPTION");
     _author.fill(d);
 }
