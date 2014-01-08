@@ -10,6 +10,8 @@
     "description": "{{DESCRIPTION:o}}",
     "html_description": "{{DESCRIPTION:x-format:o}}",
     {{/HAS_DESCRIPTION}}
+    {{#HAS_TRACKS}}
     "tracks": {{>TRACKS}},
+    {{/HAS_TRACKS}}
     "link": "{{EQBEATS_URL}}{{PLAYLIST_URL}}"
 }

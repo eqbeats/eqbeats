@@ -13,6 +13,7 @@ void Pages::playlist(Document *doc){
 
         if(sub == "json"){
             doc->setJson("json/playlist.tpl");
+            doc->dict()->ShowSection("HAS_TRACKS");
             Dict* tracks = doc->dict()->AddIncludeDictionary("TRACKS");
             tracks->SetFilename("json/array.tpl");
 
