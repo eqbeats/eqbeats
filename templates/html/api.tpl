@@ -35,7 +35,7 @@
         <tr><td><tt>description</tt></td><td>User's description of themselves, raw. This member will not exist if there is no description.</td></tr>
         <tr><td><tt>html_description</tt></td><td>Same as above, formatted to HTML.</td></tr>
         <tr><td><tt>tracks</tt></td><td>An array of <a href="#track">Track objects</a> for all tracks published by the user.</td></tr>
-        <tr><td><tt>playlists</tt></td><td>Array of <a href="#playlist">Playlist objects</a> (id, name, author and link only).</td></tr>
+        <tr><td><tt>playlists</tt></td><td>Array of <a href="#playlist">Playlist objects</a> (stripped of their tracks).</td></tr>
         <tr><td><tt>link</tt></td><td>Permalink to the user's page.</td></tr>
     </table>
     <pre>{
