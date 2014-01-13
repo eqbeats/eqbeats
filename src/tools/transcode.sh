@@ -28,7 +28,7 @@ else
     mv "$2" "$BASE.orig.${2##*.}"
 fi
 
-if [ "x$(basename "$1")" == "x$1" ]; then
+if [ "x$(basename "$0")" == "x$0" ]; then
     tags="updatetags"
 else
     tags="$(dirname "$0")/updatetags"
