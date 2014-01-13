@@ -1,7 +1,7 @@
 #ifndef PLAYLIST_H
 #define PLAYLIST_H
 
-#include <account/user.h>
+#include <account/account.h>
 #include <render/template.h>
 #include <track/list.h>
 
@@ -14,7 +14,7 @@ class Playlist {
         operator bool() const { return _id > 0; }
         int id() const { return _id; }
         int length() const { return _length; }
-        User author() const { return _author; }
+        Account author() const { return _author; }
         std::string name() const { return _name; }
         std::string description() const { return _description; }
         std::string url() const;
@@ -32,10 +32,10 @@ class Playlist {
         void fill(Dict *d) const;
 
     private:
-        Playlist(int nid, User nauthor, int nlength, std::string nname, std::string ndescription)
+        Playlist(int nid, Account nauthor, int nlength, std::string nname, std::string ndescription)
             { _id = nid; _author = nauthor; _length = nlength; _name = nname; _description = ndescription; }
         int _id;
-        User _author;
+        Account _author;
         int _length;
         std::string _name;
         std::string _description;

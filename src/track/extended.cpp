@@ -11,7 +11,7 @@ ExtendedTrack::ExtendedTrack(int tid){
     if(tid<=0) return;
 
     DB::Result r = DB::query(
-        "SELECT tracks.title, tracks.user_id, users.name, tracks.visible, tracks.date, extract(epoch from tracks.date),"
+        "SELECT tracks.title, tracks.user_id, users.name, users.email, tracks.visible, tracks.date, extract(epoch from tracks.date),"
         " tracks.notes, tracks.airable, tracks.license, array_to_string(tracks.tags, ',') FROM tracks, users "
         "WHERE tracks.id = " + number(tid) + " AND tracks.user_id = users.id");
 
@@ -19,18 +19,20 @@ ExtendedTrack::ExtendedTrack(int tid){
 
         id = tid;
         title = r[0][0];
-        artist = User(number(r[0][1]), r[0][2]);
-        visible = r[0][3] == "t";
-        date = r[0][4];
-        timestamp = r[0][5];
+        artist.id = number(r[0][1]);
+        artist.name = r[0][2];
+        artist.email = r[0][3];
+        visible = r[0][4] == "t";
+        date = r[0][5];
+        timestamp = r[0][6];
 
         // Ext
-        notes = r[0][6];
-        airable = r[0][7] == "t";
-        license = r[0][8];
+        notes = r[0][7];
+        airable = r[0][8] == "t";
+        license = r[0][9];
 
         // Tags
-        std::string tstr = r[0][9];
+        std::string tstr = r[0][10];
         std::string buf;
         for(std::string::const_iterator i=tstr.begin(); i!=tstr.end(); i++){
             if(*i == ','){

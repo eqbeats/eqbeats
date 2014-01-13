@@ -1,7 +1,7 @@
 #ifndef TRACK_H
 #define TRACK_H
 
-#include <account/user.h>
+#include <account/account.h>
 
 class Track{
 
@@ -12,7 +12,7 @@ class Track{
 
         int id;
         std::string title;
-        User artist;
+        Account artist;
         std::string date;
         std::string timestamp;
         bool visible;

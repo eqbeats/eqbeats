@@ -6,14 +6,16 @@
 using namespace std;
 
 Playlist::Playlist(int nId){
-    DB::Result r = DB::query("SELECT users.id, users.name, playlists.name, array_length(playlists.track_ids, 1), playlists.description FROM playlists, users WHERE users.id = playlists.user_id AND playlists.id = " + number(nId));
+    DB::Result r = DB::query("SELECT users.id, users.name, users.email, playlists.name, array_length(playlists.track_ids, 1), playlists.description FROM playlists, users WHERE users.id = playlists.user_id AND playlists.id = " + number(nId));
     _id = 0;
     if(r.size() == 0) return;
     _id = nId;
-    _author = User(number(r[0][0]), r[0][1]);
-    _name = r[0][2];
-    _length = number(r[0][3]);
-    _description = r[0][4];
+    _author.id = number(r[0][0]);
+    _author.name = r[0][1];
+    _author.email = r[0][2];
+    _name = r[0][3];
+    _length = number(r[0][4]);
+    _description = r[0][5];
 }
 
 std::string Playlist::url() const{

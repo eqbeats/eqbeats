@@ -17,6 +17,8 @@ void Pages::playlist(Document *doc){
             Dict* tracks = doc->dict()->AddIncludeDictionary("TRACKS");
             tracks->SetFilename("json/array.tpl");
 
+            doc->dict()->ShowSection("HAS_AVATAR");
+
             p.tracks().fillJson(tracks);
         } else {
             doc->setHtml("html/playlist.tpl", p.name());

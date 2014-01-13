@@ -29,6 +29,8 @@ void Pages::trackMisc(Document *doc){
         if(!t) return;
         doc->setJson("json/track.tpl");
 
+        doc->dict()->ShowSection("HAS_AVATAR");
+
         doc->dict()->ShowSection("HAS_STATS");
         Dict *stats = doc->dict()->AddIncludeDictionary("STATS");
         stats->SetFilename("json/stats.tpl");
