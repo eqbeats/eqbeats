@@ -22,7 +22,7 @@ PKG_CHECK_MODULES([CGICC], [cgicc])
 PKG_CHECK_MODULES([CTEMPLATE], [libctemplate])
 PKG_CHECK_MODULES([PCRECPP], [libpcrecpp])
 PKG_CHECK_MODULES([NETTLE], [nettle])
-PKG_CHECK_MODULES([HIREDIS], [hiredis])
+AC_CHECK_LIB([hiredis], [redisConnectUnix], [], [AC_MSG_ERROR([could not find hiredis])])
 
 # Checks for header files.
 AC_CHECK_HEADERS([fcntl.h stddef.h stdlib.h string.h sys/socket.h sys/time.h unistd.h])
