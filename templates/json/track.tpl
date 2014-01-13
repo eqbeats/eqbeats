@@ -26,5 +26,6 @@
         "vorbis": "{{EQBEATS_URL}}/track/{{TID}}/vorbis?stream=1",
         "aac": "{{EQBEATS_URL}}/track/{{TID}}/aac?stream=1",
         "mp3": "{{EQBEATS_URL}}/track/{{TID}}/mp3?stream=1"
-    }
+    },
+    "timestamp": {{TIMESTAMP}}
 }

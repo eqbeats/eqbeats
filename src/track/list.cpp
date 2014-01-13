@@ -6,7 +6,7 @@
 #include <sstream>
 #include <stdio.h>
 
-#define FIELDS "tracks.id, tracks.title, tracks.user_id, users.name, tracks.date, tracks.visible"
+#define FIELDS "tracks.id, tracks.title, tracks.user_id, users.name, tracks.date, extract(epoch from tracks.date), tracks.visible"
 #define TABLES "users, tracks"
 #define JOIN "tracks.user_id = users.id"
 #define JOIN_VISIBLE JOIN " AND tracks.visible='t'"
@@ -25,7 +25,8 @@ void TrackList::extract(const DB::Result &r){
         at(i).title = r[i][1];
         at(i).artist = User(number(r[i][2]), r[i][3]);
         at(i).date = r[i][4];
-        at(i).visible = r[i][5] == "t";
+        at(i).timestamp = r[i][5];
+        at(i).visible = r[i][6] == "t";
     }
 }
 

@@ -14,6 +14,7 @@ class Track{
         std::string title;
         User artist;
         std::string date;
+        std::string timestamp;
         bool visible;
 
         std::string url() const;

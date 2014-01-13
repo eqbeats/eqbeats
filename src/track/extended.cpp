@@ -4,6 +4,7 @@
 #include <text/text.h>
 #include <misc/repl.h>
 #include <hiredis/hiredis.h>
+#include <log/log.h>
 
 ExtendedTrack::ExtendedTrack(int tid){
 
@@ -11,7 +12,7 @@ ExtendedTrack::ExtendedTrack(int tid){
     if(tid<=0) return;
 
     DB::Result r = DB::query(
-        "SELECT tracks.title, tracks.user_id, users.name, tracks.visible, tracks.date,"
+        "SELECT tracks.title, tracks.user_id, users.name, tracks.visible, tracks.date, extract(epoch from tracks.date),"
         " tracks.notes, tracks.airable, tracks.license, array_to_string(tracks.tags, ',') FROM tracks, users "
         "WHERE tracks.id = " + number(tid) + " AND tracks.user_id = users.id");
 
@@ -22,14 +23,15 @@ ExtendedTrack::ExtendedTrack(int tid){
         artist = User(number(r[0][1]), r[0][2]);
         visible = r[0][3] == "t";
         date = r[0][4];
+        timestamp = r[0][5];
 
         // Ext
-        notes = r[0][5];
-        airable = r[0][6] == "t";
-        license = r[0][7];
+        notes = r[0][6];
+        airable = r[0][7] == "t";
+        license = r[0][8];
 
         // Tags
-        std::string tstr = r[0][8];
+        std::string tstr = r[0][9];
         std::string buf;
         for(std::string::const_iterator i=tstr.begin(); i!=tstr.end(); i++){
             if(*i == ','){
