@@ -58,7 +58,7 @@ Here is a sample config for nginx:
             fastcgi_pass unix:/run/eqbeats/eqbeats.sock;
         }
         location /static {
-            root /usr/share/eqbeats/static;
+            alias /usr/share/eqbeats/static/;
         }
         location /downloads/art {
             internal;
