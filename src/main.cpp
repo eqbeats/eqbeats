@@ -32,9 +32,10 @@ void signalCatch(int s){
     if(s){
         if(answering)
             running = false;
-        else
+        else {
             DB::close();
             exit(0);
+        }
     }
 }
 
