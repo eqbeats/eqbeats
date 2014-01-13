@@ -10,6 +10,7 @@
     "tracks": [{{#ITEM}}{{>DATA}}{{#ITEM_separator}},{{/ITEM_separator}}{{/ITEM}}],
     "playlists": [{{#PLAYLIST}}{{>PLAYLIST}}{{#PLAYLIST_separator}},{{/PLAYLIST_separator}}{{/PLAYLIST}}],
     "num_favorites": {{NUM_FAVS}},
+    "num_followers": {{NUM_FOLLOWERS}},
     {{/LONG}}
     "link": "{{EQBEATS_URL}}/user/{{UID}}"
 }
