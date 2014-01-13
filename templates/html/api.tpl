@@ -87,7 +87,7 @@
     <table>
         <tr><td><tt>id</tt></td><td>Unique numerical id for the playlist.</td></tr>
         <tr><td><tt>name</tt></td><td>Playlist name.</td></tr>
-        <tr><td><tt>track_count</tt></td><td>Number of tracks in the playlist.</td></tr>
+        <tr><td><tt>num_tracks</tt></td><td>Number of tracks in the playlist.</td></tr>
         <tr><td><tt>description</tt></td><td>Description, raw. This member will not exist if there is no description.</td></tr>
         <tr><td><tt>html_description</tt></td><td>Same as above, formatted to HTML.</td></tr>
         <tr><td><tt>author</tt></td><td>A <a href="#user">user object</a> for the author.</td></tr>
@@ -97,7 +97,7 @@
     <pre>{
     "id": 78,
     "title": "Train",
-    "track_count": 5,
+    "num_tracks": 5,
     "description": "Songs to listen to on the train.",
     "html_description": "Songs to listen to on the train.",
     "author": {"id": 123, "name": "Foo Bar",...},
