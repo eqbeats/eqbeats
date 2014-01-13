@@ -9,6 +9,7 @@
     {{#LONG}}
     "tracks": [{{#ITEM}}{{>DATA}}{{#ITEM_separator}},{{/ITEM_separator}}{{/ITEM}}],
     "playlists": [{{#PLAYLIST}}{{>PLAYLIST}}{{#PLAYLIST_separator}},{{/PLAYLIST_separator}}{{/PLAYLIST}}],
+    "num_favourites": {{NUM_FAVS}},
     {{/LONG}}
     "link": "{{EQBEATS_URL}}/user/{{UID}}"
 }

@@ -44,8 +44,8 @@ void Account::fill(Dict* d) const{
     // Number of favorites
     if(num_favs > 0) {
         d->ShowSection("HAS_FAVS");
-        d->SetValue("NUM_FAVS", number(num_favs));
     }
+    d->SetValue("NUM_FAVS", number(num_favs));
     if(num_followers > 0) {
         d->ShowSection("HAS_FOLLOWERS");
         d->SetValue("NUM_FOLLOWERS", number(num_followers));
