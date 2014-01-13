@@ -6,6 +6,7 @@
         "name": "{{USERNAME:o}}",
         "link": "{{EQBEATS_URL}}/user/{{UID}}"
     },
+    "track_count": {{PLAYLIST_TRACK_COUNT}},
     {{#HAS_DESCRIPTION}}
     "description": "{{DESCRIPTION:o}}",
     "html_description": "{{DESCRIPTION:x-format:o}}",

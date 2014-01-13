@@ -86,6 +86,7 @@ std::vector<Playlist> Playlist::forUser(const User &u){
 
 void Playlist::fill(Dict *d) const{
     d->SetIntValue("PLAYLIST_ID", _id);
+    d->SetIntValue("PLAYLIST_TRACK_COUNT", _length);
     d->SetFormattedValue("TRACK_COUNT", "%d track%s", _length, _length>1?"s":"");
     d->SetValue("PLAYLIST_NAME", _name);
     d->SetValue("PLAYLIST_URL", url());
