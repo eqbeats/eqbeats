@@ -4,7 +4,6 @@
 #include <text/text.h>
 #include <misc/repl.h>
 #include <hiredis/hiredis.h>
-#include <log/log.h>
 
 ExtendedTrack::ExtendedTrack(int tid){
 
