@@ -27,5 +27,8 @@
         "aac": "{{EQBEATS_URL}}/track/{{TID}}/aac?stream=1",
         "mp3": "{{EQBEATS_URL}}/track/{{TID}}/mp3?stream=1"
     },
+    {{#HAS_STATS}}
+    "stats": {{>STATS}},
+    {{/HAS_STATS}}
     "timestamp": {{TIMESTAMP}}
 }

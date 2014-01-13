@@ -4,37 +4,6 @@
 #include <account/user.h>
 #include <track/track.h>
 
-#define addMeasurement(name) \
-    dict = doc->dict()->AddSectionDictionary("MEASUREMENT");\
-    dict->SetValue("MEASUREMENT", name);\
-    dict->SetIntValue("VALUE", Stat::get(name, uid, tid, false));
-
-#define addUniqueMeasurement(name) \
-    dict = doc->dict()->AddSectionDictionary("UNIQUE_MEASUREMENT");\
-    dict->SetValue("MEASUREMENT", name);\
-    dict->SetIntValue("VALUE", Stat::get(name, uid, tid, true));
-
-#define addDailyMeasurement(name) \
-    dict = doc->dict()->AddSectionDictionary("DAILY_MEASUREMENT");\
-    dict->SetValue("MEASUREMENT", name);\
-    days = Stat::getDays(name, tid, false);\
-    for(std::map<std::string, int>::iterator day = days.begin(); day != days.end(); day++){\
-        inner = dict->AddSectionDictionary("DAY");\
-        inner->SetValue("DAY", day->first);\
-        inner->SetIntValue("VALUE", day->second);\
-    }
-
-#define addDailyUniqueMeasurement(name) \
-    dict = doc->dict()->AddSectionDictionary("DAILY_UNIQUE_MEASUREMENT");\
-    dict->SetValue("MEASUREMENT", name);\
-    days = Stat::getDays(name, tid, true);\
-    for(std::map<std::string, int>::iterator day = days.begin(); day != days.end(); day++){\
-        inner = dict->AddSectionDictionary("DAY");\
-        inner->SetValue("DAY", day->first);\
-        inner->SetIntValue("VALUE", day->second);\
-    }
-
-
 void Pages::stats(Document *doc){
 
     std::string sub, sub2;
@@ -52,27 +21,27 @@ void Pages::stats(Document *doc){
         map<std::string, int> days, referrers;
         if(t){
             doc->dict()->ShowSection("HAS_UNIQUE");
-            addUniqueMeasurement("trackView");
-            addUniqueMeasurement("trackPlay");
-            addUniqueMeasurement("trackDownload");
+            Stat::fillMeasurement(doc->dict(), "trackView", uid, tid, true, false);
+            Stat::fillMeasurement(doc->dict(), "trackPlay", uid, tid, true, false);
+            Stat::fillMeasurement(doc->dict(), "trackDownload", uid, tid, true, false);
             doc->dict()->ShowSection("HAS_DAILY");
-            addDailyUniqueMeasurement("trackView");
-            addDailyUniqueMeasurement("trackPlay");
-            addDailyUniqueMeasurement("trackDownload");
-            addDailyMeasurement("trackView");
-            addDailyMeasurement("trackPlay");
-            addDailyMeasurement("trackDownload");
+            Stat::fillMeasurement(doc->dict(), "trackView", uid, tid, true, true);
+            Stat::fillMeasurement(doc->dict(), "trackPlay", uid, tid, true, true);
+            Stat::fillMeasurement(doc->dict(), "trackDownload", uid, tid, true, true);
+            Stat::fillMeasurement(doc->dict(), "trackView", uid, tid, false, true);
+            Stat::fillMeasurement(doc->dict(), "trackPlay", uid, tid, false, true);
+            Stat::fillMeasurement(doc->dict(), "trackDownload", uid, tid, false, true);
             doc->dict()->ShowSection("HAS_REFERRERS");
-            referrers = Stat::getReferrers(tid);\
-            for(std::map<std::string, int>::iterator referrer = referrers.begin(); referrer != referrers.end(); referrer++){\
-                inner = doc->dict()->AddSectionDictionary("REFERRER");\
-                inner->SetValue("REFERRER", referrer->first);\
-                inner->SetIntValue("VALUE", referrer->second);\
+            referrers = Stat::getReferrers(tid);
+            for(std::map<std::string, int>::iterator referrer = referrers.begin(); referrer != referrers.end(); referrer++){
+                inner = doc->dict()->AddSectionDictionary("REFERRER");
+                inner->SetValue("REFERRER", referrer->first);
+                inner->SetIntValue("VALUE", referrer->second);
             }
         }
-        addMeasurement("trackView");
-        addMeasurement("trackPlay");
-        addMeasurement("trackDownload");
+        Stat::fillMeasurement(doc->dict(), "trackView", uid, tid, false, false);
+        Stat::fillMeasurement(doc->dict(), "trackPlay", uid, tid, false, false);
+        Stat::fillMeasurement(doc->dict(), "trackDownload", uid, tid, false, false);
     }
 
 }

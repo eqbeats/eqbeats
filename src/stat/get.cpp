@@ -60,3 +60,18 @@ map<std::string, int> Stat::getReferrers(int tid, int limit){
     return ret;
 
 }
+
+void Stat::fillMeasurement(Dict *outer, std::string name, int uid, int tid, bool unique, bool daily){
+    Dict *dict = outer->AddSectionDictionary(unique?daily?"DAILY_UNIQUE_MEASUREMENT":"UNIQUE_MEASUREMENT":daily?"DAILY_MEASUREMENT":"MEASUREMENT");
+    dict->SetValue("MEASUREMENT", name);
+    if(!daily)
+        dict->SetIntValue("VALUE", Stat::get(name, uid, tid, unique));
+    else{
+        map<std::string, int> days = Stat::getDays(name, tid, unique);
+        for(std::map<std::string, int>::iterator day = days.begin(); day != days.end(); day++){
+            Dict *inner = dict->AddSectionDictionary("DAY");
+            inner->SetValue("DAY", day->first);
+            inner->SetIntValue("VALUE", day->second);
+        }
+    }
+}

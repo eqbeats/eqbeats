@@ -28,6 +28,20 @@ void Pages::trackMisc(Document *doc){
         ExtendedTrack t(tid);
         if(!t) return;
         doc->setJson("json/track.tpl");
+
+        doc->dict()->ShowSection("HAS_STATS");
+        Dict *stats = doc->dict()->AddIncludeDictionary("STATS");
+        stats->SetFilename("json/stats.tpl");
+
+        Stat::fillMeasurement(stats, "trackView", t.artist.id, tid, false, false);
+        Stat::fillMeasurement(stats, "trackPlay", t.artist.id, tid, false, false);
+        Stat::fillMeasurement(stats, "trackDownload", t.artist.id, tid, false, false);
+
+        stats->ShowSection("HAS_UNIQUE");
+        Stat::fillMeasurement(stats, "trackView", t.artist.id, tid, true, false);
+        Stat::fillMeasurement(stats, "trackPlay", t.artist.id, tid, true, false);
+        Stat::fillMeasurement(stats, "trackDownload", t.artist.id, tid, true, false);
+
         t.fill(doc->dict());
     }
 

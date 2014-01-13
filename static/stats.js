@@ -95,7 +95,7 @@ function initstats(){
     xhr.open("GET", window.location.pathname + "/stats?" + now(), true);
     xhr.onreadystatechange = function(){
         if(xhr.readyState == 4){
-            data = eval(xhr.responseText)[0];
+            data = JSON.parse(xhr.responseText);
             render(true);
             d3.select(".ellipsis").remove();
         }
