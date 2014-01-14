@@ -37,6 +37,7 @@
         <tr><td><tt>tracks</tt></td><td>An array of <a href="#track">Track objects</a> for all tracks published by the user.</td></tr>
         <tr><td><tt>playlists</tt></td><td>Array of <a href="#playlist">Playlist objects</a> (stripped of their tracks).</td></tr>
         <tr><td><tt>num_favorites</tt></td><td>Number of favorite tracks.</td></tr>
+        <tr><td><tt>num_followers</tt></td><td>Number of followers.</td></tr>
         <tr><td><tt>link</tt></td><td>Permalink to the user's page.</td></tr>
     </table>
     <pre>{
@@ -48,6 +49,7 @@
     "tracks": [{"id": 456, ...}, ...],
     "playlists": [{"id": 78, ...}, ...],
     "num_favorites": 9,
+    "num_followers": 2,
     "link": "http://eqbeats.org/user/123"
 }</pre>
 
@@ -61,6 +63,7 @@
         <tr><td><tt>link</tt></td><td>Permalink to the track's page.</td></tr>
         <tr><td><tt>download</tt></td><td>Permalinks to the downloadable audio files. It will also contain an <tt>art</tt> value pointing to the image if the track has cover art.</td></tr>
         <tr><td><tt>stream</tt></td><td>Permalinks to the streamable audio files. While these are identical to the ones in <tt>download</tt>, we ask that you use them when streaming, for the sake of statistics integrity.</td></tr>
+        <tr><td><tt>stats</tt></td><td>Track statistics.</td></tr>
         <tr><td><tt>timestamp</tt></td><td>Unix timestamp indicating when the track has been published, or when it has been uploaded if it has not been published yet.</td></tr>
     </table>
     <pre>{
@@ -80,6 +83,18 @@
     "stream": {"opus":"http://eqbeats.org/track/456/opus?stream=1",
                  ...
                  },
+    "stats": {
+        "totals": {
+            "trackView": 13,
+            "trackPlay": 10,
+            "trackDownload": 4
+        },
+        "unique_totals": {
+            "trackView": 10,
+            "trackPlay": 9,
+            "trackDownload": 4
+        }
+    }
     "timestamp": 123456789.01234
 }</pre>
 
