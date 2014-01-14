@@ -2,16 +2,31 @@
 #include "path.h"
 #include <stdarg.h>
 #include <libpq-fe.h>
-#include <hiredis/hiredis.h>
+
+#ifdef HAVE_LIBHIREDIS
+#  include <hiredis/hiredis.h>
+#endif
 
 using namespace DB;
 
 PGconn *db;
-redisContext *redis_ctx;
-std::string name;
 
-void DB::connect(std::string name){
-    db = PQconnectdb("");
+#ifdef HAVE_LIBHIREDIS
+static std::string name;
+static struct redisContext *redis_ctx = NULL;
+
+struct redisContext* DB::redis() {
+    return redis_ctx;
+}
+
+void DB::blindRedisCommand(const std::string &q, ...){
+    va_list ap;
+    va_start(ap, q);
+    void* r = redisvCommand(redis_ctx, q.c_str(), ap);
+    if(r != NULL) freeReplyObject(r);
+}
+
+static void connectRedis(std::string name){
     redis_ctx = redisConnectUnix(REDIS_SOCK);
     if(!name.empty()){
         ::name = name;
@@ -20,29 +35,33 @@ void DB::connect(std::string name){
     else if(!::name.empty())
         blindRedisCommand("CLIENT SETNAME %s", ::name.c_str());
 }
+#endif
+
+void DB::connect(std::string name){
+    db = PQconnectdb("");
+#ifdef HAVE_LIBHIREDIS
+    connectRedis(name);
+#endif
+}
 
 void DB::close(){
     PQfinish(db);
+#ifdef HAVE_LIBHIREDIS
     redisFree(redis_ctx);
-}
-
-struct redisContext* DB::redis() {
-    return redis_ctx;
+#endif
 }
 
 void DB::healthCheck(){
-    if(PQstatus(db) != CONNECTION_OK || redis_ctx->err){
+    if(PQstatus(db) != CONNECTION_OK){
         PQreset(db);
-        redisFree(redis_ctx);
-        DB::connect();
+        db = PQconnectdb("");
     }
-}
-
-void DB::blindRedisCommand(const std::string &q, ...){
-    va_list ap;
-    va_start(ap, q);
-    void* r = redisvCommand(redis_ctx, q.c_str(), ap);
-    if(r != NULL) freeReplyObject(r);
+#ifdef HAVE_LIBHIREDIS
+    if (redis_ctx->err) {
+        redisFree(redis_ctx);
+        connectRedis(name);
+    }
+#endif
 }
 
 Result toResult(PGresult *res){

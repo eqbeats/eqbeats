@@ -55,11 +55,13 @@ void Pages::track(Document *doc){
         if(cgi("fileuploader") != "0")
             uploader->ShowSection("FILEUPLOADER");
 
+#ifdef HAVE_LIBHIREDIS
         int hits = Stat::push("trackView", t.artist.id, tid);
         doc->dict()->SetValue("HIT_COUNT", number(hits));
         int unique_hits = Stat::get("trackView", 0, tid, true);
         doc->dict()->SetValue("UNIQUE_HIT_COUNT", number(unique_hits));
         doc->rootDict()->ShowSection("REQUIRES_STATS_JS");
+#endif
 
         Session::fill(doc->dict());
         EventList::track(t).fill(doc->dict(), "EVENTS", false);

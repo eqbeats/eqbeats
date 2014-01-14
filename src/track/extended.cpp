@@ -3,7 +3,6 @@
 #include <core/path.h>
 #include <text/text.h>
 #include <misc/repl.h>
-#include <hiredis/hiredis.h>
 
 #define TICK(x, y) if(license == x) d->ShowSection(y)
 
@@ -79,6 +78,10 @@ void ExtendedTrack::fill(Dict *d) const{
 
 // Hits
 
+#ifdef HAVE_LIBHIREDIS
+
+#include <hiredis/hiredis.h>
+
 int runRedis(const char *format, int id){
     redisReply *reply = (redisReply*) redisCommand(DB::redis(), format, id);
     if(!reply)
@@ -99,3 +102,15 @@ int ExtendedTrack::getHits(){
 int ExtendedTrack::hit(){
     return runRedis("INCR hits:%d", id);
 }
+
+#else
+
+int ExtendedTrack::getHits(){
+    return 0;
+}
+
+int ExtendedTrack::hit(){
+    return 0;
+}
+
+#endif

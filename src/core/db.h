@@ -13,8 +13,10 @@ void close();
 
 void healthCheck();
 
+#ifdef HAVE_LIBHIREDIS
 struct redisContext* redis();
 void blindRedisCommand(const std::string &q, ...);
+#endif
 
 typedef std::vector<std::string> Row;
 typedef std::vector<Row> Result;

@@ -9,12 +9,15 @@
 #include <render/document.h>
 #include <render/fcgiio.h>
 #include <social/pages/pages.h>
-#include <stat/pages.h>
 #include <text/modifiers.h>
 #include <text/text.h>
 #include <track/pages/pages.h>
 #include <userfeature/pages/pages.h>
 #include <youtube/pages/pages.h>
+
+#ifdef HAVE_LIBHIREDIS
+#  include <stat/pages.h>
+#endif
 
 #include <fcntl.h>
 #include <wand/magick_wand.h>
@@ -80,7 +83,9 @@ int main(int argc, char** argv){
         Pages::comment, Pages::socialActions, Pages::favorites,
         Pages::featureActions,
         Pages::oauth, Pages::yt_upload,
+#ifdef HAVE_LIBHIREDIS
         Pages::stats,
+#endif
         0
     };
 

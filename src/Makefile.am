@@ -1,4 +1,9 @@
-SUBDIRS = account core log misc pages playlist render social stat text track userfeature youtube tools
+if HIREDIS
+  MAYBE_STAT = stat
+  MAYBE_LIBSTAT = stat/libstat.a
+endif
+
+SUBDIRS = account core log misc pages playlist render social $(MAYBE_STAT) text track userfeature youtube tools
 
 pkglibexec_PROGRAMS = eqbeats.fcgi
 eqbeats_fcgi_LDADD = \
@@ -10,7 +15,7 @@ eqbeats_fcgi_LDADD = \
     userfeature/libuserfeature.a userfeature/pages/libuserfeaturepages.a \
     youtube/libyoutube.a youtube/pages/libyoutubepages.a \
     account/libaccount.a account/pages/libaccountpages.a \
-    stat/libstat.a \
+    $(MAYBE_LIBSTAT) \
     misc/libmisc.a \
     render/librender.a \
     text/libtext.a \

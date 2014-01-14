@@ -7,8 +7,11 @@
 #include <social/follower.h>
 #include <text/text.h>
 #include <track/list.h>
-#include <stat/stat.h>
 #include <userfeature/feature.h>
+
+#ifdef HAVE_LIBHIREDIS
+#  include <stat/stat.h>
+#endif
 
 void Pages::user(Document *doc){
 
@@ -39,7 +42,9 @@ void Pages::user(Document *doc){
         u.fill(doc->dict());
         Tracks::byUser(u.id, u.self()).fill(doc->dict(), "TRACK_LIST");
 
+#ifdef HAVE_LIBHIREDIS
         Stat::push("userView", uid);
+#endif
 
         Dict *uploader = doc->dict()->AddIncludeDictionary("UPLOADER");
         uploader->SetFilename("html/uploader.tpl");
