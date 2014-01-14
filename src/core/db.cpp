@@ -37,11 +37,14 @@ static void connectRedis(std::string name){
 }
 #endif
 
-void DB::connect(std::string name){
+bool DB::connect(std::string name){
     db = PQconnectdb("");
+    if(PQstatus(db) == CONNECTION_BAD)
+        return false;
 #ifdef HAVE_LIBHIREDIS
     connectRedis(name);
 #endif
+    return true;
 }
 
 void DB::close(){

@@ -50,7 +50,10 @@ int main(int argc, char** argv){
 
     openlog("eqbeats", LOG_PID, LOG_USER);
 
-    DB::connect((std::string)argv[0] + "-" + number(getpid()));
+    if(!DB::connect((std::string)argv[0] + "-" + number(getpid()))){
+        log("critical error: couldn't connect to PostgreSQL");
+        exit(1);
+    }
 
     uint32_t buf = 0;
     int urandom = open("/dev/urandom", O_RDONLY);
