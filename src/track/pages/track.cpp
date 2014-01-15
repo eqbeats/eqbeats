@@ -31,6 +31,7 @@ void Pages::trackMisc(Document *doc){
 
         doc->dict()->ShowSection("HAS_AVATAR");
 
+#ifdef HAVE_LIBHIREDIS
         doc->dict()->ShowSection("HAS_STATS");
         Dict *stats = doc->dict()->AddIncludeDictionary("STATS");
         stats->SetFilename("json/stats.tpl");
@@ -43,6 +44,7 @@ void Pages::trackMisc(Document *doc){
         Stat::fillMeasurement(stats, "trackView", t.artist.id, tid, true, false);
         Stat::fillMeasurement(stats, "trackPlay", t.artist.id, tid, true, false);
         Stat::fillMeasurement(stats, "trackDownload", t.artist.id, tid, true, false);
+#endif
 
         t.fill(doc->dict());
     }
