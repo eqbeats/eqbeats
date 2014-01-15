@@ -7,7 +7,7 @@ SUBDIRS = account core log misc pages playlist render social $(MAYBE_STAT) text 
 
 pkglibexec_PROGRAMS = eqbeats.fcgi
 eqbeats_fcgi_LDADD = \
-    -lpq -lfcgi -lfcgi++ $(MAGICK_LIBS) $(TAGLIB_LIBS) $(CTEMPLATE_LIBS) $(CGICC_LIBS) -lcgicc $(PCRECPP_LIBS) $(NETTLE_LIBS) $(HIREDIS_LIBS) \
+    $(MAGICK_LIBS) $(TAGLIB_LIBS) $(CTEMPLATE_LIBS) $(CGICC_LIBS) $(PCRECPP_LIBS) $(NETTLE_LIBS) $(HIREDIS_LIBS) \
     pages/libpages.a \
     playlist/libplaylist.a playlist/pages/libplaylistpages.a \
     social/libsocial.a social/pages/libsocialpages.a \

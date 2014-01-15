@@ -16,9 +16,17 @@ AC_PROG_LN_S
 AC_PROG_MAKE_SET
 
 # Checks for libraries.
+missing=''
+AC_CHECK_LIB([pq], [PQconnectdb], [], [missing="$missing pq"])
+AC_CHECK_LIB([fcgi], [FCGX_Init], [], [missing="$missing fcgi"])
+AS_IF([test -n "$missing"], [
+    AC_MSG_ERROR([cannot find the following libraries:$missing])
+])
 PKG_CHECK_MODULES([MAGICK], [MagickWand])
 PKG_CHECK_MODULES([TAGLIB], [taglib])
 PKG_CHECK_MODULES([CGICC], [cgicc])
+CGICC_LIBS='-lcgicc -lfcgi++' # cgicc.pc doesn't do its job
+AC_SUBST([CGICC_LIBS])
 PKG_CHECK_MODULES([CTEMPLATE], [libctemplate])
 PKG_CHECK_MODULES([PCRECPP], [libpcrecpp])
 PKG_CHECK_MODULES([NETTLE], [nettle])
