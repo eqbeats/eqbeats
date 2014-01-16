@@ -10,14 +10,11 @@ AC_CONFIG_HEADERS([config.h])
 AC_GNU_SOURCE
 LT_INIT
 
-# Checks for programs.
 AC_PROG_CXX
 AC_PROG_CC_C99
 AC_PROG_INSTALL
 AC_PROG_LN_S
-AC_PROG_MAKE_SET
 
-# Checks for libraries.
 missing=''
 AC_CHECK_LIB([pq], [PQconnectdb], [], [missing="$missing pq"])
 AC_CHECK_LIB([fcgi], [FCGX_Init], [], [missing="$missing fcgi"])
@@ -35,25 +32,8 @@ PKG_CHECK_MODULES([NETTLE], [nettle])
 AC_CHECK_LIB([hiredis], [redisConnectUnix])
 AM_CONDITIONAL([HIREDIS], [test "x$ac_cv_lib_hiredis_redisConnection" = xyes])
 
-# Checks for header files.
-AC_CHECK_HEADERS([fcntl.h stddef.h stdlib.h string.h sys/socket.h sys/time.h unistd.h])
+AC_CHECK_FUNC([asprintf], [], [AC_MSG_ERROR([missing asprintf])])
 
-# Checks for typedefs, structures, and compiler characteristics.
-AC_CHECK_HEADER_STDBOOL
-AC_C_INLINE
-AC_TYPE_PID_T
-AC_TYPE_SIZE_T
-AC_TYPE_UINT32_T
-AC_TYPE_UINT8_T
-
-# Checks for library functions.
-AC_FUNC_FORK
-AC_FUNC_MALLOC
-AC_FUNC_MKTIME
-AC_FUNC_REALLOC
-AC_CHECK_FUNCS([dup2 gettimeofday memset mkdir select socket strchr])
-
-# Paths
 AC_ARG_WITH([redis-socket],
     AC_HELP_STRING([--with-redis-socket=PATH], [Unix socket for Redis @<:@/run/eqbeats/redis.sock@:>@]),
     [redis_socket="$withval"],
