@@ -47,12 +47,15 @@ int main(int argc, char** argv){
     (void)argc;
     (void)argv;
 
+    openlog("eqbeats", LOG_PID, LOG_USER);
+
     struct eqbeats_ctx eq;
-    eqbeats_init(&eq, "", NULL, 0);
+    if(eqbeats_init(&eq, "", NULL, EQBEATS_INIT_SETUP) != 0){
+        log("eqbeats initialization failed");
+        exit(1);
+    }
 
     setenv("EQBEATS_DIR", eq.root, 0);
-
-    openlog("eqbeats", LOG_PID, LOG_USER);
 
     if(!DB::connect((std::string)argv[0] + "-" + number(getpid()))){
         log("critical error: couldn't connect to PostgreSQL");
