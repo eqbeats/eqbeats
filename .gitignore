@@ -10,6 +10,7 @@ dox/html
 dox/latex
 static/stats*.html
 static/awstats
+conf/nginx.conf
 
 *.log
 *.sw?
@@ -28,15 +29,16 @@ feature.queue
 src/eqbeats.fcgi
 /tools/*
 
-*.in
 .deps
 aclocal.m4
 autom4te.cache
+config.h.in
 depcomp
 install-sh
 missing
 configure
 Makefile
+Makefile.in
 config.guess
 config.h
 config.status

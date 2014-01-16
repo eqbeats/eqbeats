@@ -1,1 +1,1 @@
-SUBDIRS = include lib src static templates sql
+SUBDIRS = include lib src static templates sql conf

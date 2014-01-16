@@ -84,5 +84,6 @@ AC_CONFIG_FILES([
     templates/json/Makefile
     templates/oembed/Makefile
     sql/Makefile
+    conf/Makefile
 ])
 AC_OUTPUT

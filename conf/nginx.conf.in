@@ -1,0 +1,22 @@
+location / {
+    fastcgi_pass unix:/run/eqbeats/eqbeats.sock;
+    include fastcgi.conf;
+}
+
+location /static/ {
+    alias @pkgdatadir@/static/;
+}
+
+location /downloads/art/ {
+    internal;
+    alias @eqbeats_dir@/art/;
+}
+
+location /downloads/tracks/ {
+    internal;
+    alias @eqbeats_dir@/tracks/;
+}
+
+location /robots.txt {
+    alias @pkgdatadir@/static/robots.txt;
+}
