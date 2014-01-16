@@ -59,9 +59,9 @@ AC_ARG_WITH([redis-socket],
 AC_SUBST([redis_socket])
 
 AC_ARG_WITH([eqbeats-dir],
-    AC_HELP_STRING([--with-eqbeats-dir=DIR], [Writable site-specific files @<:@/var/lib/eqbeats@:>@]),
+    AC_HELP_STRING([--with-eqbeats-dir=DIR], [Default writable website-specific directory @<:@SHAREDSTATEDIR/eqbeats@:>@]),
     [eqbeats_dir="$withval"],
-    [eqbeats_dir='/var/lib/eqbeats'])
+    [eqbeats_dir='${sharedstatedir}/eqbeats'])
 AC_SUBST([eqbeats_dir])
 
 AC_ARG_WITH([templates],

@@ -1,3 +1,4 @@
+#include <eqbeats.h>
 #include <account/pages/pages.h>
 #include <account/session.h>
 #include <core/cgi.h>
@@ -46,7 +47,10 @@ int main(int argc, char** argv){
     (void)argc;
     (void)argv;
 
-    setenv("EQBEATS_DIR", DEFAULT_EQBEATS_DIR, 0);
+    struct eqbeats_ctx eq;
+    eqbeats_init(&eq, "", NULL, 0);
+
+    setenv("EQBEATS_DIR", eq.root, 0);
 
     openlog("eqbeats", LOG_PID, LOG_USER);
 
@@ -143,5 +147,6 @@ int main(int argc, char** argv){
 
     MagickWandTerminus();
     DB::close();
+    eqbeats_end(&eq);
     return 0;
 }
