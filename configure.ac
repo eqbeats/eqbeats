@@ -72,6 +72,7 @@ AC_SUBST([templates_dir])
 
 AC_CONFIG_FILES([
     Makefile
+    include/Makefile
     lib/Makefile
     src/Makefile
     src/account/Makefile
