@@ -30,17 +30,8 @@
 #include <unistd.h>
 #include <syslog.h>
 
-bool running = true, answering = false;
-
 void signalCatch(int s){
-    if(s){
-        if(answering)
-            running = false;
-        else {
-            DB::close();
-            exit(0);
-        }
-    }
+    FCGX_ShutdownPending();
 }
 
 int main(int argc, char** argv){
@@ -101,8 +92,8 @@ int main(int argc, char** argv){
     };
 
     struct sigaction sa;
+    memset(&sa, 0, sizeof(sa));
     sa.sa_handler = &signalCatch;
-    sa.sa_flags = SA_RESTART;
     sigaction(SIGINT, &sa, NULL);
     sigaction(SIGQUIT, &sa, NULL);
     sigaction(SIGTERM, &sa, NULL);
@@ -110,8 +101,7 @@ int main(int argc, char** argv){
     pid_t child;
     int rc;
 
-    while(running && (FCGX_Accept_r(&request) == 0)){
-        answering = true;
+    while(FCGX_Accept_r(&request) == 0){
         resetTimer();
         if(eqbeats_health_check(&eq) < 0)
             continue; /* let it return 502 */
@@ -148,7 +138,6 @@ int main(int argc, char** argv){
         FCGX_Finish_r(&request);
         while((child = waitpid(-1, &rc, WNOHANG)) > 0) // wait for zombies
             syslog(WIFEXITED(rc) ? LOG_NOTICE : LOG_ERR, "%d exited with %d.", child, WEXITSTATUS(rc));
-        answering = false;
     }
 
     MagickWandTerminus();
