@@ -7,5 +7,6 @@ Name: EqBeats
 Description: Library for Equestrian Beats
 URL: https://eqbeats.org/
 Version: @PACKAGE_VERSION@
+Requires.private: libpq
 Libs: -L${libdir} -leqbeats
 Cflags: -I${includedir}

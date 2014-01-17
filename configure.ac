@@ -15,14 +15,9 @@ AC_PROG_CC_C99
 AC_PROG_INSTALL
 AC_PROG_LN_S
 
-missing=''
-AC_CHECK_LIB([pq], [PQconnectdb], [PQ_LIBS="-lpq"], [missing="$missing pq"])
-AC_SUBST([PQ_LIBS])
-AC_CHECK_LIB([fcgi], [FCGX_Init], [FCGI_LIBS="-lfcgi"], [missing="$missing fcgi"])
+AC_CHECK_LIB([fcgi], [FCGX_Init], [FCGI_LIBS="-lfcgi"], [AC_MSG_ERROR([missing fcgi])])
 AC_SUBST([FCGI_LIBS])
-AS_IF([test -n "$missing"], [
-    AC_MSG_ERROR([cannot find the following libraries:$missing])
-])
+PKG_CHECK_MODULES([PQ], [libpq])
 PKG_CHECK_MODULES([MAGICK], [MagickWand])
 PKG_CHECK_MODULES([TAGLIB], [taglib])
 PKG_CHECK_MODULES([CGICC], [cgicc])
