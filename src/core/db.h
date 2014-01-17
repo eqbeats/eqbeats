@@ -5,11 +5,14 @@
 #include <vector>
 
 struct redisContext;
+struct pg_conn;
 
 namespace DB{
 
 bool connect(std::string name="");
 void close();
+
+void setPgDatabase(struct pg_conn *pg);
 
 void healthCheck();
 

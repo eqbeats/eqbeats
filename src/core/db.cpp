@@ -38,9 +38,6 @@ static void connectRedis(std::string name){
 #endif
 
 bool DB::connect(std::string name){
-    db = PQconnectdb("");
-    if(PQstatus(db) == CONNECTION_BAD)
-        return false;
 #ifdef HAVE_LIBHIREDIS
     connectRedis(name);
 #endif
@@ -48,17 +45,17 @@ bool DB::connect(std::string name){
 }
 
 void DB::close(){
-    PQfinish(db);
 #ifdef HAVE_LIBHIREDIS
     redisFree(redis_ctx);
 #endif
 }
 
+void DB::setPgDatabase(struct pg_conn *pg)
+{
+    db = pg;
+}
+
 void DB::healthCheck(){
-    if(PQstatus(db) != CONNECTION_OK){
-        PQreset(db);
-        db = PQconnectdb("");
-    }
 #ifdef HAVE_LIBHIREDIS
     if (redis_ctx->err) {
         redisFree(redis_ctx);

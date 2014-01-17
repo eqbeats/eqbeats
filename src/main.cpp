@@ -56,6 +56,7 @@ int main(int argc, char** argv){
     }
 
     setenv("EQBEATS_DIR", eq.root, 0);
+    DB::setPgDatabase(eq.pg);
 
     if(!DB::connect((std::string)argv[0] + "-" + number(getpid()))){
         log("critical error: couldn't connect to PostgreSQL");
@@ -112,7 +113,9 @@ int main(int argc, char** argv){
     while(running && (FCGX_Accept_r(&request) == 0)){
         answering = true;
         resetTimer();
-        DB::healthCheck();
+        if(eqbeats_health_check(&eq) < 0)
+            continue; /* let it return 502 */
+        DB::healthCheck(); /* redis */
         headers = request.envp;
         o.attach(&request);
         try { cgi = cgicc::Cgicc(&o); }

@@ -3,6 +3,7 @@
 #endif
 
 #include <eqbeats.h>
+
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -10,6 +11,8 @@
 #include <sys/stat.h>
 #include <syslog.h>
 #include <unistd.h>
+
+#include <libpq-fe.h>
 
 static const char *determine_root(const char *root)
 {
@@ -47,13 +50,32 @@ static int ensure_directories(const char *root, int create)
 	return ok ? 0 : -1;
 }
 
+static int connect_pg(const char *options, PGconn **conn)
+{
+	*conn = PQconnectdb("");
+	if (PQstatus(*conn) == CONNECTION_BAD)
+		return -1;
+	return 0;
+}
+
 int eqbeats_init(struct eqbeats_ctx *eq, const char *pg_options, const char *eqbeats_dir, int flags)
 {
+	int rc;
 	memset(eq, 0, sizeof(*eq));
 	eq->root = determine_root(eqbeats_dir);
-	return ensure_directories(eq->root, flags & EQBEATS_INIT_SETUP);
+	if ((rc = ensure_directories(eq->root, flags & EQBEATS_INIT_SETUP)))
+		return rc;
+	return connect_pg(pg_options, &eq->pg);
 }
 
 void eqbeats_end(struct eqbeats_ctx *eq)
 {
+	PQfinish(eq->pg);
+}
+
+int eqbeats_health_check(struct eqbeats_ctx *eq)
+{
+	if (PQstatus(eq->pg) == CONNECTION_BAD)
+		PQreset(eq->pg);
+	return PQstatus(eq->pg) == CONNECTION_OK ? 0 : -1;
 }
