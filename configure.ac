@@ -16,8 +16,10 @@ AC_PROG_INSTALL
 AC_PROG_LN_S
 
 missing=''
-AC_CHECK_LIB([pq], [PQconnectdb], [], [missing="$missing pq"])
-AC_CHECK_LIB([fcgi], [FCGX_Init], [], [missing="$missing fcgi"])
+AC_CHECK_LIB([pq], [PQconnectdb], [PQ_LIBS="-lpq"], [missing="$missing pq"])
+AC_SUBST([PQ_LIBS])
+AC_CHECK_LIB([fcgi], [FCGX_Init], [FCGI_LIBS="-lfcgi"], [missing="$missing fcgi"])
+AC_SUBST([FCGI_LIBS])
 AS_IF([test -n "$missing"], [
     AC_MSG_ERROR([cannot find the following libraries:$missing])
 ])
@@ -29,7 +31,8 @@ AC_SUBST([CGICC_LIBS])
 PKG_CHECK_MODULES([CTEMPLATE], [libctemplate])
 PKG_CHECK_MODULES([PCRECPP], [libpcrecpp])
 PKG_CHECK_MODULES([NETTLE], [nettle])
-AC_CHECK_LIB([hiredis], [redisConnectUnix])
+AC_CHECK_LIB([hiredis], [redisConnectUnix], [HIREDIS_LIBS="-lhiredis"])
+AC_SUBST([HIRDIS_LIBS])
 AM_CONDITIONAL([HIREDIS], [test "x$ac_cv_lib_hiredis_redisConnection" = xyes])
 
 AC_CHECK_FUNC([asprintf], [], [AC_MSG_ERROR([missing asprintf])])
