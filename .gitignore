@@ -11,6 +11,7 @@ dox/latex
 static/stats*.html
 static/awstats
 conf/nginx.conf
+lib/eqbeats.pc
 
 *.log
 *.sw?

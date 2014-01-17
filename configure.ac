@@ -86,4 +86,5 @@ AC_CONFIG_FILES([
     sql/Makefile
     conf/Makefile
 ])
+AC_CONFIG_FILES([lib/eqbeats.pc])
 AC_OUTPUT
