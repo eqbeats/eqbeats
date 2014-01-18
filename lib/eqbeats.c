@@ -58,6 +58,18 @@ static int check_tables(PGconn *pg)
 	);
 	int ok = PQntuples(res) == 3;
 	PQclear(res);
+	if (!ok)
+		syslog(LOG_ERR, "missing critical tables in the database");
+	return ok ? 0 : -1;
+}
+
+static int check_extensions(PGconn *pg)
+{
+	PGresult *res = PQexec(pg, "SELECT 't' FROM pg_extension WHERE extname = 'pgcrypto';");
+	int ok = PQntuples(res) == 1;
+	PQclear(res);
+	if (!ok)
+		syslog(LOG_ERR, "missing pgcrypto extension");
 	return ok ? 0 : -1;
 }
 
@@ -66,8 +78,7 @@ static int connect_pg(const char *options, PGconn **conn)
 	*conn = PQconnectdb("");
 	if (PQstatus(*conn) == CONNECTION_BAD)
 		return -1;
-	if (check_tables(*conn) < 0) {
-		syslog(LOG_ERR, "missing critical tables in the database");
+	if (check_tables(*conn) < 0 || check_extensions(*conn)) {
 		PQfinish(*conn);
 		return -1;
 	}
