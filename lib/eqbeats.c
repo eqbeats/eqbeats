@@ -50,11 +50,27 @@ static int ensure_directories(const char *root, int create)
 	return ok ? 0 : -1;
 }
 
+static int check_tables(PGconn *pg)
+{
+	PGresult *res = PQexec(pg,
+		"SELECT 't' FROM pg_tables WHERE schemaname = 'public' AND "
+		"tablename = ANY('{users, tracks, sessions}');"
+	);
+	int ok = PQntuples(res) == 3;
+	PQclear(res);
+	return ok ? 0 : -1;
+}
+
 static int connect_pg(const char *options, PGconn **conn)
 {
 	*conn = PQconnectdb("");
 	if (PQstatus(*conn) == CONNECTION_BAD)
 		return -1;
+	if (check_tables(*conn) < 0) {
+		syslog(LOG_ERR, "missing critical tables in the database");
+		PQfinish(*conn);
+		return -1;
+	}
 	return 0;
 }
 
