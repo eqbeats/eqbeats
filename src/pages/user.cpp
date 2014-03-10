@@ -44,6 +44,8 @@ void Pages::user(Document *doc){
         Dict *uploader = doc->dict()->AddIncludeDictionary("UPLOADER");
         uploader->SetFilename("html/uploader.tpl");
         uploader->SetValue("ACTION", "/track/new");
+        if(cgi("fileuploader") != "0")
+            uploader->ShowSection("FILEUPLOADER");
 
         std::vector<Playlist> playlists = Playlist::forUser(u);
         doc->dict()->ShowSection(playlists.empty() ? "NO_PLAYLIST" : "HAS_PLAYLISTS");

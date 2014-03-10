@@ -52,6 +52,8 @@ void Pages::track(Document *doc){
         Dict *uploader = doc->dict()->AddIncludeDictionary("UPLOADER");
         uploader->SetFilename("html/uploader.tpl");
         uploader->SetValue("ACTION", t.url() + "/upload");
+        if(cgi("fileuploader") != "0")
+            uploader->ShowSection("FILEUPLOADER");
 
         int hits = Stat::push("trackView", t.artist.id, tid);
         doc->dict()->SetValue("HIT_COUNT", number(hits));
