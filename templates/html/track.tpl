@@ -229,16 +229,20 @@
 
     </div>
     <script type="text/javascript">
-        var edit = document.getElementById('track-edit');
-        var title = document.getElementById('track-edit-title');
-        edit.style.maxHeight = '27px';
-    {{#IS_HIDDEN}}
-        // don't hide this stuff for unpublished tracks!
-        edit.style.maxHeight = '1500px';
-    {{/IS_HIDDEN}}
-        title.style.cursor = 'pointer';
-        addListener(title, 'click', function() {
-            edit.style.maxHeight = edit.style.maxHeight == '27px' ? '1500px' : '27px';
+        addListener(document, "DOMContentLoaded", function(){
+            var edit = document.getElementById('track-edit');
+            var title = document.getElementById('track-edit-title');
+            edit.style.maxHeight = '27px';
+            if(window.location.hash && edit.querySelector(window.location.hash))
+                edit.style.maxHeight = '1500px';
+        {{#IS_HIDDEN}}
+            // don't hide this stuff for unpublished tracks!
+            edit.style.maxHeight = '1500px';
+        {{/IS_HIDDEN}}
+            title.style.cursor = 'pointer';
+            addListener(title, 'click', function() {
+                edit.style.maxHeight = edit.style.maxHeight == '27px' ? '1500px' : '27px';
+            });
         });
     </script>
     {{/IS_SELF}}
