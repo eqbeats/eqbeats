@@ -414,10 +414,6 @@ qq.FileUploaderBasic.prototype = {
             this._error('typeError', name);
             return false;
             
-        } else if (size === 0){            
-            this._error('emptyError', name);
-            return false;
-                                                     
         } else if (size && this._options.sizeLimit && size > this._options.sizeLimit){            
             this._error('sizeError', name);
             return false;
