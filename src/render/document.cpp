@@ -64,7 +64,7 @@ void Document::setHtml(const std::string &tpl, const std::string &title, int cod
 
 std::string Document::generate(){
     if(getenv("EQBEATS_HTTPS"))
-        addHttp("Strict-Transport-Security: max-age=15552000"); // six months
+        addHttp("Strict-Transport-Security: max-age=15552000\n"); // six months
 
     if(!_redir.empty()){
         if(_moved)
