@@ -68,8 +68,12 @@ void Pages::tracks(Document *doc){
         is_json_array = true, json_tracks = Tracks::random(50);
     if(path == "/tracks/featured/json")
         is_json_array = true, json_tracks = Tracks::featured(50);
-    if(path == "/tracks/all/json")
-        is_json_array = true, json_tracks = Tracks::latest(10000);
+    if(path == "/tracks/all/json"){
+        is_json_array = true;
+        int per_page = number(cgi("per_page"));
+        int page = number(cgi("page"));
+        json_tracks = Tracks::all(per_page, page);
+    }
     if(is_json_array){
         doc->setJson("json/array.tpl");
         json_tracks.fillJson(doc->dict());

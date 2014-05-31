@@ -114,6 +114,13 @@ TrackList TrackList::tag(const std::string &t){
     return list;
 }
 
+TrackList Tracks::all(int per_page, int page = 1){
+    if(page <= 0) page = 1;
+    return TrackList(
+        "SELECT %s FROM %s WHERE %s ORDER BY id ASC" +
+        (per_page > 0?" LIMIT " + number(per_page):"") + " OFFSET " + number((page-1) * per_page));
+}
+
 TrackList Tracks::latest(int n, int offset){
     return TrackList(
         "SELECT %s FROM %s WHERE %s ORDER BY date DESC "

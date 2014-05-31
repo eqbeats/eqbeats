@@ -31,6 +31,7 @@ namespace Tracks{
     TrackList latest(int n, int offset=0);
     TrackList featured(int n);
     TrackList random(int n);
+    TrackList all(int per_page, int page);
 
     TrackList byUser(int uid, bool all=false);
 

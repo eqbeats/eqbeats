@@ -24,6 +24,7 @@
         <tr><td><tt>/tracks/featured/json</tt></td><td>[Array] The latest 50 featured tracks.</td></tr>
         <tr><td><tt>/tracks/random/json</tt></td><td>[Array] 50 random tracks.</td></tr>
         <tr><td><tt>/tracks/all/json</tt></td><td>[Array] Every published track.</td></tr>
+        <tr><td><tt>/tracks/all/json?per_page=<var>{n}</var>&amp;page=<var>{k}</var></tt></td><td>[Array] Paginates through every published track.</td></tr>
         <tr><td><tt>/playlist/<var>{id}</var>/json</tt></td><td>One <a href="#playlist">playlist object</a>.</td></tr>
     </table>
 
