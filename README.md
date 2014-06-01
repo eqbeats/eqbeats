@@ -100,7 +100,7 @@ systemd unit is also provided in `conf/redis-eqbeats.service`.
 
 If you want to generate the configure script, run:
 
-    autoreconf -i
+    ./autogen.sh
 
 You can then see the available options with:
 
