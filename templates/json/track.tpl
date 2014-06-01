@@ -17,7 +17,7 @@
 		{{#CC_BY_ND}}CC BY-ND (creativecommons.org/licenses/by-nd/3.0/){{/CC_BY_ND}}
 		{{#CC_BY_NC_SA}}CC BY-NC-SA (creativecommons.org/licenses/by-nc-sa/3.0/){/CC_BY_NC_SA}}
 		{{#CC_BY_NC_ND}}CC BY-NC-ND (creativecommons.org/licenses/by-nc-nd/3.0/){{/CC_BY_NC_ND}}
-		{{#PUBLIC}}Public domain{{/PUBLIC}}
+		{{#PUBLIC}}Public domain (creativecommons.org/publicdomain/zero/1.0/){{/PUBLIC}}
 		{{#CUSTOM}}{{LICENSE:o}}{{/CUSTOM}}
 	{{/OTHER_LICENSE}}
     ",{{/HAS_LICENSE}}

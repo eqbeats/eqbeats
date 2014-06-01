@@ -35,7 +35,7 @@
     <tr>
         <td><input name="license" type="radio" value="Public domain" id="lpub" {{#PUBLIC}}checked="checked"{{/PUBLIC}} /></td>
         <td>
-            <b><label for="lpub">Public Domain</label></b>
+            <b><label for="lpub">Public Domain <a href="https://creativecommons.org/publicdomain/zero/1.0/">(CC0)</a></label></b>
             <div>"No rights reserved". Use it if you make your music for fun and want everyone to make the most of it.</div>
         </td>
     </tr>

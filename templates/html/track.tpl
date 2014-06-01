@@ -93,7 +93,7 @@
             {{#CC_BY_ND}}<a href="http://creativecommons.org/licenses/by-nd/3.0/">CC BY-ND</a>{{/CC_BY_ND}}
             {{#CC_BY_NC_SA}}<a href="http://creativecommons.org/licenses/by-nc-sa/3.0/">CC BY-NC-SA</a>{{/CC_BY_NC_SA}}
             {{#CC_BY_NC_ND}}<a href="http://creativecommons.org/licenses/by-nc-nd/3.0/">CC BY</a>{{/CC_BY_NC_ND}}
-            {{#PUBLIC}}Public domain{{/PUBLIC}}
+            {{#PUBLIC}}Public domain <a href="https://creativecommons.org/publicdomain/zero/1.0/">(CC0)</a>{{/PUBLIC}}
             {{#CUSTOM}}{{LICENSE}}{{/CUSTOM}}
         {{/OTHER_LICENSE}}
         {{#IS_SELF}}<a href="/track/{{TID}}/license">(change)</a>{{/IS_SELF}}
