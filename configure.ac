@@ -26,9 +26,12 @@ AC_SUBST([CGICC_LIBS])
 PKG_CHECK_MODULES([CTEMPLATE], [libctemplate])
 PKG_CHECK_MODULES([PCRECPP], [libpcrecpp])
 PKG_CHECK_MODULES([NETTLE], [nettle])
-AC_CHECK_LIB([hiredis], [redisConnectUnix], [HIREDIS_LIBS="-lhiredis"])
-AC_SUBST([HIRDIS_LIBS])
-AM_CONDITIONAL([HIREDIS], [test "x$ac_cv_lib_hiredis_redisConnection" = xyes])
+AC_CHECK_LIB([hiredis], [redisConnectUnix], [
+    HIREDIS_LIBS="-lhiredis"
+    AC_SUBST([HIREDIS_LIBS])
+    AC_DEFINE([HAVE_LIBHIREDIS], 1, [Define to 1 if you have hiredis])
+])
+AM_CONDITIONAL([HIREDIS], [test "x$ac_cv_lib_hiredis_redisConnectUnix" = xyes])
 
 AC_CHECK_FUNC([asprintf], [], [AC_MSG_ERROR([missing asprintf])])
 
