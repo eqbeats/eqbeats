@@ -54,7 +54,7 @@
                 <a href="https://github.com/eqbeats/eqbeats/">Code</a>
                 -
                 <a href="http://blog.eqbeats.org/">Blog</a>
-                <a title="#eqbeats on irc.ponychat.net" href="https://irc.lc/ponychat/eqbeats/{{#LOGGED_USER}}{{USERNAME:x-irc}}{{/LOGGED_USER}}{{#LOGGED_OUT}}pony_.....{{/LOGGED_OUT}}">IRC</a>
+                <a title="#eqbeats on irc.ponychat.net" href="http://webchat.ponychat.net/?autojoin=%23eqbeats">IRC</a>
                 <a href="/thanks">Thanks</a>
                 <br/>
                 Contact: &#99;&#111;&#110;&#116;&#97;&#99;&#116;&#64;&#101;&#113;&#98;&#101;&#97;&#116;&#115;&#46;&#111;&#114;&#103;{{! contact@eqbeats.org}}
