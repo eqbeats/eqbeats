@@ -5,6 +5,8 @@
 #include <misc/repl.h>
 #include <hiredis/hiredis.h>
 
+#define TICK(x, y) if(license == x) d->ShowSection(y)
+
 ExtendedTrack::ExtendedTrack(int tid){
 
     id = 0;
@@ -63,6 +65,16 @@ void ExtendedTrack::fill(Dict *d) const{
     // License
     d->SetValue("LICENSE", license);
     d->ShowSection(license == "Copyright" ? "COPYRIGHT" : "OTHER_LICENSE");
+    TICK("CC BY", "CC_BY");
+    else TICK("CC BY-NC", "CC_BY_NC");
+    else TICK("CC BY-SA", "CC_BY_SA");
+    else TICK("CC BY-ND", "CC_BY_ND");
+    else TICK("CC BY-NC-SA", "CC_BY_NC_SA");
+    else TICK("CC BY-NC-ND", "CC_BY_NC_ND");
+    else TICK("Public domain", "PUBLIC");
+    else {
+        d->ShowSection("CUSTOM");
+    }
 }
 
 // Hits
