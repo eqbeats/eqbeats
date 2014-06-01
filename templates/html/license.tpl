@@ -20,14 +20,14 @@
         <td>
             <b><label for="lnc">Creative Commons: Attribution-NonCommercial (CC BY-NC)</label></b>
             <div>
-                &ldquo;This license lets others remix, tweak, and build upon your work non-commercially, and although their new works must also acknowledge you and be non-commercial, they don’t have to license their derivative works on the same terms.&rdquo;<br />
+                &ldquo;This license lets others remix, tweak, and build upon your work non-commercially, and although their new works must also acknowledge you and be non-commercial, they don’t have to license their derivative works on the same terms.&rdquo; <a href="http://creativecommons.org/licenses/by-nc/3.0">(full license)</a><br />
                 <a href="http://creativecommons.org/licenses/">More about Creative Commons licenses.</a><br /><br />
                 Other CC licenses:
-                <input name="license" type="radio" value="CC BY" id="lby" title="Attribution" {{#CC_BY}}checked="checked"{{/CC_BY}} /> <label for="lby">BY</label>
-                <input name="license" type="radio" value="CC BY-SA" id="lsa" title="Attribution-ShareAlike" {{#CC_BY_SA}}checked="checked"{{/CC_BY_SA}} /> <label for="lsa">BY-SA</label>
-                <input name="license" type="radio" value="CC BY-ND" id="lnd" title="Attribution-NoDerivs" {{#CC_BY_ND}}checked="checked"{{/CC_BY_ND}} /> <label for="lnd">BY-ND</label>
-                <input name="license" type="radio" value="CC BY-NC-SA" id="lncsa" title="Attribution-NonCommercial-ShareAlike" {{#CC_BY_NC_SA}}checked="checked"{{/CC_BY_NC_SA}} /> <label for="lncsa">BY-NC-SA</label>
-                <input name="license" type="radio" value="CC BY-NC-ND" id="lncnd" title="Attribution-NonCommercial-NoDerivs" {{#CC_BY_NC_ND}}checked="checked"{{/CC_BY_NC_ND}} /> <label for="lncnd">BY-NC-ND</label>
+                <input name="license" type="radio" value="CC BY" id="lby" title="Attribution" {{#CC_BY}}checked="checked"{{/CC_BY}} /> <label for="lby">Attribution (<a href="http://creativecommons.org/licenses/by/3.0">BY</a>)</label>
+                <input name="license" type="radio" value="CC BY-SA" id="lsa" title="Attribution-ShareAlike" {{#CC_BY_SA}}checked="checked"{{/CC_BY_SA}} /> <label for="lsa">Attribution-ShareAlike (<a href="http://creativecommons.org/licenses/by-sa/3.0">BY</a>)</label>
+                <input name="license" type="radio" value="CC BY-ND" id="lnd" title="Attribution-NoDerivs" {{#CC_BY_ND}}checked="checked"{{/CC_BY_ND}} /> <label for="lnd">Attribution-NoDerivs (<a href="http://creativecommons.org/licenses/by-nd/3.0">BY-ND</a>)</label>
+                <input name="license" type="radio" value="CC BY-NC-SA" id="lncsa" title="Attribution-NonCommercial-ShareAlike" {{#CC_BY_NC_SA}}checked="checked"{{/CC_BY_NC_SA}} /> <label for="lncsa">Attribution-NonCommercial-ShareAlike (<a href="http://creativecommons.org/licenses/by-nc-sa/3.0">BY-NC-SA</a>)</label>
+                <input name="license" type="radio" value="CC BY-NC-ND" id="lncnd" title="Attribution-NonCommercial-NoDerivs" {{#CC_BY_NC_ND}}checked="checked"{{/CC_BY_NC_ND}} /> <label for="lncnd">Attribution-NonCommercial-NoDerivs (<a href="http://creativecommons.org/licenses/by-nc-nd/3.0">BY-NC-ND</a>)</label>
             </div>
         </td>
     </tr>
@@ -35,7 +35,7 @@
     <tr>
         <td><input name="license" type="radio" value="Public domain" id="lpub" {{#PUBLIC}}checked="checked"{{/PUBLIC}} /></td>
         <td>
-            <b><label for="lpub">Public Domain</label></b>
+            <b><label for="lpub">Public Domain <a href="https://creativecommons.org/publicdomain/zero/1.0/">(CC0)</a></label></b>
             <div>"No rights reserved". Use it if you make your music for fun and want everyone to make the most of it.</div>
         </td>
     </tr>
