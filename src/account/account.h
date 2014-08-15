@@ -21,6 +21,8 @@ class Account: public User {
 
         void fill(Dict*) const;
 
+        static void deleteAccount(int id);
+
 };
 
 #endif // ACCOUNT_H

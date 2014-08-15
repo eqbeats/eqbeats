@@ -95,19 +95,7 @@ void Pages::track(Document *doc){
         }
 
         else{
-            log("Deleting track: " + t.title + " (" + number(t.id) + ")");
-
-            Art art(t.id);
-            if(art) art.remove();
-            Audio(&t).unlink();
-
-            Playlist::removeTrack(t.id);
-            DB::query("DELETE FROM events WHERE track_id = " + number(t.id));
-            DB::query("DELETE FROM featured_tracks WHERE track_id = " + number(t.id));
-            DB::query("DELETE FROM favorites WHERE type = 'track' AND ref = " + number(t.id));
-            DB::query("DELETE FROM user_features WHERE type = 'track' AND ref = " + number(t.id));
-            DB::query("DELETE FROM tracks WHERE id = " + number(t.id));
-
+            t.deleteTrack();
             doc->redirect(Session::user().url());
         }
 

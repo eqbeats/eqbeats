@@ -4,6 +4,8 @@
 #include <text/text.h>
 #include <youtube/youtube.h>
 
+#include <track/list.h>
+
 Account::Account(int uid){
     id = 0;
     if(uid<=0) return;
@@ -52,4 +54,22 @@ void Account::fill(Dict* d) const{
             d->ShowSection("FOLLOWERS_PLURAL");
     }
     d->SetValue("NUM_FOLLOWERS", number(num_followers));
+}
+
+void Account::deleteAccount(int id){
+    TrackList tracks = Tracks::byUser(id, true);
+    for (TrackList::iterator i = tracks.begin(); i != tracks.end(); i++)
+        i->deleteTrack();
+    // ew ew gross
+    DB::query("DELETE FROM sessions WHERE user_id = " + number(id));
+    DB::query("DELETE FROM comments WHERE author_id = " + number(id));
+    DB::query("DELETE FROM comments WHERE type = 'user' AND ref = " + number(id));
+    DB::query("DELETE FROM favorites WHERE user_id = " + number(id));
+    DB::query("DELETE FROM favorites WHERE favorite_type = 'artist' AND ref = " + number(id));
+    DB::query("DELETE FROM resets WHERE user_id = " + number(id));
+    DB::query("DELETE FROM events WHERE source_id = " + number(id) + " OR target_id = " + number(id));
+    DB::query("DELETE FROM playlists WHERE user_id = " + number(id));
+    DB::query("DELETE FROM youtube_access_tokens WHERE user_id = " + number(id));
+    DB::query("DELETE FROM user_features WHERE user_id = " + number(id));
+    DB::query("DELETE FROM users WHERE id = " + number(id));
 }

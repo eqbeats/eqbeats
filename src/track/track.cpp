@@ -4,6 +4,10 @@
 #include <core/db.h>
 #include <text/text.h>
 
+#include <log/log.h>
+#include <playlist/playlist.h>
+#include <track/audio.h>
+
 Track::Track(int tid){
 
     id = 0;
@@ -46,4 +50,19 @@ Dict* Track::player(Dict *d, bool fallback) const{
     p->SetIntValue("LIST", id);
     if(fallback) p->ShowSection("FALLBACK");
     return p;
+}
+
+void Track::deleteTrack() {
+    log("Deleting track: " + title + " (" + number(id) + ")");
+
+    Art art(id);
+    if(art) art.remove();
+    Audio(this).unlink();
+
+    Playlist::removeTrack(id);
+    DB::query("DELETE FROM events WHERE track_id = " + number(id));
+    DB::query("DELETE FROM featured_tracks WHERE track_id = " + number(id));
+    DB::query("DELETE FROM favorites WHERE type = 'track' AND ref = " + number(id));
+    DB::query("DELETE FROM user_features WHERE type = 'track' AND ref = " + number(id));
+    DB::query("DELETE FROM tracks WHERE id = " + number(id));
 }
