@@ -26,4 +26,5 @@ html_DATA = \
     delete.tpl \
     embed-code.tpl \
     youtube.tpl \
-    userlist.tpl
+    userlist.tpl \
+    goodbye.tpl

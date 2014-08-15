@@ -71,3 +71,8 @@
     <input type="hidden" name="approval_prompt" value="force"/>
 </form>
 {{/NO_YOUTUBE}}
+
+<h4><img src="/static/icons/cross.png" alt="" style="margin-top: 0px;" /> Delete</h4>
+<form action="/account/delete" method="get">
+    <input type="submit" value="Delete account"/>
+</form>

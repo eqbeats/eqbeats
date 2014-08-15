@@ -12,7 +12,30 @@ static void form(Document *doc, const Account &a, const char *err=""){
     a.fill(doc->dict());
 }
 
+static void deleteAccount(Document *doc){
+    if(!Session::user())
+        return doc->redirect("/");
+
+    bool post = cgi.getEnvironment().getRequestMethod() == "POST";
+    if(!post || cgi("confirm") != "Delete" || Session::nonce() != cgi("nonce")){
+        Session::newNonce();
+        doc->setHtml("html/delete.tpl", "Account deletion");
+        doc->dict()->SetValue("WHAT", Session::user().name);
+        doc->dict()->SetValue("CANCEL_URL", "/account");
+    }
+
+    else{
+        Session::user().deleteAccount();
+        doc->redirect("/goodbye");
+    }
+}
+
 void Pages::account(Document *doc){
+
+    if(path == "/account/delete")
+        return deleteAccount(doc);
+    else if (path == "/goodbye")
+        return doc->setHtml("html/goodbye.tpl", "Goodbye");
 
     if(path != "/account")
         return;
