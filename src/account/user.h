@@ -20,6 +20,8 @@ class User{
 
         void fill(Dict*) const;
 
+        void deleteAccount();
+
         operator bool() const { return id > 0; }
         bool operator==(const User &u) const { return id == u.id; }
 
