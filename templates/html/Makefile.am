@@ -24,6 +24,7 @@ html_DATA = \
     user.tpl \
     page.tpl \
     delete.tpl \
+    delete-account.tpl \
     embed-code.tpl \
     youtube.tpl \
     userlist.tpl \

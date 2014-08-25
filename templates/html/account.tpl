@@ -74,5 +74,5 @@
 
 <h4><img src="/static/icons/cross.png" alt="" style="margin-top: 0px;" /> Delete</h4>
 <form action="/account/delete" method="get">
-    <input type="submit" value="Delete account"/>
+    <input type="submit" value="Delete your account"/>
 </form>

@@ -19,8 +19,7 @@ static void deleteAccount(Document *doc){
     bool post = cgi.getEnvironment().getRequestMethod() == "POST";
     if(!post || cgi("confirm") != "Delete" || Session::nonce() != cgi("nonce")){
         Session::newNonce();
-        doc->setHtml("html/delete.tpl", "Account deletion");
-        doc->dict()->SetValue("WHAT", Session::user().name);
+        doc->setHtml("html/delete-account.tpl", "Account deletion");
         doc->dict()->SetValue("CANCEL_URL", "/account");
     }
 
