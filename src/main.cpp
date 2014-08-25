@@ -57,7 +57,7 @@ int main(int argc, char** argv){
     uint32_t buf = 0;
     int urandom = open("/dev/urandom", O_RDONLY);
     if(urandom != -1) {
-        read(urandom, &buf, 32);
+        read(urandom, &buf, 4);
         close(urandom);
         srand(buf);
     } else {
