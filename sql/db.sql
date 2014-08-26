@@ -83,7 +83,7 @@ CREATE TABLE events (
     target_name text,
     source_id int,
     source_name text,
-    track_id int REFERENCES tracks(id),
+    track_id int,
     track_title text,
     message text not null
 );
