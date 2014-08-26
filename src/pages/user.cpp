@@ -68,5 +68,9 @@ void Pages::user(Document *doc){
             doc->dict()->ShowSection("WELCOME");
 
         Feature(u.id).fill(doc->dict());
+
+        if(!cgi("spam").empty())
+            doc->rootDict()->SetValueAndShowSection("ERROR", "Sorry, your comment looks like spam and has not been posted. Try rephrasing.", "FLASH_ERROR");
+
     }
 }

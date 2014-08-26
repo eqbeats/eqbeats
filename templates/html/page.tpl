@@ -46,6 +46,9 @@
                 <div style="clear:both;"></div>
             </div>
             <div id="contents">
+                {{#FLASH_ERROR}}
+                <div class="error">{{ERROR}}</div>
+                {{/FLASH_ERROR}}
                 {{>BODY}}
             </div>
             <div id="footer">

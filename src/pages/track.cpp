@@ -79,6 +79,9 @@ void Pages::track(Document *doc){
                 }
             }
         }
+
+        if(!cgi("spam").empty())
+            doc->rootDict()->SetValueAndShowSection("ERROR", "Sorry, your comment looks like spam and has not been posted. Try rephrasing.", "FLASH_ERROR");
     }
 
     else if(sub == "delete"){

@@ -23,11 +23,11 @@ void Pages::comment(Document *doc){
             bot = !url->getValue().empty();
 
         std::string msg = cgi("msg");
-        if(msg.find("<a") != string::npos || msg.find("[url") != string::npos)
+        if(msg.find("<a") != std::string::npos || msg.find("[url") != std::string::npos)
             bot = true;
 
         if(cgi.getEnvironment().getRequestMethod() != "POST" || msg.empty() || bot || (Session::user() && Session::nonce() != cgi("nonce")))
-            return doc->redirect(t ? t.url() : u.url());
+            return doc->redirect((t ? t.url() : u.url()) + "?spam=spam");
 
         Session::newNonce();
 
