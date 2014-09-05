@@ -190,7 +190,7 @@ function render(refilter){
         var ceiling = 20;
         for(var day in days)
             while(days[day] >= ceiling - 1){
-                var power = Math.pow(10, Math.floor(log(10, ceiling)));
+                var power = Math.pow(10, Math.floor(log(10, ceiling+1))); // the +1 avoids stupid floating point errors
                 if(Math.round(ceiling / power) < 2){ ceiling = 2 * power; }
                 else if(Math.round(ceiling / power) < 4){ ceiling = 4 * power; }
                 else if(Math.round(ceiling / power) < 6){ ceiling = 6 * power; }
