@@ -9,7 +9,7 @@
 * GNU cgicc
 * spawn-fcgi
 * libpcre++ (sometimes included with pcre)
-* TagLib with Opus support (current stable TagLib doesn't have it)
+* TagLib >= 1.9
 * ImageMagick
 * Nettle
 * ctemplate
