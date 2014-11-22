@@ -1,0 +1,10 @@
+#!/bin/bash
+mkdir -p /var/lib/eqbeats/tracks /var/lib/eqbeats/art/medium /var/lib/eqbeats/art/thumb
+
+psql -h db -U postgres -ltq | cut -d \| -f 1 | grep eqbeats || {
+    psql -h db -U postgres -q -c "CREATE DATABASE eqbeats;"
+    psql -h db -U postgres -d eqbeats -q -c "CREATE EXTENSION pgcrypto;"
+    psql -h db -U postgres -d eqbeats -q -f /eqbeats/sql/db.sql
+}
+
+spawn-fcgi -n -p 8100 -- /usr/libexec/eqbeats/eqbeats.fcgi

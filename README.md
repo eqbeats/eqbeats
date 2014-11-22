@@ -1,5 +1,22 @@
 # EqBeats
-## Quick and ugly startup guide
+
+## Running a dev environment in docker
+
+A very easy way to get a dev environment set up is by using [Docker][]
+and [fig][]. Once Docker and fig are installed on your system, run
+
+    fig up
+
+Once the image is built and the services are up, a brand new instance
+of EqBeats will be listening on [localhost:8642][]. To rebuild, run
+
+    fig build
+
+[Docker]: http://www.docker.com/
+[fig]: http://www.fig.sh/
+[localhost:8642]: http://localhost:8642/
+
+## Setting up a dev environment by hand
 
 ### Dependencies
 
