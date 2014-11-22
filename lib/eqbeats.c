@@ -86,7 +86,7 @@ static int check_extensions(PGconn *pg)
 
 static int connect_pg(const char *options, PGconn **conn)
 {
-	*conn = PQconnectdb("");
+	*conn = PQconnectdb(getenv("EQBEATS_POSTGRES"));
 	if (PQstatus(*conn) == CONNECTION_BAD)
 		return -1;
 	int tables = check_tables(*conn);

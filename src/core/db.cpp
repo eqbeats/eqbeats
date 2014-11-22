@@ -2,6 +2,8 @@
 #include "path.h"
 #include <stdarg.h>
 #include <libpq-fe.h>
+#include <text/text.h>
+#include <stdlib.h>
 
 #ifdef HAVE_LIBHIREDIS
 #  include <hiredis/hiredis.h>
@@ -27,7 +29,28 @@ void DB::blindRedisCommand(const std::string &q, ...){
 }
 
 static void connectRedis(std::string name){
-    redis_ctx = redisConnectUnix(REDIS_SOCK);
+    std::string location(getenv("EQBEATS_REDIS"));
+
+#ifdef REDIS_SOCKET
+    if(location.empty()){
+        location = std::string(REDIS_SOCKET);
+    }
+#endif
+
+    if(location[0] == '/') { // unix
+        redis_ctx = redisConnectUnix(location.c_str());
+    }
+    else { // tcp
+        size_t colon_pos = location.find(":");
+        std::string host = location.substr(0, colon_pos);
+        int port =
+            colon_pos == std::string::npos ?
+                6379 :
+                number(location.substr(colon_pos+1, std::string::npos));
+
+        redis_ctx = redisConnect(host.c_str(), port);
+    }
+
     if(!name.empty()){
         ::name = name;
         blindRedisCommand("CLIENT SETNAME %s", name.c_str());
