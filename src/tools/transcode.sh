@@ -8,7 +8,7 @@ fi
 BASE="$EQBEATS_DIR/tracks/$1"
 find "$EQBEATS_DIR/tracks" -name "$1.*" -delete
 
-FFMPEG="ffmpeg -loglevel quiet -nostdin -probesize 10000000 -i $2 -map 0:a"
+FFMPEG="ffmpeg -loglevel quiet -nostdin -probesize 10000000 -i \"$2\" -map 0:a"
 
 $FFMPEG -acodec libvorbis -q:a 4 "$BASE.ogg"
 
