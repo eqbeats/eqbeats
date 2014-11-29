@@ -29,7 +29,11 @@ void DB::blindRedisCommand(const std::string &q, ...){
 }
 
 static void connectRedis(std::string name){
-    std::string location(getenv("EQBEATS_REDIS"));
+    std::string location;
+    char *c_location = getenv("EQBEATS_REDIS");
+    if(c_location){
+        location = c_location;
+    }
 
 #ifdef REDIS_SOCKET
     if(location.empty()){
