@@ -1,30 +1,25 @@
-server {
-    lister 80;
-    listen [::]:80;
+client_max_body_size 100m;
+error_page 502 /static/502.html;
 
-    client_max_body_size 100m;
-    error_page 502 /static/502.html;
+location / {
+    fastcgi_pass unix:/run/eqbeats/eqbeats.sock;
+    include fastcgi.conf;
+}
 
-    location / {
-        fastcgi_pass unix:/run/eqbeats/eqbeats.sock;
-        include fastcgi.conf;
-    }
+location /static/ {
+    alias @pkgdatadir@/static/;
+}
 
-    location /static/ {
-        alias @pkgdatadir@/static/;
-    }
+location /downloads/art/ {
+    internal;
+    alias @eqbeats_dir@/art/;
+}
 
-    location /downloads/art/ {
-        internal;
-        alias @eqbeats_dir@/art/;
-    }
+location /downloads/tracks/ {
+    internal;
+    alias @eqbeats_dir@/tracks/;
+}
 
-    location /downloads/tracks/ {
-        internal;
-        alias @eqbeats_dir@/tracks/;
-    }
-
-    location /robots.txt {
-        alias @pkgdatadir@/static/robots.txt;
-    }
+location /robots.txt {
+    alias @pkgdatadir@/static/robots.txt;
 }
