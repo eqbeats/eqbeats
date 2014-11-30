@@ -39,7 +39,7 @@ AC_ARG_WITH([redis-socket],
     AC_HELP_STRING([--with-redis-socket=PATH], [(deprecated) Unix socket for Redis @<:@/run/eqbeats/redis.sock@:>@]),
     [redis_socket="$withval"],
     [redis_socket='/run/eqbeats/redis.sock'])
-AC_DEFINE([REDIS_SOCKET], ["${redis_socket}"], [Redis socket])
+AC_DEFINE_UNQUOTED([REDIS_SOCKET], ["${redis_socket}"], [Redis socket])
 
 AC_ARG_WITH([eqbeats-dir],
     AC_HELP_STRING([--with-eqbeats-dir=DIR], [Default writable website-specific directory @<:@/var/lib/eqbeats@:>@]),
