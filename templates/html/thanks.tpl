@@ -6,8 +6,8 @@
     <p>Thank you to <a href="http://p.yusukekamiyamane.com/">Yusuke Kamiyamane</a> for making his Fugue icon set available for free.</p>
     <p>Thank you to the teams of the following open-source projects:
         <a href="http://ffmpeg.org/">FFmpeg</a>,
-        <a href="http://ffmpeg.org/">TagLib</a>,
-        <a href="http://ffmpeg.org/">ImageMagick</a>,
+        <a href="http://taglib.github.io/">TagLib</a>,
+        <a href="http://www.imagemagick.org/">ImageMagick</a>,
         <a href="http://nginx.org/">nginx</a>,
         <a href="http://www.postgresql.org/">PostgreSQL</a>,
         <a href="https://code.google.com/p/ctemplate/">CTemplate</a> and
