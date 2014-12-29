@@ -9,11 +9,13 @@ AccountList Follower::followed(){
         "ORDER BY users.name ASC");
 }
 
-std::vector<std::string> Follower::followers(){
+std::vector<std::string> Follower::followers(bool who_want_notifications){
     DB::Result r = DB::query(
         "SELECT users.email FROM users, favorites "
         "WHERE favorites.user_id = users.id AND favorites.type = 'artist' "
-        "AND favorites.ref = " + number(id));
+        "AND favorites.ref = " + number(id) + " " +
+        (who_want_notifications? "AND users.notify = t " : "")
+        );
     std::vector<std::string> emails(r.size());
     for(unsigned i=0; i<r.size(); i++)
         emails[i] = r[i][0];

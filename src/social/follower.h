@@ -15,7 +15,7 @@ class Follower{
 
         bool following(int uid);
         AccountList followed();
-        std::vector<std::string> followers(); // email addresses
+        std::vector<std::string> followers(bool who_want_notifications = true); // email addresses
 
     private:
         int id;
