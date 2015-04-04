@@ -14,7 +14,6 @@
 #include <text/text.h>
 #include <track/pages/pages.h>
 #include <userfeature/pages/pages.h>
-#include <youtube/pages/pages.h>
 
 #ifdef HAVE_LIBHIREDIS
 #  include <stat/pages.h>
@@ -84,7 +83,6 @@ int main(int argc, char** argv){
         Pages::playlist, Pages::playlistActions,
         Pages::comment, Pages::socialActions, Pages::favorites,
         Pages::featureActions,
-        Pages::oauth, Pages::yt_upload,
 #ifdef HAVE_LIBHIREDIS
         Pages::stats,
 #endif

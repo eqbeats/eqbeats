@@ -14,7 +14,6 @@ icons_DATA = \
     pencil.png \
     star-empty.png \
     drive-download.png \
-    youtube-up.png \
     volume.png \
     billboard.png \
     picture.png \

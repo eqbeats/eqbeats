@@ -194,30 +194,6 @@
             </div>
 
             <div>
-                <h4><img src="/static/icons/youtube-up.png" alt=""> Youtube</h4>
-                {{#HAS_YOUTUBE}}
-                <form action="/track/{{TID}}/youtube_upload">
-                    <input type="submit" value="Upload this to YouTube"/>
-                    <a class="huh" href="/faq#youtube">Huh?</a>
-                </form>
-                {{/HAS_YOUTUBE}}
-                {{#NO_YOUTUBE}}
-                <form action="https://accounts.google.com/o/oauth2/auth">
-                    Your YouTube account is not linked.
-                    <a class="huh" href="/faq#youtube">Huh?</a>
-                    </br>
-                    <input type="submit" value="Link your YouTube account"/>
-                    <input type="hidden" name="response_type" value="code"/>
-                    <input type="hidden" name="client_id" value="767490682254.apps.googleusercontent.com"/>
-                    <input type="hidden" name="scope" value="https://uploads.gdata.youtube.com/feeds/api/users/default/uploads"/>
-                    <input type="hidden" name="access_type" value="offline"/>
-                    <input type="hidden" name="redirect_uri" value="http://eqbeats.org/oauth/yt"/>
-                    <input type="hidden" name="approval_prompt" value="force"/>
-                </form>
-                {{/NO_YOUTUBE}}
-            </div>
-
-            <div>
                 <h4><img src="/static/icons/billboard.png" alt=""/> Feature</h4>
                 <form action="/track/{{TID}}/feature" method="post">
                     <input type="submit" value="Feature this on your profile"/>

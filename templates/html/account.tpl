@@ -51,27 +51,6 @@
     <input type="submit" value="Update" />
 </form>
 
-{{#YOUTUBE}}
-<form action="/oauth/yt/unlink">
-    Your YouTube account is linked. <a class="huh" href="/faq#youtube">Huh?</a><br/>
-    <input type="submit" value="Unlink your youtube account" />
-</form>
-{{/YOUTUBE}}
-
-{{#NO_YOUTUBE}}
-{{! https://accounts.google.com/o/oauth2/auth?response_type=code&client_id=767490682254.apps.googleusercontent.com&approval_prompt=force&scope=https%3A%2F%2Fuploads.gdata.youtube.com%2Ffeeds%2Fapi%2Fusers%2Fdefault%2Fuploads&access_type=offline&redirect_uri=http%3A%2F%2Feqbeats.org%2Foauth%2Fyt }}
-<form action="https://accounts.google.com/o/oauth2/auth">
-    Your YouTube account is not linked. <a class="huh" href="/faq#youtube">Huh?</a><br/>
-    <input type="submit" value="Link your youtube account"/>
-    <input type="hidden" name="response_type" value="code"/>
-    <input type="hidden" name="client_id" value="767490682254.apps.googleusercontent.com"/>
-    <input type="hidden" name="scope" value="https://uploads.gdata.youtube.com/feeds/api/users/default/uploads"/>
-    <input type="hidden" name="access_type" value="offline"/>
-    <input type="hidden" name="redirect_uri" value="http://eqbeats.org/oauth/yt"/>
-    <input type="hidden" name="approval_prompt" value="force"/>
-</form>
-{{/NO_YOUTUBE}}
-
 <h4><img src="/static/icons/cross.png" alt="" style="margin-top: 0px;" /> Delete</h4>
 <form action="/account/delete" method="get">
     <input type="submit" value="Delete your account"/>

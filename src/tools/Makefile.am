@@ -1,4 +1,4 @@
-pkglibexec_SCRIPTS = autofeature feature transcode.sh ytmgr.py
+pkglibexec_SCRIPTS = autofeature feature transcode.sh
 pkglibexec_PROGRAMS = dumptracks fqueue mkthumbs updatetags
 
 AM_CPPFLAGS = -I$(top_srcdir)/src

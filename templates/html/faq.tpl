@@ -33,18 +33,6 @@
 <h4>Why is my Email address publically displayed on my user page?</h4>
 <p>We believe that Email is a great way to communicate, as well as an established proof of identity. We've chosen to display Email on every user's profile to make contacting artists much easier.</p>
 
-<h3 id="youtube">YouTube</h3>
-
-<h4>Why would I want to link my YouTube account to my EqBeats account?</h4>
-<p>Linking your YouTube account allows you to upload your tracks to YouTube directly from EqBeats.</p>
-<p>Once your account is linked and you click on the YouTube upload button on one of your tracks, you'll get a chance to review what your video will look like, then a video with your cover art will be rendered and uploaded. If your track isn't published yet, the YouTube video will be unlisted, otherwise it will be public.</p>
-
-<h4>How do I link my YouTube account?</h4>
-<p>Look for a button on your <a href="/account">account edition</a> page, as well as any of your tracks. Google will ask you to verify that you trust us. Then, you're done!</p>
-
-<h4>How do I unlink my YouTube account?</h4>
-<p>There is a button on your <a href="/account">account edition</a> page.</p>
-
 <h3>Technical stuff</h3>
 
 <h4 id="formats">What formats do you accept?</h4>

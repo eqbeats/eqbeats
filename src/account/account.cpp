@@ -2,7 +2,6 @@
 #include <core/db.h>
 #include <misc/hash.h>
 #include <text/text.h>
-#include <youtube/youtube.h>
 
 Account::Account(int uid){
     id = 0;
@@ -39,8 +38,6 @@ void Account::fill(Dict* d) const{
     a->SetFilename("html/avatar.tpl");
     a->SetValue("EMAIL_MD5", md5(email));
     if(self()) a->ShowSection("IS_SELF");
-    // YouTube
-    d->ShowSection(Youtube(id) ? "YOUTUBE" : "NO_YOUTUBE");
     // Number of favorites
     if(num_favs > 0) {
         d->ShowSection("HAS_FAVS");

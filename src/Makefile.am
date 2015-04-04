@@ -3,7 +3,7 @@ if HIREDIS
   MAYBE_LIBSTAT = stat/libstat.a
 endif
 
-SUBDIRS = account core log misc pages playlist render social $(MAYBE_STAT) text track userfeature youtube tools
+SUBDIRS = account core log misc pages playlist render social $(MAYBE_STAT) text track userfeature tools
 
 pkglibexec_PROGRAMS = eqbeats.fcgi
 eqbeats_fcgi_LDADD = $(top_srcdir)/lib/libeqbeats.la \
@@ -12,7 +12,6 @@ eqbeats_fcgi_LDADD = $(top_srcdir)/lib/libeqbeats.la \
     social/libsocial.a social/pages/libsocialpages.a \
     track/libtrack.a track/pages/libtrackpages.a \
     userfeature/libuserfeature.a userfeature/pages/libuserfeaturepages.a \
-    youtube/libyoutube.a youtube/pages/libyoutubepages.a \
     account/libaccount.a account/pages/libaccountpages.a \
     $(MAYBE_LIBSTAT) \
     misc/libmisc.a \

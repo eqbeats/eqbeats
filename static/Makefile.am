@@ -23,7 +23,6 @@ static_DATA = \
     stats.js \
     style.css \
     ticker.js \
-    title-grad.png \
-    ytbar.png
+    title-grad.png
 
 SUBDIRS = icons

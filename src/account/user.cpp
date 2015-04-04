@@ -55,7 +55,6 @@ void User::deleteAccount(){
     DB::query("DELETE FROM resets WHERE user_id = " + number(id));
     DB::query("DELETE FROM events WHERE source_id = " + number(id) + " OR target_id = " + number(id));
     DB::query("DELETE FROM playlists WHERE user_id = " + number(id));
-    DB::query("DELETE FROM youtube_access_tokens WHERE user_id = " + number(id));
     DB::query("DELETE FROM user_features WHERE user_id = " + number(id));
     DB::query("DELETE FROM users WHERE id = " + number(id));
 }

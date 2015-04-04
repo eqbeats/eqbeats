@@ -101,18 +101,6 @@ CREATE TABLE playlists (
 );
 CREATE INDEX plist_uid_idx ON playlists(user_id);
 
-CREATE TABLE youtube_refresh_tokens (
-    user_id int not null,
-    token text not null
-);
-CREATE INDEX yt_idx ON youtube_refresh_tokens(user_id);
-
-CREATE TABLE youtube_access_tokens (
-    user_id int not null unique,
-    token text not null,
-    expire timestamptz not null
-);
-
 CREATE TYPE feature_type AS ENUM ('track', 'playlist');
 CREATE TABLE user_features (
     user_id integer not null REFERENCES users(id),

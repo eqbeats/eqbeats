@@ -33,14 +33,10 @@ of EqBeats will be listening on [localhost:8642][]. To rebuild, run
 * FFmpeg compiled with libfdk\_aac and libopus support
 * Redis and hiredis
 * Optional: OpenBSD netcat for hitsd
-* Optional: OpenBSD netcat, Python 3.x and psycopg2 for YouTube support
 
 ### Preliminary setup
 
 #### Environment
-
-If you want YouTube support, set the `EQBEATS_YT_API_KEY` to your YouTube API
-key. You can acquire one [here](https://code.google.com/apis/youtube/dashboard/gwt/index.html).
 
 You can set the `EQBEATS_HTTPS` variable to anything if you wish to always use
 HTTPS.
