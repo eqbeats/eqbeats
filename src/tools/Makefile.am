@@ -1,7 +1,7 @@
 pkglibexec_SCRIPTS = autofeature feature transcode.sh
 pkglibexec_PROGRAMS = dumptracks fqueue mkthumbs updatetags
 
-AM_CPPFLAGS = -I$(top_srcdir)/src
+AM_CPPFLAGS = -I$(top_srcdir)/include -I$(top_srcdir)/src
 
 dumptracks_SOURCES = dumptracks.cpp
 dumptracks_LDADD = ../core/libcore.a $(PQ_LIBS) $(HIREDIS_LIBS) ../text/libtext.a
