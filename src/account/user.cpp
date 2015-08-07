@@ -1,4 +1,3 @@
-#include "session.h"
 #include <core/db.h>
 #include <text/text.h>
 
@@ -24,10 +23,6 @@ User::User(const std::string &email){
     }
 }
 
-bool User::self() const{
-    return Session::user() == *this;
-}
-
 std::string User::url() const{
     return "/user/" + number(id);
 }
@@ -37,24 +32,4 @@ void User::fill(Dict *d) const{
     d->SetIntValue("UID", id);
     d->SetValue("USERNAME", name);
     d->ShowSection(self() ? "IS_SELF" : "NOT_SELF");
-}
-
-void User::deleteAccount(){
-    log("Deleting account: " + name + " (" + number(id) + ")");
-
-    TrackList tracks = Tracks::byUser(id, true);
-    for (TrackList::iterator i = tracks.begin(); i != tracks.end(); i++)
-        i->deleteTrack();
-
-    // ew ew gross
-    DB::query("DELETE FROM sessions WHERE user_id = " + number(id));
-    DB::query("DELETE FROM comments WHERE author_id = " + number(id));
-    DB::query("DELETE FROM comments WHERE type = 'user' AND ref = " + number(id));
-    DB::query("DELETE FROM favorites WHERE user_id = " + number(id));
-    DB::query("DELETE FROM favorites WHERE favorite_type = 'artist' AND ref = " + number(id));
-    DB::query("DELETE FROM resets WHERE user_id = " + number(id));
-    DB::query("DELETE FROM events WHERE source_id = " + number(id) + " OR target_id = " + number(id));
-    DB::query("DELETE FROM playlists WHERE user_id = " + number(id));
-    DB::query("DELETE FROM user_features WHERE user_id = " + number(id));
-    DB::query("DELETE FROM users WHERE id = " + number(id));
 }

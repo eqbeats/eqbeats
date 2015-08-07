@@ -6,11 +6,8 @@
 namespace Pages {
     void art(Document*);
     void trackMisc(Document*);
-    void trackActions(Document*);
-    void trackUpload(Document*);
     void tracks(Document*);
     void oembed(Document*);
-    void license(Document*);
 }
 
 #endif // TRACK_PAGES_H

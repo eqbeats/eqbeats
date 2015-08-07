@@ -5,7 +5,6 @@
 
 namespace Pages {
     void playlist(Document*);
-    void playlistActions(Document*);
 }
 
 #endif // PLAYLIST_PAGES_H

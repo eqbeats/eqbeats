@@ -2,7 +2,7 @@
 
 <ul class="userlist">
 
-    {{#EMPTY}}<li class="empty">Nobody here yet</li>{{/EMPTY}}
+    {{#EMPTY}}<li class="empty">Nobody here.</li>{{/EMPTY}}
 
     {{#USER}}
     <li>

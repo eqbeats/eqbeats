@@ -12,7 +12,6 @@ static_DATA = \
     eqbeats.png \
     favicon.ico \
     favicon-dev.ico \
-    fileuploader.js \
     logo.png \
     placeholder.jpg \
     player-bg.png \

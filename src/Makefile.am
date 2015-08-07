@@ -11,7 +11,7 @@ eqbeats_fcgi_LDADD = $(top_srcdir)/lib/libeqbeats.la \
     playlist/libplaylist.a playlist/pages/libplaylistpages.a \
     social/libsocial.a social/pages/libsocialpages.a \
     track/libtrack.a track/pages/libtrackpages.a \
-    userfeature/libuserfeature.a userfeature/pages/libuserfeaturepages.a \
+    userfeature/libuserfeature.a \
     account/libaccount.a account/pages/libaccountpages.a \
     $(MAYBE_LIBSTAT) \
     misc/libmisc.a \

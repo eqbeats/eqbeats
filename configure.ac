@@ -74,7 +74,6 @@ AC_CONFIG_FILES([
     src/track/Makefile
     src/track/pages/Makefile
     src/userfeature/Makefile
-    src/userfeature/pages/Makefile
     src/tools/Makefile
     static/Makefile
     static/icons/Makefile

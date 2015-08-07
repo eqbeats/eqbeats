@@ -1,20 +1,6 @@
 #include "event.h"
-#include <account/session.h>
 #include <core/db.h>
 #include <text/text.h>
-
-void Event::push(){
-    DB::query((std::string)
-        "INSERT INTO events (type, target_id, target_name, source_id, source_name, track_id, track_title, message, date)"
-        "VALUES ("
-            "'" + (type==Publish?"publish":type==Comment?"comment":type==Favorite?"favorite":"follow") + "', " +
-            number(target.id) + ", $1, " +
-            number(source.id) + ", $2, " +
-            number(track.id) + ", $3, "
-            "$4, 'now')",
-        target.name, source.name, track.title, message);
-
-}
 
 void Event::fill(Dict *d) const{
     Dict *src = d->AddSectionDictionary("SOURCE");
@@ -55,10 +41,9 @@ EventList::EventList(std::string cond, int limit){
 }
 
 EventList EventList::user(const User &u, int limit){
-    return EventList("(source_id = " + number(u.id) + " OR target_id = " + number(u.id)
-        + (u == Session::user() ? " OR source_id IN (SELECT ref FROM favorites WHERE type = 'artist' AND user_id = "+number(u.id)+")":
-            " AND type = 'comment'")
-            + ") AND track_id NOT IN (select id FROM tracks WHERE visible = 'f')"
+    return EventList(
+            "(source_id = " + number(u.id) + " OR target_id = " + number(u.id)
+            + " AND type = 'comment') AND track_id NOT IN (select id FROM tracks WHERE visible = 'f')"
             , limit);
 }
 
@@ -66,15 +51,12 @@ EventList EventList::track(const Track &t){
     return EventList("track_id = " + number(t.id));
 }
 
-Dict* EventList::fill(Dict *d, const std::string &section, bool showForm) const{
+Dict* EventList::fill(Dict *d, const std::string &section) const{
     Dict *sub = d->AddIncludeDictionary(section);
     sub->SetFilename("html/events.tpl");
-    Session::fill(sub);
     if(empty())
         sub->ShowSection("NO_EVENT");
     for(const_iterator i=begin(); i!=end(); i++)
         i->fill(sub->AddSectionDictionary("EVENT"));
-    if(showForm)
-        sub->ShowSection("FORM");
     return sub;
 }

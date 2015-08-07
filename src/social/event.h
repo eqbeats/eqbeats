@@ -22,8 +22,6 @@ class Event {
         std::string message;
         std::string date;
 
-        void push();
-
         void fill(Dict*) const;
 
 };
@@ -36,7 +34,7 @@ class EventList: public std::vector<Event> {
         static EventList user(const User &u, int limit=0);
         static EventList track(const Track &t);
 
-        Dict* fill(Dict*, const std::string &section, bool hasForm) const;
+        Dict* fill(Dict*, const std::string &section) const;
 
     private:
         EventList(std::string cond, int limit=0);
