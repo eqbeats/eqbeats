@@ -13,7 +13,7 @@ web:
     volumes_from:
         - eqbeats
     ports:
-        - "8642:80"
+        - "8642:8642"
 db:
     image: postgres:latest
 redis:

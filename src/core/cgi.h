@@ -7,6 +7,8 @@
 extern cgicc::Cgicc cgi; // defined in cgi.cpp
 extern char** headers;   // yep
 
-#define eqbeatsUrl() ((getenv("EQBEATS_HTTPS")? "https://" : "http://") + cgi.getEnvironment().getServerName())
+#include <text/text.h>
+
+#define eqbeatsUrl() ((getenv("EQBEATS_HTTPS")? "https://" : "http://") + cgi.getEnvironment().getServerName() + (cgi.getEnvironment().getServerPort() != 80 || getenv("EQBEATS_HTTPS") && cgi.getEnvironment().getServerPort() != 443?(":" + number(cgi.getEnvironment().getServerPort())) : ""))
 
 #endif // CGI_H
