@@ -7,6 +7,7 @@ web:
     image: nginx:latest
     links:
         - eqbeats
+        - takeout
     volumes:
         - ./conf/docker/nginx/:/etc/nginx/conf.d/
         - ./static/:/usr/share/eqbeats/static/
@@ -18,3 +19,14 @@ db:
     image: postgres:latest
 redis:
     image: redis:latest
+takeout:
+    build: takeout/
+    dockerfile: server.Dockerfile
+    links:
+        - db
+        - redis
+takeoutworker:
+    build: takeout/
+    dockerfile: worker.Dockerfile
+    links:
+        - redis
