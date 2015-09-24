@@ -5,6 +5,7 @@
 
 // string.cpp
 bool drop(const std::string &sub, std::string &str);
+size_t wlength(const std::string &str); /* (size_t) -1 on error */
 
 // date.cpp
 std::string formatTime(const std::string &date, const char *fmt);

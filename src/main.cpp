@@ -28,6 +28,7 @@
 #include <sys/wait.h>
 #include <unistd.h>
 #include <syslog.h>
+#include <locale.h>
 
 void signalCatch(int s){
     FCGX_ShutdownPending();
@@ -36,6 +37,8 @@ void signalCatch(int s){
 int main(int argc, char** argv){
     (void)argc;
     (void)argv;
+
+    setlocale(LC_ALL, "");
 
     openlog("eqbeats", LOG_PID, LOG_USER);
 
