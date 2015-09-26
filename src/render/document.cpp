@@ -34,6 +34,10 @@ void Document::download(const File &f, bool attachment){
     _attachment = attachment;
 }
 
+void Document::badRequest(){
+    setHtml("html/400.tpl", "400 Bad Request", 400);
+}
+
 void Document::setContent(const std::string &cnt, const std::string &mime, int code){
     _redir.clear();
     if(dw) dw = File();

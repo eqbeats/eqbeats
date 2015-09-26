@@ -2,6 +2,7 @@ htmldir = $(templates_dir)/html
 html_DATA = \
     playlist.tpl \
     thanks.tpl \
+    400.tpl \
     404.tpl \
     home.tpl \
     api.tpl \

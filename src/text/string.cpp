@@ -36,3 +36,7 @@ static size_t mbslen(const char *str, size_t sz) {
 size_t wlength(const std::string &str) {
     return mbslen(str.c_str(), str.size());
 }
+
+bool validString(const std::string &str) {
+    return wlength(str) != (size_t) -1;
+}

@@ -8,6 +8,7 @@ const char* statusMsg(int stat){
         case 200: return "200 OK";
         case 301: return "301 Moved Permanently";
         case 303: return "303 See Other";
+        case 400: return "400 Bad Request";
         case 403: return "403 Forbidden";
         case 404: return "404 Not Found";
         case 500: return "500 Server Error";
