@@ -23,6 +23,9 @@ void Pages::comment(Document *doc){
             bot = !url->getValue().empty();
 
         std::string msg = cgi("msg");
+        if(!validString(msg))
+            return doc->badRequest();
+
         if(msg.find("<a") != std::string::npos || msg.find("[url") != std::string::npos)
             bot = true;
 
@@ -33,7 +36,14 @@ void Pages::comment(Document *doc){
 
         Event e;
         e.type = Event::Comment;
-        e.source = Session::user() ? Session::user() : User(0, cgi("name"));
+        if (Session::user()) {
+            e.source = Session::user();
+        } else {
+            std::string name = cgi("name");
+            if(!validString(name))
+                return doc->badRequest();
+            e.source = User(0, name);
+        }
         e.target = u ? u : t.artist;
         e.track = t;
         e.message = msg;

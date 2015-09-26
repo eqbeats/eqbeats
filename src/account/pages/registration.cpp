@@ -25,6 +25,9 @@ void Pages::registration(Document *doc){
     else if(cgi.getEnvironment().getRequestMethod() != "POST")
         form(doc);
 
+    else if(!validString(name) || !validString(email) || !validString(pw))
+        doc->badRequest();
+
     else if(name.empty())
         form(doc, "Please specify a display name.");
 

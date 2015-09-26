@@ -14,6 +14,8 @@ void Pages::playlistActions(Document *doc){
         if(!Session::user())
             return doc->redirect("/");
         std::string name = cgi("name");
+        if(!validString(name))
+            return doc->badRequest();
         if(name.empty() || !post || !nonce)
             return doc->redirect(Session::user().url());
         Session::newNonce();
@@ -67,10 +69,14 @@ void Pages::playlistActions(Document *doc){
     else if(sub == "edit"){
         Playlist p(id);
         if(!p) return;
-        if(post && nonce && (p.name() != cgi("name") || p.description() != cgi("desc"))
-           && p.author().self() && !cgi("name").empty()){
+        std::string name = cgi("name");
+        std::string desc = cgi("desc");
+        if(!validString(name) || !validString(desc))
+            return doc->badRequest();
+        if(post && nonce && (p.name() != name || p.description() != desc)
+           && p.author().self() && !name.empty()){
             Session::newNonce();
-            DB::query("UPDATE playlists SET name = $1, description = $2 WHERE id = " + number(id), cgi("name"), cgi("desc"));
+            DB::query("UPDATE playlists SET name = $1, description = $2 WHERE id = " + number(id), name, desc);
         }
         doc->redirect(p.url());
     }

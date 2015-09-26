@@ -47,9 +47,15 @@ void Pages::account(Document *doc){
     if(cgi.getEnvironment().getRequestMethod() != "POST" || Session::nonce() != cgi("nonce"))
         return form(doc, a);
 
+    std::string name = cgi("name");
+    std::string email = cgi("email");
+    std::string oldpw = cgi("oldpw"), newpw = cgi("newpw");
+
+    if(!validString(name) || !validString(email) || !validString(oldpw) || !validString(newpw))
+        return doc->badRequest();
+
     Session::newNonce();
 
-    std::string name = cgi("name");
     if(!name.empty() && name != a.name){
         if(DB::query("SELECT EXISTS (SELECT 1 FROM users WHERE lower(name) = lower($1))", name)[0][0] == "t")
             return form(doc, a, "Name already in use.");
@@ -57,7 +63,6 @@ void Pages::account(Document *doc){
     else
         name = a.name;
 
-    std::string email = cgi("email");
     if(!email.empty() && email != a.email){
         if(!validEmail(email))
             return form(doc, a, "Invalid email address.");
@@ -67,7 +72,6 @@ void Pages::account(Document *doc){
     else
         email = a.email;
 
-    std::string oldpw = cgi("oldpw"), newpw = cgi("newpw");
     if(!oldpw.empty() && !newpw.empty()){
         if(newpw != cgi("newpwconf"))
             return form(doc, a, "Passwords mismatch.");

@@ -21,6 +21,8 @@ void Pages::trackActions(Document *doc){
         if(post && t.artist.self() && nonce){
             Session::newNonce();
             std::string title = cgi("title");
+            if(!validString(title))
+                return doc->badRequest();
             if(!title.empty() && title != t.title){
                 DB::query("UPDATE tracks SET title = $1 WHERE id = " + number(t.id), title);
                 syslog(LOG_NOTICE, "Renaming track %d from \"%s\" to \"%s\".", t.id, t.title.c_str(), title.c_str());
@@ -32,21 +34,27 @@ void Pages::trackActions(Document *doc){
     }
 
     else if(sub == "tags"){
+        std::string tags = cgi("tags");
+        if(!validString(tags))
+            return doc->badRequest();
         Track t(tid);
         if(!t) return;
         if(post && t.artist.self() && nonce){
             Session::newNonce();
-            DB::query("UPDATE tracks SET tags = regexp_split_to_array(lower($1), E' *, *') WHERE id = " + number(t.id), cgi("tags"));
+            DB::query("UPDATE tracks SET tags = regexp_split_to_array(lower($1), E' *, *') WHERE id = " + number(t.id), tags);
         }
         doc->redirect(t.url());
     }
 
     else if(sub == "notes"){
+        std::string notes = cgi("notes");
+        if(!validString(notes))
+            return doc->badRequest();
         Track t(tid);
         if(!t) return;
         if(post && t.artist.self() && nonce){
             Session::newNonce();
-            DB::query("UPDATE tracks SET notes = $1 WHERE id = " + number(t.id), cgi("notes"));
+            DB::query("UPDATE tracks SET notes = $1 WHERE id = " + number(t.id), notes);
         }
         doc->redirect(t.url());
     }

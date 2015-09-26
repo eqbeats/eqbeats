@@ -24,6 +24,9 @@ void Pages::license(Document* doc){
         if(l == "custom") l = cgi("custom-license");
         if(l.empty()) return doc->redirect(t.url() + "/license");
 
+        if(!validString(l))
+            return doc->badRequest();
+
         bool mkdefault = (!t || !cgi("mkdefault").empty()), retro = !cgi("retro").empty();
 
         if(mkdefault)

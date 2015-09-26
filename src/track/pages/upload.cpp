@@ -61,7 +61,7 @@ void Pages::trackUpload(Document *doc){
         std::string title = tag ? tag->title().to8Bit(): "";
         if(title.empty())
             title = upfilename.substr(0, ext_idx);
-        if(title.empty())
+        if(title.empty() || !validString(title))
             title = "Untitled";
         // Create
         Account a(u.id);
