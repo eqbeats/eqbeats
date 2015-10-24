@@ -8,8 +8,8 @@ web:
     links:
         - eqbeats
     volumes:
-        - conf/docker/nginx/:/etc/nginx/conf.d/
-        - static/:/usr/share/eqbeats/static/
+        - ./conf/docker/nginx/:/etc/nginx/conf.d/
+        - ./static/:/usr/share/eqbeats/static/
     volumes_from:
         - eqbeats
     ports:
