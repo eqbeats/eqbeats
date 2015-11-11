@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{% block title %}{% endblock %} - Equestrian Beats</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <link rel="stylesheet" type="text/css" href="/static/style.css" />
+        <link rel="stylesheet" type="text/css" href="/takeout/static/style.css" />
+        <link rel="shortcut icon" href="/static/favicon.ico" id="favicon-link" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    </head>
+    <body>
+        <div id="main">
+            <div id="header">
+                <h1><a href="/takeout">EqBeats Takeout</a></h1>
+                <div id="navbar">
+                    <a href="/">← Back to EqBeats</a>
+                </div>
+                <div id="logstatus">
+                    Hi <b><a href="/user/{{ user.id }}">{{ user.name }}</a></b>.
+                    <a href="/logout">Logout</a>
+                </div>
+                <div style="clear:both;"></div>
+            </div>
+            <div id="contents">
+                {% block content %}{% endblock %}
+            </div>
+            <div id="footer">
+                <a href="/faq">FAQ</a>
+                <a href="/api">API</a>
+                <a href="https://github.com/eqbeats/eqbeats/">Code</a>
+                -
+                <a href="http://blog.eqbeats.org/">Blog</a>
+                <a title="#eqbeats on irc.ponychat.net" href="http://webchat.ponychat.net/?autojoin=%23eqbeats">IRC</a>
+                <a href="/thanks">Thanks</a>
+                <br/>
+                Contact: &#99;&#111;&#110;&#116;&#97;&#99;&#116;&#64;&#101;&#113;&#98;&#101;&#97;&#116;&#115;&#46;&#111;&#114;&#103;
+            </div>
+        </div>
+        <script type="text/javascript">document.body.className = 'js';</script>
+    </body>
+</html>
