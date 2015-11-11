@@ -16,5 +16,9 @@ def check_session():
 def index():
     return render_template('index.html', user=g.user)
 
+@app.route(path + "/download")
+def download():
+    return render_template('download.html', user=g.user)
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8000, debug=(os.getenv("TAKEOUT_DEBUG")!=None))

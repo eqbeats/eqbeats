@@ -25,8 +25,13 @@ takeout:
     links:
         - db
         - redis
+    volumes:
+        - ./takeout/:/usr/src/app/
 takeoutworker:
     build: takeout/
     dockerfile: worker.Dockerfile
     links:
         - redis
+    environment:
+        - AWS_ACCESS_KEY_ID
+        - AWS_SECRET_ACCESS_KEY

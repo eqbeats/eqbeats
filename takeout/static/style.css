@@ -1,0 +1,27 @@
+html, body {
+    background: #438;
+}
+
+#header h1 a {
+    background: none;
+    padding-left: 0;
+}
+
+#footer {
+    background: none;
+}
+
+#header, #header a, #footer, #footer a {
+    color: white;
+    text-shadow: none;
+}
+
+#navbar a:hover, #footer a:hover {
+    color: white;
+    text-decoration: underline;
+}
+
+
+#contents {
+    background-color: #fdfdfd;
+}

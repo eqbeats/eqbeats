@@ -18,9 +18,22 @@ class User:
         if sid:
             cur = get_db().cursor()
             cur.execute("SELECT users.id, users.name, sessions.nonce FROM users, sessions WHERE sessions.sid = %s AND users.id = sessions.user_id;", (sid,))
-            one = cur.fetchone()
-            if not one: return
-            self.id, self.name, self.nonce = one
+            row = cur.fetchone()
+            if not row: return
+            self.id, self.name, self.nonce = row
             self.sid = sid
+
     def valid(self):
         return self.id > 0
+
+    def tracks(self):
+        tracks = []
+        cur = get_db().cursor()
+        cur.execute("SELECT id, title, visible FROM tracks WHERE user_id = %s;", (self.id,))
+        row = cur.fetchone()
+        while row:
+            track = {}
+            track['id'], track['title'], track['visible'] = row
+            tracks.append(track)
+            row = cur.fetchone()
+        return tracks
