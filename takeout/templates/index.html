@@ -7,8 +7,10 @@
 
 {% if not job %}
 <p>You don't have any tracks to archive.</p>
-{% elif not job.result %}
+{% elif job.status not in ("finished", "failed") %}
 <p class="result" data-result="pending">Your archive is being created... <a data-nojs="nojs" href=".">Check again</a></p>
+{% elif not job.result %}
+<p class="result" data-result="finished">Either you have no tracks to export, or something else went wrong. <a href="clear">Retry?</a></p>
 {% else %}
 <p class="result" data-result="finished"><a class="download" href="{{ job.result }}">Download your archive ({{ job.meta['size'] }}B)</a></p>
 <p class="dim">Added new tracks since your archive was created? <a href="clear">Regenerate your archive</a></p>

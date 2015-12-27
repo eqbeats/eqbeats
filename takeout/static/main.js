@@ -19,6 +19,8 @@ document.addEventListener("DOMContentLoaded", function(){
         var xhr = new XMLHttpRequest();
         xhr.open("GET", "jobstatus", true);
         xhr.addEventListener("loadend", function(){
+            if(xhr.status != 200)
+                return window.setTimeout(checkStatus, 4000);
             var response = JSON.parse(xhr.response)
             if(response.status == "finished"){
                 result.innerHTML = "";
@@ -27,8 +29,16 @@ document.addEventListener("DOMContentLoaded", function(){
                 a.appendChild(document.createTextNode("Download your archive ("+response.meta.size+"B)"));
                 result.appendChild(a);
             }
+            else if(response.status == "failed"){
+                result.removeChild(spinner);
+                result.appendChild(document.createTextNode("Something went awry! "));
+                var retry = document.createElement("a");
+                retry.href = "clear";
+                retry.appendChild(document.createTextNode("Retry?"));
+                result.appendChild(retry);
+            }
             else {
-                window.setTimeout(checkStatus, 1000);
+                window.setTimeout(checkStatus, 700);
             }
         });
         xhr.send();
