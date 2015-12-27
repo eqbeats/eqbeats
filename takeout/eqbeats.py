@@ -1,6 +1,7 @@
 import os
 import psycopg2
 from flask import g
+import glob
 
 def get_db():
     try:
@@ -37,3 +38,9 @@ class User:
             tracks.append(track)
             row = cur.fetchone()
         return tracks
+
+def orig_file(tid):
+    directory = os.getenv("EQBEATS_DIR") + "/tracks/"
+    glob_result = glob.glob(directory + "%s.orig.*" % (tid,))
+    if len(glob_result)> 0:
+        return glob_result[0]

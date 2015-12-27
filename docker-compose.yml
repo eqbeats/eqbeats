@@ -27,6 +27,8 @@ takeout:
         - redis
     volumes:
         - ./takeout/:/usr/src/app/
+    volumes_from:
+        - eqbeats
 takeoutworker:
     build: takeout/
     dockerfile: worker.Dockerfile
@@ -35,3 +37,5 @@ takeoutworker:
     environment:
         - AWS_ACCESS_KEY_ID
         - AWS_SECRET_ACCESS_KEY
+    volumes_from:
+        - eqbeats

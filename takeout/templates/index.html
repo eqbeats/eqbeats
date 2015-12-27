@@ -1,6 +1,16 @@
-{% extends "page.html" %}
-{% block title %}Takeout{% endblock %}
+{% extends 'page.html' %}
+{% block title %}Takeout - EqBeats{% endblock %}
+{% block js %}<script src="static/main.js"></script>{% endblock %}
 {% block content %}
-<p>copy here</p>
-<a href="download">download</a>
+<h2>Archive download</h2>
+<p>Your archive will contain every track that you have uploaded to EqBeats, in its original upload format.</p>
+
+{% if not job %}
+<p>You don't have any tracks to archive.</p>
+{% elif not job.result %}
+<p class="result" data-result="pending">Your archive is being created... <a data-nojs="nojs" href=".">Check again</a></p>
+{% else %}
+<p class="result" data-result="finished"><a class="download" href="{{ job.result }}">Download your archive ({{ job.meta['size'] }}B)</a></p>
+<p class="dim">Added new tracks since your archive was created? <a href="clear">Regenerate your archive</a></p>
+{% endif %}
 {% endblock %}

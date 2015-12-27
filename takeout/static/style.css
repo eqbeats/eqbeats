@@ -3,8 +3,7 @@ html, body {
 }
 
 #header h1 a {
-    background: none;
-    padding-left: 0;
+    background-image: url("logo.png");
 }
 
 #footer {
@@ -24,4 +23,24 @@ html, body {
 
 #contents {
     background-color: #fdfdfd;
+}
+
+.dim {
+    opacity: 0.7;
+}
+
+.spinner {
+    display: inline-block;
+    box-sizing: border-box;
+    width: .8em;
+    height: .8em;
+    border: .1em solid transparent;
+    border-left-color: #438;
+    border-right-color: #438;
+    border-radius: 100%;
+    animation: spinner 1s ease-out infinite;
+}
+
+@keyframes spinner {
+    to { transform: rotate(1080deg); }
 }

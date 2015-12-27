@@ -5,5 +5,4 @@ ENV EQBEATS_REDIS=redis \
     EQBEATS_POSTGRES="host=db dbname=eqbeats user=postgres" \
     EQBEATS_DIR=/var/lib/eqbeats
 
-#CMD ["rqworker"]
-CMD ["true"]
+CMD ["rqworker", "-u", "redis://redis"]
