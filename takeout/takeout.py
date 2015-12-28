@@ -5,9 +5,9 @@ import redis
 import rq
 import tempfile
 import uuid
-import hurry.filesize
 from flask import g
 from zipfile import ZipFile, ZIP_DEFLATED
+from math import floor, log10
 
 bucket = os.getenv("TAKEOUT_S3_BUCKET", "eqbeats-takeout")
 
@@ -74,7 +74,7 @@ def archive(files):
         for file_ in files:
             zipfile.write(file_['path'], file_['name'])
 
-    job.meta['size'] = hurry.filesize.size(os.path.getsize(tempname))
+    job.meta['size'] = si_unit(os.path.getsize(tempname))
     job.save()
 
     objname = str(uuid.uuid4()) + ".zip"
@@ -87,3 +87,12 @@ def archive(files):
     url = "https://%s.s3.amazonaws.com/%s" % (bucket, objname)
     return url
 
+def si_unit(number):
+    units = ".KMGTP"
+    unit_n = min(floor(log10(number)/3), len(units))
+    unit = units[unit_n]
+    value = number / (10 ** 3*unit_n)
+    if unit_n > 0:
+        return "%s%s" (value, unit)
+    else:
+        return str(value)
