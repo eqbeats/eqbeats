@@ -9,4 +9,4 @@ ENV TAKEOUT_DEBUG y
 
 CMD python serve.py
 
-EXPOSE 8000
+EXPOSE 8051
