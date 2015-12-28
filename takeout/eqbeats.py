@@ -2,6 +2,7 @@ import os
 import psycopg2
 from flask import g
 import glob
+import uuid
 
 def get_db():
     try:
@@ -11,7 +12,7 @@ def get_db():
         return db
 
 class User:
-    def __init__(self, sid=None):
+    def __init__(self, sid=None, email=None, password=None):
         self.id = 0
         self.name = None
         self.sid = None
@@ -23,6 +24,16 @@ class User:
             if not row: return
             self.id, self.name, self.nonce = row
             self.sid = sid
+        elif email and password:
+            cur = get_db().cursor()
+            cur.execute("SELECT users.id, users.name FROM users WHERE lower(users.email) = lower(%s) AND users.password = crypt(%s, password);", (email, password))
+            row = cur.fetchone()
+            if not row: return
+            self.id, self.name = row
+            self.sid = str(uuid.uuid4())
+            cur.execute("INSERT INTO sessions (user_id, sid, host, date) VALUES (%s, %s, '::1', 'now');", (self.id, self.sid))
+            g.db.commit();
+
 
     def valid(self):
         return self.id > 0
@@ -38,6 +49,11 @@ class User:
             tracks.append(track)
             row = cur.fetchone()
         return tracks
+
+    def logout(self):
+        cur = get_db().cursor()
+        cur.execute("DELETE FROM sessions WHERE user_id = %s AND sid = %s;", (self.id, self.sid))
+        g.db.commit()
 
 def orig_file(tid):
     directory = os.getenv("EQBEATS_DIR") + "/tracks/"

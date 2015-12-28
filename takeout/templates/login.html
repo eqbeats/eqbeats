@@ -1,0 +1,22 @@
+{% extends 'page.html' %}
+{% block title %}Login - EqBeats{% endblock %}
+{% block content %}
+<h2>Login</h2>
+
+{% if error %}<div class="error">{{ error }}</div>{% endif %}
+
+<form method="post">
+    <table>
+        <tr>
+            <td><label for="r_email">Email:</label></td>
+            <td><input id="r_email" name="email" /></td>
+        </tr>
+        <tr>
+            <td><label for="r_pw">Password:</label></td>
+            <td><input id="r_pw" name="pw" type="password" /></td>
+        </tr>
+    </table>
+    <input type="submit" value="Login" />
+    <span class="legend">(A cookie will be stored on your computer to keep your session open.)</span>
+</form>
+{% endblock %}

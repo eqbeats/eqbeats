@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, g, redirect, jsonify
+from flask import Flask, render_template, request, g, redirect, jsonify, make_response
 import eqbeats
 import os
 import takeout
@@ -10,8 +10,8 @@ app = Flask("takeout", static_url_path=path+"/static")
 def check_session():
     sid = request.cookies.get('sid')
     g.user = eqbeats.User(sid)
-    if not g.user.valid():
-        return redirect("/login?redirect=/takeout")
+    if not g.user.valid() and not request.endpoint in ('login', 'static'):
+        return redirect(path + "/login")
 
 @app.route(path + "/")
 def download():
@@ -34,6 +34,25 @@ def jobstatus():
         return jsonify(status=job.status, result=job.result, meta=job.meta)
     else:
         return jsonify()
+
+@app.route(path + "/login", methods=('GET', 'POST'))
+def login():
+    if request.method == "POST":
+        g.user = eqbeats.User(email = request.form['email'], password = request.form['pw'])
+        if not g.user:
+            return render_template('login.html', user=g.user, error="now u fucked up")
+        else:
+            resp = make_response(redirect(path))
+            resp.set_cookie('sid', g.user.sid)
+            return resp
+    else:
+        return render_template('login.html', user=g.user)
+
+@app.route(path + "/logout")
+def logout():
+    if g.user:
+        g.user.logout()
+    return redirect(path)
 
 
 if __name__ == "__main__":

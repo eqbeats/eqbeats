@@ -4,7 +4,7 @@
         <title>{% block title %}{% endblock %} - Equestrian Beats</title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <link rel="stylesheet" type="text/css" href="/static/style.css" />
-        <link rel="stylesheet" type="text/css" href="/takeout/static/style.css" />
+        <link rel="stylesheet" type="text/css" href="static/style.css" />
         <link rel="shortcut icon" href="/static/favicon.ico" id="favicon-link" />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
         {% block js %}{% endblock %}
@@ -16,10 +16,12 @@
                 <div id="navbar">
                     <a href="/">← Back to EqBeats</a>
                 </div>
+                {% if user.valid() %}
                 <div id="logstatus">
                     Hi <b><a href="/user/{{ user.id }}">{{ user.name }}</a></b>.
-                    <a href="/logout">Logout</a>
+                    <a href="logout">Logout</a>
                 </div>
+                {% endif %}
                 <div style="clear:both;"></div>
             </div>
             <div id="contents">
