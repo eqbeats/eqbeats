@@ -40,6 +40,9 @@ def archive_user(user):
     files = []
     for track in user.tracks():
         filename = eqbeats.orig_file(track['id'])
+        if not filename:
+            # the track probably failed transcoding, skip it
+            continue
         ext = filename.split(".")[-1]
         archive_filename = "%s-%s.%s" % (track['id'], sanitize(track['title']), ext)
         files.append({"path":filename, "name":archive_filename})
