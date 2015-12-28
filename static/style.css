@@ -1400,3 +1400,14 @@ svg .ytick, svg .ylabel, svg .chartlabel { fill: #333; z-index: 50; }
         max-width: 45%;
     }
 }
+
+
+
+
+.closed-notice {
+    display: block;
+    background: white;
+    padding: 8px 25px;
+    border-bottom: grey 1px solid;
+    text-align: center;
+}
