@@ -94,8 +94,8 @@ def si_unit(number):
     units = ".KMGTP"
     unit_n = min(floor(log10(number)/3), len(units))
     unit = units[unit_n]
-    value = number / (10 ** 3*unit_n)
+    value = number // (10 ** (3*unit_n))
     if unit_n > 0:
-        return "%s%s" (value, unit)
+        return "%s%s" % (value, unit)
     else:
         return str(value)
