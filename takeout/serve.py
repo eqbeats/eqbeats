@@ -30,7 +30,10 @@ def clear():
 @app.route(path + "/jobstatus")
 def jobstatus():
     job = takeout.get_q().fetch_job("userarchive:%s" % (g.user.id,))
-    return jsonify(status=job.status, result=job.result, meta=job.meta)
+    if job:
+        return jsonify(status=job.status, result=job.result, meta=job.meta)
+    else:
+        return jsonify()
 
 
 if __name__ == "__main__":
