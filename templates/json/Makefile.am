@@ -4,6 +4,5 @@ json_DATA = \
     playlist.tpl \
     track.tpl \
     jsonp.tpl \
-    upload.tpl \
     array.tpl \
     account.tpl

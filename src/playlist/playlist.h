@@ -21,12 +21,6 @@ class Playlist {
 
         TrackList tracks();
 
-        void add(unsigned tid);
-        void remove(unsigned pos);
-        void swap(unsigned i, unsigned j);
-
-        static void removeTrack(int tid);
-
         static std::vector<Playlist> forUser(const User &u);
 
         void fill(Dict *d) const;

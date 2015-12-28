@@ -66,19 +66,6 @@ void Pages::trackMisc(Document *doc){
             doc->download(Audio(&t).opus(), true);
         else
             doc->download(Audio(&t).mp3(), true);
-#ifdef HAVE_LIBHIREDIS
-        if(cgi("stream").empty())
-            Stat::push("trackDownload", t.artist.id, tid);
-#endif
-    }
-
-    else if(sub == "played"){
-#ifdef HAVE_LIBHIREDIS
-        Track t(tid);
-        if(t)
-            Stat::push("trackPlay", t.artist.id, tid);
-#endif
-        doc->setJson("/dev/null");
     }
 
 }

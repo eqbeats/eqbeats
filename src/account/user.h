@@ -15,12 +15,10 @@ class User{
         int id;
         std::string name;
 
-        bool self() const;
+        bool self() const { return 0; };
         std::string url() const;
 
         void fill(Dict*) const;
-
-        void deleteAccount();
 
         operator bool() const { return id > 0; }
         bool operator==(const User &u) const { return id == u.id; }

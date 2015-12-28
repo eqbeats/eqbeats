@@ -23,15 +23,6 @@
             <div class="nohtml5-notice"><b>Notice</b>: EqBeats requires a browser with HTML5 audio support, which your browser does not seem to have. You will not be able to play tracks with your current setup. We recommend you upgrade to a modern browser, like <a href="http://mozilla.org/firefox/">Firefox</a> or <a href="http://chrome.google.com/">Chrome</a>.</div>
             <div id="header">
                 <h1><a href="/">Equestrian Beats</a></h1>
-                <div id="logstatus">
-                    {{#LOGGED_USER}}
-                    Hi <b><a href="/user/{{UID}}">{{USERNAME}}</a></b>.
-                    <a href="/logout{{#HAS_REDIRECT}}?redirect={{REDIRECT}}{{/HAS_REDIRECT}}">Logout</a>
-                    {{/LOGGED_USER}}
-                    {{#LOGGED_OUT}}
-                    <a href="/login{{#HAS_REDIRECT}}?redirect={{REDIRECT}}{{/HAS_REDIRECT}}">Login</a>
-                    {{/LOGGED_OUT}}
-                </div>
                 <div id="navbar">
                     <a href="/">Home</a>
                     <a href="/tracks/latest">Latest</a>
@@ -46,9 +37,6 @@
                 <div style="clear:both;"></div>
             </div>
             <div id="contents">
-                {{#FLASH_ERROR}}
-                <div class="error">{{ERROR}}</div>
-                {{/FLASH_ERROR}}
                 {{>BODY}}
             </div>
             <div id="footer">

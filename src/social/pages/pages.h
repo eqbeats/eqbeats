@@ -4,9 +4,7 @@
 #include <render/document.h>
 
 namespace Pages {
-    void comment(Document*);
     void favorites(Document*);
-    void socialActions(Document*);
 }
 
 #endif // SOCIAL_PAGES_H

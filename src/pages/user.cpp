@@ -1,6 +1,5 @@
 #include "pages.h"
 #include <account/account.h>
-#include <account/session.h>
 #include <core/cgi.h>
 #include <playlist/playlist.h>
 #include <social/event.h>
@@ -46,12 +45,6 @@ void Pages::user(Document *doc){
         Stat::push("userView", uid);
 #endif
 
-        Dict *uploader = doc->dict()->AddIncludeDictionary("UPLOADER");
-        uploader->SetFilename("html/uploader.tpl");
-        uploader->SetValue("ACTION", "/track/new");
-        if(cgi("fileuploader") != "0")
-            uploader->ShowSection("FILEUPLOADER");
-
         std::vector<Playlist> playlists = Playlist::forUser(u);
         doc->dict()->ShowSection(playlists.empty() ? "NO_PLAYLIST" : "HAS_PLAYLISTS");
         for(std::vector<Playlist>::const_iterator i=playlists.begin(); i!=playlists.end(); i++){
@@ -59,18 +52,10 @@ void Pages::user(Document *doc){
             i->fill(playlistDict);
         }
 
-        Session::fill(doc->dict());
-        EventList::user(u, 12).fill(doc->dict(), "EVENTS", true);
+        EventList::user(u, 12).fill(doc->dict(), "EVENTS");
         Follower(u.id).followed().fill(doc->dict(), "FOLLOWED_USERS");
-        if(!u.self())
-            doc->dict()->ShowSection(Follower(Session::user().id).following(u.id) ? "IS_FOLLOWED" : "NOT_FOLLOWED");
-        if(!cgi("welcome").empty())
-            doc->dict()->ShowSection("WELCOME");
 
         Feature(u.id).fill(doc->dict());
-
-        if(!cgi("spam").empty())
-            doc->rootDict()->SetValueAndShowSection("ERROR", "Sorry, your comment looks like spam and has not been posted. Try rephrasing.", "FLASH_ERROR");
 
     }
 }

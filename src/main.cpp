@@ -1,6 +1,5 @@
 #include <eqbeats.h>
 #include <account/pages/pages.h>
-#include <account/session.h>
 #include <core/cgi.h>
 #include <core/db.h>
 #include <log/log.h>
@@ -13,7 +12,6 @@
 #include <text/modifiers.h>
 #include <text/text.h>
 #include <track/pages/pages.h>
-#include <userfeature/pages/pages.h>
 
 #ifdef HAVE_LIBHIREDIS
 #  include <stat/pages.h>
@@ -78,11 +76,10 @@ int main(int argc, char** argv){
 
     void (*callbacks[])(Document*) = {
         Pages::statics, Pages::home,
-        Pages::track, Pages::trackMisc, Pages::tracks, Pages::oembed, Pages::trackActions, Pages::trackUpload, Pages::art, Pages::license,
-        Pages::account, Pages::login, Pages::user, Pages::users, Pages::registration, Pages::passwordReset,
-        Pages::playlist, Pages::playlistActions,
-        Pages::comment, Pages::socialActions, Pages::favorites,
-        Pages::featureActions,
+        Pages::track, Pages::trackMisc, Pages::tracks, Pages::oembed, Pages::art,
+        Pages::user, Pages::users,
+        Pages::playlist,
+        Pages::favorites,
 #ifdef HAVE_LIBHIREDIS
         Pages::stats,
 #endif
@@ -124,15 +121,12 @@ int main(int argc, char** argv){
         if (getenv("EQBEATS_HTTPS") && !cgi.getEnvironment().usingHTTPS() && cgi.getElements().size() == 0)
             doc.moved(eqbeatsUrl() + path);
 
-        Session::start();
 
         for(int i=0; !doc && callbacks[i]; i++)
             callbacks[i](&doc);
 
-        Session::fill(doc.rootDict());
         o << doc.generate();
 
-        Session::destroy();
         FCGX_Finish_r(&request);
         while((child = waitpid(-1, &rc, WNOHANG)) > 0) // wait for zombies
             syslog(WIFEXITED(rc) ? LOG_NOTICE : LOG_ERR, "%d exited with %d.", child, WEXITSTATUS(rc));
