@@ -5,11 +5,16 @@ import redis
 import rq
 import tempfile
 import uuid
-from flask import g
+import shutil
+import requests
+import datetime
+import csv
+from flask import g, request
 from zipfile import ZipFile, ZIP_DEFLATED
 from math import floor, log10
 
 bucket = os.getenv("TAKEOUT_S3_BUCKET", "eqbeats-takeout")
+eqbeats_url = os.getenv("EQBEATS_URL", "https://eqbeats.org/")
 
 def get_redis():
     redis_location = os.getenv("EQBEATS_REDIS", "localhost:6379")
@@ -41,7 +46,10 @@ def archive_user(user):
 def archive_tracks(tracks):
     #build file array
     files = []
+    tempdir = tempfile.mkdtemp(prefix="eqbtakeout_")
     for track in tracks:
+
+        # audio file
         filename = eqbeats.orig_file(track['id'])
         if not filename:
             # the track probably failed transcoding, skip it
@@ -49,8 +57,46 @@ def archive_tracks(tracks):
         ext = filename.split(".")[-1]
         archive_filename = "%s-%s.%s" % (track['id'], sanitize(track['title']), ext)
         files.append({"path":filename, "name":archive_filename})
+
+        # stats
+        r = requests.get("%s/track/%s/stats" % (eqbeats_url, track['id']))
+        if not r.status_code == 200:
+            continue
+        stats = r.json()
+        first = last = None
+
+        filename = "%s-%s-stats.csv" % (track['id'], sanitize(track['title']))
+        with open(tempdir + "/" + filename, "w", newline='') as f:
+            for arr in list(stats['unique_days'].values()) + list(stats['days'].values()):
+                for key in arr.keys():
+                    if not first or first > key:
+                        first = key
+                    if not last or last < key:
+                        last = key
+
+            first = datetime.datetime.strptime(first, "%Y-%m-%d").date()
+            last = datetime.datetime.strptime(last, "%Y-%m-%d").date()
+            date = first
+            c = csv.writer(f)
+            c.writerow(['date', 'visits', 'plays', 'downloads', 'unique visits', 'unique plays', 'unique downloads'])
+            while date <= last:
+                c.writerow([date.isoformat(),
+                    stats['days']['trackView'].get(date.isoformat(), 0),
+                    stats['days']['trackPlay'].get(date.isoformat(), 0),
+                    stats['days']['trackDownload'].get(date.isoformat(), 0),
+                    stats['unique_days']['trackView'].get(date.isoformat(), 0),
+                    stats['unique_days']['trackPlay'].get(date.isoformat(), 0),
+                    stats['unique_days']['trackDownload'].get(date.isoformat(), 0)
+                ])
+                date += datetime.timedelta(1)
+
+        files.append({"path": tempdir + "/" + filename, "name": filename})
+
+    result = None
     if(len(files) > 0):
-        return archive(files)
+        result = archive(files)
+    shutil.rmtree(tempdir)
+    return result
 
 def sanitize(string):
     # this filter is a bit overzealous but at least we're guaranteed not to hit any filesystem naming limitations
