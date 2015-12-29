@@ -9,6 +9,7 @@ import shutil
 import requests
 import datetime
 import csv
+import imghdr
 from flask import g, request
 from zipfile import ZipFile, ZIP_DEFLATED
 from math import floor, log10
@@ -91,6 +92,16 @@ def archive_tracks(tracks):
                 date += datetime.timedelta(1)
 
         files.append({"path": tempdir + "/" + filename, "name": filename})
+
+        # cover art
+        filename = eqbeats.art(track['id'])
+        if not filename:
+            continue
+        ext = imghdr.what(filename)
+        if not ext:
+            continue
+        files.append({"path": filename, "name": "%s-%s.%s" % (track['id'], sanitize(track['title']), ext)})
+
 
     result = None
     if(len(files) > 0):

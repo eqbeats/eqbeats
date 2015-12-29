@@ -60,3 +60,9 @@ def orig_file(tid):
     glob_result = glob.glob(directory + "%s.orig.*" % (tid,))
     if len(glob_result)> 0:
         return glob_result[0]
+
+def art(tid):
+    directory = os.getenv("EQBEATS_DIR") + "/art/"
+    glob_result = glob.glob(directory + "%s*" % (tid,))
+    if len(glob_result)> 0:
+        return glob_result[0]
