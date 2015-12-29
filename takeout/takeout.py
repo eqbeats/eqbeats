@@ -36,9 +36,12 @@ def archive_user(user):
     expects an eqbeats.User
     returns a job or None if no tracks were found
     """
+    return get_q().enqueue(archive_tracks, user.tracks(), job_id="userarchive:%s" % (user.id,), result_ttl=3600)
+
+def archive_tracks(tracks):
     #build file array
     files = []
-    for track in user.tracks():
+    for track in tracks:
         filename = eqbeats.orig_file(track['id'])
         if not filename:
             # the track probably failed transcoding, skip it
@@ -47,7 +50,7 @@ def archive_user(user):
         archive_filename = "%s-%s.%s" % (track['id'], sanitize(track['title']), ext)
         files.append({"path":filename, "name":archive_filename})
     if(len(files) > 0):
-        return get_q().enqueue(archive, files, job_id="userarchive:%s" % (user.id,), result_ttl=3600)
+        return archive(files)
 
 def sanitize(string):
     # this filter is a bit overzealous but at least we're guaranteed not to hit any filesystem naming limitations
