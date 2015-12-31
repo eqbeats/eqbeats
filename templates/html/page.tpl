@@ -19,7 +19,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
     </head>
     <body>
-        <div class="closed-notice">EqBeats has closed down. <a href="http://blog.eqbeats.org/">Read more</a> and <a href="/takeout">export your data</a></div>
+        <div class="closed-notice">EqBeats has closed down. <a href="http://blog.eqbeats.org/updates/shutdown/">Read more</a> and <a href="/takeout">download your data</a></div>
         <div id="main">
             <div class="nohtml5-notice"><b>Notice</b>: EqBeats requires a browser with HTML5 audio support, which your browser does not seem to have. You will not be able to play tracks with your current setup. We recommend you upgrade to a modern browser, like <a href="http://mozilla.org/firefox/">Firefox</a> or <a href="http://chrome.google.com/">Chrome</a>.</div>
             <div id="header">
