@@ -8,7 +8,6 @@
 </h2>
 
 <div class="items">
-<div class="item"><img src="/static/icons/mail.png" alt="" /> Email: {{EMAIL:x-email}}</div>
 {{#HAS_FAVS}}<div class="item"><img src="/static/icons/star.png" alt="" /> <a href="/user/{{UID}}/favorites">Favorite tracks ({{NUM_FAVS}})</a></div>{{/HAS_FAVS}}
 {{#HAS_FOLLOWERS}}<div class="item"><img src="/static/icons/users.png" alt="" /> {{NUM_FOLLOWERS}} follower{{#FOLLOWERS_PLURAL}}s{{/FOLLOWERS_PLURAL}}</div>{{/HAS_FOLLOWERS}}
 </div>

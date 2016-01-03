@@ -30,9 +30,6 @@
 <h4>I've just done that but it won't show up! What do I do?</h4>
 <p>Most likely your browser cached the default avatar. Try refreshing the page, or Ctrl+Shift+R if that wasn't enough.</p>
 
-<h4>Why is my Email address publically displayed on my user page?</h4>
-<p>We believe that Email is a great way to communicate, as well as an established proof of identity. We've chosen to display Email on every user's profile to make contacting artists much easier.</p>
-
 <h3>Technical stuff</h3>
 
 <h4 id="formats">What formats do you accept?</h4>
