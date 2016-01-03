@@ -90,7 +90,6 @@ function load(player, nondisruptive){
         }
         snd.player = player;
         snd.preload = 'metadata';
-        snd.triggered = false;
         snd.stopped = false;
         snd.operaquirk = false;
         snd.innerHTML = "";
@@ -373,12 +372,6 @@ function loadplayer(){
     addListener(snd, "timeupdate", function(){
         playing.scrubber.style.width = (100 * this.currentTime / this.duration) + '%';
         playing.playtime.innerHTML = prettyTime(this.currentTime) + '/' + prettyTime(this.duration);
-        if(!this.paused && !this.triggered && this.currentTime > 5 && (this.currentTime > this.duration / 3 || this.currentTime > 90000)){
-            this.triggered = true;
-            var xhr = new XMLHttpRequest();
-            xhr.open("POST", "/track/" + playing.track.tid + "/played", true);
-            xhr.send();
-        }
     });
     addListener(snd, "ended", function(){
         if(!scrubbing){
