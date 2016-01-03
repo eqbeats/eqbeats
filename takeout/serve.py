@@ -39,8 +39,8 @@ def jobstatus():
 def login():
     if request.method == "POST":
         g.user = eqbeats.User(email = request.form['email'], password = request.form['pw'])
-        if not g.user:
-            return render_template('login.html', user=g.user, error="now u fucked up")
+        if not g.user.valid():
+            return render_template('login.html', user=g.user, error="Could not find a user with these credentials. Please try again or contact support.")
         else:
             resp = make_response(redirect(path))
             resp.set_cookie('sid', g.user.sid)
