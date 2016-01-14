@@ -9,6 +9,7 @@ def get_db():
         return g.db
     except AttributeError:
         db = g.db = psycopg2.connect(os.getenv("EQBEATS_POSTGRES", ""))
+        db.set_client_encoding("utf-8")
         return db
 
 class User:
