@@ -42,7 +42,7 @@ def archive_user(user):
     expects an eqbeats.User
     returns a job or None if no tracks were found
     """
-    return get_q().enqueue(archive_tracks, user.tracks(), job_id="userarchive:%s" % (user.id,), result_ttl=3600)
+    return get_q().enqueue(archive_tracks, user.tracks(), job_id="userarchive:%s" % (user.id,), result_ttl=3600, timeout=1200)
 
 def archive_tracks(tracks):
     #build file array
